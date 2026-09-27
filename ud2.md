@@ -1133,6 +1133,7 @@ A continuación, se muestran los pasos para crear un proyecto de **React con Jav
    - `public/` contiene los archivos estáticos que se copian tal cual a la carpeta de salida (imágenes, favicon, etc.).
    - `vite.config.js` es el archivo de configuración de Vite. En la plantilla de React ya incluye el plugin `@vitejs/plugin-react`, necesario para transpilar JSX con esbuild.
 
+
 8. **Generar la versión de producción**
 
    Cuando el proyecto esté listo para desplegarse, se genera la versión optimizada con:
