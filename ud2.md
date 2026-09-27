@@ -5,7 +5,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 
 [⌂ Volver al inicio](index.md)
 
-## Índice
+# Índice
 
 - [1 Introducción a ECMAScript y JavaScript](#seccion-1)
 - [2 Comentarios, literales, identificadores](#seccion-2)
@@ -20,7 +20,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 - [11 Funciones](#seccion-11)
 - [13 Actividades](#seccion-13)
 
-## 1 Introducción a ECMAScript y JavaScript {#seccion-1}
+# 1 Introducción a ECMAScript y JavaScript {#seccion-1}
 
 El estándar que define el lenguaje JavaScript se denomina ECMAScript. La primera versión de este
 estándar fue lanzada en 1997, marcando el inicio de un lenguaje que ha evolucionado significativamente desde entonces.
@@ -37,7 +37,7 @@ significativa en el lenguaje. Entre las novedades más destacadas se incluyen:
   versión continuó con la evolución del lenguaje, incorporando nuevas funcionalidades y mejoras de
   rendimiento.
 
-### 1.1 Soporte de Navegadores y Compatibilidad {#seccion-1-1}
+## 1.1 Soporte de Navegadores y Compatibilidad {#seccion-1-1}
 
 Históricamente, los navegadores web han implementado las versiones de JavaScript con pequeñas
 diferencias, lo que solía generar problemas para desarrollar scripts compatibles. Los desarrolladores
@@ -58,7 +58,7 @@ ES6, etc.), puedes consultar las siguientes páginas:
     <figcaption>Figura 2. Soporte ES6</figcaption>
   </figure>
 
-### 1.2 Transpilación de Código {#seccion-1-2}
+## 1.2 Transpilación de Código {#seccion-1-2}
 
 Aunque el soporte de ES6 está muy avanzado, la transpilación sigue siendo una práctica común. La
 transpilación consiste en la traducción de código escrito en un lenguaje de alto nivel a otro del mismo
@@ -76,9 +76,9 @@ nivel de abstracción. Por ejemplo:
   ECMAScript 2015 (ES6). Sin embargo, hoy en día, la mayoría de los navegadores modernos han adoptado completamente ES6 y versiones posteriores, lo que reduce la necesidad de transpilar el código
   a ES5.
 
-### 1.3 Ejecución de JavaScript {#seccion-1-3}
+## 1.3 Ejecución de JavaScript {#seccion-1-3}
 
-#### 1.3.1 En el Navegador Web {#seccion-1-3-1}
+### 1.3.1 En el Navegador Web {#seccion-1-3-1}
 
 El código JavaScript se puede ejecutar directamente en un navegador web. Existen varias formas de
 incluir código JavaScript en una página:
@@ -141,18 +141,18 @@ luego el de los <script> para que el código JavaScript pueda acceder a los elem
 la página web (DOM).
 La consola del navegador es otra herramienta útil que permite ejecutar código JavaScript directamente en el navegador.
 
-#### 1.3.2 Depuración en el navegador {#seccion-1-3-2}
+### 1.3.2 Depuración en el navegador {#seccion-1-3-2}
 
 Los navegadores modernos, como Google Chrome, Firefox, Edge y Safari, incluyen herramientas de
 desarrollo (Developer Tools) que facilitan la depuración de código JavaScript. A continuación, se
 explica cómo depurar en el navegador, acompañando la explicación con ejemplos prácticos.
 
-##### 1.3.2.1 Acceder a las Herramientas de Desarrollo {#subseccion-1-3-2-1}
+#### 1.3.2.1 Acceder a las Herramientas de Desarrollo {#subseccion-1-3-2-1}
 
 En la mayoría de los navegadores, puedes acceder a las herramientas de desarrollo pulsando F12 o Ctrl+Shift+I (Windows/Linux) o Cmd+Option+I
 (Mac).
 
-##### 1.3.2.2 Usar la Consola (Console) {#subseccion-1-3-2-2}
+#### 1.3.2.2 Usar la Consola (Console) {#subseccion-1-3-2-2}
 
 La consola es una herramienta poderosa para visualizar mensajes, errores y para interactuar directamente con el entorno de JavaScript.
 
@@ -188,7 +188,7 @@ La consola es una herramienta poderosa para visualizar mensajes, errores y para 
    Función saludar iniciada
    Mensaje creado: Hola, Mundo
 
-##### 1.3.2.3 Establecer Puntos de Interrupción (Breakpoints) {#subseccion-1-3-2-3}
+#### 1.3.2.3 Establecer Puntos de Interrupción (Breakpoints) {#subseccion-1-3-2-3}
 
 Los breakpoints permiten pausar la
 ejecución del código en una línea específica para inspeccionar el estado de la aplicación.
@@ -226,7 +226,7 @@ ejecución del código en una línea específica para inspeccionar el estado de 
 6. Recarga la página. La ejecución se pausará en el breakpoint.
 7. Ahora puedes inspeccionar variables, el call stack y más.
 
-##### 1.3.2.4 Usar la Declaración debugger {#subseccion-1-3-2-4}
+#### 1.3.2.4 Usar la Declaración debugger {#subseccion-1-3-2-4}
 
 La palabra clave debugger detiene la ejecución del código
 en el punto donde se inserta, siempre que las herramientas de desarrollo estén abiertas. Ejemplo:
@@ -260,7 +260,7 @@ en el punto donde se inserta, siempre que las herramientas de desarrollo estén 
 4. La ejecución se pausará en la línea con debugger;.
 5. Puedes inspeccionar las variables a, b y producto, y avanzar paso a paso.
 
-##### 1.3.2.5 Inspeccionar Variables y el Call Stack {#subseccion-1-3-2-5}
+#### 1.3.2.5 Inspeccionar Variables y el Call Stack {#subseccion-1-3-2-5}
 
 Cuando la ejecución está pausada (ya sea por un
 breakpoint o debugger), puedes inspeccionar:
@@ -283,7 +283,7 @@ Utilizando el ejemplo anterior con la función multiplicar, cuando la ejecución
 3. Scope:
    - Puedes ver variables locales dentro de multiplicar y variables globales como resultado.
 
-##### 1.3.2.6 Pasar y Avanzar en la Ejecución (Stepping Through) {#subseccion-1-3-2-6}
+#### 1.3.2.6 Pasar y Avanzar en la Ejecución (Stepping Through) {#subseccion-1-3-2-6}
 
 Mientras la ejecución está pausada,
 puedes controlar cómo avanzar:
@@ -302,7 +302,7 @@ Usando el ejemplo de calcularSuma:
 - Usa Step Into si hay una función llamada dentro de calcularSuma y quieres depurarla.
 - Usa Continue para reanudar la ejecución hasta el siguiente breakpoint o hasta el final.
 
-##### 1.3.2.7 Usar Puntos de Interrupción Condicionales {#subseccion-1-3-2-7}
+#### 1.3.2.7 Usar Puntos de Interrupción Condicionales {#subseccion-1-3-2-7}
 
 Puedes establecer breakpoints que solo se
 activen cuando se cumpla una cierta condición, lo que es útil para bucles o casos específicos. Ejemplo:
@@ -337,7 +337,7 @@ activen cuando se cumpla una cierta condición, lo que es útil para bucles o ca
     <figcaption>Figura 4. Depuración Condicional en las herramientas de desarrollador de Mozilla Firefox</figcaption>
   </figure>
 
-##### 1.3.2.8 Utilizar la Pestaña de Network para Depurar Solicitudes {#subseccion-1-3-2-8}
+#### 1.3.2.8 Utilizar la Pestaña de Network para Depurar Solicitudes {#subseccion-1-3-2-8}
 
 La pestaña Network (Red) permite ver todas las solicitudes de red realizadas por la página, lo que es útil para depurar API calls,
 cargar recursos, etc.
@@ -369,7 +369,7 @@ console.error("Error:", error);
 - Haz clic en la solicitud para ver detalles como encabezados, respuesta, tiempo de carga, etc.
 - Si hay errores, aparecerán resaltados en rojo y podrás inspeccionarlos.
 
-#### 1.3.3 Depurar Código Asíncrono {#seccion-1-3-3}
+### 1.3.3 Depurar Código Asíncrono {#seccion-1-3-3}
 
 Depurar promesas, async/await y callbacks puede ser más complejo. Las herramientas de desarrollo
 modernas facilitan esto permitiendo pausas en puntos específicos.
@@ -405,7 +405,7 @@ obtenerDatos();
 
 Repasa este apartado cuando tengas que depurar código JavaScript.
 
-#### 1.3.4 Node.js {#seccion-1-3-4}
+### 1.3.4 Node.js {#seccion-1-3-4}
 
 Node.js (comúnmente abreviado como Node) es un entorno de ejecución de JavaScript basado en
 el motor V8 de Chrome, diseñado para ejecutar aplicaciones del lado del servidor, lo que lo convierte
@@ -473,12 +473,12 @@ Algunos comandos útiles incluyen:
   node programa.js
   ```
 
-#### 1.3.5 Recursos Adicionales {#seccion-1-3-5}
+### 1.3.5 Recursos Adicionales {#seccion-1-3-5}
 
 Además de ejecutar código JavaScript localmente, existen aplicaciones online como JSFiddle que
 permiten programar y probar JavaScript de manera interactiva.
 
-### 1.4 Introducción a Babel {#seccion-1-4}
+## 1.4 Introducción a Babel {#seccion-1-4}
 
 En el desarrollo moderno de aplicaciones web, el uso de nuevas versiones de JavaScript, como ES6
 y superiores, es común debido a las mejoras en la sintaxis y las nuevas funcionalidades que ofrecen.
@@ -499,12 +499,12 @@ de JavaScript. JSX también necesita ser transpilado a JavaScript para que pueda
 navegadores, ya que los motores de JavaScript no soportan esta sintaxis. Babel facilita este proceso,
 permitiendo que el código JSX se convierta en código JavaScript compatible.
 
-#### 1.4.1 Uso de Babel {#seccion-1-4-1}
+### 1.4.1 Uso de Babel {#seccion-1-4-1}
 
 Babel se puede utilizar de diferentes maneras según las necesidades del proyecto. Aquí se detallan
 algunas de las formas más comunes de utilizar Babel:
 
-#### 1.4.2 @babel/standalone {#seccion-1-4-2}
+### 1.4.2 @babel/standalone {#seccion-1-4-2}
 
 Esta versión de Babel permite incrustar código ES6 en una página web y transpilarlo en línea antes
 de su ejecución. Aunque esta opción es útil para pruebas rápidas, no se recomienda en entornos de
@@ -533,7 +533,7 @@ Vite y create‑react‑app dejan preparado el proyecto para la transpilación c
   <figcaption>Figura 8. Logotipo de Vite</figcaption>
 </figure>
 
-### 1.5 NPM (Node Package Manager) {#seccion-1-5}
+## 1.5 NPM (Node Package Manager) {#seccion-1-5}
 
 NPM (Node Package Manager) es el gestor de paquetes predeterminado para Node.js. Es una herramienta fundamental en el ecosistema de JavaScript, utilizada principalmente para gestionar las
 dependencias (librerías y módulos) que un proyecto de Node.js puede necesitar.
@@ -558,7 +558,7 @@ Funciones principales de NPM:
   desarrolladores como Google y Tilde. Yarn se creó como una alternativa a NPM, con el objetivo de
   abordar algunas de las limitaciones que tenía NPM en sus primeras versiones.
 
-#### 1.5.1 Ejemplo de un servidor web con Nodejs y Express: {#seccion-1-5-1}
+### 1.5.1 Ejemplo de un servidor web con Nodejs y Express: {#seccion-1-5-1}
 
 En este ejemplo vamos a crear una aplicación web simple usando Express, un popular framework de
 Node.js para explicar el uso de npm.
@@ -661,7 +661,7 @@ npm start
 
 node_modules
 
-#### 1.5.2 Ejemplo de una aplicación react {#seccion-1-5-2}
+### 1.5.2 Ejemplo de una aplicación react {#seccion-1-5-2}
 
 Ahora vamos a usar npm, node y babel para crear una pequeña aplicación en React.
 
@@ -786,7 +786,7 @@ npm run build
 Esto generará un archivo bundle.js en la carpeta dist con el código transpilado. 8. Ejecutar la aplicación
 Ahora, abre el archivo dist/index.html en un navegador. Deberías ver el texto “Hola, Mundo desde React con Babel!” en la página.
 
-### 1.6 Empaquetado de Proyectos {#seccion-1-6}
+## 1.6 Empaquetado de Proyectos {#seccion-1-6}
 
 Cuando un proyecto crece, puede tener cientos o miles de archivos JavaScript. Para mejorar la eficiencia de carga en los navegadores, es importante empaquetar el código en unos pocos archivos
 optimizados. El proceso de empaquetado generalmente incluye:
@@ -798,7 +798,7 @@ optimizados. El proceso de empaquetado generalmente incluye:
 - Empaquetar: Combinar múltiples archivos JavaScript en unos pocos archivos para reducir el
   número de peticiones HTTP.
 
-#### 1.6.1 Parcel: Un Empaquetador sin Configuración {#seccion-1-6-1}
+### 1.6.1 Parcel: Un Empaquetador sin Configuración {#seccion-1-6-1}
 
 Parcel es una herramienta de empaquetado que requiere cero configuración, ideal para desarrolladores que desean una solución simple y efectiva. A continuación se muestra cómo crear un proyecto
 básico usando Parcel:
@@ -879,7 +879,7 @@ npm run build
 Parcel empaqueta, minimiza y optimiza el proyecto para despliegue en producción.
 Al final del proceso, el código generado en la carpeta dist está listo para ser desplegado en un servidor web, asegurando una carga rápida y eficiente para los usuarios.
 
-### 1.7 Linter {#seccion-1-7}
+## 1.7 Linter {#seccion-1-7}
 
 Un linter es una herramienta que analiza el código fuente de manera estática, es decir, sin ejecutarlo.
 Su principal función es detectar errores de sintaxis, problemas de formato y advertir sobre posibles
@@ -893,7 +893,7 @@ El uso de linters en el proceso de desarrollo ofrece múltiples ventajas, entre 
   equipos de desarrollo.
 - Facilita la revisión de código: Reduce la necesidad de correcciones manuales durante la revisión.
 
-#### 1.7.1 ESLint {#seccion-1-7-1}
+### 1.7.1 ESLint {#seccion-1-7-1}
 
 ESLint es uno de los linters más populares en el ecosistema JavaScript. Fue creado para proporcionar
 una herramienta extensible y altamente configurable que analiza el código en busca de problemas.
@@ -908,7 +908,7 @@ una herramienta extensible y altamente configurable que analiza el código en bu
 - Ayuda a mantener un estilo de codificación consistente.
 - Permite reforzar reglas internas específicas de un equipo de desarrollo.
 
-#### 1.7.2 Proyecto con ESLint {#seccion-1-7-2}
+### 1.7.2 Proyecto con ESLint {#seccion-1-7-2}
 
 1. Proyecto NPM
    Para comenzar, es necesario crear un proyecto de Node.js:
@@ -1002,16 +1002,16 @@ Ahora puedes ejecutar ESLint con:
 npm run lint
 ```
 
-## 2 Comentarios, literales, identificadores {#seccion-2}
+# 2 Comentarios, literales, identificadores {#seccion-2}
 
-### 2.1 Comentarios en JavaScript {#seccion-2-1}
+## 2.1 Comentarios en JavaScript {#seccion-2-1}
 
 Los comentarios en JavaScript funcionan de manera similar a los de Java. Son útiles para agregar
 notas, explicaciones o descripciones dentro del código, que no son ejecutadas por el intérprete. Los
 comentarios ayudan a que el código sea más legible y comprensible tanto para el autor como para
 otros desarrolladores que lo lean en el futuro.
 
-#### 2.1.1 Comentario de una línea {#seccion-2-1-1}
+### 2.1.1 Comentario de una línea {#seccion-2-1-1}
 
 Para comentar una sola línea en JavaScript, se utiliza //. Todo lo que siga a // en esa línea será
 ignorado por el intérprete.
@@ -1026,7 +1026,7 @@ let x = 5; // También se puede hacer aquí
 En este caso, la primera línea es un comentario completo y la segunda línea tiene un comentario al
 final, explicando que se está asignando el valor 5 a la variable x.
 
-#### 2.1.2 Comentario de múltiples líneas {#seccion-2-1-2}
+### 2.1.2 Comentario de múltiples líneas {#seccion-2-1-2}
 
 Para comentar varias líneas a la vez, se utiliza /* _/. Todo el texto entre /_ y */ será ignorado por
 el intérprete.
@@ -1050,7 +1050,7 @@ let y = 10;
 Este tipo de comentario es útil cuando necesitas explicar un bloque de código o dejar una nota más
 extensa.
 
-### 2.2 Literales en JavaScript {#seccion-2-2}
+## 2.2 Literales en JavaScript {#seccion-2-2}
 
 Los literales son valores fijos que se escriben directamente en el código. No son variables, sino valores constantes que se asignan a variables o se utilizan directamente en las expresiones.
 
@@ -1084,7 +1084,7 @@ Los literales son valores fijos que se escriben directamente en el código. No s
   let objeto = null; // La variable 'objeto' no tiene ningún valor asignado
   ```
 
-### 2.3 Identificadores en JavaScript {#seccion-2-3}
+## 2.3 Identificadores en JavaScript {#seccion-2-3}
 
 Los identificadores son nombres utilizados para identificar variables, funciones, clases u otros elementos dentro del código. Siguen ciertas reglas para ser válidos en JavaScript.
 
@@ -1142,9 +1142,9 @@ const variable2 = 10; // Cambiado para comenzar con una letra
 En este caso, 2variable es incorrecto porque comienza con un número. Lo corregimos cambiando
 el nombre a variable2, que comienza con una letra.
 
-## 3 Palabras reservadas, unicode, punto y coma {#seccion-3}
+# 3 Palabras reservadas, unicode, punto y coma {#seccion-3}
 
-### 3.1 Palabras reservadas {#seccion-3-1}
+## 3.1 Palabras reservadas {#seccion-3-1}
 
 Las palabras reservadas son identificadores que tienen un significado especial en el lenguaje y, por
 lo tanto, no pueden ser utilizados como nombres de variables, funciones o etiquetas. Estas palabras
@@ -1174,7 +1174,7 @@ console.log("El nombre es Juan");
 }
 ```
 
-### 3.2 Unicode en JavaScript {#seccion-3-2}
+## 3.2 Unicode en JavaScript {#seccion-3-2}
 
 JavaScript utiliza Unicode, un estándar de codificación que permite representar la mayoría de los
 caracteres escritos del mundo. Esto incluye caracteres de alfabetos no latinos, símbolos especiales,
@@ -1205,7 +1205,7 @@ let corazon = "\u2764";
 console.log(corazon); // ❤
 ```
 
-### 3.3 Uso del Punto y Coma en JavaScript {#seccion-3-3}
+## 3.3 Uso del Punto y Coma en JavaScript {#seccion-3-3}
 
 El punto y coma (;) en JavaScript se utiliza para terminar una instrucción. Sin embargo, JavaScript
 tiene una característica llamada Automatic Semicolon Insertion (Inserción Automática de Punto
@@ -1244,9 +1244,9 @@ console.log("Esto es una función IIFE");
 // let suma = 5 + 5(function() { console.log("Esto es una función IIFE");})();
 ```
 
-## 4 Declaración de variables {#seccion-4}
+# 4 Declaración de variables {#seccion-4}
 
-### 4.1 Declaración de Variables con var {#seccion-4-1}
+## 4.1 Declaración de Variables con var {#seccion-4-1}
 
 var es la forma tradicional de declarar variables en JavaScript, y ha sido utilizada desde las primeras
 versiones del lenguaje. Las variables declaradas con var tienen un ámbito de función, lo que significa
@@ -1285,7 +1285,7 @@ donde se definió.
 
 > Evita usar var para declarar variables. Usa let o const en su lugar.
 
-### 4.2 Hoisting {#seccion-4-2}
+## 4.2 Hoisting {#seccion-4-2}
 
 El hoisting es un comportamiento en JavaScript en el que las declaraciones de variables y funciones
 se mueven al comienzo del ámbito donde están declaradas. Este comportamiento afecta únicamente
@@ -1318,7 +1318,7 @@ function pruebaHoisting() {
 pruebaHoisting();
 ```
 
-### 4.3 Declaración de Variables con let y const (ES6) {#seccion-4-3}
+## 4.3 Declaración de Variables con let y const (ES6) {#seccion-4-3}
 
 La palabra reservada let se introdujo en ES6 y permite declarar variables con un ámbito de bloque.
 Esto significa que la variable sólo es accesible dentro del bloque {} donde se declaró.
@@ -1332,7 +1332,7 @@ if (a > 0) {
 console.log(b); // Error: b no está definida
 ```
 
-### 4.4 Declaración con const {#seccion-4-4}
+## 4.4 Declaración con const {#seccion-4-4}
 
 La palabra reservada const también fue introducido en ES6 y se utiliza para declarar constantes, es
 decir, variables cuyo valor no puede ser reasignado después de su declaración. Sin embargo, en el
@@ -1369,7 +1369,7 @@ console.log(pi); // Error: pi no está definida
 > Opta en primer lugar por usar const para declarar todas las variables. Si el valor de la
 > variable necesita cambiar, entonces usa let.
 
-### 4.5 Tipado Dinámico en JavaScript {#seccion-4-5}
+## 4.5 Tipado Dinámico en JavaScript {#seccion-4-5}
 
 A diferencia de lenguajes como Java, donde el tipo de una variable se declara de manera explícita y
 no puede cambiar, en JavaScript el tipo de una variable puede cambiar durante la ejecución. Esto
@@ -1388,13 +1388,13 @@ console.log(typeof variable); // Output: "string"
 
 Para depurar el código en JavaScript, utiliza herramientas como el debugger del navegador para observar cómo se comportan las variables y comprender mejor el flujo de tu programa.
 
-## 5 Tipos de datos en Javascript {#seccion-5}
+# 5 Tipos de datos en Javascript {#seccion-5}
 
 En este capítulo, exploraremos los tipos de datos disponibles en JavaScript a partir de la versión ES6
 y posteriores. Estos tipos de datos son fundamentales para la manipulación de valores en el lenguaje
 y comprenden tanto tipos primitivos como tipos de objetos.
 
-### 5.1 Tipos de Datos Primitivos {#seccion-5-1}
+## 5.1 Tipos de Datos Primitivos {#seccion-5-1}
 
 Los tipos de datos primitivos en JavaScript son los más básicos y no pueden ser divididos en partes
 más pequeñas.
@@ -1419,7 +1419,7 @@ let saludoModificado = saludo.toUpperCase(); // 'saludoModificado' es una nueva 
 console.log(saludo); // "Hola" - La cadena original no ha cambiado
 ```
 
-#### 5.1.1 Métodos y Propiedades en Tipos Primitivos {#seccion-5-1-1}
+### 5.1.1 Métodos y Propiedades en Tipos Primitivos {#seccion-5-1-1}
 
 Aunque los tipos primitivos en JavaScript no poseen métodos ni propiedades inherentes, en la práctica, se comportan como si los tuvieran. Esto es posible porque JavaScript realiza un proceso automático conocido como auto‑boxing. Cuando intentas acceder a un método o propiedad de un valor
 primitivo, JavaScript temporalmente convierte ese valor primitivo en un objeto envoltorio (wrapper
@@ -1446,7 +1446,7 @@ En este caso, el valor primitivo 123.456 es convertido en un objeto Number tempo
 permite utilizar el método toFixed() para obtener una cadena con dos decimales. Después, el objeto temporal desaparece, y el valor primitivo sigue siendo inmutable.
 Hay seis tipos de datos primitivos en ES6+:
 
-#### 5.1.2 Undefined {#seccion-5-1-2}
+### 5.1.2 Undefined {#seccion-5-1-2}
 
 El tipo undefined representa una variable que ha sido declarada pero no inicializada. Cuando una
 variable es declarada sin asignarle un valor, su tipo es undefined.
@@ -1456,7 +1456,7 @@ let variable;
 console.log(variable); // Output: undefined
 ```
 
-#### 5.1.3 Null {#seccion-5-1-3}
+### 5.1.3 Null {#seccion-5-1-3}
 
 El tipo null es un valor especial que representa la ausencia intencional de cualquier valor u objeto. Es
 un valor asignable y se utiliza comúnmente para inicializar variables que se espera que luego contengan un objeto.
@@ -1466,7 +1466,7 @@ const obj = null;
 console.log(obj); // Output: null
 ```
 
-#### 5.1.4 Boolean {#seccion-5-1-4}
+### 5.1.4 Boolean {#seccion-5-1-4}
 
 En JavaScript, un valor booleano es un tipo de dato que solo puede tener uno de dos valores posibles:
 true (verdadero) o false (falso). Este tipo de dato es fundamental para realizar comparaciones y
@@ -1477,7 +1477,7 @@ const esVerdadero = true;
 const esFalso = false;
 ```
 
-##### 5.1.4.1 Conversiones de Booleanos {#subseccion-5-1-4-1}
+#### 5.1.4.1 Conversiones de Booleanos {#subseccion-5-1-4-1}
 
 En JavaScript, cualquier valor puede ser convertido a un booleano utilizando la función Boolean(), o simplemente evaluándolo en un contexto que requiere un
 valor booleano (como en una condición if).
@@ -1552,7 +1552,7 @@ console.log(1 === 1); // true, porque ambos son números iguales
 > aseguras de que no haya conversión de tipos automática, lo que hace que el código sea
 > más predecible y menos propenso a errores.
 
-#### 5.1.5 Number {#seccion-5-1-5}
+### 5.1.5 Number {#seccion-5-1-5}
 
 El tipo number representa tanto números enteros como de punto flotante. JavaScript no distingue
 entre tipos de números como lo hacen otros lenguajes de programación.
@@ -1596,7 +1596,7 @@ El tipo number también soporta una variedad de operadores matemáticos y de com
 
 > El objeto Math es nativo de JavaScript y no necesita ser importado.
 
-#### 5.1.6 String {#seccion-5-1-6}
+### 5.1.6 String {#seccion-5-1-6}
 
 El tipo string se utiliza para representar texto. Los valores de tipo string se pueden definir utilizando
 comillas simples (' '), comillas dobles (" "), o plantillas de cadena (template literals) usando comillas invertidas (``).
@@ -1614,7 +1614,7 @@ Las tres formas de definir cadenas son equivalentes en términos de contenido, p
 strings (``) ofrecen funcionalidades adicionales, como la interpolación de variables y la facilidad
 para escribir cadenas multilínea.
 
-##### 5.1.6.1 Escapado de Caracteres {#subseccion-5-1-6-1}
+#### 5.1.6.1 Escapado de Caracteres {#subseccion-5-1-6-1}
 
 Los strings pueden contener caracteres especiales que necesitan
 ser “escapados” utilizando la barra invertida (\\). Algunos de los más comunes son:
@@ -1626,7 +1626,7 @@ const str3 = "Una línea\nOtra línea"; // Nueva línea
 const str4 = "C:\\Users\\Usuario"; // Barra invertida
 ```
 
-##### 5.1.6.2 Concatenación de Strings {#subseccion-5-1-6-2}
+#### 5.1.6.2 Concatenación de Strings {#subseccion-5-1-6-2}
 
 La concatenación de strings se puede hacer utilizando el operador + o el método concat().
 
@@ -1638,7 +1638,7 @@ console.log(mensaje); // "Hola Juan!"
 console.log(saludo.concat(" ", nombre, ".")); // "Hola Juan."
 ```
 
-##### 5.1.6.3 Comparación de Strings {#subseccion-5-1-6-3}
+#### 5.1.6.3 Comparación de Strings {#subseccion-5-1-6-3}
 
 Los strings en JavaScript se comparan utilizando operadores como ==, ===, !=, !==, <, >, etc. Las comparaciones de strings son sensibles a mayúsculas y minúsculas
 y se realizan en base al valor Unicode de los caracteres.
@@ -1651,7 +1651,7 @@ console.log(str1 < str2); // true, porque "a" es menor que "d" en Unicode
 console.log(str1 < str3); // true, porque "abc" es lexicográficamente menor que "ABC"
 ```
 
-##### 5.1.6.4 Conversión de Otros Tipos a String {#subseccion-5-1-6-4}
+#### 5.1.6.4 Conversión de Otros Tipos a String {#subseccion-5-1-6-4}
 
 Puedes convertir otros tipos de datos a strings usando
 el método String() o toString().
@@ -1662,7 +1662,7 @@ let str = String(num); // "123"
 let str2 = num.toString(); // "123"
 ```
 
-##### 5.1.6.5 Propiedades y métodos {#subseccion-5-1-6-5}
+#### 5.1.6.5 Propiedades y métodos {#subseccion-5-1-6-5}
 
 Las cadenas en JavaScript vienen con varios métodos y propiedades útiles que permiten manipular y analizar el texto de manera eficiente.
 
@@ -1747,7 +1747,7 @@ Métodos de Manipulación:
   console.log(texto.lastIndexOf("Hola")); // 13
   ```
 
-##### 5.1.6.6 Template Strings {#subseccion-5-1-6-6}
+#### 5.1.6.6 Template Strings {#subseccion-5-1-6-6}
 
 Los Template Strings (o Template Literals) son una característica avanzada de JavaScript introducida en ECMAScript 2015 (ES6) que ofrece una forma más flexible y potente
 de trabajar con cadenas de texto. A continuación, se explican en profundidad sus características, usos,
@@ -1889,7 +1889,7 @@ let sqlQuery = `SELECT ${columns.join(", ")} FROM ${tableName}`;
 console.log(sqlQuery); // "SELECT name, age, email FROM users"
 ```
 
-##### 5.1.6.7 Tratamiento de Cadenas como Arrays {#subseccion-5-1-6-7}
+#### 5.1.6.7 Tratamiento de Cadenas como Arrays {#subseccion-5-1-6-7}
 
 Las cadenas en JavaScript pueden ser tratadas de
 manera similar a un array de caracteres, permitiendo el acceso a caracteres individuales utilizando la
@@ -1906,7 +1906,7 @@ console.log(cadena[i]);
 }
 ```
 
-##### 5.1.6.8 Expresiones Regulares {#subseccion-5-1-6-8}
+#### 5.1.6.8 Expresiones Regulares {#subseccion-5-1-6-8}
 
 Las expresiones regulares, o regex (por su nombre en inglés, regular expressions), son una herramienta poderosa para buscar y manipular cadenas de texto. En JavaScript, las expresiones regulares se utilizan para realizar operaciones de búsqueda, coincidencia y
 reemplazo en cadenas de texto. Vamos a explorar en profundidad cómo funcionan las expresiones
@@ -2205,7 +2205,7 @@ undefined]
 
 > Las expresiones regulares son ideales para validar datos, como correos electrónicos, números de teléfono, direcciones IP, entre otros. En el frontend puedes usarlas para realizar las validaciones en los formularios antes de enviar los datos al servidor.
 
-#### 5.1.7 Symbol {#seccion-5-1-7}
+### 5.1.7 Symbol {#seccion-5-1-7}
 
 Introducido en ES6, el tipo symbol es un tipo de dato primitivo único e inmutable que se utiliza como
 identificador para propiedades de objetos. Los valores de tipo symbol son únicos, incluso si se crean
@@ -2216,7 +2216,7 @@ let id = Symbol("id");
 console.log(id); // Output: Symbol(id)
 ```
 
-##### 5.1.7.1 Unicidad de Symbol {#subseccion-5-1-7-1}
+#### 5.1.7.1 Unicidad de Symbol {#subseccion-5-1-7-1}
 
 Cada símbolo es único, incluso si dos símbolos tienen la misma descripción:
 
@@ -2229,7 +2229,7 @@ console.log(simboloA === simboloB); // false
 Esto significa que simboloA y simboloB son completamente diferentes, a pesar de que fueron
 creados con la misma descripción.
 
-##### 5.1.7.2 Usos de Symbol {#subseccion-5-1-7-2}
+#### 5.1.7.2 Usos de Symbol {#subseccion-5-1-7-2}
 
 Symbol es útil para crear propiedades en objetos que no colisionen con
 otras propiedades y que no sean accesibles de forma accidental. Esto es especialmente útil en el desarrollo de bibliotecas o frameworks, donde el riesgo de colisión de nombres es alto.
@@ -2250,7 +2250,7 @@ console.log(objeto[claveSimbolo2]); // Output: Valor secreto 2
 En este ejemplo, la propiedad id es única y no se puede acceder a ella usando una cadena de texto
 como clave (usuario.id devuelve undefined).
 
-##### 5.1.7.3 Propiedades ocultas {#subseccion-5-1-7-3}
+#### 5.1.7.3 Propiedades ocultas {#subseccion-5-1-7-3}
 
 Las propiedades de un objeto definidas usando un Symbol
 no se enumeran en un bucle for...in y no se ven cuando se usa Object.keys() o
@@ -2279,11 +2279,11 @@ console.log(Object.getOwnPropertySymbols(usuario)); // [Symbol(id)]
 El uso de Symbol es muy poco común, pero es útil para crear propiedades de objetos
 que no se pueden acceder o modificar accidentalmente.
 
-### 5.2 Tipos de Datos de Objeto {#seccion-5-2}
+## 5.2 Tipos de Datos de Objeto {#seccion-5-2}
 
 Además de los tipos primitivos, JavaScript tiene un tipo especial de objeto que se utiliza para almacenar colecciones de datos y funcionalidades más complejas. Los tipos de objetos incluyen:
 
-#### 5.2.1 Objetos (Object) {#seccion-5-2-1}
+### 5.2.1 Objetos (Object) {#seccion-5-2-1}
 
 Un objeto es una colección de propiedades y métodos. Cada propiedad es una asociación entre una
 clave y un valor. Los objetos se crean utilizando llaves {} o utilizando constructores como Object.
@@ -2301,7 +2301,7 @@ console.log(persona.nombre); // Output: Juan
 console.log(persona.edad); // Output: 30
 ```
 
-#### 5.2.2 Arrays (Array) {#seccion-5-2-2}
+### 5.2.2 Arrays (Array) {#seccion-5-2-2}
 
 Un array es una colección ordenada de elementos, que puede contener valores de cualquier tipo. Los
 arrays se crean utilizando corchetes [] o utilizando el constructor Array.
@@ -2312,7 +2312,7 @@ console.log(colores[0]); // Output: rojo
 console.log(colores.length); // Output: 3
 ```
 
-#### 5.2.3 Funciones (Function) {#seccion-5-2-3}
+### 5.2.3 Funciones (Function) {#seccion-5-2-3}
 
 Una función es un bloque de código que se puede definir y ejecutar cuando se necesite. Las funciones
 en JavaScript también son un tipo especial de objeto.
@@ -2335,7 +2335,7 @@ let saludo = saludar;
 console.log(saludo("Carlos")); // Output: Hola, Carlos
 ```
 
-#### 5.2.4 Mapas (Map) {#seccion-5-2-4}
+### 5.2.4 Mapas (Map) {#seccion-5-2-4}
 
 Un mapa es una nueva estructura de datos introducida en ES6 que permite almacenar pares clavevalor, donde cualquier tipo de datos puede ser una clave.
 
@@ -2347,7 +2347,7 @@ console.log(mapa.get("nombre")); // Output: Pedro
 console.log(mapa.get(1)); // Output: uno
 ```
 
-#### 5.2.5 Sets (Set) {#seccion-5-2-5}
+### 5.2.5 Sets (Set) {#seccion-5-2-5}
 
 Un set es una colección de valores únicos, es decir, no permite duplicados. Los sets se utilizan cuando
 se necesita asegurarse de que una colección de valores no tenga duplicados.
@@ -2357,11 +2357,11 @@ let set = new Set([1, 2, 3, 3, 4]);
 console.log(set); // Output: Set(4) {1, 2, 3, 4}
 ```
 
-### 5.3 Tipos de Datos Especiales {#seccion-5-3}
+## 5.3 Tipos de Datos Especiales {#seccion-5-3}
 
 Además de los tipos de datos mencionados, JavaScript tiene otros tipos y construcciones especiales.
 
-#### 5.3.1 BigInt {#seccion-5-3-1}
+### 5.3.1 BigInt {#seccion-5-3-1}
 
 Introducido en ES2020, el tipo BigInt permite representar números enteros más grandes que el máximo permitido por el tipo number.
 
@@ -2370,7 +2370,7 @@ let numeroGrande = BigInt(9007199254740991);
 console.log(numeroGrande); // Output: 9007199254740991n
 ```
 
-#### 5.3.2 TypedArray {#seccion-5-3-2}
+### 5.3.2 TypedArray {#seccion-5-3-2}
 
 Los TypedArray son objetos similares a los arrays que proporcionan una vista sobre buffers binarios.
 Se utilizan cuando se trabaja con datos binarios en JavaScript.
@@ -2383,7 +2383,7 @@ console.log(vista); // Output: Uint8Array(16) [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 
 0]
 
-### 5.4 El objeto global en Javascript {#seccion-5-4}
+## 5.4 El objeto global en Javascript {#seccion-5-4}
 
 El objeto global en JavaScript es un objeto que está disponible en todo el entorno de ejecución,
 es decir, en cualquier lugar del código. Es el contenedor de todos los objetos globales, funciones y
@@ -2391,7 +2391,7 @@ variables que están disponibles en un entorno específico de JavaScript (como u
 Node.js).
 Dependiendo del entorno, el nombre de este objeto global puede variar.
 
-#### 5.4.1 En entornos de navegador: {#seccion-5-4-1}
+### 5.4.1 En entornos de navegador: {#seccion-5-4-1}
 
 En los navegadores web, el objeto global es window. Todas las variables y funciones globales que
 declares se convierten en propiedades del objeto window.
@@ -2403,7 +2403,7 @@ console.log(window.nombre); // "John"
 
 Aquí, la variable nombre se convierte en una propiedad del objeto global window.
 
-#### 5.4.2 En Node.js: {#seccion-5-4-2}
+### 5.4.2 En Node.js: {#seccion-5-4-2}
 
 En Node.js, el objeto global se llama global. Funciona de manera similar al objeto window en el
 navegador, pero es específico para el entorno de Node.js:
@@ -2413,7 +2413,7 @@ global.nombre = "John";
 console.log(global.nombre); // "John"
 ```
 
-#### 5.4.3 Acceso a objetos globales: {#seccion-5-4-3}
+### 5.4.3 Acceso a objetos globales: {#seccion-5-4-3}
 
 El objeto global contiene muchas funciones y objetos estándar de JavaScript, como Math, Date, setTimeout, entre otros. Además, cualquier variable que no esté declarada con var, let o const se agregará
 automáticamente al objeto global (aunque esto es una mala práctica y debería evitarse).
@@ -2425,7 +2425,7 @@ function saludar() {
 console.log(window.saludar === saludar); // true en navegadores
 ```
 
-#### 5.4.4 Propiedades y métodos comunes: {#seccion-5-4-4}
+### 5.4.4 Propiedades y métodos comunes: {#seccion-5-4-4}
 
 El objeto global incluye propiedades y métodos que se pueden usar sin necesidad de hacer referencia
 explícita al objeto global:
@@ -2467,14 +2467,14 @@ explícita al objeto global:
   - fetch(): Realiza solicitudes HTTP/HTTPS y devuelve promesas.
   - atob()/ btoa(): Decodifica y codifica en Base64.
 
-#### 5.4.5 Módulos y el objeto global: {#seccion-5-4-5}
+### 5.4.5 Módulos y el objeto global: {#seccion-5-4-5}
 
 En JavaScript moderno, especialmente en entornos como Node.js o cuando se usa ES6 (o ECMAScript 2015) en navegadores, se utilizan módulos para evitar la contaminación del espacio de nombres global. Las variables y funciones dentro de los módulos no se agregan al objeto global, lo que promueve
 un código más limpio y evita conflictos entre diferentes partes de un programa.
 
 > El uso de módulos en Javascript se verá más adelante en el curso.
 
-#### 5.4.6 El uso de “globalThis”: {#seccion-5-4-6}
+### 5.4.6 El uso de “globalThis”: {#seccion-5-4-6}
 
 ECMAScript 2020 introdujo globalThis, un estándar que proporciona una forma consistente de
 acceder al objeto global en cualquier entorno, ya sea en el navegador, Node.js, Web Workers, etc.:
@@ -2486,7 +2486,7 @@ console.log(globalThis); // Accede al objeto global en cualquier entorno
 globalThis resuelve el problema de tener que saber si estás en un navegador o en Node.js para
 acceder al objeto global.
 
-### 5.5 Coerción {#seccion-5-5}
+## 5.5 Coerción {#seccion-5-5}
 
 La coerción en JavaScript es el proceso mediante el cual el lenguaje convierte automáticamente
 un valor de un tipo de dato a otro, cuando es necesario para que una operación tenga sentido o sea
@@ -2564,25 +2564,25 @@ Aquí, JavaScript convierte la cadena ‘5’ en el número 5 antes de comparar.
   si no lo son.
   '10' * 2; // 20
 
-#### 5.5.1 Peligros y Consideraciones {#seccion-5-5-1}
+### 5.5.1 Peligros y Consideraciones {#seccion-5-5-1}
 
 - Inconsistencia: La coerción implícita puede llevar a resultados inesperados, especialmente
   cuando se usan operadores como == en lugar de ===.
 - Legibilidad del Código: La coerción explícita es generalmente preferible porque hace el código
   más claro y predecible, ya que es evidente cuándo y cómo se realiza la conversión de tipos.
 
-#### 5.5.2 Ejemplos problemáticos {#seccion-5-5-2}
+### 5.5.2 Ejemplos problemáticos {#seccion-5-5-2}
 
 - Concatenación de Strings con Números:
   '10' + 1; // "101" (concatenación, no suma)
 - Comparaciones Imprecisas:
   [] == false; // true (coerción de [] a "")
 
-## 6 Estructuras condicionales: if, switch, ternario {#seccion-6}
+# 6 Estructuras condicionales: if, switch, ternario {#seccion-6}
 
 A continuación, se repasa el uso de las estructuras if, else, switch, y otros conceptos relacionados.
 
-### 6.1 Estructura if, else if, else {#seccion-6-1}
+## 6.1 Estructura if, else if, else {#seccion-6-1}
 
 ```js
 let hora = 10;
@@ -2641,7 +2641,7 @@ console.log("Excelente");
 }
 ```
 
-### 6.2 Evaluación implícita de valores a booleanos {#seccion-6-2}
+## 6.2 Evaluación implícita de valores a booleanos {#seccion-6-2}
 
 JavaScript convierte automáticamente los valores en condiciones a booleanos (true o false). Esto significa que no solo los valores true y false son válidos, sino también otros tipos de datos, como números,
 cadenas, arrays, objetos, etc.
@@ -2657,7 +2657,7 @@ Aquí, cualquier valor que no sea 0, null, undefined, NaN, una cadena vacía “
 cuando se evalúa en un if. Puedes probar diferentes valores para bandera como 1, 0, “ “,”cadena”, [], {},
 [true], null, undefined, {x:1}, [1,2,3] y observar cómo se comporta el if.
 
-### 6.3 Comprobación de inicialización de variables {#seccion-6-3}
+## 6.3 Comprobación de inicialización de variables {#seccion-6-3}
 
 Para comprobar si una variable ha sido inicializada, puedes utilizar una condición if. Sin embargo,
 declarar una variable sin inicializarla (solo con const) lanzará un error en JavaScript. La declaración
@@ -2679,9 +2679,9 @@ console.log('No inicializada');
 Este código verifica si variable tiene un valor considerado truthy. Si no ha sido inicializada o es un
 valor falsy (como null o undefined), se ejecutará el bloque else.
 
-### 6.4 Uso de operadores lógicos {#seccion-6-4}
+## 6.4 Uso de operadores lógicos {#seccion-6-4}
 
-#### 6.4.1 Operador lógico AND (&&) {#seccion-6-4-1}
+### 6.4.1 Operador lógico AND (&&) {#seccion-6-4-1}
 
 El operador && evalúa expresiones de izquierda a derecha y detiene la evaluación tan pronto como
 una expresión es false. Esto se conoce como “corto‑circuito AND”.
@@ -2701,7 +2701,7 @@ console.log(A() && B());
 En este ejemplo, B nunca es llamada porque A() retorna null, que es un valor falsy. Como resultado, la
 evaluación se detiene y se retorna null.
 
-#### 6.4.2 Operador lógico OR (||) {#seccion-6-4-2}
+### 6.4.2 Operador lógico OR (||) {#seccion-6-4-2}
 
 El operador || también se evalúa de izquierda a derecha, pero se detiene tan pronto como una expresión es true, devolviendo el valor truthy.
 
@@ -2720,7 +2720,7 @@ console.log(A() || B());
 Aquí, B no es llamada porque A() retorna un array [], que es un valor truthy. La evaluación se corta y
 se devuelve [].
 
-### 6.5 Estructura switch {#seccion-6-5}
+## 6.5 Estructura switch {#seccion-6-5}
 
 La estructura switch se utiliza para seleccionar uno entre varios bloques de código para ejecutar, según el valor de una expresión.
 
@@ -2767,7 +2767,7 @@ console.log(aNotaNumerica(calificacion)); // 0
 En este ejemplo, switch compara el valor de calificacion con cada case y ejecuta el código asociado al
 primer case que coincida. Si no hay coincidencia, se ejecuta el bloque default.
 
-### 6.6 Operador ternario {#seccion-6-6}
+## 6.6 Operador ternario {#seccion-6-6}
 
 El operador ternario (? :) es una forma concisa de escribir un if‑else. Se utiliza para evaluar una expresión y retornar un valor basado en la condición. Es una expresión a diferencia de if que es una
 estructura de control.
@@ -2789,13 +2789,13 @@ console.log(person ? person.name : ""); // ""
 Este operador es útil para realizar asignaciones rápidas basadas en una condición, manteniendo el
 código limpio y legible.
 
-## 7 Bucles {#seccion-7}
+# 7 Bucles {#seccion-7}
 
 Existen varios tipos de bucles que te permiten ejecutar un bloque de código varias veces, lo cual es útil
 cuando se trabaja con estructuras de datos como arrays, objetos, o incluso cuando necesitas repetir
 una operación bajo ciertas condiciones.
 
-### 7.1 for {#seccion-7-1}
+## 7.1 for {#seccion-7-1}
 
 El bucle for es el tipo de bucle más tradicional en JavaScript. Se utiliza cuando conoces de antemano
 cuántas veces quieres que se ejecute el bloque de código.
@@ -2806,7 +2806,7 @@ for (let i = 0; i < 5; i++) {
 }
 ```
 
-### 7.2 while {#seccion-7-2}
+## 7.2 while {#seccion-7-2}
 
 El bucle while se utiliza cuando no se conoce de antemano el número exacto de iteraciones. Continúa
 ejecutándose mientras la condición especificada sea verdadera.
@@ -2823,7 +2823,7 @@ i++;
 }
 ```
 
-### 7.3 do…while {#seccion-7-3}
+## 7.3 do…while {#seccion-7-3}
 
 El bucle do…while es similar a while, pero con una diferencia importante: el bloque de código se
 ejecuta al menos una vez antes de que la condición sea evaluada.
@@ -2837,7 +2837,7 @@ console.log('Iteración número: ' + i);
 i++;
 } while (i < 5);
 
-### 7.4 for…in {#seccion-7-4}
+## 7.4 for…in {#seccion-7-4}
 
 El bucle for…in se utiliza para iterar sobre las propiedades enumerables de un objeto. Es útil cuando
 trabajas con objetos, no con arrays.
@@ -2849,7 +2849,7 @@ for (let clave in persona) {
 }
 ```
 
-### 7.5 for…of {#seccion-7-5}
+## 7.5 for…of {#seccion-7-5}
 
 El bucle for…of se utiliza para iterar sobre elementos iterables, como arrays, strings, o cualquier objeto
 que implemente el protocolo iterable (por ejemplo, Map, Set).
@@ -2861,7 +2861,7 @@ for (let letra of array) {
 }
 ```
 
-### 7.6 forEach {#seccion-7-6}
+## 7.6 forEach {#seccion-7-6}
 
 forEach es un método de los arrays en JavaScript que te permite ejecutar una función específica para
 cada elemento del array.
@@ -2883,7 +2883,7 @@ Explicación:
 - forEach no puede romperse (usar break), por lo que es menos flexible que un bucle for.
   Más adelante veremos otras funciones iteradoras de arrays.
 
-## 8 Objetos Javascript {#seccion-8}
+# 8 Objetos Javascript {#seccion-8}
 
 En JavaScript, los objetos son una estructura fundamental que permite almacenar y manipular
 datos de manera flexible y poderosa. A diferencia de los tipos primitivos, que son inmutables y se
@@ -2916,7 +2916,7 @@ saludar. Esta última es una función y, en este contexto, se llama “método�
 
 > En JavaScript, los objetos son mutables, lo que significa que se pueden modificar después de su creación. Es una estructura fundamental para modelar datos y comportamientos en aplicaciones.
 
-### 8.1 Herencia y Prototipos {#seccion-8-1}
+## 8.1 Herencia y Prototipos {#seccion-8-1}
 
 JavaScript implementa un modelo de herencia basado en prototipos. Cada objeto tiene un prototipo (otra instancia de objeto) del cual hereda propiedades y métodos. Esta herencia se establece
 mediante una referencia al prototipo en la propiedad interna [Prototype] (accesible a través de
@@ -2938,7 +2938,7 @@ console.log(hijo.apellido); // "Sánchez"
 
 En este caso, hijo hereda la propiedad apellido de padre a través de la cadena de prototipos.
 
-### 8.2 Creación de Objetos {#seccion-8-2}
+## 8.2 Creación de Objetos {#seccion-8-2}
 
 Existen varias formas de crear objetos en JavaScript:
 
@@ -3025,13 +3025,13 @@ o2.toString(); // error el método toString no existe.
   Object.getPrototypeOf(Object.prototype); //null
   ```
 
-### 8.3 Propiedades y Configuración {#seccion-8-3}
+## 8.3 Propiedades y Configuración {#seccion-8-3}
 
 En JavaScript, las propiedades de los objetos no solo almacenan valores, sino que también tienen
 atributos internos que determinan su comportamiento. Estos atributos controlan aspectos clave sobre cómo se puede interactuar con esas propiedades, lo que proporciona un control detallado sobre
 la estructura y la seguridad del objeto.
 
-#### 8.3.1 Atributos de las Propiedades {#seccion-8-3-1}
+### 8.3.1 Atributos de las Propiedades {#seccion-8-3-1}
 
 Cada propiedad de un objeto tiene tres atributos principales que pueden ser configurados:
 
@@ -3075,7 +3075,7 @@ delete persona.edad; // Esto fallará porque configurable es false
 console.log(persona.edad); // Sigue siendo 30
 ```
 
-#### 8.3.2 Atributos get y set {#seccion-8-3-2}
+### 8.3.2 Atributos get y set {#seccion-8-3-2}
 
 Además de los tres atributos mencionados, también puedes definir una propiedad utilizando funciones getter y setter en lugar de simplemente un valor. Estas funciones permiten controlar cómo se
 accede y modifica el valor de la propiedad.
@@ -3115,7 +3115,7 @@ console.log(persona.nombre); // 'Carlos'
 console.log(persona.apellido); // 'López'
 ```
 
-#### 8.3.3 Métodos Object.defineProperties y Object.getOwnPropertyDescriptor {#seccion-8-3-3}
+### 8.3.3 Métodos Object.defineProperties y Object.getOwnPropertyDescriptor {#seccion-8-3-3}
 
 - Object.defineProperties(): Permite definir varias propiedades a la vez, proporcionando un objeto con múltiples descripciones de propiedades.
 - Object.getOwnPropertyDescriptor(): Devuelve la descripción completa de una
@@ -3159,7 +3159,7 @@ console.log(Object.getOwnPropertyDescriptor(persona, 'nombre'));
 // }
 ```
 
-### 8.4 Acceso y Modificación de Propiedades {#seccion-8-4}
+## 8.4 Acceso y Modificación de Propiedades {#seccion-8-4}
 
 En JavaScript, las propiedades de los objetos pueden ser accedidas y modificadas utilizando dos
 notaciones principales:
@@ -3193,7 +3193,7 @@ const titulo = libro.titulo; // "Introducción a JavaScript"
 const paginas = libro["paginas"]; // 200
 ```
 
-#### 8.4.1 Ejemplos Avanzados con Herencia de Prototipos: {#seccion-8-4-1}
+### 8.4.1 Ejemplos Avanzados con Herencia de Prototipos: {#seccion-8-4-1}
 
 ```js
 let o = {}; // El prototipo de o es Object.prototype
@@ -3222,7 +3222,7 @@ Cadena de Prototipos en JavaScript: JavaScript sigue una cadena de prototipos cu
 actual, el motor de JavaScript busca en el prototipo del objeto, y continúa hasta que encuentra la
 propiedad o llega al final de la cadena de prototipos.
 
-#### 8.4.2 Modificación de Propiedades: {#seccion-8-4-2}
+### 8.4.2 Modificación de Propiedades: {#seccion-8-4-2}
 
 Cuando se asigna un valor a una propiedad, se modifica directamente la propiedad del objeto en sí,
 sin afectar las propiedades heredadas:
@@ -3245,7 +3245,7 @@ console.log(q.x); // 0 - q tiene su propia propiedad x
 console.log(o.x); // 1 - x en o no ha sido modificada
 ```
 
-#### 8.4.3 Acceso a Propiedades Inexistentes: {#seccion-8-4-3}
+### 8.4.3 Acceso a Propiedades Inexistentes: {#seccion-8-4-3}
 
 Cuando se intenta acceder a una propiedad que no existe en un objeto, el resultado es undefined.
 No se lanza una excepción en este caso.
@@ -3257,7 +3257,7 @@ console.log(q.a); // undefined - la propiedad a no existe en q
 Sin embargo, intentar acceder a una propiedad de una propiedad inexistente genera una excepción:
 q.a.x // Genera un TypeError porque q.a es undefined y no tiene propiedades.
 
-#### 8.4.4 Operador Opcional Encadenado (?.): {#seccion-8-4-4}
+### 8.4.4 Operador Opcional Encadenado (?.): {#seccion-8-4-4}
 
 Para evitar excepciones cuando se accede a propiedades de objetos que podrían no existir, se utiliza
 el operador opcional encadenado (?.):
@@ -3269,7 +3269,7 @@ let apellidos = libro?.autor?.apellidos; // "Sánchez"
 
 lanza excepción.
 
-#### 8.4.5 Eliminación de Propiedades: {#seccion-8-4-5}
+### 8.4.5 Eliminación de Propiedades: {#seccion-8-4-5}
 
 Para eliminar una propiedad de un objeto, se utiliza el operador delete:
 
@@ -3283,7 +3283,7 @@ delete libro.autor.nombre;
 console.log(libro.autor.nombre); // undefined - la propiedad ha sido eliminada
 ```
 
-#### 8.4.6 Comprobación de la Existencia de Propiedades: {#seccion-8-4-6}
+### 8.4.6 Comprobación de la Existencia de Propiedades: {#seccion-8-4-6}
 
 Existen varias maneras de verificar si una propiedad existe en un objeto:
 
@@ -3322,7 +3322,7 @@ console.log("autor" in libro); // true - la propiedad autor sigue existiendo
 Este método puede llevar a errores al intentar determinar si una propiedad realmente existe o si simplemente su valor es undefined. Por ello, es más seguro utilizar in o hasOwnProperty() para
 verificar la existencia de una propiedad.
 
-### 8.5 Enumeración de Propiedades {#seccion-8-5}
+## 8.5 Enumeración de Propiedades {#seccion-8-5}
 
 Para enumerar las propiedades de un objeto en JavaScript, una de las técnicas más comunes es utilizar el bucle for-in. Este bucle recorre todas las propiedades de un objeto, tanto las propias como
 las heredadas.
@@ -3355,7 +3355,7 @@ console.log(propiedad); // título, autor, año
 En este ejemplo, se listan las propiedades titulo, autor y año, pero no aparecerán otras propiedades
 heredadas o no enumerables.
 
-#### 8.5.1 Propiedades No Enumerables {#seccion-8-5-1}
+### 8.5.1 Propiedades No Enumerables {#seccion-8-5-1}
 
 Las propiedades no enumerables son aquellas que no se pueden recorrer mediante un bucle for-in.
 Estas propiedades son configuradas con un descriptor especial que establece su no enumerabilidad.
@@ -3378,7 +3378,7 @@ console.log(propiedad); // título, autor, año (pero no 'editor')
 
 En este ejemplo, la propiedad editor no aparecerá en la lista porque ha sido definida como no enumerable.
 
-#### 8.5.2 Otras Opciones para Enumerar Propiedades {#seccion-8-5-2}
+### 8.5.2 Otras Opciones para Enumerar Propiedades {#seccion-8-5-2}
 
 Si deseas obtener únicamente las propiedades propias del objeto, sin incluir las heredadas, puedes
 utilizar los métodos Object.keys() y Object.getOwnPropertyNames().
@@ -3396,7 +3396,7 @@ utilizar los métodos Object.keys() y Object.getOwnPropertyNames().
 En este ejemplo, Object.keys(libro) devuelve solo las propiedades enumerables, mientras
 que Object.getOwnPropertyNames(libro) devuelve todas las propiedades propias, incluidas las no enumerables como editor.
 
-### 8.6 Extensión y Clonación de Objetos {#seccion-8-6}
+## 8.6 Extensión y Clonación de Objetos {#seccion-8-6}
 
 En JavaScript, extender un objeto significa copiar las propiedades de un objeto a otro. Esto es útil
 cuando deseas combinar las propiedades de múltiples objetos en un solo objeto o clonar un objeto
@@ -3491,7 +3491,7 @@ más moderna y generalmente preferida en el código actual.
 JSON es un formato de texto estándar que se utiliza para representar datos estructurados. Es fácil de leer y escribir para los humanos y fácil de interpretar para las máquinas.
 Usaremos JSON para el intercambio de datos entre el frontend y el backend.
 
-### 8.7 Propiedades Abreviadas, Computadas y Símbolos {#seccion-8-7}
+## 8.7 Propiedades Abreviadas, Computadas y Símbolos {#seccion-8-7}
 
 A partir de ES6 (ECMAScript 2015), JavaScript introdujo nuevas funcionalidades para trabajar con objetos de una manera más conveniente y legible. Dos de las más destacadas son las propiedades abreviadas y las propiedades computadas.
 
@@ -3567,7 +3567,7 @@ console.log(q); // Muestra un objeto con la propiedad cuyo clave es un símbolo
 console.log(q[simbolo]); // Resultado: 1
 ```
 
-### 8.8 Operador spread en objetos {#seccion-8-8}
+## 8.8 Operador spread en objetos {#seccion-8-8}
 
 El operador spread (...) en objetos en JavaScript es una herramienta muy útil para copiar propiedades de un objeto a otro de una manera sencilla y elegante. Este operador se ha convertido en una
 alternativa moderna a métodos tradicionales como Object.assign.
@@ -3598,7 +3598,7 @@ let rectangulo = { ...posicion, ...tam, ...tam2 };
 El operador spread no crea una copia profunda del objeto, sino que crea una nueva referencia a los mismos datos. Si necesitas una copia profunda, puedes usar JSON.parse
 (JSON.stringify(objeto)).
 
-### 8.9 Métodos en Objetos {#seccion-8-9}
+## 8.9 Métodos en Objetos {#seccion-8-9}
 
 En JavaScript, una propiedad de un objeto puede ser una función. Estas propiedades se denominan métodos. Los métodos pueden definirse de manera tradicional o usando la sintaxis abreviada
 de ES6:
@@ -3632,7 +3632,7 @@ return this.lado * this.lado;
 console.log(cuadrado.area()); // 100
 ```
 
-## 9 Arrays {#seccion-9}
+# 9 Arrays {#seccion-9}
 
 Los arrays en JavaScript son estructuras de datos versátiles que permiten almacenar y manipular
 colecciones de valores. Estos valores pueden ser de distintos tipos, como números, cadenas, objetos,
@@ -3713,7 +3713,7 @@ console.log(lista); // [1, 2]
   console.log(int8); // Int8Array [10, 20, 30]
   ```
 
-### 9.1 Creación de Arrays {#seccion-9-1}
+## 9.1 Creación de Arrays {#seccion-9-1}
 
 - Literal de Corchetes: Es la forma más común y simple de crear un array.
 
@@ -3750,7 +3750,7 @@ const h = Array.from([1, 2, 3, 4]); // [1, 2, 3, 4]
 const i = Array.from("Prueba"); // ['P', 'r', 'u', 'e', 'b', 'a']
 ```
 
-### 9.2 Operador Spread (…) {#seccion-9-2}
+## 9.2 Operador Spread (…) {#seccion-9-2}
 
 El operador spread permite expandir un array en sus elementos individuales, lo que es útil para combinar arrays o copiar elementos.
 
@@ -3766,7 +3766,7 @@ copia[0] = 100;
 console.log(a); // [1, 2, 3] (no cambia)
 ```
 
-### 9.3 Leer y escribir elementos {#seccion-9-3}
+## 9.3 Leer y escribir elementos {#seccion-9-3}
 
 En JavaScript, los arrays son objetos especiales que permiten almacenar múltiples elementos indexados, y como tales, pueden ser manipulados de diversas formas.
 
@@ -3933,7 +3933,7 @@ console.log(a.length); // 5 (el tamaño sigue siendo 5)
   }
   ```
 
-### 9.4 Arrays Multidimensionales: Matriz Dispersa de 10x10 {#seccion-9-4}
+## 9.4 Arrays Multidimensionales: Matriz Dispersa de 10x10 {#seccion-9-4}
 
 Ahora vamos a crear una matriz dispersa de 10x10, donde cada elemento será la suma de su fila y
 columna.
@@ -3967,7 +3967,7 @@ map(() => Array(10).fill()) convierte cada elemento en un array de 10 elementos 
   El resultado es una matriz de 10x10 donde cada elemento es la suma de su índice de fila y
   columna.
 
-### 9.5 Métodos iteradores de Array {#seccion-9-5}
+## 9.5 Métodos iteradores de Array {#seccion-9-5}
 
 Para ver los métodos disponibles en un array, puedes acceder al prototipo del array mediante Object
 
@@ -4074,7 +4074,7 @@ vacíos.
 > Es importante dominar los métodos iteradores de arrays, ya que son fundamentales
 > para un estilo de programación funcional y para el manejo de datos en general.
 
-### 9.6 Otros Métodos Útiles de Arrays {#seccion-9-6}
+## 9.6 Otros Métodos Útiles de Arrays {#seccion-9-6}
 
 Además de los iteradores, hay otros métodos de arrays que puedes probar:
 
@@ -4092,14 +4092,14 @@ Además de los iteradores, hay otros métodos de arrays que puedes probar:
 - toString: Convierte el array a una cadena.
 - Array.isArray: Verifica si un valor es un array.
 
-## 10 Desestructuración {#seccion-10}
+# 10 Desestructuración {#seccion-10}
 
 La desestructuración en JavaScript es una característica del lenguaje introducida en ECMAScript 6
 (ES6) que permite extraer valores de arrays o propiedades de objetos y asignarlos a variables de manera más concisa y clara. Esto es particularmente útil para trabajar con estructuras complejas de datos,
 como objetos anidados o arrays multidimensionales. A continuación, se explica la desestructuración
 en detalle para ambos casos: arrays y objetos.
 
-### 10.1 Desestructuración de Arrays {#seccion-10-1}
+## 10.1 Desestructuración de Arrays {#seccion-10-1}
 
 La desestructuración de arrays permite extraer valores de un array y asignarlos a variables de manera
 directa. La sintaxis básica es:
@@ -4113,7 +4113,7 @@ console.log(b); // 2
 console.log(c); // 3
 ```
 
-#### 10.1.1 Características clave: {#seccion-10-1-1}
+### 10.1.1 Características clave: {#seccion-10-1-1}
 
 - Asignación por posición: Los valores son asignados a las variables en función de su posición
   en el array. En el ejemplo anterior, a toma el valor del primer elemento del array, b del segundo,
@@ -4149,7 +4149,7 @@ console.log(c); // 3
   console.log(rest); // [3, 4]
   ```
 
-### 10.2 Desestructuración de Objetos {#seccion-10-2}
+## 10.2 Desestructuración de Objetos {#seccion-10-2}
 
 La desestructuración de objetos permite extraer propiedades de un objeto y asignarlas a variables. La
 sintaxis básica es:
@@ -4162,7 +4162,7 @@ console.log(x); // 1
 console.log(y); // 2
 ```
 
-#### 10.2.1 Características clave: {#seccion-10-2-1}
+### 10.2.1 Características clave: {#seccion-10-2-1}
 
 - Asignación por nombre: A diferencia de los arrays, la desestructuración de objetos se basa
   en los nombres de las propiedades. En el ejemplo anterior, x y y son asignados a las variables
@@ -4219,7 +4219,7 @@ console.log(d); // 3
   console.log(resto); // { y: 2, z: 3 }
   ```
 
-### 10.3 Aplicaciones Prácticas {#seccion-10-3}
+## 10.3 Aplicaciones Prácticas {#seccion-10-3}
 
 La desestructuración es muy útil en diversas situaciones, como:
 
@@ -4252,7 +4252,7 @@ La desestructuración es muy útil en diversas situaciones, como:
   imprimirCoordenadas({ x: 10, y: 22 });
   ```
 
-## 11 Funciones {#seccion-11}
+# 11 Funciones {#seccion-11}
 
 En JavaScript, las funciones son bloques fundamentales de código que permiten encapsular lógica
 reutilizable. Existen varias formas de declarar y utilizar funciones, cada una con sus propias características y usos específicos.
@@ -4271,7 +4271,7 @@ function imprime(msg) {
 }
 ```
 
-### 11.1 Hoisting en Funciones {#seccion-11-1}
+## 11.1 Hoisting en Funciones {#seccion-11-1}
 
 El hoisting es un comportamiento en JavaScript donde las declaraciones de funciones y variables se
 mueven al inicio de su contexto de ejecución. Esto significa que puedes invocar una función antes de
@@ -4287,7 +4287,7 @@ function suma(x, y) {
 En este ejemplo, la función suma se puede llamar antes de su declaración porque JavaScript eleva su
 definición al comienzo del ámbito.
 
-### 11.2 Funciones como Expresiones {#seccion-11-2}
+## 11.2 Funciones como Expresiones {#seccion-11-2}
 
 En JavaScript, las funciones también pueden ser expresiones, lo que significa que pueden asignarse
 a variables o pasarse como argumentos a otras funciones:
@@ -4321,7 +4321,7 @@ En este ejemplo, la función calcularArea acepta una función como argumento. Es
 la función calcularArea pueda operar con diferentes tipos de figuras geométricas sin tener que
 modificar su propia implementación.
 
-### 11.3 Funciones Anónimas y Recursividad {#seccion-11-3}
+## 11.3 Funciones Anónimas y Recursividad {#seccion-11-3}
 
 A veces, incluso una función expresada puede tener un nombre, particularmente en casos de recursividad:
 
@@ -4336,7 +4336,7 @@ console.log(f(5)); // 120
 En este ejemplo, aunque factorial es el nombre dentro de la función, la función es llamada a
 través de f.
 
-### 11.4 Funciones Arrow (Funciones Flecha) {#seccion-11-4}
+## 11.4 Funciones Arrow (Funciones Flecha) {#seccion-11-4}
 
 Introducidas en ES6, las funciones flecha (arrow functions) proporcionan una sintaxis más concisa:
 
@@ -4356,7 +4356,7 @@ const dospi = () => 3.1415 * 2;
 console.log(dospi()); // 6.283
 ```
 
-#### 11.4.1 Consideraciones sobre this en Funciones Arrow {#seccion-11-4-1}
+### 11.4.1 Consideraciones sobre this en Funciones Arrow {#seccion-11-4-1}
 
 Una característica clave de las funciones arrow es que no tienen su propio contexto this; en su lugar,
 heredan this del contexto donde se definieron:
@@ -4429,9 +4429,9 @@ suma: () => this.op1 + this.op2 // Esto no funcionará como se espera
 Aquí, this no se refiere al objeto calculadora, sino al contexto donde fue definida la función, lo
 que podría ser el objeto global o undefined en modo estricto.
 
-#### 11.4.2 Parámetros en Funciones {#seccion-11-4-2}
+### 11.4.2 Parámetros en Funciones {#seccion-11-4-2}
 
-##### 11.4.2.1 Parámetros Opcionales y Valores por Defecto {#subseccion-11-4-2-1}
+#### 11.4.2.1 Parámetros Opcionales y Valores por Defecto {#subseccion-11-4-2-1}
 
 En ES6, es posible asignar valores por defecto a los parámetros de una función:
 
@@ -4444,7 +4444,7 @@ function params(a, b = [], c = 10) {
 params(100); // 100 [] 10
 Esto es útil para definir comportamientos predeterminados cuando no se pasan ciertos argumentos.
 
-##### 11.4.2.2 Operador Rest {#subseccion-11-4-2-2}
+#### 11.4.2.2 Operador Rest {#subseccion-11-4-2-2}
 
 El operador rest (...) permite a una función aceptar un número indefinido de argumentos como un array:
 
@@ -4462,7 +4462,7 @@ console.log(max(1, 2, 3, 4, 5, 6, 7)); // 7
 En este ejemplo, rest recoge todos los argumentos adicionales, lo que permite a la función trabajar
 con una cantidad variable de entradas.
 
-### 11.5 Objeto arguments {#seccion-11-5}
+## 11.5 Objeto arguments {#seccion-11-5}
 
 Antes de ES6, el objeto arguments permitía acceder a todos los parámetros pasados a una función:
 
@@ -4479,7 +4479,7 @@ console.log(max(1, 2, 3)); // 3
 
 Aunque arguments sigue siendo útil, es menos eficiente y claro que el operador rest.
 
-### 11.6 Operador Spread {#seccion-11-6}
+## 11.6 Operador Spread {#seccion-11-6}
 
 El operador spread (...) permite expandir un array en argumentos individuales para una función:
 
@@ -4493,7 +4493,7 @@ console.log(nmax); // 6
 
 Esto simplifica mucho la manipulación de arrays cuando se trabaja con funciones que requieren múltiples argumentos.
 
-### 11.7 Desestructuración de Argumentos {#seccion-11-7}
+## 11.7 Desestructuración de Argumentos {#seccion-11-7}
 
 La desestructuración permite extraer valores de arrays u objetos directamente en los parámetros de
 una función:
@@ -4521,9 +4521,9 @@ propiedades de objetos y elementos de arrays.
 > El uso de la desestructuración de argumentos es muy habitual en los frameworks de
 > JavaScript modernos como React, al crear componentes funcionales.
 
-## 13 Actividades {#seccion-13}
+# 13 Actividades {#seccion-13}
 
-### 13.1 Ejercicios I de strings {#seccion-13-1}
+## 13.1 Ejercicios I de strings {#seccion-13-1}
 
 1. Crea una cadena multilínea usando comillas dobles.
 2. Agrega a la cadena un retorno de carro y tabuladores utilizando los símbolos de escape correspondientes.
@@ -4550,7 +4550,7 @@ propiedades de objetos y elementos de arrays.
     código internacional.
 21. Reemplaza cualquier ocurrencia de un + seguido de números por la cadena “SECRETO”.
 
-### 13.2 Ejercicios II sobre desestructuración {#seccion-13-2}
+## 13.2 Ejercicios II sobre desestructuración {#seccion-13-2}
 
 1. Desestructura el día, mes y año e imprime la fecha dado el array [‘06’, ‘Octubre’, ‘2021’].
 2. Dado un array de números, desestructura los números en posiciones impares.
@@ -4581,7 +4581,7 @@ for (const [key, value] of Object.entries(person)) {
 9. Crea una función que retorna un array con 3 valores. Usa la función y desestructura los valores:
 10. Realiza una clonación profunda de un objeto que contiene otros objetos o arrays como propiedades:
 
-### 13.3 Ejercicios III sobre arrays {#seccion-13-3}
+## 13.3 Ejercicios III sobre arrays {#seccion-13-3}
 
 1. Crea un array “datos” vacío con un literal.
 2. Añade a “datos” los números del 1 al 50 con un bucle for.
@@ -4621,7 +4621,7 @@ for (const [key, value] of Object.entries(person)) {
 26. Crea un array vacío de 50 posiciones. Con forEach, asigna valores aleatorios entre 0 y 100. Después, ordena con sort de menor a mayor. Cambia y ordena de mayor a menor.
 27. Usa reverse para invertir el array anterior.
 
-### 13.4 Ejercicios IV sobre lógica de programación {#seccion-13-4}
+## 13.4 Ejercicios IV sobre lógica de programación {#seccion-13-4}
 
 1. Crea una función que cuente el número de vocales de una cadena de caracteres.
 2. Crea una función que determine si una cadena es un palíndromo, es decir, que se lee igual hacia
@@ -4652,7 +4652,7 @@ for (const [key, value] of Object.entries(person)) {
 - Subcuadrículas Únicas: Cada una de las nueve subcuadrículas de 3x3 debe contener los
   números del 1 al 9 sin repetición.
 
-### 13.5 Ejercicios V de Javascript {#seccion-13-5}
+## 13.5 Ejercicios V de Javascript {#seccion-13-5}
 
 1. Crea un programa que genere un array con 1000 números aleatorios del 0 al 99.
    - Crea una función que calcule la media aritmética.
