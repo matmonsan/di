@@ -934,97 +934,226 @@ una herramienta extensible y altamente configurable que analiza el código en bu
 
 ### 1.7.2 Proyecto con ESLint {#seccion-1-7-2}
 
-1. Proyecto NPM
+1. **Proyecto NPM**
+
    Para comenzar, es necesario crear un proyecto de Node.js:
 
    ```bash
    npm init -y
    ```
 
-2. Instalar ESLint
+2. **Instalar ESLint**
+
    Instala ESLint como una dependencia de desarrollo:
 
    ```bash
    npm install --save-dev eslint
    ```
 
-Nota: Es importante instalar ESLint como una dependencia de desarrollo, ya que no se necesita en
-producción. 3. Configurar ESLint
-Inicia la configuración de ESLint ejecutando:
+   > **Nota**: Es importante instalar ESLint como una dependencia de desarrollo, ya que no se necesita en producción.
 
-```bash
-npx eslint --init
-npx es una herramienta de línea de comandos que forma parte del ecosistema de Node.js y npm (Node
-```
+3. **Configurar ESLint**
 
-Package Manager). Su propósito principal es permitir la ejecución de paquetes npm sin necesidad de
-instalarlos globalmente en el sistema o incluso localmente en el proyecto.
-Aunque ESLint ya está instalado localmente en tu proyecto, usar npx es más cómodo. Alternativamente, podrías ejecutar ESLint directamente:
+   Inicia la configuración de ESLint ejecutando:
 
-`./node_modules/.bin/eslint --init`
+   ```bash
+   npx eslint --init
+   ```
 
-Otra opción es crear un script en el archivo `package.json` para simplificar la ejecución. 4. Ejecutar el Configurador de ESLint
-También puedes iniciar la configuración con el siguiente comando:
+   `npx` es una herramienta de línea de comandos que forma parte del ecosistema de Node.js y npm (Node Package Manager). Su propósito principal es permitir la ejecución de paquetes npm sin necesidad de instalarlos globalmente en el sistema o incluso localmente en el proyecto.
 
-```bash
-npm init @eslint/config
-```
+   Aunque ESLint ya está instalado localmente en tu proyecto, usar `npx` es más cómodo. Alternativamente, podrías ejecutar ESLint directamente:
 
-El configurador de ESLint te guiará a través de una serie de preguntas para crear un archivo de configuración que se adapte a tus necesidades. Aquí te mostramos una configuración recomendada:
+   ```bash
+   ./node_modules/.bin/eslint --init
+   ```
 
-- **¿Para qué quieres usar ESLint?**: To check syntax, find problems, and enforce code style.
-- **¿Qué tipo de módulos usas?**: JavaScript modules (import/export).
-- **¿Usas un framework?**: None.
-- **¿Usas TypeScript?**: No.
-- **¿Dónde se ejecutará tu código?**: Node.
-- **¿Qué estilo de código te gustaría usar?**: Use a popular style guide (Airbnb).
-- **Formato del archivo de configuración**: JSON.
-- **¿Quieres instalar las reglas de Airbnb?**: Yes.
-- **¿Qué gestor de paquetes prefieres usar?**: npm.
-  Finalmente, ESLint creará un archivo .eslintrc.json con la configuración especificada.
+   Otra opción es crear un script en el archivo `package.json` para simplificar la ejecución.
 
-4. Probando ESLint en tu Proyecto
-   Creación de un Archivo de Prueba
+4. **Ejecutar el configurador de ESLint**
+
+   También puedes iniciar la configuración con el siguiente comando:
+
+   ```bash
+   npm init @eslint/config
+   ```
+
+   El configurador de ESLint te guiará a través de una serie de preguntas para crear un archivo de configuración que se adapte a tus necesidades. Aquí te mostramos una configuración recomendada:
+
+   - **¿Para qué quieres usar ESLint?**: To check syntax, find problems, and enforce code style.
+   - **¿Qué tipo de módulos usas?**: JavaScript modules (import/export).
+   - **¿Usas un framework?**: None.
+   - **¿Usas TypeScript?**: No.
+   - **¿Dónde se ejecutará tu código?**: Node.
+   - **¿Qué estilo de código te gustaría usar?**: Use a popular style guide (Airbnb).
+   - **Formato del archivo de configuración**: JSON.
+   - **¿Quieres instalar las reglas de Airbnb?**: Yes.
+   - **¿Qué gestor de paquetes prefieres usar?**: npm.
+
+   Finalmente, ESLint creará un archivo `.eslintrc.json` con la configuración especificada.
+
+5. **Probando ESLint en tu proyecto**
+
    Vamos a crear un archivo `index.js` con algunos errores de sintaxis y estilo para probar ESLint:
 
-```js
-function nombre__completo() {
-  return nombre + " " + apellidos;
-}
-var nombre = "Luis";
-var apellidos = "Molina";
-console.log(nombre__completo());
-let personas = new Array(nombre__completo(), "Antonio Perez");
-console.log(personas[1]);
-console.log(personas[2]);
-```
+   ```js
+   function nombre__completo() {
+     return nombre + " " + apellidos;
+   }
+   var nombre = "Luis";
+   var apellidos = "Molina";
+   console.log(nombre__completo());
+   let personas = new Array(nombre__completo(), "Antonio Perez");
+   console.log(personas[1]);
+   console.log(personas[2]);
+   ```
 
-**Ejecución de ESLint**
+   Para ejecutar el linter y analizar tu archivo, usa el siguiente comando:
 
-Para ejecutar el linter y analizar tu archivo, usa el siguiente comando:
+   ```bash
+   npx eslint *.js
+   ```
 
-```bash
-npx eslint *.js
-```
+   Observa los errores y advertencias que muestra ESLint, y procede a solucionarlos.
 
-Observa los errores y advertencias que muestra ESLint, y procede a solucionarlos.
+   Si planeas usar ESLint frecuentemente, es recomendable añadir un script en el archivo `package.json`:
 
-**Automatizando el Uso de ESLint**
+   ```json
+   "scripts": {
+     "lint": "eslint . --ext .js"
+   }
+   ```
 
-Si planeas usar ESLint frecuentemente, es recomendable añadir un script en el archivo package.
-json:
+   Ahora puedes ejecutar ESLint con:
 
-```json
-"scripts": {
-"lint": "eslint . --ext .js"
-}
-```
+   ```bash
+   npm run lint
+   ```
 
-Ahora puedes ejecutar ESLint con:
+## 1.8 Vite {#seccion-1-8}
 
-```bash
-npm run lint
-```
+**Vite** (del francés "rápido") es una herramienta de construcción (build tool) para proyectos frontend moderna, creada por Evan You, el mismo autor de Vue.js. Vite se ha popularizado como alternativa a herramientas como Webpack o Create React App, ya que ofrece un flujo de desarrollo mucho más rápido.
+
+<img src="assets/img/figura8.png" alt="Logotipo de Vite">
+
+Vite combina dos partes:
+
+- **Un servidor de desarrollo**: Durante el desarrollo, Vite sirve el código fuente directamente al navegador utilizando los módulos ES nativos (`import`/`export`), sin necesidad de empaquetar previamente toda la aplicación. Esto hace que el servidor arranque casi instantáneamente, incluso en proyectos grandes.
+- **Un proceso de build para producción**: Cuando se genera la versión final de la aplicación, Vite utiliza **Rollup** por debajo para empaquetar, minimizar y optimizar el código.
+
+Para la transpilación, Vite utiliza **esbuild**, un transpilador escrito en Go que es considerablemente más rápido que Babel.
+
+Entre las ventajas principales de Vite se encuentran:
+
+- **Arranque instantáneo del servidor de desarrollo**: No necesita empaquetar toda la aplicación antes de poder empezar a trabajar.
+- **Hot Module Replacement (HMR) muy rápido**: Los cambios en el código se reflejan en el navegador casi al instante, sin recargar toda la página.
+- **Configuración mínima**: Los proyectos creados con Vite ya vienen preparados para trabajar con frameworks como React, Vue, Svelte o Preact, sin tener que configurar manualmente Babel o Webpack.
+- **Compatibilidad con TypeScript, JSX, CSS y otros formatos** de forma nativa, sin configuración adicional.
+
+> Vite no es un framework, sino una herramienta de construcción. Se puede usar con distintos frameworks (React, Vue, Svelte, etc.) o incluso con JavaScript "vanilla" (sin framework).
+
+### 1.8.1 Crear un proyecto con Vite {#seccion-1-8-1}
+
+A continuación, se muestran los pasos para crear un proyecto de **React con JavaScript** utilizando Vite, que será la combinación que usaremos a lo largo del curso.
+
+1. **Comprobar que Node.js está instalado**
+
+   Vite necesita Node.js para funcionar. Comprueba la versión instalada:
+
+   ```bash
+   node -v
+   ```
+
+2. **Crear el proyecto con el comando de Vite**
+
+   Ejecuta el siguiente comando, sustituyendo `mi-proyecto-vite` por el nombre que quieras darle a tu proyecto:
+
+   ```bash
+   npm create vite@latest mi-proyecto-vite
+   ```
+
+   El comando `npm create vite@latest` descarga y ejecuta la plantilla oficial de Vite para generar la estructura inicial del proyecto.
+
+3. **Seleccionar el framework y la variante**
+
+   El asistente de Vite te preguntará qué framework quieres usar y, a continuación, la variante. Selecciona:
+
+   - **Framework**: React
+   - **Variante**: JavaScript
+
+   Si prefieres evitar las preguntas interactivas, puedes indicar el framework y la variante directamente en el propio comando:
+
+   ```bash
+   npm create vite@latest mi-proyecto-vite -- --template react
+   ```
+
+4. **Acceder a la carpeta del proyecto**
+
+   ```bash
+   cd mi-proyecto-vite
+   ```
+
+5. **Instalar las dependencias**
+
+   ```bash
+   npm install
+   ```
+
+   Este comando crea la carpeta `node_modules` y el archivo `package-lock.json`, descargando las dependencias necesarias que se han definido en `package.json` (entre ellas, `react` y `react-dom`).
+
+6. **Iniciar el servidor de desarrollo**
+
+   ```bash
+   npm run dev
+   ```
+
+   Vite iniciará un servidor de desarrollo y mostrará en la terminal la dirección local donde se puede abrir el proyecto en el navegador, normalmente `http://localhost:5173`.
+
+7. **Explorar la estructura generada**
+
+   Un proyecto Vite con la plantilla de React suele generar una estructura como esta:
+
+   ```
+   mi-proyecto-vite/
+     index.html
+     package.json
+     vite.config.js
+     src/
+       main.jsx
+       App.jsx
+       App.css
+       index.css
+       assets/
+     public/
+   ```
+
+   - `index.html` es el punto de entrada de la aplicación y hace referencia al archivo `src/main.jsx` mediante un `<script type="module">`.
+   - `src/main.jsx` monta el componente principal `App` en el elemento con id `root` del `index.html`, usando `createRoot` (igual que se vio en el apartado [1.5.2](#seccion-1-5-2)).
+   - `src/App.jsx` es el componente raíz de la aplicación, listo para empezar a programar.
+   - `public/` contiene los archivos estáticos que se copian tal cual a la carpeta de salida (imágenes, favicon, etc.).
+   - `vite.config.js` es el archivo de configuración de Vite. En la plantilla de React ya incluye el plugin `@vitejs/plugin-react`, necesario para transpilar JSX con esbuild.
+
+8. **Generar la versión de producción**
+
+   Cuando el proyecto esté listo para desplegarse, se genera la versión optimizada con:
+
+   ```bash
+   npm run build
+   ```
+
+   Vite empaqueta, transpila el JSX y minimiza el proyecto (usando Rollup) y genera el resultado en la carpeta `dist`.
+
+9. **Previsualizar la versión de producción**
+
+   Para comprobar cómo se comportará la aplicación ya construida, sin necesidad de subirla a un servidor, puedes ejecutar:
+
+   ```bash
+   npm run preview
+   ```
+
+   Este comando levanta un pequeño servidor local que sirve el contenido de la carpeta `dist`, tal y como se serviría en producción.
+
+> **Nota**: Como se ha visto en el apartado [1.5.2](#seccion-1-5-2), Vite genera automáticamente toda la configuración necesaria para trabajar con React (incluyendo el uso de esbuild para transpilar JSX), por lo que no es necesario configurar Babel ni Webpack manualmente.
 
 # 2 Comentarios, literales, identificadores {#seccion-2}
 
