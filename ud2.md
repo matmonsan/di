@@ -788,6 +788,32 @@ Vamos a crear una pequeña aplicación React con Babel y Webpack. Babel transfor
 
    Webpack generará `dist/bundle.js`. Abre `dist/index.html` en el navegador.
 
+**Flujo completo y función de cada elemento**:
+
+La estructura separa el código que se escribe del resultado que se ejecuta. `src` contiene el código fuente de la aplicación; `dist` contiene los archivos que se entregan al navegador. Así se evita mezclar el código de desarrollo con el resultado generado automáticamente.
+
+1. `npm init -y` crea `package.json`, donde se guarda la información del proyecto, sus dependencias y los comandos disponibles. Al instalar paquetes, npm también crea `package-lock.json` para registrar las versiones concretas y `node_modules` para guardar las dependencias instaladas. React y ReactDOM se necesitan para construir y mostrar la interfaz; Babel, Webpack y `babel-loader` son herramientas de desarrollo para transformar y empaquetar el código.
+2. `.babelrc` indica a Babel qué transformaciones usar. `@babel/preset-react` convierte JSX, como `<App />`, en JavaScript que el navegador puede ejecutar; `@babel/preset-env` transforma características modernas de JavaScript según la configuración de compatibilidad del proyecto.
+3. `src/index.jsx` es la entrada de la aplicación. Define el componente `App`, importa React y `createRoot`, busca en el documento el elemento con id `root` y monta ahí la interfaz. El elemento `<div id="root"></div>` de `dist/index.html` es ese punto de montaje: React lo utiliza como contenedor para mostrar la aplicación.
+4. `webpack.config.js` conecta las piezas: `entry` señala el archivo inicial; `module.rules` aplica `babel-loader` a los archivos JavaScript y JSX para transformarlos; `exclude` evita procesar de nuevo las dependencias de `node_modules`; `resolve.extensions` permite resolver importaciones sin escribir la extensión. Finalmente, `output` indica que el resultado se llamará `bundle.js` y se guardará en `dist`.
+5. El script `build` de `package.json` permite iniciar ese proceso con `npm run build`. Webpack sigue las importaciones desde `src/index.jsx`, transforma el código mediante Babel y reúne la aplicación y sus dependencias en `dist/bundle.js`.
+6. Al abrir `dist/index.html`, el navegador crea la página y carga `bundle.js` mediante la etiqueta `<script>`. El código incluido en el bundle busca `root` y React dibuja el componente dentro de ese elemento.
+
+En resumen: se escribe la aplicación en `src`, Babel adapta su sintaxis, Webpack genera el bundle en `dist` y el HTML carga ese bundle para mostrar la interfaz. El navegador no ejecuta directamente el JSX original: ejecuta el JavaScript transformado y empaquetado.
+
+> **Nota: alternativa rápida con Vite**
+>
+> En proyectos nuevos no es necesario configurar Babel y Webpack manualmente. Vite crea la estructura inicial de React y prepara las herramientas de desarrollo con estos comandos:
+>
+> ```powershell
+> npm create vite@latest mi-proyecto -- --template react
+> cd mi-proyecto
+> npm install
+> npm run dev
+> ```
+>
+> El último comando inicia un servidor de desarrollo y muestra la dirección local donde abrir la aplicación. Esta alternativa simplifica la puesta en marcha; la configuración manual de los pasos anteriores permite aprender qué hacen las herramientas que trabajan por debajo. Esta forma de crear proyectos se verá en el apartado correspondiente.
+
 ## 1.6 Empaquetado de Proyectos {#seccion-1-6}
 
 Cuando un proyecto crece, puede tener cientos o miles de archivos JavaScript. Para mejorar la eficiencia de carga en los navegadores, es importante empaquetar el código en unos pocos archivos
