@@ -44,7 +44,7 @@ diferencias, lo que solía generar problemas para desarrollar scripts compatible
 debían detectar el tipo de navegador y programar variantes específicas para cada uno. Afortunadamente, este problema ha disminuido gracias a la estandarización y la evolución de los motores de
 ejecución de JavaScript.
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 1 -->
+  <img src="https://cdn.simpleicons.org/javascript" alt="Logotipo de JavaScript" width="128">
   <figcaption>Figura 1. Logotipo de JavaScript</figcaption>
 </figure>
 
@@ -54,7 +54,7 @@ ES6, etc.), puedes consultar las siguientes páginas:
 - Can I use
 - Compatibilidad ES6
   <figure>
-    <!-- Inserta aquí la imagen de la Figura 2 -->
+    <img src="https://www.google.com/s2/favicons?domain=caniuse.com&amp;sz=256" alt="Icono de Can I Use" width="128">
     <figcaption>Figura 2. Soporte ES6</figcaption>
   </figure>
 
@@ -130,7 +130,7 @@ console.log("Hola mundo desde un fichero externo");
 ```
 
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 3 -->
+  <img src="https://cdn.simpleicons.org/googlechrome" alt="Logotipo de Google Chrome" width="128">
   <figcaption>Figura 3. Ejecutando Javascript en el navegador</figcaption>
 </figure>
 
@@ -333,7 +333,7 @@ activen cuando se cumpla una cierta condición, lo que es útil para bucles o ca
 - Ingresa una condición, por ejemplo: i === 5.
 - Recarga la página. La ejecución se pausará solo cuando i sea 5.
   <figure>
-    <!-- Inserta aquí la imagen de la Figura 4 -->
+    <img src="https://cdn.simpleicons.org/firefoxbrowser" alt="Logotipo de Firefox" width="128">
     <figcaption>Figura 4. Depuración Condicional en las herramientas de desarrollador de Mozilla Firefox</figcaption>
   </figure>
 
@@ -411,7 +411,7 @@ Node.js (comúnmente abreviado como Node) es un entorno de ejecución de JavaScr
 el motor V8 de Chrome, diseñado para ejecutar aplicaciones del lado del servidor, lo que lo convierte
 en una herramienta ideal para desarrollar backends y servicios web.
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 5 -->
+  <img src="https://cdn.simpleicons.org/nodedotjs" alt="Logotipo de Node.js" width="128">
   <figcaption>Figura 5. Logotipo de Node.js</figcaption>
 </figure>
 
@@ -421,7 +421,7 @@ Angular. Esto se debe a que muchas herramientas clave para la construcción, tra
 en versiones optimizadas que pueden ejecutarse eficientemente en navegadores web o dispositivos
 móviles. Así, Node.js juega un papel crucial tanto en el desarrollo backend como en el frontend, facilitando un flujo de trabajo integral para aplicaciones web modernas.
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 6 -->
+  <img src="https://cdn.simpleicons.org/v8" alt="Logotipo del motor V8" width="128">
   <figcaption>Figura 6. Motor V8 de Google. Usado en Chromium, Microsoft Edge, Brave, Opera, Chrome, etc.</figcaption>
 </figure>
 
@@ -486,7 +486,7 @@ Sin embargo, no todos los entornos de ejecución (motores de JavaScript) son com
 versiones más recientes del lenguaje. Esto significa que un programa escrito utilizando las últimas
 características de ES6+ (Es6 o versiones posteriores) podría no ejecutarse en algunos entornos, especialmente en navegadores más antiguos.
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 7 -->
+  <img src="https://cdn.simpleicons.org/babel" alt="Logotipo de Babel" width="128">
   <figcaption>Figura 7. Logotipo de Babel</figcaption>
 </figure>
 
@@ -529,7 +529,7 @@ navegadores modernos, esta funcionalidad es innecesaria debido al soporte casi c
 
 Vite y create‑react‑app dejan preparado el proyecto para la transpilación con esbuild y babel, respectivamente, con lo que no es necesario configurar la transpilación de forma manual.
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 8 -->
+  <img src="https://cdn.simpleicons.org/vite" alt="Logotipo de Vite" width="128">
   <figcaption>Figura 8. Logotipo de Vite</figcaption>
 </figure>
 
@@ -538,7 +538,7 @@ Vite y create‑react‑app dejan preparado el proyecto para la transpilación c
 NPM (Node Package Manager) es el gestor de paquetes predeterminado para Node.js. Es una herramienta fundamental en el ecosistema de JavaScript, utilizada principalmente para gestionar las
 dependencias (librerías y módulos) que un proyecto de Node.js puede necesitar.
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 9 -->
+  <img src="https://cdn.simpleicons.org/npm" alt="Logotipo de npm" width="128">
   <figcaption>Figura 9. Logotipo de NPM</figcaption>
 </figure>
 
@@ -563,7 +563,7 @@ Funciones principales de NPM:
 En este ejemplo vamos a crear una aplicación web simple usando Express, un popular framework de
 Node.js para explicar el uso de npm.
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 10 -->
+  <img src="https://cdn.simpleicons.org/express" alt="Logotipo de Express" width="128">
   <figcaption>Figura 10. Logotipo de Express</figcaption>
 </figure>
 
@@ -672,7 +672,7 @@ Ahora vamos a usar npm, node y babel para crear una pequeña aplicación en Reac
    mkdir src dist
    touch src/index.jsx dist/index.html
    <figure>
-     <!-- Inserta aquí la imagen de la Figura 11 -->
+    <img src="https://cdn.simpleicons.org/react" alt="Logotipo de React" width="128">
      <figcaption>Figura 11. Logotipo de React</figcaption>
    </figure>
 
@@ -803,7 +803,7 @@ optimizados. El proceso de empaquetado generalmente incluye:
 Parcel es una herramienta de empaquetado que requiere cero configuración, ideal para desarrolladores que desean una solución simple y efectiva. A continuación se muestra cómo crear un proyecto
 básico usando Parcel:
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 12 -->
+  <img src="https://parceljs.org/avatar.844b34b7.avif" alt="Logotipo de Parcel" width="128">
   <figcaption>Figura 12. Logotipo de Parcel</figcaption>
 </figure>
 
@@ -898,7 +898,7 @@ El uso de linters en el proceso de desarrollo ofrece múltiples ventajas, entre 
 ESLint es uno de los linters más populares en el ecosistema JavaScript. Fue creado para proporcionar
 una herramienta extensible y altamente configurable que analiza el código en busca de problemas.
 <figure>
-  <!-- Inserta aquí la imagen de la Figura 13 -->
+  <img src="https://cdn.simpleicons.org/eslint" alt="Logotipo de ESLint" width="128">
   <figcaption>Figura 13. Logotipo de ESLint</figcaption>
 </figure>
 
