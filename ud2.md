@@ -56,8 +56,9 @@ Aunque el soporte de ES6 está muy avanzado, la **transpilación** sigue siendo 
 
 - **De JavaScript ES6 a ES5**: Para asegurar una mayor compatibilidad con todos los navegadores.
 - **De Java a Kotlin**: Para aprovechar las ventajas de Kotlin sobre Java.
-  Por otro lado, compilar se refiere a la traducción de un lenguaje de alto nivel a un nivel más bajo,
-  como:
+
+Por otro lado, compilar se refiere a la traducción de un lenguaje de alto nivel a un nivel más bajo, como:
+
 - **De código Java a Bytecode** (.class)
 - **De código C a Código máquina**
   
