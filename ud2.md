@@ -709,6 +709,7 @@ Ahora vamos a usar npm, node y babel para crear una pequeña aplicación en Reac
    - **@babel/preset-react**: Un conjunto de reglas para transpilar JSX y otras características
      específicas de React.
 
+
 4. **Configurar Babel**:
 
    Crea un archivo `.babelrc` en la raíz del proyecto para configurar Babel:
