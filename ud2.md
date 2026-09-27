@@ -260,6 +260,8 @@ Utilizando el ejemplo anterior con la función multiplicar, cuando la ejecución
 3. **Scope**:
    - Puedes ver variables locales dentro de multiplicar y variables globales como resultado.
 
+![Ejemplo con debugger](assets/img/debugger.png)
+
 #### 1.3.2.6 Pasar y Avanzar en la Ejecución (Stepping Through) {#subseccion-1-3-2-6}
 
 Mientras la ejecución está pausada,
@@ -323,17 +325,14 @@ Supongamos que tienes una llamada `fetch` en tu código:
 
 ```js
 fetch('https://api.example.com/data')
-.then(response => response.json())
-.then(data => {
-console.log("Datos recibidos:", data);
-```
-
-})
-
-```js
-.catch(error => {
-console.error("Error:", error);
-});
+  .then(response => response.json())
+  .then(data => {
+    console.log("Datos recibidos:", data);
+  }
+).catch(error => {
+  console.error("Error:", error);
+  }
+);
 ```
 
 **Pasos para Depurar:**
@@ -353,19 +352,14 @@ modernas facilitan esto permitiendo pausas en puntos específicos.
 
 ```js
 async function obtenerDatos() {
-try {
-let respuesta = await fetch('https://api.example.com/data');
-let datos = await respuesta.json();
-console.log("Datos obtenidos:", datos);
-```
-
-} catch (error) {
-
-```js
-console.error("Error al obtener datos:", error);
-}
-}
-obtenerDatos();
+  try {
+    let respuesta = await fetch('https://api.example.com/data');
+    let datos = await respuesta.json();
+    console.log("Datos obtenidos:", datos);
+  } catch (error) {
+    console.error("Error al obtener datos:", error);
+  }
+} obtenerDatos();
 ```
 
 **Pasos para Depurar:**
@@ -375,29 +369,33 @@ obtenerDatos();
   de las llamadas asíncronas.
 - Utiliza Step Into para entrar en funciones asíncronas si es necesario.
 
+> **Repasa este apartado cuando tengas que depurar código JavaScript**.
 > Algunos conceptos como la programación asíncrona, promesas, callbacks, etc. se verán
 > con más detalle en el siguiente volumen de este curso.
 
-Repasa este apartado cuando tengas que depurar código JavaScript.
 
 ### 1.3.4 Node.js {#seccion-1-3-4}
 
-Node.js (comúnmente abreviado como Node) es un entorno de ejecución de JavaScript basado en
-el motor V8 de Chrome, diseñado para ejecutar aplicaciones del lado del servidor, lo que lo convierte
-en una herramienta ideal para desarrollar backends y servicios web.
+**Node.js** (comúnmente abreviado como Node) es un entorno de ejecución de JavaScript basado en
+el motor V8 de Chrome, diseñado para ejecutar aplicaciones del lado del servidor, lo que lo convierte en una herramienta ideal para desarrollar backends y servicios web.
 
 <img src="assets/img/figura5.png" alt="Logotipo de Node.js">
 
 Además de su uso en el desarrollo del lado del servidor, Node.js es una dependencia fundamental
 para el ecosistema de desarrollo frontend, especialmente en frameworks y bibliotecas como React y
-Angular. Esto se debe a que muchas herramientas clave para la construcción, transpilación y empaquetado de aplicaciones frontend están escritas en JavaScript y se ejecutan en Node.js. Estas herramientas, como Babel, Webpack y Vite, permiten a los desarrolladores transformar su código moderno
+Angular. 
+
+Esto se debe a que muchas herramientas clave para la construcción, transpilación y empaquetado de aplicaciones frontend están escritas en JavaScript y se ejecutan en Node.js. 
+
+Estas herramientas, como Babel, Webpack y Vite, permiten a los desarrolladores transformar su código moderno
 en versiones optimizadas que pueden ejecutarse eficientemente en navegadores web o dispositivos
-móviles. Así, Node.js juega un papel crucial tanto en el desarrollo backend como en el frontend, facilitando un flujo de trabajo integral para aplicaciones web modernas.
+móviles. 
+
+Así, Node.js juega un papel crucial tanto en el desarrollo backend como en el frontend, facilitando un flujo de trabajo integral para aplicaciones web modernas.
 
 <img src="assets/img/figura6.png" alt="Logotipo del motor V8">
 
-Para gestionar diferentes versiones de Node.js en tu sistema, se recomienda usar NVM (Node Version Manager). Esta herramienta permite instalar, desinstalar y cambiar entre versiones de Node.js
-de manera sencilla.
+Para gestionar diferentes versiones de Node.js en tu sistema, se recomienda usar NVM (Node Version Manager). Esta herramienta permite instalar, desinstalar y cambiar entre versiones de Node.js de manera sencilla.
 
 - **Instalación de NVM en linux**:
   - **Consulta el repositorio oficial**: https://github.com/nvm‑sh/nvm.
@@ -414,11 +412,11 @@ de manera sencilla.
   ```
 
 - **Instalación en Windows**:
-  - **Utiliza el siguiente repositorio**: https://github.com/coreybutler/nvm‑windows/releases
+  - Utiliza el siguiente repositorio  https://github.com/coreybutler/nvm‑windows/releases
     para descargar el archivo nvm‑setup.zip de la última versión.
   - Extrae el archivo ZIP y ejecuta el instalador nvm‑setup.exe.
   - Sigue las instrucciones del instalador para completar la instalación.
-  - **Abre una nueva ventana de Command Prompt o PowerShell y verifica la instalación ejecutando**:
+  - Abre una nueva ventana de Command Prompt o PowerShell y verifica la instalación ejecutando:
 
   ```bash
   nvm version
@@ -432,13 +430,15 @@ Algunos comandos útiles incluyen:
 - **node –version**: Muestra la versión de Node.js en uso.
 - **nvm use 18**: Cambia a la versión 18 de Node.js.
 - **nvm use `default`**: Cambia a la versión por defecto de Node.js.
-  Cuando ejecutas el comando node en un terminal, accedes a un intérprete de JavaScript donde
-  puedes probar código de manera interactiva. Sin embargo, dado que Node.js no se ejecuta en
-  un navegador, no puede modificar el DOM, por lo que instrucciones como document.write() o
-  document.createElement(“p”) no funcionarán.
-  Node.js utiliza el motor V8 de JavaScript (de Google), que es altamente eficiente y rápido, y ofrece
-  soporte completo para ES6. También es posible ejecutar un archivo JavaScript directamente desde la
-  línea de comandos usando:
+
+Cuando ejecutas el comando node en un terminal, accedes a un intérprete de JavaScript donde
+puedes probar código de manera interactiva. Sin embargo, dado que Node.js no se ejecuta en
+un navegador, no puede modificar el DOM, por lo que instrucciones como document.write() o
+document.createElement(“p”) no funcionarán.
+
+Node.js utiliza el motor V8 de JavaScript (de Google), que es altamente eficiente y rápido, y ofrece
+soporte completo para ES6. También es posible ejecutar un archivo JavaScript directamente desde la
+línea de comandos usando:
 
   ```bash
   node programa.js
@@ -453,17 +453,25 @@ permiten programar y probar JavaScript de manera interactiva.
 
 En el desarrollo moderno de aplicaciones web, el uso de nuevas versiones de JavaScript, como ES6
 y superiores, es común debido a las mejoras en la sintaxis y las nuevas funcionalidades que ofrecen.
+
 Sin embargo, no todos los entornos de ejecución (motores de JavaScript) son compatibles con las
 versiones más recientes del lenguaje. Esto significa que un programa escrito utilizando las últimas
 características de ES6+ (Es6 o versiones posteriores) podría no ejecutarse en algunos entornos, especialmente en navegadores más antiguos.
 
 <img src="assets/img/figura7.png" alt="Logotipo de Babel">
 
-Aquí es donde entra en juego Babel, un transpilador que permite compilar (transpilar, para ser más
-precisos) código escrito en ES6+ a versiones más antiguas de JavaScript, como ES5, que tienen un soporte más amplio en diferentes entornos. Babel también permite añadir polyfills, que son fragmentos de código que permiten que las nuevas características del lenguaje sean interpretadas correctamente por navegadores que no las soportan nativamente como CSS3, SVG, LocalStorage, etc.
-Existen otros transpiladores como SWC (Speedy Web Compiler) y esbuild. Cuando estudiemos React
-usaremos create‑react‑app para crear el esqueleto de una aplicación React. create‑react‑app usa Babel para transpilar. Vite, otra aplicación para crear proyectos web, utiliza esbuild como transpilador.
-Al trabajar con React, se utiliza una sintaxis especial llamada JSX, que es una extensión de la sintaxis
+Aquí es donde entra en juego **Babel, un transpilador que permite compilar** (transpilar, para ser más
+precisos) código escrito en ES6+ a versiones más antiguas de JavaScript, como ES5, que tienen un soporte más amplio en diferentes entornos. 
+
+Babel también permite añadir polyfills, que son fragmentos de código que permiten que las nuevas características del lenguaje sean interpretadas correctamente por navegadores que no las soportan nativamente como CSS3, SVG, LocalStorage, etc.
+
+Existen otros transpiladores como **SWC** (Speedy Web Compiler) y **esbuild**. 
+
+Cuando estudiemos React usaremos **create‑react‑app** para crear el esqueleto de una aplicación React. create‑react‑app usa Babel para transpilar. 
+
+**Vite**, otra aplicación para crear proyectos web, utiliza esbuild como transpilador.
+
+Al trabajar con React, se utiliza una sintaxis especial llamada **JSX**, que es una extensión de la sintaxis
 de JavaScript. JSX también necesita ser transpilado a JavaScript para que pueda ser ejecutado en los
 navegadores, ya que los motores de JavaScript no soportan esta sintaxis. Babel facilita este proceso,
 permitiendo que el código JSX se convierta en código JavaScript compatible.
@@ -471,14 +479,16 @@ permitiendo que el código JSX se convierta en código JavaScript compatible.
 ### 1.4.1 Uso de Babel {#seccion-1-4-1}
 
 Babel se puede utilizar de diferentes maneras según las necesidades del proyecto. Aquí se detallan
-algunas de las formas más comunes de utilizar Babel:
+algunas de las formas más comunes de utilizar Babel.
 
 ### 1.4.2 @babel/standalone {#seccion-1-4-2}
 
-Esta versión de Babel permite incrustar código ES6 en una página web y transpilarlo en línea antes
-de su ejecución. Aunque esta opción es útil para pruebas rápidas, no se recomienda en entornos de
+Esta versión de Babel permite **incrustar código ES6 en una página web** y transpilarlo en línea antes
+de su ejecución. 
+
+Aunque esta opción es útil para pruebas rápidas, no se recomienda en entornos de
 producción debido a su ineficiencia, ya que el código se transpila cada vez que se refresca la página. En
-navegadores modernos, esta funcionalidad es innecesaria debido al soporte casi completo de ES6.
+navegadores modernos, **esta funcionalidad es innecesaria** debido al soporte casi completo de ES6.
 
 **Ejemplo:**
 
@@ -496,14 +506,13 @@ navegadores modernos, esta funcionalidad es innecesaria debido al soporte casi c
 </html>
 ```
 
-Vite y create‑react‑app dejan preparado el proyecto para la transpilación con esbuild y babel, respectivamente, con lo que no es necesario configurar la transpilación de forma manual.
+**Vite y create‑react‑app** dejan preparado el proyecto para la transpilación con esbuild y babel, respectivamente, con lo que no es necesario configurar la transpilación de forma manual.
 
 <img src="assets/img/figura8.png" alt="Logotipo de Vite">
 
 ## 1.5 NPM (Node Package Manager) {#seccion-1-5}
 
-NPM (Node Package Manager) es el gestor de paquetes predeterminado para Node.js. Es una herramienta fundamental en el ecosistema de JavaScript, utilizada principalmente para gestionar las
-dependencias (librerías y módulos) que un proyecto de Node.js puede necesitar.
+NPM (Node Package Manager) es el **gestor de paquetes predeterminado para Node.js**. Es una herramienta fundamental en el ecosistema de JavaScript, utilizada principalmente para gestionar las dependencias (librerías y módulos) que un proyecto de Node.js puede necesitar.
 
 <img src="assets/img/figura9.png" alt="Logotipo de NPM">
 
@@ -530,7 +539,7 @@ Node.js para explicar el uso de npm.
 
 <img src="assets/img/figura10.png" alt="Logotipo de Express">
 
-1. Instalar Node.js (si no lo tienes instalado)
+1. **Instalar Node.js** (si no lo tienes instalado): 
    Primero, asegúrate de tener Node.js instalado en tu máquina. Node.js viene con NPM preinstalado.
    Puedes verificar si ya lo tienes instalado usando los siguientes comandos en tu terminal:
 
@@ -539,11 +548,15 @@ Node.js para explicar el uso de npm.
    npm -v
    ```
 
-2. Crear una carpeta para tu proyecto
+2. **Crear una carpeta para tu proyecto**:
    Primero, crea una carpeta para tu proyecto y accede a ella desde la terminal:
+
+    ```bash
    mkdir mi-app
    cd mi-app
-3. Inicializar un proyecto de Node.js
+  ```
+
+3. **Inicializar un proyecto de Node.js**:
    Para empezar, necesitas crear un archivo `package.json`, que almacenará la configuración de tu
    proyecto y la lista de dependencias (librerías que usa el proyecto). Usa el siguiente comando para
    inicializarlo:
@@ -551,78 +564,83 @@ Node.js para explicar el uso de npm.
    ```bash
    npm init
    ```
+  
+  Este comando te hará una serie de preguntas sobre tu proyecto, como el nombre, versión, descripción,
+  etc. Si deseas aceptar los valores por defecto, simplemente presiona Enter para cada pregunta.
+  Al final, tendrás un archivo `package.json` en tu carpeta de proyecto. 
+  
+4. **Instalar Express como una dependencia**:
+  Ahora, puedes instalar Express (u otros paquetes que necesites) usando NPM. Para instalar Express,
+  ejecuta:
+  
+  ```bash
+  npm install express
+  ```
+  
+  Este comando hará lo siguiente:
 
-Este comando te hará una serie de preguntas sobre tu proyecto, como el nombre, versión, descripción,
-etc. Si deseas aceptar los valores por defecto, simplemente presiona Enter para cada pregunta.
-Al final, tendrás un archivo `package.json` en tu carpeta de proyecto. 4. Instalar Express como una dependencia
-Ahora, puedes instalar Express (u otros paquetes que necesites) usando NPM. Para instalar Express,
-ejecuta:
+  - Descargará el paquete express desde el registro de NPM.
+  - Guardará la información de la versión de Express dentro del archivo `package.json` bajo la
+    sección dependencies.
+  - Creará una carpeta `node_modules` donde se descargarán y almacenarán todas las dependencias del proyecto.
 
-```bash
-npm install express
-```
-
-Este comando hará lo siguiente:
-
-- Descargará el paquete express desde el registro de NPM.
-- Guardará la información de la versión de Express dentro del archivo `package.json` bajo la
-  sección dependencies.
-- Creará una carpeta `node_modules` donde se descargarán y almacenarán todas las dependencias del proyecto.
-
-5. Crear un archivo de servidor básico
+5. **Crear un archivo de servidor básico**
    Ahora, crea un archivo `index.js` que será el punto de entrada de tu aplicación:
 
-**`index.js`**
+  **`index.js`**
 
-```js
-const express = require("express");
-const app = express();
-// Ruta básica
-app.get("/", (req, res) => {
-  res.send("Hola Mundo");
-});
-// Iniciar el servidor en el puerto 3000
-app.listen(3000, () => {
-  console.log("Servidor escuchando en http://localhost:3000");
-});
-```
+  ```js
+  const express = require("express");
+  const app = express();
+  // Ruta básica
+  app.get("/", (req, res) => {
+    res.send("Hola Mundo");
+  });
+  // Iniciar el servidor en el puerto 3000
+  app.listen(3000, () => {
+    console.log("Servidor escuchando en http://localhost:3000");
+  });
+  ```
 
-6. Ejecutar la aplicación
+6. **Ejecutar la aplicación**
    Para ejecutar tu aplicación, usa el siguiente comando:
 
    ```bash
    node index.js
    ```
 
-Esto iniciará el servidor en http://localhost:3000. Si abres un navegador y visitas esa dirección, deberías ver el mensaje “¡Hola Mundo!”. 7. Añadir scripts de NPM (Opcional)
-En tu archivo `package.json`, puedes agregar scripts personalizados. Por ejemplo, puedes añadir
-un script para iniciar tu aplicación más fácilmente:
+  Esto iniciará el servidor en http://localhost:3000. Si abres un navegador y visitas esa dirección, deberías ver el mensaje “¡Hola Mundo!”. 
 
-```json
-"scripts": {
-"start": "node index.js"
-}
-```
+7. **Añadir scripts de NPM** (Opcional)
+  En tu archivo `package.json`, puedes agregar scripts personalizados. Por ejemplo, puedes añadir
+  un script para iniciar tu aplicación más fácilmente:
 
-Ahora, puedes iniciar tu aplicación simplemente ejecutando:
+  ```json
+  "scripts": {
+  "start": "node index.js"
+  }
+  ```
 
-```bash
-npm start
-```
+  Ahora, puedes iniciar tu aplicación simplemente ejecutando:
 
-8. Administrar dependencias (Opcional)
+  ```bash
+  npm start
+  ```
+
+8. **Administrar dependencias** (Opcional)
    - **Para actualizar una dependencia**: Usa npm update nombre_del_paquete.
    - **Para eliminar una dependencia**: Usa npm uninstall nombre_del_paquete.
    - **Para instalar todas las dependencias listadas en `package.json`**: Usa npm install (esto es útil
      cuando clonas un proyecto y necesitas instalar todas sus dependencias).
-9. Fichero `.gitignore`
+
+9. **Fichero `.gitignore`**: 
    Conforme un proyecto crece, el tamaño de la carpeta `node_modules` puede llegar a ser muy grande.
    Es recomendable añadir un fichero `.gitignore` en la raíz del proyecto para que Git ignore la carpeta
    `node_modules` y no la incluya en los commits.
 
-**`.gitignore`**
+  **`.gitignore`**
 
-`node_modules`
+  `node_modules`
 
 ### 1.5.2 Ejemplo de una aplicación react {#seccion-1-5-2}
 
