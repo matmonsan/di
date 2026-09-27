@@ -539,7 +539,8 @@ Node.js para explicar el uso de npm.
 
 <img src="assets/img/figura10.png" alt="Logotipo de Express">
 
-1. **Instalar Node.js** (si no lo tienes instalado): 
+1. **Instalar Node.js** (si no lo tienes instalado):
+
    Primero, asegúrate de tener Node.js instalado en tu máquina. Node.js viene con NPM preinstalado.
    Puedes verificar si ya lo tienes instalado usando los siguientes comandos en tu terminal:
 
@@ -549,14 +550,16 @@ Node.js para explicar el uso de npm.
    ```
 
 2. **Crear una carpeta para tu proyecto**:
+
    Primero, crea una carpeta para tu proyecto y accede a ella desde la terminal:
 
-    ```bash
+   ```bash
    mkdir mi-app
    cd mi-app
-  ```
+   ```
 
 3. **Inicializar un proyecto de Node.js**:
+
    Para empezar, necesitas crear un archivo `package.json`, que almacenará la configuración de tu
    proyecto y la lista de dependencias (librerías que usa el proyecto). Usa el siguiente comando para
    inicializarlo:
@@ -564,83 +567,90 @@ Node.js para explicar el uso de npm.
    ```bash
    npm init
    ```
-  
-  Este comando te hará una serie de preguntas sobre tu proyecto, como el nombre, versión, descripción,
-  etc. Si deseas aceptar los valores por defecto, simplemente presiona Enter para cada pregunta.
-  Al final, tendrás un archivo `package.json` en tu carpeta de proyecto. 
-  
+
+   Este comando te hará una serie de preguntas sobre tu proyecto, como el nombre, versión, descripción,
+   etc. Si deseas aceptar los valores por defecto, simplemente presiona Enter para cada pregunta.
+   Al final, tendrás un archivo `package.json` en tu carpeta de proyecto.
+
 4. **Instalar Express como una dependencia**:
-  Ahora, puedes instalar Express (u otros paquetes que necesites) usando NPM. Para instalar Express,
-  ejecuta:
-  
-  ```bash
-  npm install express
-  ```
-  
-  Este comando hará lo siguiente:
 
-  - Descargará el paquete express desde el registro de NPM.
-  - Guardará la información de la versión de Express dentro del archivo `package.json` bajo la
-    sección dependencies.
-  - Creará una carpeta `node_modules` donde se descargarán y almacenarán todas las dependencias del proyecto.
+   Ahora, puedes instalar Express (u otros paquetes que necesites) usando NPM. Para instalar Express,
+   ejecuta:
 
-5. **Crear un archivo de servidor básico**
+   ```bash
+   npm install express
+   ```
+
+   Este comando hará lo siguiente:
+
+   - Descargará el paquete express desde el registro de NPM.
+   - Guardará la información de la versión de Express dentro del archivo `package.json` bajo la
+     sección dependencies.
+   - Creará una carpeta `node_modules` donde se descargarán y almacenarán todas las dependencias del proyecto.
+
+5. **Crear un archivo de servidor básico**:
+
    Ahora, crea un archivo `index.js` que será el punto de entrada de tu aplicación:
 
-  **`index.js`**
+   **`index.js`**
 
-  ```js
-  const express = require("express");
-  const app = express();
-  // Ruta básica
-  app.get("/", (req, res) => {
-    res.send("Hola Mundo");
-  });
-  // Iniciar el servidor en el puerto 3000
-  app.listen(3000, () => {
-    console.log("Servidor escuchando en http://localhost:3000");
-  });
-  ```
+   ```js
+   const express = require("express");
+   const app = express();
+   // Ruta básica
+   app.get("/", (req, res) => {
+     res.send("Hola Mundo");
+   });
+   // Iniciar el servidor en el puerto 3000
+   app.listen(3000, () => {
+     console.log("Servidor escuchando en http://localhost:3000");
+   });
+   ```
 
-6. **Ejecutar la aplicación**
+6. **Ejecutar la aplicación**:
+
    Para ejecutar tu aplicación, usa el siguiente comando:
 
    ```bash
    node index.js
    ```
 
-  Esto iniciará el servidor en http://localhost:3000. Si abres un navegador y visitas esa dirección, deberías ver el mensaje “¡Hola Mundo!”. 
+   Esto iniciará el servidor en http://localhost:3000. Si abres un navegador y visitas esa dirección, deberías ver el mensaje "¡Hola Mundo!".
 
-7. **Añadir scripts de NPM** (Opcional)
-  En tu archivo `package.json`, puedes agregar scripts personalizados. Por ejemplo, puedes añadir
-  un script para iniciar tu aplicación más fácilmente:
+7. **Añadir scripts de NPM** (Opcional):
 
-  ```json
-  "scripts": {
-  "start": "node index.js"
-  }
-  ```
+   En tu archivo `package.json`, puedes agregar scripts personalizados. Por ejemplo, puedes añadir
+   un script para iniciar tu aplicación más fácilmente:
 
-  Ahora, puedes iniciar tu aplicación simplemente ejecutando:
+   ```json
+   "scripts": {
+     "start": "node index.js"
+   }
+   ```
 
-  ```bash
-  npm start
-  ```
+   Ahora, puedes iniciar tu aplicación simplemente ejecutando:
 
-8. **Administrar dependencias** (Opcional)
+   ```bash
+   npm start
+   ```
+
+8. **Administrar dependencias** (Opcional):
    - **Para actualizar una dependencia**: Usa npm update nombre_del_paquete.
    - **Para eliminar una dependencia**: Usa npm uninstall nombre_del_paquete.
    - **Para instalar todas las dependencias listadas en `package.json`**: Usa npm install (esto es útil
      cuando clonas un proyecto y necesitas instalar todas sus dependencias).
 
-9. **Fichero `.gitignore`**: 
+9. **Fichero `.gitignore`**:
+
    Conforme un proyecto crece, el tamaño de la carpeta `node_modules` puede llegar a ser muy grande.
    Es recomendable añadir un fichero `.gitignore` en la raíz del proyecto para que Git ignore la carpeta
    `node_modules` y no la incluya en los commits.
 
-  **`.gitignore`**
+   **`.gitignore`**
 
-  `node_modules`
+   ```
+   node_modules
+   ```
 
 ### 1.5.2 Ejemplo de una aplicación react {#seccion-1-5-2}
 
