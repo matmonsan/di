@@ -43,20 +43,14 @@ Históricamente, los navegadores web han implementado las versiones de JavaScrip
 diferencias, lo que solía generar problemas para desarrollar scripts compatibles. Los desarrolladores
 debían detectar el tipo de navegador y programar variantes específicas para cada uno. Afortunadamente, este problema ha disminuido gracias a la estandarización y la evolución de los motores de
 ejecución de JavaScript.
-<figure>
-  <img src="https://cdn.simpleicons.org/javascript" alt="Logotipo de JavaScript" width="128">
-  <figcaption>Figura 1. Logotipo de JavaScript</figcaption>
-</figure>
+<img src="assets/img/figura1.png" alt="Logotipo de JavaScript">
 
 Para verificar el soporte que ofrecen los distintos navegadores a las versiones de ECMAScript (ES5,
 ES6, etc.), puedes consultar las siguientes páginas:
 
 - Can I use
 - Compatibilidad ES6
-  <figure>
-    <img src="https://www.google.com/s2/favicons?domain=caniuse.com&amp;sz=256" alt="Icono de Can I Use" width="128">
-    <figcaption>Figura 2. Soporte ES6</figcaption>
-  </figure>
+  <img src="assets/img/figura2.png" alt="Icono de Can I Use">
 
 ## 1.2 Transpilación de Código {#seccion-1-2}
 
@@ -129,10 +123,7 @@ Una página web se puede visualizar en el navegador de muchas formas:
 console.log("Hola mundo desde un fichero externo");
 ```
 
-<figure>
-  <img src="https://cdn.simpleicons.org/googlechrome" alt="Logotipo de Google Chrome" width="128">
-  <figcaption>Figura 3. Ejecutando Javascript en el navegador</figcaption>
-</figure>
+<img src="assets/img/figura3.png" alt="Logotipo de Google Chrome">
 
 Generalmente, los scripts se colocan al final de la etiqueta <body>, aunque si se trata de librerías que
 no se ejecutan hasta que ocurre un evento, pueden situarse dentro del <head>. El motivo de situar
@@ -332,10 +323,7 @@ activen cuando se cumpla una cierta condición, lo que es útil para bucles o ca
 - Haz clic derecho en el breakpoint y selecciona Edit breakpoint o Agregar condición.
 - Ingresa una condición, por ejemplo: i === 5.
 - Recarga la página. La ejecución se pausará solo cuando i sea 5.
-  <figure>
-    <img src="https://cdn.simpleicons.org/firefoxbrowser" alt="Logotipo de Firefox" width="128">
-    <figcaption>Figura 4. Depuración Condicional en las herramientas de desarrollador de Mozilla Firefox</figcaption>
-  </figure>
+  <img src="assets/img/figura4.png" alt="Logotipo de Firefox">
 
 #### 1.3.2.8 Utilizar la Pestaña de Network para Depurar Solicitudes {#subseccion-1-3-2-8}
 
@@ -410,20 +398,14 @@ Repasa este apartado cuando tengas que depurar código JavaScript.
 Node.js (comúnmente abreviado como Node) es un entorno de ejecución de JavaScript basado en
 el motor V8 de Chrome, diseñado para ejecutar aplicaciones del lado del servidor, lo que lo convierte
 en una herramienta ideal para desarrollar backends y servicios web.
-<figure>
-  <img src="https://cdn.simpleicons.org/nodedotjs" alt="Logotipo de Node.js" width="128">
-  <figcaption>Figura 5. Logotipo de Node.js</figcaption>
-</figure>
+<img src="assets/img/figura5.png" alt="Logotipo de Node.js">
 
 Además de su uso en el desarrollo del lado del servidor, Node.js es una dependencia fundamental
 para el ecosistema de desarrollo frontend, especialmente en frameworks y bibliotecas como React y
 Angular. Esto se debe a que muchas herramientas clave para la construcción, transpilación y empaquetado de aplicaciones frontend están escritas en JavaScript y se ejecutan en Node.js. Estas herramientas, como Babel, Webpack y Vite, permiten a los desarrolladores transformar su código moderno
 en versiones optimizadas que pueden ejecutarse eficientemente en navegadores web o dispositivos
 móviles. Así, Node.js juega un papel crucial tanto en el desarrollo backend como en el frontend, facilitando un flujo de trabajo integral para aplicaciones web modernas.
-<figure>
-  <img src="https://cdn.simpleicons.org/v8" alt="Logotipo del motor V8" width="128">
-  <figcaption>Figura 6. Motor V8 de Google. Usado en Chromium, Microsoft Edge, Brave, Opera, Chrome, etc.</figcaption>
-</figure>
+<img src="assets/img/figura6.png" alt="Logotipo del motor V8">
 
 Para gestionar diferentes versiones de Node.js en tu sistema, se recomienda usar NVM (Node Version Manager). Esta herramienta permite instalar, desinstalar y cambiar entre versiones de Node.js
 de manera sencilla.
@@ -485,10 +467,7 @@ y superiores, es común debido a las mejoras en la sintaxis y las nuevas funcion
 Sin embargo, no todos los entornos de ejecución (motores de JavaScript) son compatibles con las
 versiones más recientes del lenguaje. Esto significa que un programa escrito utilizando las últimas
 características de ES6+ (Es6 o versiones posteriores) podría no ejecutarse en algunos entornos, especialmente en navegadores más antiguos.
-<figure>
-  <img src="https://cdn.simpleicons.org/babel" alt="Logotipo de Babel" width="128">
-  <figcaption>Figura 7. Logotipo de Babel</figcaption>
-</figure>
+<img src="assets/img/figura7.png" alt="Logotipo de Babel">
 
 Aquí es donde entra en juego Babel, un transpilador que permite compilar (transpilar, para ser más
 precisos) código escrito en ES6+ a versiones más antiguas de JavaScript, como ES5, que tienen un soporte más amplio en diferentes entornos. Babel también permite añadir polyfills, que son fragmentos de código que permiten que las nuevas características del lenguaje sean interpretadas correctamente por navegadores que no las soportan nativamente como CSS3, SVG, LocalStorage, etc.
@@ -528,19 +507,13 @@ navegadores modernos, esta funcionalidad es innecesaria debido al soporte casi c
 ```
 
 Vite y create‑react‑app dejan preparado el proyecto para la transpilación con esbuild y babel, respectivamente, con lo que no es necesario configurar la transpilación de forma manual.
-<figure>
-  <img src="https://cdn.simpleicons.org/vite" alt="Logotipo de Vite" width="128">
-  <figcaption>Figura 8. Logotipo de Vite</figcaption>
-</figure>
+<img src="assets/img/figura8.png" alt="Logotipo de Vite">
 
 ## 1.5 NPM (Node Package Manager) {#seccion-1-5}
 
 NPM (Node Package Manager) es el gestor de paquetes predeterminado para Node.js. Es una herramienta fundamental en el ecosistema de JavaScript, utilizada principalmente para gestionar las
 dependencias (librerías y módulos) que un proyecto de Node.js puede necesitar.
-<figure>
-  <img src="https://cdn.simpleicons.org/npm" alt="Logotipo de npm" width="128">
-  <figcaption>Figura 9. Logotipo de NPM</figcaption>
-</figure>
+<img src="assets/img/figura9.png" alt="Logotipo de NPM">
 
 Funciones principales de NPM:
 
@@ -562,10 +535,7 @@ Funciones principales de NPM:
 
 En este ejemplo vamos a crear una aplicación web simple usando Express, un popular framework de
 Node.js para explicar el uso de npm.
-<figure>
-  <img src="https://cdn.simpleicons.org/express" alt="Logotipo de Express" width="128">
-  <figcaption>Figura 10. Logotipo de Express</figcaption>
-</figure>
+<img src="assets/img/figura10.png" alt="Logotipo de Express">
 
 1. Instalar Node.js (si no lo tienes instalado)
    Primero, asegúrate de tener Node.js instalado en tu máquina. Node.js viene con NPM preinstalado.
@@ -671,10 +641,7 @@ Ahora vamos a usar npm, node y babel para crear una pequeña aplicación en Reac
    cd mi-proyecto-babel
    mkdir src dist
    touch src/index.jsx dist/index.html
-   <figure>
-    <img src="https://cdn.simpleicons.org/react" alt="Logotipo de React" width="128">
-     <figcaption>Figura 11. Logotipo de React</figcaption>
-   </figure>
+   <img src="assets/img/figura11.png" alt="Logotipo de React">
 
    La estructura del proyecto será:
    mi-proyecto-babel/
@@ -802,10 +769,7 @@ optimizados. El proceso de empaquetado generalmente incluye:
 
 Parcel es una herramienta de empaquetado que requiere cero configuración, ideal para desarrolladores que desean una solución simple y efectiva. A continuación se muestra cómo crear un proyecto
 básico usando Parcel:
-<figure>
-  <img src="https://parceljs.org/avatar.844b34b7.avif" alt="Logotipo de Parcel" width="128">
-  <figcaption>Figura 12. Logotipo de Parcel</figcaption>
-</figure>
+<img src="assets/img/figura12.png" alt="Logotipo de Parcel">
 
 **Inicializar el proyecto:**
 
@@ -897,10 +861,7 @@ El uso de linters en el proceso de desarrollo ofrece múltiples ventajas, entre 
 
 ESLint es uno de los linters más populares en el ecosistema JavaScript. Fue creado para proporcionar
 una herramienta extensible y altamente configurable que analiza el código en busca de problemas.
-<figure>
-  <img src="https://cdn.simpleicons.org/eslint" alt="Logotipo de ESLint" width="128">
-  <figcaption>Figura 13. Logotipo de ESLint</figcaption>
-</figure>
+<img src="assets/img/figura13.png" alt="Logotipo de ESLint">
 
 - Detecta errores de sintaxis.
 - Advierte sobre malas prácticas de programación.
