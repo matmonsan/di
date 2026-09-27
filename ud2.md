@@ -657,105 +657,72 @@ Node.js para explicar el uso de npm.
 
 <img src="assets/img/figura11.png" alt="Logotipo de React">
 
-Ahora vamos a usar npm, node y babel para crear una pequeña aplicación en React.
+Vamos a crear una pequeña aplicación React con Babel y Webpack. Babel transforma JSX, mientras que Webpack reúne el código de la aplicación y sus dependencias en el archivo `bundle.js` que cargará la página.
 
 1. **Crear la estructura del proyecto**:
 
-   Primero, crea la carpeta para tu proyecto y la estructura básica de directorios y archivos:
+   En PowerShell, desde la carpeta donde quieras crear el proyecto, ejecuta:
 
-   ```bash
+   ```powershell
    mkdir mi-proyecto-babel
    cd mi-proyecto-babel
-   mkdir src dist
-   touch src/index.jsx dist/index.html
+   New-Item -ItemType Directory src, dist
+   New-Item -ItemType File src/index.jsx, dist/index.html
    ```
 
-   La estructura del proyecto será:
+   `touch` es habitual en macOS y Linux, pero no viene disponible por defecto en PowerShell.
 
-   ```
-   mi-proyecto-babel/
-     src/
-       index.jsx
-     dist/
-       index.html
-     package.json
-   ```
+2. **Inicializar el proyecto**:
 
-2. **Inicializar el proyecto con NPM**:
-
-   Inicializa el proyecto para crear un archivo `package.json`:
-
-   ```bash
+   ```powershell
    npm init -y
    ```
 
-   El comando -y acepta todos los valores predeterminados para simplificar el proceso.
+3. **Instalar las dependencias**:
 
-3. **Instalar Babel y plugins**:
+   React y ReactDOM son dependencias de la aplicación. Babel y Webpack son herramientas de desarrollo:
 
-   Ahora, instala Babel y los plugins necesarios para transpilar JSX y ES6+:
-
-   ```bash
-   npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/preset-react
+   ```powershell
+   npm install react react-dom
+   npm install --save-dev @babel/core @babel/preset-env @babel/preset-react babel-loader webpack webpack-cli
    ```
-
-   Explicación de los paquetes:
-
-   - La opción --save-dev, indica que se trata de una dependencia de desarrollo. Es decir este
-     paquete es necesario mientras estamos programando pero no es necesario en el código final.
-   - **@babel/core**: El núcleo de Babel, que realiza la transformación de código.
-   - **@babel/cli**: Una interfaz de línea de comandos para Babel, para que puedas ejecutarlo desde la terminal.
-   - **@babel/preset-env**: Un conjunto de reglas que permiten a Babel transpilar ES6+ a ES5.
-   - **@babel/preset-react**: Un conjunto de reglas para transpilar JSX y otras características
-     específicas de React.
-
 
 4. **Configurar Babel**:
 
-   Crea un archivo `.babelrc` en la raíz del proyecto para configurar Babel:
+   Crea `.babelrc` en la raíz del proyecto con este contenido:
 
-   ```bash
-   touch .babelrc
-   ```
-
-   Y añade la siguiente configuración:
-
-   ```js
+   ```json
    {
      "presets": ["@babel/preset-env", "@babel/preset-react"]
    }
    ```
 
-   Esta configuración le dice a Babel que utilice los presets para ES6+ y JSX.
+5. **Escribir el componente**:
 
-5. **Escribir el código JSX**:
+   En `src/index.jsx`, añade:
 
-   Ahora, escribe un simple componente en `src/index.jsx`:
-
-   **`src/index.jsx`**
-
-   ```js
+   ```jsx
    import React from 'react';
-   import ReactDOM from 'react-dom';
-   const App = () => {
-     return (
-       <div>
-         <h1>Hola, Mundo desde React con Babel!</h1>
-       </div>
-     );
-   };
-   ReactDOM.render(<App />, document.getElementById('root'));
+   import { createRoot } from 'react-dom/client';
+
+   const App = () => (
+     <div>
+       <h1>Hola, Mundo desde React con Babel!</h1>
+     </div>
+   );
+
+   createRoot(document.getElementById('root')).render(<App />);
    ```
 
-6. **Configurar el archivo HTML**:
+   `createRoot` es la API de montaje de las versiones actuales de React.
 
-   Crea un archivo `dist/index.html` que servirá como plantilla para tu aplicación:
+6. **Configurar el HTML**:
 
-   **`dist/index.html`**
+   En `dist/index.html`, añade:
 
    ```html
    <!DOCTYPE html>
-   <html lang="en">
+   <html lang="es">
      <head>
        <meta charset="UTF-8" />
        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -763,37 +730,63 @@ Ahora vamos a usar npm, node y babel para crear una pequeña aplicación en Reac
      </head>
      <body>
        <div id="root"></div>
-       <script src="bundle.js"></script>
+       <script src="./bundle.js"></script>
      </body>
    </html>
    ```
 
-   Este archivo HTML incluye un div con el ID root, donde se montará tu aplicación React. El archivo
-   bundle.js es donde se incluirá el JavaScript transpilado.
+7. **Configurar Webpack para generar `bundle.js`**:
 
-7. **Transpilar JSX a JavaScript**:
+   Crea `webpack.config.js` en la raíz del proyecto:
 
-   Añade un script en el archivo `package.json` para transpilar tu código usando Babel:
+   ```js
+   const path = require('path');
+
+   module.exports = {
+     mode: 'development',
+     entry: './src/index.jsx',
+     output: {
+       filename: 'bundle.js',
+       path: path.resolve(__dirname, 'dist'),
+     },
+     module: {
+       rules: [
+         {
+           test: /\.jsx?$/,
+           exclude: /node_modules/,
+           use: 'babel-loader',
+         },
+       ],
+     },
+     resolve: {
+       extensions: ['.js', '.jsx'],
+     },
+   };
+   ```
+
+   Webpack usa Babel para transformar el código y reúne también React y ReactDOM en el archivo de salida.
+
+8. **Añadir el script de build**:
+
+   En la sección `scripts` de `package.json`, configura:
 
    ```json
    "scripts": {
-     "build": "babel src -d dist --extensions \".js,.jsx\""
+     "build": "webpack"
    }
    ```
 
-   Este script le dice a Babel que tome los archivos .js y .jsx de la carpeta src y los transpile en la
-   carpeta dist.
-   Para ejecutar el script, usa:
+   En este flujo no se usa `babel src -d dist` para crear el bundle: ese comando produce archivos JavaScript transpilados, no `bundle.js`.
 
-   ```bash
+9. **Construir y abrir la aplicación**:
+
+   Ejecuta:
+
+   ```powershell
    npm run build
    ```
 
-   Esto generará un archivo bundle.js en la carpeta dist con el código transpilado.
-
-8. **Ejecutar la aplicación**:
-
-   Ahora, abre el archivo `dist/index.html` en un navegador. Deberías ver el texto "Hola, Mundo desde React con Babel!" en la página.
+   Webpack generará `dist/bundle.js`. Abre `dist/index.html` en el navegador.
 
 ## 1.6 Empaquetado de Proyectos {#seccion-1-6}
 
