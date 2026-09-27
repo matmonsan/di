@@ -588,6 +588,7 @@ Node.js para explicar el uso de npm.
      sección dependencies.
    - Creará una carpeta `node_modules` donde se descargarán y almacenarán todas las dependencias del proyecto.
 
+
 5. **Crear un archivo de servidor básico**:
 
    Ahora, crea un archivo `index.js` que será el punto de entrada de tu aplicación:
@@ -637,8 +638,8 @@ Node.js para explicar el uso de npm.
 8. **Administrar dependencias** (Opcional):
    - **Para actualizar una dependencia**: Usa npm update nombre_del_paquete.
    - **Para eliminar una dependencia**: Usa npm uninstall nombre_del_paquete.
-   - **Para instalar todas las dependencias listadas en `package.json`**: Usa npm install (esto es útil
-     cuando clonas un proyecto y necesitas instalar todas sus dependencias).
+   - **Para instalar todas las dependencias listadas en `package.json`**: Usa npm install (esto es útil cuando clonas un proyecto y necesitas instalar todas sus dependencias).
+
 
 9. **Fichero `.gitignore`**:
 
@@ -654,126 +655,144 @@ Node.js para explicar el uso de npm.
 
 ### 1.5.2 Ejemplo de una aplicación react {#seccion-1-5-2}
 
+<img src="assets/img/figura11.png" alt="Logotipo de React">
+
 Ahora vamos a usar npm, node y babel para crear una pequeña aplicación en React.
 
-1. Crear la estructura del proyecto
+1. **Crear la estructura del proyecto**:
+
    Primero, crea la carpeta para tu proyecto y la estructura básica de directorios y archivos:
+
+   ```bash
    mkdir mi-proyecto-babel
    cd mi-proyecto-babel
    mkdir src dist
-  `touch src/index.jsx dist/index.html`
-
-   <img src="assets/img/figura11.png" alt="Logotipo de React">
+   touch src/index.jsx dist/index.html
+   ```
 
    La estructura del proyecto será:
+
+   ```
    mi-proyecto-babel/
-   src/
+     src/
+       index.jsx
+     dist/
+       index.html
+     package.json
+   ```
 
-**`index.jsx`**
+2. **Inicializar el proyecto con NPM**:
 
-dist/
-
-**`index.html`**
-
-**`package.json`**
-
-2. Inicializar el proyecto con NPM
    Inicializa el proyecto para crear un archivo `package.json`:
 
    ```bash
    npm init -y
    ```
 
-El comando ‑y acepta todos los valores predeterminados para simplificar el proceso. 3. Instalar Babel y plugins
-Ahora, instala Babel y los plugins necesarios para transpilar JSX y ES6+:
+   El comando -y acepta todos los valores predeterminados para simplificar el proceso.
 
-```bash
-npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/preset-react
-```
+3. **Instalar Babel y plugins**:
 
-Explicación de los paquetes:
+   Ahora, instala Babel y los plugins necesarios para transpilar JSX y ES6+:
 
-- La opción --save-dev, indica que se trata de una dependencia de desarrollo. Es decir este
-  paquete es necesario mientras estamos programando pero no es necesario en el código final.
-- **@babel/core**: El núcleo de Babel, que realiza la transformación de código.
-- **@babel/cli**: Una interfaz de línea de comandos para Babel, para que puedas ejecutarlo desde la terminal.
-- **@babel/preset-env**: Un conjunto de reglas que permiten a Babel transpilar ES6+ a ES5.
-- **@babel/preset-react**: Un conjunto de reglas para transpilar JSX y otras características
-  específicas de React.
+   ```bash
+   npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/preset-react
+   ```
 
-4. Configurar Babel
+   Explicación de los paquetes:
+
+   - La opción --save-dev, indica que se trata de una dependencia de desarrollo. Es decir este
+     paquete es necesario mientras estamos programando pero no es necesario en el código final.
+   - **@babel/core**: El núcleo de Babel, que realiza la transformación de código.
+   - **@babel/cli**: Una interfaz de línea de comandos para Babel, para que puedas ejecutarlo desde la terminal.
+   - **@babel/preset-env**: Un conjunto de reglas que permiten a Babel transpilar ES6+ a ES5.
+   - **@babel/preset-react**: Un conjunto de reglas para transpilar JSX y otras características
+     específicas de React.
+
+4. **Configurar Babel**:
+
    Crea un archivo `.babelrc` en la raíz del proyecto para configurar Babel:
-   touch `.babelrc`
+
+   ```bash
+   touch .babelrc
+   ```
+
    Y añade la siguiente configuración:
 
-```js
-{
-"presets": ["@babel/preset-env", "@babel/preset-react"]
-}
-```
+   ```js
+   {
+     "presets": ["@babel/preset-env", "@babel/preset-react"]
+   }
+   ```
 
-Esta configuración le dice a Babel que utilice los presets para ES6+ y JSX. 5. Escribir el código JSX
-Ahora, escribe un simple componente en `src/index.jsx`:
+   Esta configuración le dice a Babel que utilice los presets para ES6+ y JSX.
 
-**`src/index.jsx`**
+5. **Escribir el código JSX**:
 
-```js
-import React from 'react';
-import ReactDOM from 'react-dom';
-const App = () => {
-return (
-```
+   Ahora, escribe un simple componente en `src/index.jsx`:
 
-<div>
-<h1>Hola, Mundo desde React con Babel!</h1>
-</div>
+   **`src/index.jsx`**
 
-```js
-);
-};
-ReactDOM.render(<App />, document.getElementById('root'));
-```
+   ```js
+   import React from 'react';
+   import ReactDOM from 'react-dom';
+   const App = () => {
+     return (
+       <div>
+         <h1>Hola, Mundo desde React con Babel!</h1>
+       </div>
+     );
+   };
+   ReactDOM.render(<App />, document.getElementById('root'));
+   ```
 
-6. Configurar el archivo HTML
-  Crea un archivo `dist/index.html` que servirá como plantilla para tu aplicación:
+6. **Configurar el archivo HTML**:
 
-<!-- dist/index.html -->
+   Crea un archivo `dist/index.html` que servirá como plantilla para tu aplicación:
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mi Proyecto con Babel</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script src="bundle.js"></script>
-  </body>
-</html>
-```
+   **`dist/index.html`**
 
-Este archivo HTML incluye un div con el ID root, donde se montará tu aplicación React. El archivo
-bundle.js es donde se incluirá el JavaScript transpilado. 7. Transpilar JSX a JavaScript
-Añade un script en el archivo `package.json` para transpilar tu código usando Babel:
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+     <head>
+       <meta charset="UTF-8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       <title>Mi Proyecto con Babel</title>
+     </head>
+     <body>
+       <div id="root"></div>
+       <script src="bundle.js"></script>
+     </body>
+   </html>
+   ```
 
-```json
-"scripts": {
-"build": "babel src -d dist --extensions \".js,.jsx\""
-}
-```
+   Este archivo HTML incluye un div con el ID root, donde se montará tu aplicación React. El archivo
+   bundle.js es donde se incluirá el JavaScript transpilado.
 
-Este script le dice a Babel que tome los archivos .js y .jsx de la carpeta src y los transpile en la
-carpeta dist.
-Para ejecutar el script, usa:
+7. **Transpilar JSX a JavaScript**:
 
-```bash
-npm run build
-```
+   Añade un script en el archivo `package.json` para transpilar tu código usando Babel:
 
-Esto generará un archivo bundle.js en la carpeta dist con el código transpilado. 8. Ejecutar la aplicación
-Ahora, abre el archivo `dist/index.html` en un navegador. Deberías ver el texto “Hola, Mundo desde React con Babel!” en la página.
+   ```json
+   "scripts": {
+     "build": "babel src -d dist --extensions \".js,.jsx\""
+   }
+   ```
+
+   Este script le dice a Babel que tome los archivos .js y .jsx de la carpeta src y los transpile en la
+   carpeta dist.
+   Para ejecutar el script, usa:
+
+   ```bash
+   npm run build
+   ```
+
+   Esto generará un archivo bundle.js en la carpeta dist con el código transpilado.
+
+8. **Ejecutar la aplicación**:
+
+   Ahora, abre el archivo `dist/index.html` en un navegador. Deberías ver el texto "Hola, Mundo desde React con Babel!" en la página.
 
 ## 1.6 Empaquetado de Proyectos {#seccion-1-6}
 
