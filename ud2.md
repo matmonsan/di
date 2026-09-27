@@ -130,8 +130,7 @@ explica cómo depurar en el navegador, acompañando la explicación con ejemplos
 
 #### 1.3.2.1 Acceder a las Herramientas de Desarrollo {#subseccion-1-3-2-1}
 
-En la mayoría de los navegadores, puedes acceder a las herramientas de desarrollo pulsando F12 o Ctrl+Shift+I (Windows/Linux) o Cmd+Option+I
-(Mac).
+En la mayoría de los navegadores, puedes acceder a las herramientas de desarrollo pulsando **F12** o **Ctrl+Shift+I** (Windows/Linux) o **Cmd+Option+I** (Mac).
 
 #### 1.3.2.2 Usar la Consola (Console) {#subseccion-1-3-2-2}
 
@@ -165,14 +164,13 @@ La consola es una herramienta poderosa para visualizar mensajes, errores y para 
 1. Abre el archivo HTML en tu navegador.
 2. Abre las herramientas de desarrollo (Ctrl + Shift + I).
 3. Navega a la pestaña Console.
-4. **Verás los mensajes**:
+4. Verás los mensajes:
    Función saludar iniciada
    Mensaje creado: Hola, Mundo
 
 #### 1.3.2.3 Establecer Puntos de Interrupción (Breakpoints) {#subseccion-1-3-2-3}
 
-Los breakpoints permiten pausar la
-ejecución del código en una línea específica para inspeccionar el estado de la aplicación.
+Los breakpoints permiten pausar la ejecución del código en una línea específica para inspeccionar el estado de la aplicación.
 
 **Ejemplo:**
 
@@ -202,8 +200,7 @@ ejecución del código en una línea específica para inspeccionar el estado de 
 2. Abre las herramientas de desarrollo.
 3. Ve a la pestaña Sources (Google Chrome) o Depurador (Firefox).
 4. Navega al archivo JavaScript (en este caso, está embebido en el HTML).
-5. Haz clic en el número de línea donde deseas establecer el breakpoint (por ejemplo, en la línea
-   `let` suma = a + b;).
+5. Haz clic en el número de línea donde deseas establecer el breakpoint (por ejemplo, en la línea `let suma = a + b;`).
 6. Recarga la página. La ejecución se pausará en el breakpoint.
 7. Ahora puedes inspeccionar variables, el call stack y más.
 
@@ -252,8 +249,7 @@ breakpoint o `debugger`), puedes inspeccionar:
 
 **Ejemplo:**
 
-Utilizando el ejemplo anterior con la función multiplicar, cuando la ejecución se pausa en `debugger`
-;:
+Utilizando el ejemplo anterior con la función multiplicar, cuando la ejecución se pausa en `debugger`;:
 
 1. **Variables**:
    - a tiene el valor 4.
