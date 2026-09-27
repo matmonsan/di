@@ -118,7 +118,7 @@ console.log("Hola mundo desde un fichero externo");
 
 <img src="assets/img/figura3.png" alt="Logotipo de Google Chrome">
 
-Generalmente, los scripts se colocan al final de la etiqueta <body>, aunque si se trata de librerías que no se ejecutan hasta que ocurre un evento, pueden situarse dentro del <head>. El motivo de situar los scripts al final del <body> es que el navegador debe cargar primero el contenido del <body> y luego el de los <script> para que el código JavaScript pueda acceder a los elementos cargados en la página web (DOM).
+Generalmente, los scripts se colocan al final de la etiqueta `<body>`, aunque si se trata de librerías que no se ejecutan hasta que ocurre un evento, pueden situarse dentro del `<head>`. El motivo de situar los scripts al final del `<body>` es que el navegador debe cargar primero el contenido del `<body>` y luego el de los `<script>` para que el código JavaScript pueda acceder a los elementos cargados en la página web (DOM).
 
 La consola del navegador es otra herramienta útil que permite ejecutar código JavaScript directamente en el navegador.
 
