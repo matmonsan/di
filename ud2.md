@@ -68,11 +68,10 @@ Hasta hace poco, el soporte de ES6 en los navegadores web no era completo, lo qu
 
 ### 1.3.1 En el Navegador Web {#seccion-1-3-1}
 
-El código JavaScript se puede ejecutar directamente en un navegador web. Existen varias formas de
-incluir código JavaScript en una página:
+El código JavaScript se puede ejecutar directamente en un navegador web. Existen varias formas de incluir código JavaScript en una página:
 
-- **Código interno**: Usando la etiqueta <script> dentro del documento HTML. Crea un documento `index.html` con el siguiente contenido. Usa las herramientas para desarrolladores,
-  tecla F12, y accede a la pestaña Consola.
+- **Código interno**: Usando la etiqueta `<script>` dentro del documento HTML. Crea un documento `index.html` con el siguiente contenido. Usa las herramientas para desarrolladores tecla F12, y accede a la pestaña Consola.
+
   **`index.html`**
 
   ```html
@@ -93,11 +92,11 @@ Una página web se puede visualizar en el navegador de muchas formas:
 
 - **Como archivo HTML local**: Abre en el navegador una ruta como `file:///home/usuario/proyecto/index.html`
   o `file://C:/Users/usuario/proyecto/index.html`.
-- Como archivo HTML en un servidor web. Puedes usar una extensión (plugin) útil para visual
-  studio code como Live Server para visualizar la página web en el navegador. Instala la extensión
-  Live Server desde el marketplace de vscode y pulsa F1 y selecciona Live Server: Open with
-  Live Server.
+- **Como archivo HTML** en un servidor web. Puedes usar una extensión (plugin) útil para visual
+  studio code como Live Server para visualizar la página web en el navegador. Instala la extensión   Live Server desde el marketplace de vscode y pulsa F1 y selecciona Live Server: Open with Live Server.
+
 - **Código externo**: Referenciando un archivo JavaScript externo.
+
   **`index.html`**
 
   ```html
@@ -119,11 +118,8 @@ console.log("Hola mundo desde un fichero externo");
 
 <img src="assets/img/figura3.png" alt="Logotipo de Google Chrome">
 
-Generalmente, los scripts se colocan al final de la etiqueta <body>, aunque si se trata de librerías que
-no se ejecutan hasta que ocurre un evento, pueden situarse dentro del <head>. El motivo de situar
-los scripts al final del <body> es que el navegador debe cargar primero el contenido del <body> y
-luego el de los <script> para que el código JavaScript pueda acceder a los elementos cargados en
-la página web (DOM).
+Generalmente, los scripts se colocan al final de la etiqueta <body>, aunque si se trata de librerías que no se ejecutan hasta que ocurre un evento, pueden situarse dentro del <head>. El motivo de situar los scripts al final del <body> es que el navegador debe cargar primero el contenido del <body> y luego el de los <script> para que el código JavaScript pueda acceder a los elementos cargados en la página web (DOM).
+
 La consola del navegador es otra herramienta útil que permite ejecutar código JavaScript directamente en el navegador.
 
 ### 1.3.2 Depuración en el navegador {#seccion-1-3-2}
