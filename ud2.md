@@ -22,8 +22,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 
 # 1 Introducción a ECMAScript y JavaScript {#seccion-1}
 
-El estándar que define el lenguaje JavaScript se denomina **ECMAScript**. La primera versión de este
-estándar fue lanzada en 1997, marcando el inicio de un lenguaje que ha evolucionado significativamente desde entonces.
+<img src="assets/img/figura1.png" alt="Logotipo de JavaScript">
+
+El estándar que define el lenguaje JavaScript se denomina **ECMAScript**. La primera versión de este estándar fue lanzada en 1997, marcando el inicio de un lenguaje que ha evolucionado significativamente desde entonces.
 La versión 6 de ECMAScript, conocida también como ECMAScript 2015 (ES2015), supuso una mejora
 significativa en el lenguaje. Entre las novedades más destacadas se incluyen:
 
@@ -32,44 +33,35 @@ significativa en el lenguaje. Entre las novedades más destacadas se incluyen:
 - **Bucles `for` ... of**: Nueva forma de iterar sobre elementos de un iterable.
 - **Funciones Arrow**: Sintaxis más concisa para definir funciones con `() => {}`.
 - **Promesas**: Manejo asincrónico de código a través de promesas (`Promise`).
-- Otras mejoras como `let`, `const`, destructuring, spread, etc.
-  La última especificación oficial, la versión 13 de ECMAScript, fue desarrollada en junio de 2022. Esta
-  versión continuó con la evolución del lenguaje, incorporando nuevas funcionalidades y mejoras de
-  rendimiento.
+- **Otras mejoras**: como `let`, `const`, destructuring, spread, etc.
+  
+La última especificación oficial, la versión 13 de ECMAScript, fue desarrollada en junio de 2022. Esta versión continuó con la evolución del lenguaje, incorporando nuevas funcionalidades y mejoras de rendimiento.
 
 ## 1.1 Soporte de Navegadores y Compatibilidad {#seccion-1-1}
 
 Históricamente, los navegadores web han implementado las versiones de JavaScript con pequeñas
-diferencias, lo que solía generar problemas para desarrollar scripts compatibles. Los desarrolladores
-debían detectar el tipo de navegador y programar variantes específicas para cada uno. Afortunadamente, este problema ha disminuido gracias a la estandarización y la evolución de los motores de
-ejecución de JavaScript.
-
-<img src="assets/img/figura1.png" alt="Logotipo de JavaScript">
+diferencias, lo que solía generar problemas para desarrollar scripts compatibles. Los desarrolladores debían detectar el tipo de navegador y programar variantes específicas para cada uno. Afortunadamente, este problema ha disminuido gracias a la estandarización y la evolución de los motores de ejecución de JavaScript.
 
 Para verificar el soporte que ofrecen los distintos navegadores a las versiones de ECMAScript (ES5,
 ES6, etc.), puedes consultar las siguientes páginas:
 
-- Can I use
-- Compatibilidad ES6
+- [Can I use](https://caniuse.com/?search=javascript)
+- [Compatibilidad ES6](https://compat-table.github.io/compat-table/es6/)
 
   <img src="assets/img/figura2.png" alt="Icono de Can I Use">
 
 ## 1.2 Transpilación de Código {#seccion-1-2}
 
-Aunque el soporte de ES6 está muy avanzado, la **transpilación** sigue siendo una práctica común. Consiste
-en traducir código escrito en un lenguaje de alto nivel a otro del mismo nivel de abstracción. Por ejemplo:
+Aunque el soporte de ES6 está muy avanzado, la **transpilación** sigue siendo una práctica común. Consiste en traducir código escrito en un lenguaje de alto nivel a otro del mismo nivel de abstracción. Por ejemplo:
 
 - **De JavaScript ES6 a ES5**: Para asegurar una mayor compatibilidad con todos los navegadores.
 - **De Java a Kotlin**: Para aprovechar las ventajas de Kotlin sobre Java.
   Por otro lado, compilar se refiere a la traducción de un lenguaje de alto nivel a un nivel más bajo,
   como:
-- De código Java a Bytecode (.class)
-- De código C a Código máquina
-  Hasta hace poco, el soporte de ES6 en los navegadores web no era completo, lo que hacía necesario
-  transpilar el código ES6 a ES5 al desarrollar aplicaciones con frameworks como React o Angular. Esto
-  se hacía para garantizar la compatibilidad con una gama más amplia de navegadores, especialmente aquellos más antiguos como Internet Explorer, que no soportaban las nuevas características de
-  ECMAScript 2015 (ES6). Sin embargo, hoy en día, la mayoría de los navegadores modernos han adoptado completamente ES6 y versiones posteriores, lo que reduce la necesidad de transpilar el código
-  a ES5.
+- **De código Java a Bytecode** (.class)
+- **De código C a Código máquina**
+  
+Hasta hace poco, el soporte de ES6 en los navegadores web no era completo, lo que hacía necesario   transpilar el código ES6 a ES5 al desarrollar aplicaciones con frameworks como React o Angular. Esto   se hacía para garantizar la compatibilidad con una gama más amplia de navegadores, especialmente aquellos más antiguos como Internet Explorer, que no soportaban las nuevas características de   ECMAScript 2015 (ES6). Sin embargo, hoy en día, la mayoría de los navegadores modernos han adoptado completamente ES6 y versiones posteriores, lo que reduce la necesidad de transpilar el código   a ES5.
 
 ## 1.3 Ejecución de JavaScript {#seccion-1-3}
 
