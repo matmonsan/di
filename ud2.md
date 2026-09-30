@@ -22,6 +22,8 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 10. [BOM y Eventos](#bom-y-eventos)
 {% endcomment %}
 
+---
+
 # 1. Introducción
 
 ## 1.1 ECMAScript y JavaScript
