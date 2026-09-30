@@ -10,8 +10,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 1. [Introducción](#1-introducción)
 2. [Variables y tipos de datos](#2-variables-y-tipos-de-datos)
     - [Práctica 2](#211-práctica-2-variables-y-tipos-de-datos)
-{% comment %}
 3. [Estructuras de control](#estructuras-de-control)
+    - [Práctica 3](#34-práctica-3-estructuras-de-control)
+{% comment %}
 4. [Funciones](#funciones)
 5. [Arrays](#arrays)
 6. [Objetos](#objetos)
@@ -2447,12 +2448,12 @@ La desestructuración es muy útil en diversas situaciones, como:
 4. Guarda cada ejercicio en su propia carpeta y nombra el archivo `.js` según el ejercicio. Por ejemplo:
 
    ```text
-Javascript/
-  ejercicio-1-hola-mundo/
-    index.html
-    holamundo.js
-  ejercicio-2-number-math/
-    number-math.js
+  Javascript/
+    ejercicio-1-hola-mundo/
+      index.html
+      holamundo.js
+    ejercicio-2-number-math/
+      number-math.js
    ```
 
 5. Comparte el repositorio con el profesor para que pueda acceder.
@@ -2512,8 +2513,7 @@ Pide al usuario su edad y la nota media de su expediente, con tres decimales, y 
 - **e.** Usa `typeof` para mostrar el tipo de las variables utilizadas.
 - **f.** Comprueba que la edad y la nota sean números válidos, que la nota esté entre 0 y 10 y que no se intente dividir entre cero.
 
-{% comment %}
-# 3. Estructuras de control
+# 3. Estructuras de control {#estructuras-de-control}
 
 ## 3.1 Estructuras condicionales: `if`, `switch`, ternario
 
@@ -2522,59 +2522,39 @@ A continuación, se repasa el uso de las estructuras `if`, `else`, `switch`, y o
 ### 3.1.1 Estructura `if`, `else` `if`, `else`
 
 ```js
-let hora = 10;
+const hora = 10;
 if (hora < 12) {
-console.log("Buenos días");
+  console.log("Buenos días");
+} else if (hora < 18) {
+  console.log("Buenas tardes");
+} else {
+  console.log("Buenas noches");
 }
 // Salida: Buenos días
-let hora = 14;
-if (hora < 12) {
-console.log("Buenos días");
-```
-
-} `else` {
-
-```js
-console.log("Buenas tardes");
-}
-// Salida: Buenas tardes
 ```
 
 La declaración `else` `if` permite agregar múltiples condiciones entre un `if` inicial y un `else` final.
 
 ```js
-let hora = 18;
+const hora = 18;
 if (hora < 12) {
-console.log("Buenos días");
-```
-
-} `else` `if` (hora < 18) {
-
-```js
-console.log("Buenas tardes");
-```
-
-} `else` {
-
-```js
-console.log("Buenas noches");
+  console.log("Buenos días");
+} else if (hora < 18) {
+  console.log("Buenas tardes");
+} else {
+  console.log("Buenas noches");
 }
 // Salida: Buenas noches
+```
+
+```js
 const nota = 8;
 if (nota < 5) {
-console.log("Suspenso");
-```
-
-} `else` `if` (nota < 6) {
-
-```js
-console.log("Aprobado");
-```
-
-} `else` {
-
-```js
-console.log("Excelente");
+  console.log("Suspenso");
+} else if (nota < 6) {
+  console.log("Aprobado");
+} else {
+  console.log("Excelente");
 }
 ```
 
@@ -2590,38 +2570,38 @@ if (bandera) {
 }
 ```
 
-Aquí, cualquier valor que no sea 0, `null`, `undefined`, NaN, una cadena vacía “” o `false`, se considera `true`
-cuando se evalúa en un `if`. Puedes probar diferentes valores para bandera como 1, 0, “ “,”cadena”, [], {},
-[`true`], `null`, `undefined`, {x:1}, [1,2,3] y observar cómo se comporta el `if`.
-
-### 3.1.3 Comprobación de inicialización de variables
-
-Para comprobar si una variable ha sido inicializada, puedes utilizar una condición `if`. Sin embargo,
-declarar una variable sin inicializarla (solo con `const`) lanzará un error en JavaScript. La declaración
-correcta sería con `let` o `var`.
+Los valores que se convierten en `false` (valores *falsy*) son `false`, `0`, `-0`, `0n`, `""`, `null`, `undefined` y `NaN`. Cualquier otro valor es *truthy*; por ejemplo, las cadenas no vacías y todos los objetos, incluidos los arrays y objetos vacíos.
 
 ```js
-let variable;
-if (variable) {
-console.log("Inicializada");
-```
+if ([]) {
+  console.log("Un array vacío es truthy");
+}
 
-} `else` {
-
-```js
-console.log('No inicializada');
+if ("") {
+  console.log("Este mensaje no se muestra");
 }
 ```
 
-Este código verifica si variable tiene un valor considerado truthy. Si no ha sido inicializada o es un
-valor falsy (como `null` o `undefined`), se ejecutará el bloque `else`.
+### 3.1.3 Variables sin inicializar y valores falsy
+
+Una variable declarada con `let` sin valor asignado contiene `undefined`. Una condición como `if (variable)` no comprueba si se asignó un valor: comprueba si el valor es *truthy*. Por ejemplo, `0` y `""` son valores asignados, pero se consideran *falsy*. Una declaración `const` siempre debe incluir un valor inicial.
+
+```js
+let variable;
+if (variable === undefined) {
+  console.log("No tiene un valor definido");
+} else {
+  console.log("Tiene un valor definido");
+}
+```
+
+Esta comparación tampoco permite distinguir entre una variable que no recibió asignación y otra a la que se asignó explícitamente `undefined`.
 
 ### 3.1.4 Uso de operadores lógicos
 
-#### 3.1.4.1 Operador lógico AND (&&)
+### Operador lógico AND (`&&`)
 
-El operador && evalúa expresiones de izquierda a derecha y detiene la evaluación tan pronto como
-una expresión es `false`. Esto se conoce como “corto‑circuito AND”.
+El operador `&&` evalúa de izquierda a derecha y se detiene al encontrar un valor *falsy*. Devuelve ese valor; si todos son *truthy*, devuelve el último. Este comportamiento se conoce como evaluación de corto circuito.
 
 ```js
 function A() {
@@ -2638,9 +2618,9 @@ console.log(A() && B());
 En este ejemplo, B nunca es llamada porque A() retorna `null`, que es un valor falsy. Como resultado, la
 evaluación se detiene y se retorna `null`.
 
-#### 3.1.4.2 Operador lógico OR (||)
+### Operador lógico OR (`||`)
 
-El operador || también se evalúa de izquierda a derecha, pero se detiene tan pronto como una expresión es `true`, devolviendo el valor truthy.
+El operador `||` evalúa de izquierda a derecha y se detiene al encontrar un valor *truthy*. Devuelve ese valor; si todos son *falsy*, devuelve el último.
 
 ```js
 function A() {
@@ -2654,8 +2634,15 @@ function B() {
 console.log(A() || B());
 ```
 
-Aquí, B no es llamada porque A() retorna un array [], que es un valor truthy. La evaluación se corta y
-se devuelve [].
+Aquí, B no es llamada porque A() retorna un array `[]`, que es un valor *truthy*. La evaluación se corta y
+se devuelve ese array. El operador `!` invierte el valor booleano de una expresión y puede usarse para negar una condición.
+
+```js
+const tienePermiso = false;
+if (!tienePermiso) {
+  console.log("Acceso denegado");
+}
+```
 
 ### 3.1.5 Estructura `switch`
 
@@ -2663,46 +2650,30 @@ La estructura `switch` se utiliza para seleccionar uno entre varios bloques de c
 
 ```js
 function aNotaNumerica(calificacion) {
-let nota = 0;
-```
-
-`switch (calificacion) {`
-`case` "Suspenso":
-
-```js
-nota = 1;
-```
-
-`break`;
-`case` "Aprobado":
-
-```js
-nota = 5;
-```
-
-`break`;
-`case` "Sobresaliente":
-
-```js
-nota = 9;
-```
-
-`break`;
-`default`:
-nota = 0; // Valor por defecto.
-
-```js
+  let nota = 0;
+  switch (calificacion) {
+    case "Suspenso":
+      nota = 1;
+      break;
+    case "Aprobado":
+      nota = 5;
+      break;
+    case "Sobresaliente":
+      nota = 9;
+      break;
+    default:
+      nota = 0;
+  }
+  return nota;
 }
-return nota;
-}
+
 let calificacion = "Sobresaliente";
 console.log(aNotaNumerica(calificacion)); // 9
 calificacion = "Otra cosa";
 console.log(aNotaNumerica(calificacion)); // 0
 ```
 
-En este ejemplo, `switch` compara el valor de calificacion con cada `case` y ejecuta el código asociado al
-primer `case` que coincida. Si no hay coincidencia, se ejecuta el bloque `default`.
+`switch` compara la expresión con cada `case` usando igualdad estricta (`===`) y ejecuta el primer bloque coincidente. `break` termina el `switch`; si se omite, la ejecución continúa en el siguiente `case` (*fall-through*). `default` se ejecuta cuando ningún caso coincide y es opcional.
 
 ### 3.1.6 Operador ternario
 
@@ -2728,14 +2699,11 @@ código limpio y legible.
 
 ## 3.2 Bucles
 
-Existen varios tipos de bucles que te permiten ejecutar un bloque de código varias veces, lo cual es útil
-cuando se trabaja con estructuras de datos como arrays, objetos, o incluso cuando necesitas repetir
-una operación bajo ciertas condiciones.
+Los bucles repiten un bloque de código. `for` suele ser práctico cuando se controla un contador; `while` comprueba la condición antes de cada repetición y puede no ejecutarse ninguna vez; `do...while` la comprueba después y se ejecuta al menos una vez.
 
 ### 3.2.1 `for`
 
-El bucle `for` es el tipo de bucle más tradicional en JavaScript. Se utiliza cuando conoces de antemano
-cuántas veces quieres que se ejecute el bloque de código.
+El bucle `for` reúne en su cabecera la inicialización, la condición y la actualización del contador. Es práctico cuando se conoce el número de repeticiones o se necesita controlar un índice.
 
 ```js
 for (let i = 0; i < 5; i++) {
@@ -2745,18 +2713,13 @@ for (let i = 0; i < 5; i++) {
 
 ### 3.2.2 `while`
 
-El bucle `while` se utiliza cuando no se conoce de antemano el número exacto de iteraciones. Continúa
-ejecutándose mientras la condición especificada sea verdadera.
+El bucle `while` se utiliza cuando las repeticiones dependen de una condición. Esta se comprueba antes de cada vuelta, por lo que el cuerpo puede no ejecutarse si inicialmente es falsa.
 
 ```js
 let i = 0;
 while (i < 5) {
-console.log('Iteración número: ' + i);
-```
-
-i++;
-
-```js
+  console.log("Iteración número: " + i);
+  i++;
 }
 ```
 
@@ -2768,59 +2731,126 @@ ejecuta al menos una vez antes de que la condición sea evaluada.
 ```js
 let i = 0;
 do {
-console.log('Iteración número: ' + i);
+  console.log("Iteración número: " + i);
+  i++;
+} while (i < 5);
 ```
-
-i++;
-} `while` (i < 5);
 
 ### 3.2.4 `for`…in
 
-El bucle `for`…in se utiliza para iterar sobre las propiedades enumerables de un objeto. Es útil cuando
-trabajas con objetos, no con arrays.
+El bucle `for...in` recorre las claves de las propiedades enumerables de un objeto, incluidas las heredadas. Úsalo principalmente con objetos, no con arrays: recorre claves y no valores, y puede incluir propiedades que no sean índices.
 
 ```js
 const persona = { nombre: "Juan", edad: 30, ciudad: "Madrid" };
-for (let clave in persona) {
+for (const clave in persona) {
   console.log(clave + ": " + persona[clave]);
 }
 ```
 
+Si solo necesitas las propiedades propias del objeto, puedes recorrer `Object.keys(persona)` con `for...of`.
+
 ### 3.2.5 `for`…of
 
-El bucle `for`…of se utiliza para iterar sobre elementos iterables, como arrays, strings, o cualquier objeto
-que implemente el protocolo iterable (por ejemplo, Map, Set).
+El bucle `for...of` recorre los valores de un objeto iterable, como un array, una cadena, un `Map` o un `Set`.
 
 ```js
 const array = ["a", "b", "c"];
-for (let letra of array) {
+for (const letra of array) {
   console.log(letra);
 }
 ```
 
 ### 3.2.6 `forEach`
 
-`forEach` es un método de los arrays en JavaScript que te permite ejecutar una función específica para
-cada elemento del array.
+`forEach` es un método de los arrays que ejecuta una función para cada elemento. A diferencia de los bucles, no permite detener la iteración con `break` ni saltar una vuelta con `continue`; `return` solo termina la llamada actual a la función callback.
 
 ```js
 const numeros = [1, 2, 3, 4, 5];
-```
-
-`numeros.forEach(function(numero) {`
-
-```js
-console.log(numero);
+numeros.forEach(function (numero) {
+  console.log(numero);
 });
 ```
 
 Explicación:
 
 - En este ejemplo, la función anónima se ejecuta para cada elemento en el array numeros.
-- `forEach` no puede romperse (usar `break`), por lo que es menos flexible que un bucle `for`.
-  Más adelante veremos otras funciones iteradoras de arrays.
+- Usa `for`, `while` o `for...of` cuando necesites controlar la iteración con `break` o `continue`.
 
+### 3.2.7 Sentencias `break` y `continue`
 
+`break` termina el bucle más cercano. `continue` omite el resto de la iteración actual y pasa a la siguiente. `break` también termina un `switch`.
+
+```js
+for (let numero = 0; numero < 10; numero++) {
+  if (numero === 2) {
+    continue;
+  }
+  if (numero === 7) {
+    break;
+  }
+  console.log(numero);
+}
+// Muestra 0, 1, 3, 4, 5 y 6
+```
+
+## 3.3 Manejo de excepciones: `throw`, `try`, `catch` y `finally`
+
+`throw` lanza una excepción. El bloque `try` contiene el código que puede fallar, `catch` recibe y gestiona el error, y `finally` se ejecuta tanto si hubo una excepción como si no.
+
+```js
+function dividir(dividendo, divisor) {
+  if (divisor === 0) {
+    throw new Error("No se puede dividir entre cero");
+  }
+  return dividendo / divisor;
+}
+
+try {
+  console.log(dividir(10, 0));
+} catch (error) {
+  console.error(error.message);
+} finally {
+  console.log("Fin del cálculo");
+}
+```
+
+## 3.4 PRÁCTICA 3: Estructuras de control
+
+1. Pide al usuario dos números. Comprueba si son iguales, si el primero es mayor que el segundo o si el segundo es mayor que el primero. Muestra un mensaje de alerta con el resultado.
+
+2. Amplía el ejercicio anterior: comprueba que ambos valores sean números válidos y distintos de cero antes de compararlos. Si algún valor no es válido, muestra un mensaje de error.
+
+3. Muestra una sola vez el siguiente menú y, según la opción elegida, indica el nivel del usuario. Usa `switch`.
+  - `1`. Usuario principiante
+  - `2`. Usuario intermedio
+  - `3`. Usuario avanzado
+  - `4`. Salir
+
+4. Muestra los números pares del 1 al 20.
+
+5. Usa un bucle para pedir números y calcular su suma y su media. Cuando el usuario introduzca un número negativo, muestra los resultados; no incluyas ese número en los cálculos.
+
+6. Pide dos números al usuario y muestra todos los números comprendidos entre ellos, incluidos los extremos.
+
+7. Define un array con los nombres de tus compañeros de clase y muestra su contenido usando el bucle `for...in`.
+
+8. Pide al usuario una palabra y calcula cuántas vocales contiene.
+
+9. Guarda una contraseña en una variable y pide al usuario que la introduzca hasta que acierte.
+
+10. **El adivino**: genera un número aleatorio entre 1 y 10 y pide al usuario que lo adivine. Repite la pregunta hasta que acierte e indica si cada intento es menor o mayor que el número secreto.
+
+11. Modifica el ejercicio 3 para que el menú se muestre repetidamente hasta que el usuario elija `4. Salir`.
+
+12. Muestra el mensaje de confirmación `¿Deseas continuar?`. Según el usuario acepte o rechace, muestra un mensaje distinto.
+
+13. Pide un número al usuario y muestra todos sus divisores.
+
+14. Pide un número y muestra si es par o impar.
+
+15. Realiza una cuenta atrás desde 10 hasta 0 y muestra cada número.
+
+{% comment %}
 # 4. Funciones
 
 ## 4.1 Declaración y uso de funciones
@@ -2834,7 +2864,41 @@ Aquí un ejemplo básico:
 function suma(x, y) {
   return x + y;
 }
+### Tareas
 const s = suma(349, 123);
+1. Pide al usuario dos números. Comprueba si son iguales, si el primero es mayor que el segundo o si el segundo es mayor que el primero. Muestra un mensaje de alerta con el resultado.
+
+2. Amplía el ejercicio anterior: comprueba que ambos valores sean números válidos y distintos de cero antes de compararlos. Si algún valor no es válido, muestra un mensaje de error.
+
+3. Muestra una sola vez el siguiente menú y, según la opción elegida, indica el nivel del usuario. Usa `switch`.
+  - `1`. Usuario principiante
+  - `2`. Usuario intermedio
+  - `3`. Usuario avanzado
+  - `4`. Salir
+
+4. Muestra los números pares del 1 al 20.
+
+5. Usa un bucle para pedir números y calcular su suma y su media. Cuando el usuario introduzca un número negativo, muestra los resultados; no incluyas ese número en los cálculos.
+
+6. Pide dos números al usuario y muestra todos los números comprendidos entre ellos, incluidos los extremos.
+
+7. Define un array con los nombres de tus compañeros de clase y muestra su contenido usando el bucle `for...in`.
+
+8. Pide al usuario una palabra y calcula cuántas vocales contiene.
+
+9. Guarda una contraseña en una variable y pide al usuario que la introduzca hasta que acierte.
+
+10. **El adivino**: genera un número aleatorio entre 1 y 10 y pide al usuario que lo adivine. Repite la pregunta hasta que acierte e indica si cada intento es menor o mayor que el número secreto.
+
+11. Modifica el ejercicio 3 para que el menú se muestre repetidamente hasta que el usuario elija `4. Salir`.
+
+12. Muestra el mensaje de confirmación `¿Deseas continuar?`. Según el usuario acepte o rechace, muestra un mensaje distinto.
+
+13. Pide un número al usuario y muestra todos sus divisores.
+
+14. Pide un número y muestra si es par o impar.
+
+15. Realiza una cuenta atrás desde 10 hasta 0 y muestra cada número.
 imprime(s);
 function imprime(msg) {
   console.log(msg);
@@ -2915,46 +2979,12 @@ Introducidas en ES6, las funciones flecha (arrow functions) proporcionan una sin
 const suma1 = (x, y) => {
   return x + y;
 };
-console.log(suma1(1, 3)); // 4
 // Simplificando aún más:
 const suma2 = (x, y) => x + y;
 console.log(suma2(4, 7)); // 11
 // Con un solo parámetro:
 const polinomio = (x) => x * x + 2 * x;
 console.log(polinomio(2)); // 8
-// Sin parámetros:
-const dospi = () => 3.1415 * 2;
-console.log(dospi()); // 6.283
-```
-
-#### 4.1.4.1 Consideraciones sobre `this` en Funciones Arrow
-
-Una característica clave de las funciones arrow es que no tienen su propio contexto `this`; en su lugar,
-heredan `this` del contexto donde se definieron:
-
-```js
-let o = {
-```
-
-m: `function` () {
-
-```js
-console.log(this === o); // true
-const f = () => {
-console.log(this === o); // true
-};
-f();
-}
-};
-o.m();
-```
-
-Por esta razón, las funciones arrow son especialmente útiles en funciones anidadas para evitar el uso
-de trucos como `const` that = `this`.
-
-```js
-let o = {
-```
 
 m: `function` () {
 
