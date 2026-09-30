@@ -1210,8 +1210,8 @@ Algunas de las palabras reservadas más comunes en JavaScript son:
 - **`var`, `let`, `const`**: utilizadas para declarar variables.
 - **`function`**: utilizada para declarar funciones.
 - **`return`**: utilizada para devolver un valor de una función.
-- **class, extends, super**: utilizadas en la programación orientada a objetos con clases.
-- **try, catch, finally**: utilizadas para el manejo de excepciones.
+- **`class`, `extends`, `super`**: utilizadas en la programación orientada a objetos con clases.
+- **`try`, `catch`, `finally` **: utilizadas para el manejo de excepciones.
 
 **Ejemplo en Código:**
 
@@ -1330,9 +1330,6 @@ let y = 10;
 
 Este tipo de comentario es útil cuando necesitas explicar un bloque de código o dejar una nota más
 extensa.
-
-
-
 
 ## 2.3 Variables
 
@@ -1473,9 +1470,6 @@ console.log(typeof variable); // Output: "string"
 
 Para depurar el código en JavaScript, utiliza herramientas como el `debugger` del navegador para observar cómo se comportan las variables y comprender mejor el flujo de tu programa.
 
-
-
-
 ## 2.4 Operadores
 
 ### 2.4.1 Operadores aritméticos
@@ -1580,19 +1574,6 @@ console.log(persona instanceof Object); // true
 console.log("nombre" in persona); // true
 ```
 
-### Spread y rest
-
-`...` expande elementos en una llamada o literal (spread), y reúne argumentos o propiedades restantes (rest).
-
-```js
-const iniciales = [1, 2];
-const valores = [...iniciales, 3]; // [1, 2, 3]
-function sumar(...numeros) { // reúne argumentos en un array
-  return numeros.reduce((total, numero) => total + numero, 0);
-}
-console.log(sumar(...valores)); // expande el array como argumentos: 6
-```
-
 ### Precedencia y paréntesis
 
 Al combinar operadores, JavaScript aplica reglas de precedencia. Los paréntesis hacen explícito el orden deseado.
@@ -1602,7 +1583,7 @@ const resultado = 2 + 3 * 4; // 14: la multiplicación se evalúa primero
 const agrupado = (2 + 3) * 4; // 20
 ```
 
-## 2.5 Data types
+## 2.5 Tipos de datos
 
 ### 2.5.1 Tipos primitivos
 
@@ -1763,14 +1744,14 @@ Métodos de Manipulación:
   console.log(texto.toLowerCase()); // "hola, mundo!"
   ```
 
-- **charAt(index)**: Obtener el carácter en una posición específica.
+- **`charAt(index)`**: Obtener el carácter en una posición específica.
 
   ```js
   let texto = "Hola";
   console.log(texto.charAt(1)); // "o"
   ```
 
-- **substring(start, end)**: Extraer una subcadena entre dos índices (el índice de end no se
+- **`substring(start, end)`**: Extraer una subcadena entre dos índices (el índice de end no se
   incluye).
 
   ```js
@@ -1778,7 +1759,7 @@ Métodos de Manipulación:
   console.log(texto.substring(0, 4)); // "Java"
   ```
 
-- **slice(start, end)**: Similar a substring(), pero permite índices negativos para contar
+- **`slice(start, end)`**: Similar a substring(), pero permite índices negativos para contar
   desde el final de la cadena.
 
   ```js
@@ -1786,7 +1767,7 @@ Métodos de Manipulación:
   console.log(texto.slice(-6)); // "Script"
   ```
 
-- **split(separator)**: Divide la cadena en un array de subcadenas, utilizando un separador
+- **`split(separator)`**: Divide la cadena en un array de subcadenas, utilizando un separador
   especificado.
 
   ```js
@@ -1795,14 +1776,14 @@ Métodos de Manipulación:
   console.log(palabras); // ["Hola,", "Mundo!"]
   ```
 
-- **trim()**: Elimina los espacios en blanco al principio y al final de la cadena.
+- **`trim()`**: Elimina los espacios en blanco al principio y al final de la cadena.
 
   ```js
   let texto = " Hola, Mundo! ";
   console.log(texto.trim()); // "Hola, Mundo!"
   ```
 
-- **replace(searchValue, newValue)**: Reemplaza una parte de la cadena con otra.
+- **`replace(searchValue, newValue)`**: Reemplaza una parte de la cadena con otra.
 
   ```js
   let texto = "Hola, Mundo!";
@@ -1822,7 +1803,7 @@ Esto permite a los desarrolladores crear cadenas de texto de manera más dinámi
 let saludo = `Hola Mundo`;
 ```
 
-- Interpolación de Expresiones
+- **Interpolación de Expresiones**
   Una de las características más poderosas de los Template Strings es la capacidad de interpolar (insertar) expresiones JavaScript directamente dentro de la cadena usando ${}.
 
   ```js
@@ -1851,7 +1832,7 @@ console.log(resultado); // "La suma de 5 y 10 es 15."
   ```
 Este uso de Template Strings mejora enormemente la legibilidad y la gestión de textos largos o estructuras HTML en JavaScript.
 
-- Tags o Funciones de Plantilla
+- **Tags o Funciones de Plantilla**
   Los template strings también soportan una característica avanzada llamada tagged templates o funciones de plantilla. Permiten que una función procese un template string antes de que se interprete.
   Esta funcionalidad es útil para crear soluciones avanzadas como plantillas personalizadas, traducciones, o escapado de HTML.
 
@@ -1872,7 +1853,7 @@ valores es un array que contiene las expresiones interpoladas.
 
 > Es importante recordar las funciones de plantilla de las template strings ya que las usaremos en los styled components de React.
 
-- Raw Strings
+- **Raw Strings**
   Los template strings también tienen un método incorporado llamado String.raw que permite obtener
   la representación “cruda” de la cadena, es decir, sin procesar las secuencias de escape.
 
@@ -1890,7 +1871,7 @@ console.log(path); // "C:\Development\profile\aboutme.html"
 
 En el primer caso, las secuencias de escape no se procesan y se mantienen tal cual.
 
-- Tagged Templates para Sanitizar Entradas
+- **Tagged Templates para Sanitizar Entradas**
   Un uso práctico de los tagged templates es para sanitizar entradas, como escapar caracteres potencialmente peligrosos para evitar ataques de inyección de HTML o SQL. Aquí un ejemplo simplificado
   de cómo podrías usarlo:
 
@@ -1937,14 +1918,14 @@ console.log(sqlQuery); // "SELECT name, age, email FROM users"
 
 ### Búsqueda en String
 
-- **includes(substring)**: Devuelve `true` si la cadena contiene la subcadena especificada.
+- **`includes(substring)`**: Devuelve `true` si la cadena contiene la subcadena especificada.
 
   ```js
   let texto = "Hola, Mundo!";
   console.log(texto.includes("Mundo")); // true
   ```
 
-- **indexOf(substring) y lastIndexOf(substring)**: Devuelve la posición de la primera
+- **`indexOf(substring) y lastIndexOf(substring)`**: Devuelve la posición de la primera
   o última aparición de la subcadena.
 
   ```js
@@ -1970,7 +1951,7 @@ valor booleano (como en una condición `if`).
 
 ### Conversiones de Booleanos
 
-### Valores falsy
+### Valores false
 
 Los siguientes valores se convierten a `false` cuando se evalúan en un contexto booleano:
 
@@ -1989,7 +1970,7 @@ Los siguientes valores se convierten a `false` cuando se evalúan en un contexto
   console.log(Boolean(NaN)); // false
   ```
 
-### Valores truthy
+### Valores true
 
 Cualquier valor que no sea uno de
 los “falsy” mencionados anteriormente es considerado “truthy”, es decir, se convierte a `true` en un
@@ -2057,83 +2038,6 @@ un valor asignable y se utiliza comúnmente para inicializar variables que se es
 const obj = null;
 console.log(obj); // Output: null
 ```
-
-
-
-
-
-### Symbol
-
-Introducido en ES6, el tipo symbol es un tipo de dato primitivo único e inmutable que se utiliza como
-identificador para propiedades de objetos. Los valores de tipo symbol son únicos, incluso si se crean
-con la misma descripción.
-
-```js
-let id = Symbol("id");
-console.log(id); // Output: Symbol(id)
-```
-
-
-Cada símbolo es único, incluso si dos símbolos tienen la misma descripción:
-
-```js
-let simboloA = Symbol("etiqueta");
-let simboloB = Symbol("etiqueta");
-console.log(simboloA === simboloB); // false
-```
-
-Esto significa que simboloA y simboloB son completamente diferentes, a pesar de que fueron
-creados con la misma descripción.
-
-### Usos de Symbol
-
-Symbol es útil para crear propiedades en objetos que no colisionen con
-otras propiedades y que no sean accesibles de forma accidental. Esto es especialmente útil en el desarrollo de bibliotecas o frameworks, donde el riesgo de colisión de nombres es alto.
-
-**Ejemplo con objetos:**
-
-```js
-// Usar un símbolo como clave de una propiedad de objeto
-const objeto = {};
-const claveSimbolo = Symbol("claveUnica");
-const claveSimbolo2 = Symbol("claveUnica");
-objeto[claveSimbolo] = "Valor secreto";
-objeto[claveSimbolo2] = "Valor secreto 2";
-console.log(objeto[claveSimbolo]); // Output: Valor secreto
-console.log(objeto[claveSimbolo2]); // Output: Valor secreto 2
-```
-
-En este ejemplo, la propiedad id es única y no se puede acceder a ella usando una cadena de texto
-como clave (usuario.id devuelve `undefined`).
-
-### Propiedades ocultas
-
-Las propiedades de un objeto definidas usando un Symbol
-no se enumeran en un bucle `for`...in y no se ven cuando se usa `Object.keys()` o
-Object.getOwnPropertyNames(). Sin embargo, se pueden obtener con Object.
-getOwnPropertySymbols().
-
-```js
-let id = Symbol("id");
-let usuario = {
-nombre: "Juan",
-  [id]: 123,
-};
-for (let clave in usuario) {
-console.log(clave); // solo "nombre", no se ve la propiedad simbolo
-}
-console.log(Object.keys(usuario)); // ["nombre"]
-console.log(Object.getOwnPropertySymbols(usuario)); // [Symbol(id)]
-```
-
-> El uso de los objetos en Javascript se verá más adelante en el curso.
-
-El uso de Symbol es muy poco común, pero es útil para crear propiedades de objetos
-que no se pueden acceder o modificar accidentalmente.
-
-
-
-Además de los tipos primitivos, JavaScript tiene un tipo especial de objeto que se utiliza para almacenar colecciones de datos y funcionalidades más complejas. Los tipos de objetos incluyen:
 
 ### 2.5.6 Tipos de datos de objeto
 
@@ -2447,17 +2351,6 @@ console.log(c); // 3
   console.log(c); // 3
   ```
 
-- **Rest operator**: Puedes capturar el resto de los elementos del array en una variable utilizando
-  el operador rest (…).
-
-  ```js
-  const array = [1, 2, 3, 4];
-  const [a, b, ...rest] = array;
-  console.log(a); // 1
-  console.log(b); // 2
-  console.log(rest); // [3, 4]
-  ```
-
 ### 2.10.2 Desestructuración de Objetos
 
 La desestructuración de objetos permite extraer propiedades de un objeto y asignarlas a variables. La
@@ -2511,15 +2404,6 @@ console.log(y); // 2
   console.log(d); // 3
   ```
 
-**Operador rest**: También es posible usar el operador rest para capturar el resto de las propiedades en un nuevo objeto.
-
-```js
-const objeto = { x: 1, y: 2, z: 3 };
-const { x, ...resto } = objeto;
-console.log(x); // 1
-console.log(resto); // { y: 2, z: 3 }
-```
-
 ### 2.10.3 Aplicaciones Prácticas
 
 La desestructuración es muy útil en diversas situaciones, como:
@@ -2562,73 +2446,73 @@ La desestructuración es muy útil en diversas situaciones, como:
 3. Desde tu cuenta de GitHub del centro, crea un repositorio privado llamado `Javascript` y publícalo desde la carpeta anterior.
 4. Guarda cada ejercicio en su propia carpeta y nombra el archivo `.js` según el ejercicio. Por ejemplo:
 
-  ```text
-  Javascript/
-    ejercicio-1-hola-mundo/
-     index.html
-     holamundo.js
-    ejercicio-2-number-math/
-     number-math.js
-  ```
+   ```text
+Javascript/
+  ejercicio-1-hola-mundo/
+    index.html
+    holamundo.js
+  ejercicio-2-number-math/
+    number-math.js
+   ```
 
 5. Comparte el repositorio con el profesor para que pueda acceder.
 
 ### Tareas
 
-1. **Hola, mundo**
+**1. Hola, mundo**
 
-  Crea `index.html` y `holamundo.js`. La página debe mostrar tu nombre y apellidos, e incluir el script `holamundo.js`. El script mostrará un mensaje de bienvenida con `alert()` e incluirá un comentario con la fecha de realización y tu nombre.
+Crea `index.html` y `holamundo.js`. La página debe mostrar tu nombre y apellidos, e incluir el script `holamundo.js`. El script mostrará un mensaje de bienvenida con `alert()` e incluirá un comentario con la fecha de realización y tu nombre.
 
-  a. Añade al mensaje de bienvenida la fecha y hora actuales.
+- **a.** Añade al mensaje de bienvenida la fecha y hora actuales.
 
-2. **Number y Math**
+**2. Number y Math**
 
-  Crea una variable para el radio y una constante numérica para Pi con cinco decimales. Puedes obtenerla con `Number(Math.PI.toFixed(5))`. Calcula el área de un círculo de radio 3,5 metros mediante:
+Crea una variable para el radio y una constante numérica para Pi con cinco decimales. Puedes obtenerla con `Number(Math.PI.toFixed(5))`. Calcula el área de un círculo de radio 3,5 metros mediante:
 
-  $$A = \pi r^2$$
+$$A = \pi r^2$$
 
-  a. Muestra el área por consola.
-  b. Convierte el resultado a `string` y muéstralo.
-  c. Muéstralo como `string` con tres decimales.
-  d. Convierte el área en un entero y muéstralo.
-  e. Redondea el área al entero más cercano con `Math`.
-  f. Multiplica el área por un entero aleatorio entre 1 y 20.
-  g. Comprueba con `Number.isFinite()` que el valor guardado en la variable del radio sea finito y positivo antes de calcular el área.
+- **a.** Muestra el área por consola.
+- **b.** Convierte el resultado a `string` y muéstralo.
+- **c.** Muéstralo como `string` con tres decimales.
+- **d.** Convierte el área en un entero y muéstralo.
+- **e.** Redondea el área al entero más cercano con `Math`.
+- **f.** Multiplica el área por un entero aleatorio entre 1 y 20.
+- **g.** Comprueba con `Number.isFinite()` que el valor guardado en la variable del radio sea finito y positivo antes de calcular el área.
 
-3. **String**
+**3. String**
 
-  Crea e inicializa una variable para tu nombre y otra para tus apellidos.
+Crea e inicializa una variable para tu nombre y otra para tus apellidos.
 
-  a. Muestra la concatenación de ambas variables.
-  b. Muestra la longitud de la cadena resultante.
-  c. Extrae los caracteres de las posiciones 7 a 10. Recuerda que los índices empiezan en 0 y que el segundo argumento de `slice()` no se incluye.
-  d. Reemplaza tu segundo apellido por otro distinto.
-  e. Convierte la cadena a mayúsculas.
-  f. Muestra el último carácter.
-  g. Convierte la cadena concatenada en un array, usando el espacio como separador.
-  h. Busca la posición en la que comienza tu apellido.
-  i. Usa un template literal para mostrar un mensaje que concatene `Bienvenido/a` con la cadena creada.
-  j. Genera las iniciales del nombre y los apellidos en mayúsculas a partir del array.
+- **a.** Muestra la concatenación de ambas variables.
+- **b.** Muestra la longitud de la cadena resultante.
+- **c.** Extrae los caracteres de las posiciones 7 a 10. Recuerda que los índices empiezan en 0 y que el segundo argumento de `slice()` no se incluye.
+- **d.** Reemplaza tu segundo apellido por otro distinto.
+- **e.** Convierte la cadena a mayúsculas.
+- **f.** Muestra el último carácter.
+- **g.** Convierte la cadena concatenada en un array, usando el espacio como separador.
+- **h.** Busca la posición en la que comienza tu apellido.
+- **i.** Usa un template literal para mostrar un mensaje que concatene `Bienvenido/a` con la cadena creada.
+- **j.** Genera las iniciales del nombre y los apellidos en mayúsculas a partir del array.
 
-4. **Date**
+**4. Date**
 
-  Crea una variable con la fecha de hoy y usa sus métodos para obtener:
+Crea una variable con la fecha de hoy y usa sus métodos para obtener:
 
-  a. El día del mes.
-  b. El mes. Ten en cuenta que `getMonth()` devuelve valores de 0 a 11.
-  c. El año.
-  d. Muestra la fecha completa, incluido el día de la semana, con `Intl.DateTimeFormat` para la región `es-ES`.
+- **a.** El día del mes.
+- **b.** El mes. Ten en cuenta que `getMonth()` devuelve valores de 0 a 11.
+- **c.** El año.
+- **d.** Muestra la fecha completa, incluido el día de la semana, con `Intl.DateTimeFormat` para la región `es-ES`.
 
-5. **Entrada, operaciones y tipos**
+**5. Entrada, operaciones y tipos**
 
-  Pide al usuario su edad y la nota media de su expediente, con tres decimales, y almacena ambos valores como números.
+Pide al usuario su edad y la nota media de su expediente, con tres decimales, y almacena ambos valores como números.
 
-  a. Muestra la nota con dos decimales.
-  b. Calcula y muestra la suma, resta, multiplicación y división de ambos valores.
-  c. Convierte el resultado de la división a `string` y muéstralo.
-  d. Crea una variable booleana con valor `true`.
-  e. Usa `typeof` para mostrar el tipo de las variables utilizadas.
-  f. Comprueba que la edad y la nota sean números válidos, que la nota esté entre 0 y 10 y que no se intente dividir entre cero.
+- **a.** Muestra la nota con dos decimales.
+- **b.** Calcula y muestra la suma, resta, multiplicación y división de ambos valores.
+- **c.** Convierte el resultado de la división a `string` y muéstralo.
+- **d.** Crea una variable booleana con valor `true`.
+- **e.** Usa `typeof` para mostrar el tipo de las variables utilizadas.
+- **f.** Comprueba que la edad y la nota sean números válidos, que la nota esté entre 0 y 10 y que no se intente dividir entre cero.
 
 {% comment %}
 # 3. Estructuras de control
