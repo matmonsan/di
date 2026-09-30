@@ -7,20 +7,23 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 
 # Índice
 
-- [1 Introducción a ECMAScript y JavaScript](#seccion-1)
-- [2 Comentarios, literales, identificadores](#seccion-2)
-- [3 Palabras reservadas, unicode, punto y coma](#seccion-3)
-- [4 Declaración de variables](#seccion-4)
-- [5 Tipos de datos en Javascript](#seccion-5)
-- [6 Estructuras condicionales: `if`, `switch`, ternario](#seccion-6)
-- [7 Bucles](#seccion-7)
-- [8 Objetos Javascript](#seccion-8)
-- [9 Arrays](#seccion-9)
-- [10 Desestructuración](#seccion-10)
-- [11 Funciones](#seccion-11)
-- [13 Actividades](#seccion-13)
+1. [Introducción](#1-introducción)
+2. [Variables y tipos de datos](#2-variables-y-tipos-de-datos)
+    - [Práctica 2](#211-práctica-2-variables-y-tipos-de-datos)
+<!--
+3. [Estructuras de control](#estructuras-de-control)
+4. [Funciones](#funciones)
+5. [Arrays](#arrays)
+6. [Objetos](#objetos)
+7. [JSON](#json)
+8. [Promesas](#promesas)
+9. [DOM](#dom)
+10. [BOM y Eventos](#bom-y-eventos)
+-->
 
-# 1 Introducción a ECMAScript y JavaScript {#seccion-1}
+# 1. Introducción
+
+## 1.1 ECMAScript y JavaScript
 
 <img src="assets/img/figura1.png" alt="Logotipo de JavaScript">
 
@@ -37,7 +40,7 @@ significativa en el lenguaje. Entre las novedades más destacadas se incluyen:
   
 La última especificación oficial, la versión 13 de ECMAScript, fue desarrollada en junio de 2022. Esta versión continuó con la evolución del lenguaje, incorporando nuevas funcionalidades y mejoras de rendimiento.
 
-## 1.1 Soporte de Navegadores y Compatibilidad {#seccion-1-1}
+### 1.1.1 Soporte de Navegadores y Compatibilidad
 
 Históricamente, los navegadores web han implementado las versiones de JavaScript con pequeñas
 diferencias, lo que solía generar problemas para desarrollar scripts compatibles. Los desarrolladores debían detectar el tipo de navegador y programar variantes específicas para cada uno. Afortunadamente, este problema ha disminuido gracias a la estandarización y la evolución de los motores de ejecución de JavaScript.
@@ -50,7 +53,7 @@ ES6, etc.), puedes consultar las siguientes páginas:
 
   <img src="assets/img/figura2.png" alt="Icono de Can I Use">
 
-## 1.2 Transpilación de Código {#seccion-1-2}
+### 1.1.2 Transpilación de Código
 
 Aunque el soporte de ES6 está muy avanzado, la **transpilación** sigue siendo una práctica común. Consiste en traducir código escrito en un lenguaje de alto nivel a otro del mismo nivel de abstracción. Por ejemplo:
 
@@ -64,9 +67,9 @@ Por otro lado, compilar se refiere a la traducción de un lenguaje de alto nivel
   
 Hasta hace poco, el soporte de ES6 en los navegadores web no era completo, lo que hacía necesario   transpilar el código ES6 a ES5 al desarrollar aplicaciones con frameworks como React o Angular. Esto   se hacía para garantizar la compatibilidad con una gama más amplia de navegadores, especialmente aquellos más antiguos como Internet Explorer, que no soportaban las nuevas características de   ECMAScript 2015 (ES6). Sin embargo, hoy en día, la mayoría de los navegadores modernos han adoptado completamente ES6 y versiones posteriores, lo que reduce la necesidad de transpilar el código   a ES5.
 
-## 1.3 Ejecución de JavaScript {#seccion-1-3}
+### 1.1.3 Ejecución de JavaScript
 
-### 1.3.1 En el Navegador Web {#seccion-1-3-1}
+#### 1.1.3.1 En el Navegador Web
 
 El código JavaScript se puede ejecutar directamente en un navegador web. Existen varias formas de incluir código JavaScript en una página:
 
@@ -118,21 +121,19 @@ console.log("Hola mundo desde un fichero externo");
 
 <img src="assets/img/figura3.png" alt="Logotipo de Google Chrome">
 
-Generalmente, los scripts se colocan al final de la etiqueta `<body>`, aunque si se trata de librerías que no se ejecutan hasta que ocurre un evento, pueden situarse dentro del `<head>`. El motivo de situar los scripts al final del `<body>` es que el navegador debe cargar primero el contenido del `<body>` y luego el de los `<script>` para que el código JavaScript pueda acceder a los elementos cargados en la página web (DOM).
-
 La consola del navegador es otra herramienta útil que permite ejecutar código JavaScript directamente en el navegador.
 
-### 1.3.2 Depuración en el navegador {#seccion-1-3-2}
+#### 1.1.3.2 Depuración en el navegador
 
 Los navegadores modernos, como Google Chrome, Firefox, Edge y Safari, incluyen herramientas de
 desarrollo (Developer Tools) que facilitan la depuración de código JavaScript. A continuación, se
 explica cómo depurar en el navegador, acompañando la explicación con ejemplos prácticos.
 
-#### 1.3.2.1 Acceder a las Herramientas de Desarrollo {#subseccion-1-3-2-1}
+##### 1.1.3.2.1 Acceder a las Herramientas de Desarrollo
 
 En la mayoría de los navegadores, puedes acceder a las herramientas de desarrollo pulsando **F12** o **Ctrl+Shift+I** (Windows/Linux) o **Cmd+Option+I** (Mac).
 
-#### 1.3.2.2 Usar la Consola (Console) {#subseccion-1-3-2-2}
+##### 1.1.3.2.2 Usar la Consola (Console)
 
 La consola es una herramienta poderosa para visualizar mensajes, errores y para interactuar directamente con el entorno de JavaScript.
 
@@ -168,7 +169,7 @@ La consola es una herramienta poderosa para visualizar mensajes, errores y para 
    Función saludar iniciada
    Mensaje creado: Hola, Mundo
 
-#### 1.3.2.3 Establecer Puntos de Interrupción (Breakpoints) {#subseccion-1-3-2-3}
+##### 1.1.3.2.3 Establecer Puntos de Interrupción (Breakpoints)
 
 Los breakpoints permiten pausar la ejecución del código en una línea específica para inspeccionar el estado de la aplicación.
 
@@ -204,7 +205,7 @@ Los breakpoints permiten pausar la ejecución del código en una línea específ
 6. Recarga la página. La ejecución se pausará en el breakpoint.
 7. Ahora puedes inspeccionar variables, el call stack y más.
 
-#### 1.3.2.4 Usar la Declaración `debugger` {#subseccion-1-3-2-4}
+##### 1.1.3.2.4 Usar la Declaración `debugger`
 
 La palabra clave `debugger` detiene la ejecución del código
 en el punto donde se inserta, siempre que las herramientas de desarrollo estén abiertas. Ejemplo:
@@ -238,7 +239,7 @@ en el punto donde se inserta, siempre que las herramientas de desarrollo estén 
 4. La ejecución se pausará en la línea con `debugger`;.
 5. Puedes inspeccionar las variables a, b y producto, y avanzar paso a paso.
 
-#### 1.3.2.5 Inspeccionar Variables y el Call Stack {#subseccion-1-3-2-5}
+##### 1.1.3.2.5 Inspeccionar Variables y el Call Stack
 
 Cuando la ejecución está pausada (ya sea por un
 breakpoint o `debugger`), puedes inspeccionar:
@@ -262,7 +263,7 @@ Utilizando el ejemplo anterior con la función multiplicar, cuando la ejecución
 
 ![Ejemplo con debugger](assets/img/debugger.png)
 
-#### 1.3.2.6 Pasar y Avanzar en la Ejecución (Stepping Through) {#subseccion-1-3-2-6}
+##### 1.1.3.2.6 Pasar y Avanzar en la Ejecución (Stepping Through)
 
 Mientras la ejecución está pausada,
 puedes controlar cómo avanzar:
@@ -281,7 +282,7 @@ Usando el ejemplo de calcularSuma:
 - Usa Step Into si hay una función llamada dentro de calcularSuma y quieres depurarla.
 - Usa Continue para reanudar la ejecución hasta el siguiente breakpoint o hasta el final.
 
-#### 1.3.2.7 Usar Puntos de Interrupción Condicionales {#subseccion-1-3-2-7}
+##### 1.1.3.2.7 Usar Puntos de Interrupción Condicionales
 
 Puedes establecer breakpoints que solo se
 activen cuando se cumpla una cierta condición, lo que es útil para bucles o casos específicos. Ejemplo:
@@ -314,67 +315,7 @@ activen cuando se cumpla una cierta condición, lo que es útil para bucles o ca
   
   <img src="assets/img/figura4.png" alt="Logotipo de Firefox">
 
-#### 1.3.2.8 Utilizar la Pestaña de Network para Depurar Solicitudes {#subseccion-1-3-2-8}
-
-La pestaña Network (Red) permite ver todas las solicitudes de red realizadas por la página, lo que es útil para depurar API calls,
-cargar recursos, etc.
-
-**Ejemplo:**
-
-Supongamos que tienes una llamada `fetch` en tu código:
-
-```js
-fetch('https://api.example.com/data')
-  .then(response => response.json())
-  .then(data => {
-    console.log("Datos recibidos:", data);
-  }
-).catch(error => {
-  console.error("Error:", error);
-  }
-);
-```
-
-**Pasos para Depurar:**
-
-- Abre las herramientas de desarrollo y ve a la pestaña Network.
-- Recarga la página o ejecuta la función que hace la solicitud `fetch`.
-- Observa la solicitud en la lista de la pestaña Network.
-- Haz clic en la solicitud para ver detalles como encabezados, respuesta, tiempo de carga, etc.
-- Si hay errores, aparecerán resaltados en rojo y podrás inspeccionarlos.
-
-### 1.3.3 Depurar Código Asíncrono {#seccion-1-3-3}
-
-Depurar promesas, async/await y callbacks puede ser más complejo. Las herramientas de desarrollo
-modernas facilitan esto permitiendo pausas en puntos específicos.
-
-**Ejemplo con async/await:**
-
-```js
-async function obtenerDatos() {
-  try {
-    let respuesta = await fetch('https://api.example.com/data');
-    let datos = await respuesta.json();
-    console.log("Datos obtenidos:", datos);
-  } catch (error) {
-    console.error("Error al obtener datos:", error);
-  }
-} obtenerDatos();
-```
-
-**Pasos para Depurar:**
-
-- Establece breakpoints en las líneas con await.
-- Cuando la ejecución se pause, puedes inspeccionar el estado de las variables antes y después
-  de las llamadas asíncronas.
-- Utiliza Step Into para entrar en funciones asíncronas si es necesario.
-
-> **Repasa este apartado cuando tengas que depurar código JavaScript**.
-> Algunos conceptos como la programación asíncrona, promesas, callbacks, etc. se verán
-> con más detalle en el siguiente volumen de este curso.
-
-
-### 1.3.4 Node.js {#seccion-1-3-4}
+#### 1.1.3.3 Node.js
 
 **Node.js** (comúnmente abreviado como Node) es un entorno de ejecución de JavaScript basado en
 el motor V8 de Chrome, diseñado para ejecutar aplicaciones del lado del servidor, lo que lo convierte en una herramienta ideal para desarrollar backends y servicios web.
@@ -444,12 +385,12 @@ línea de comandos usando:
   node programa.js
   ```
 
-### 1.3.5 Recursos Adicionales {#seccion-1-3-5}
+#### 1.1.3.4 Recursos Adicionales
 
 Además de ejecutar código JavaScript localmente, existen aplicaciones online como JSFiddle que
 permiten programar y probar JavaScript de manera interactiva.
 
-## 1.4 Introducción a Babel {#seccion-1-4}
+### 1.1.4 Introducción a Babel
 
 En el desarrollo moderno de aplicaciones web, el uso de nuevas versiones de JavaScript, como ES6
 y superiores, es común debido a las mejoras en la sintaxis y las nuevas funcionalidades que ofrecen.
@@ -476,12 +417,12 @@ de JavaScript. JSX también necesita ser transpilado a JavaScript para que pueda
 navegadores, ya que los motores de JavaScript no soportan esta sintaxis. Babel facilita este proceso,
 permitiendo que el código JSX se convierta en código JavaScript compatible.
 
-### 1.4.1 Uso de Babel {#seccion-1-4-1}
+#### 1.1.4.1 Uso de Babel
 
 Babel se puede utilizar de diferentes maneras según las necesidades del proyecto. Aquí se detallan
 algunas de las formas más comunes de utilizar Babel.
 
-### 1.4.2 @babel/standalone {#seccion-1-4-2}
+#### 1.1.4.2 @babel/standalone
 
 Esta versión de Babel permite **incrustar código ES6 en una página web** y transpilarlo en línea antes
 de su ejecución. 
@@ -510,7 +451,7 @@ navegadores modernos, **esta funcionalidad es innecesaria** debido al soporte ca
 
 <img src="assets/img/figura8.png" alt="Logotipo de Vite">
 
-## 1.5 NPM (Node Package Manager) {#seccion-1-5}
+### 1.1.5 NPM (Node Package Manager)
 
 NPM (Node Package Manager) es el **gestor de paquetes predeterminado para Node.js**. Es una herramienta fundamental en el ecosistema de JavaScript, utilizada principalmente para gestionar las dependencias (librerías y módulos) que un proyecto de Node.js puede necesitar.
 
@@ -532,7 +473,7 @@ Funciones principales de NPM:
   desarrolladores como Google y Tilde. Yarn se creó como una alternativa a NPM, con el objetivo de
   abordar algunas de las limitaciones que tenía NPM en sus primeras versiones.
 
-### 1.5.1 Ejemplo de un servidor web con Nodejs y Express: {#seccion-1-5-1}
+#### 1.1.5.1 Ejemplo de un servidor web con Nodejs y Express:
 
 En este ejemplo vamos a crear una aplicación web simple usando Express, un popular framework de
 Node.js para explicar el uso de npm.
@@ -653,7 +594,7 @@ Node.js para explicar el uso de npm.
    node_modules
    ```
 
-### 1.5.2 Ejemplo de una aplicación react {#seccion-1-5-2}
+#### 1.1.5.2 Ejemplo de una aplicación react
 
 <img src="assets/img/figura11.png" alt="Logotipo de React">
 
@@ -814,7 +755,7 @@ En resumen: se escribe la aplicación en `src`, Babel adapta su sintaxis, Webpac
 >
 > El último comando inicia un servidor de desarrollo y muestra la dirección local donde abrir la aplicación. Esta alternativa simplifica la puesta en marcha; la configuración manual de los pasos anteriores permite aprender qué hacen las herramientas que trabajan por debajo. Esta forma de crear proyectos se verá en el apartado correspondiente.
 
-## 1.6 Empaquetado de Proyectos {#seccion-1-6}
+### 1.1.6 Empaquetado de Proyectos
 
 Cuando un proyecto crece, puede tener cientos o miles de archivos JavaScript. Para mejorar la eficiencia de carga en los navegadores, es importante empaquetar el código en unos pocos archivos
 optimizados. El proceso de empaquetado generalmente incluye:
@@ -826,7 +767,7 @@ optimizados. El proceso de empaquetado generalmente incluye:
 - **Empaquetar**: Combinar múltiples archivos JavaScript en unos pocos archivos para reducir el
   número de peticiones HTTP.
 
-### 1.6.1 Parcel: Un Empaquetador sin Configuración {#seccion-1-6-1}
+#### 1.1.6.1 Parcel: Un Empaquetador sin Configuración
 
 Parcel es una herramienta de empaquetado que requiere cero configuración, ideal para desarrolladores que desean una solución simple y efectiva. A continuación se muestra cómo crear un proyecto
 básico usando Parcel:
@@ -905,7 +846,7 @@ npm run build
 Parcel empaqueta, minimiza y optimiza el proyecto para despliegue en producción.
 Al final del proceso, el código generado en la carpeta dist está listo para ser desplegado en un servidor web, asegurando una carga rápida y eficiente para los usuarios.
 
-## 1.7 Linter {#seccion-1-7}
+### 1.1.7 Linter
 
 Un linter es una herramienta que analiza el código fuente de manera estática, es decir, sin ejecutarlo.
 Su principal función es detectar errores de sintaxis, problemas de formato y advertir sobre posibles
@@ -919,7 +860,7 @@ El uso de linters en el proceso de desarrollo ofrece múltiples ventajas, entre 
   equipos de desarrollo.
 - **Facilita la revisión de código**: Reduce la necesidad de correcciones manuales durante la revisión.
 
-### 1.7.1 ESLint {#seccion-1-7-1}
+#### 1.1.7.1 ESLint
 
 ESLint es uno de los linters más populares en el ecosistema JavaScript. Fue creado para proporcionar
 una herramienta extensible y altamente configurable que analiza el código en busca de problemas.
@@ -932,7 +873,7 @@ una herramienta extensible y altamente configurable que analiza el código en bu
 - Ayuda a mantener un estilo de codificación consistente.
 - Permite reforzar reglas internas específicas de un equipo de desarrollo.
 
-### 1.7.2 Proyecto con ESLint {#seccion-1-7-2}
+#### 1.1.7.2 Proyecto con ESLint
 
 1. **Proyecto NPM**
 
@@ -1030,7 +971,7 @@ una herramienta extensible y altamente configurable que analiza el código en bu
    npm run lint
    ```
 
-## 1.8 Vite {#seccion-1-8}
+### 1.1.8 Vite
 
 **Vite** (del francés "rápido") es una herramienta de construcción (build tool) para proyectos frontend moderna, creada por Evan You, el mismo autor de Vue.js. Vite se ha popularizado como alternativa a herramientas como Webpack o Create React App, ya que ofrece un flujo de desarrollo mucho más rápido.
 
@@ -1052,7 +993,7 @@ Entre las ventajas principales de Vite se encuentran:
 
 > Vite no es un framework, sino una herramienta de construcción. Se puede usar con distintos frameworks (React, Vue, Svelte, etc.) o incluso con JavaScript "vanilla" (sin framework).
 
-### 1.8.1 Crear un proyecto con Vite {#seccion-1-8-1}
+#### 1.1.8.1 Crear un proyecto con Vite
 
 A continuación, se muestran los pasos para crear un proyecto de **React con JavaScript** utilizando Vite, que será la combinación que usaremos a lo largo del curso.
 
@@ -1128,7 +1069,7 @@ A continuación, se muestran los pasos para crear un proyecto de **React con Jav
    ```
 
    - `index.html` es el punto de entrada de la aplicación y hace referencia al archivo `src/main.jsx` mediante un `<script type="module">`.
-   - `src/main.jsx` monta el componente principal `App` en el elemento con id `root` del `index.html`, usando `createRoot` (igual que se vio en el apartado [1.5.2](#seccion-1-5-2)).
+   - `src/main.jsx` monta el componente principal `App` en el elemento con id `root` del `index.html`, usando `createRoot` (igual que se vio en el apartado [ejemplo de una aplicación React](#ejemplo-de-una-aplicación-react)).
    - `src/App.jsx` es el componente raíz de la aplicación, listo para empezar a programar.
    - `public/` contiene los archivos estáticos que se copian tal cual a la carpeta de salida (imágenes, favicon, etc.).
    - `vite.config.js` es el archivo de configuración de Vite. En la plantilla de React ya incluye el plugin `@vitejs/plugin-react`, necesario para transpilar JSX con esbuild.
@@ -1154,57 +1095,14 @@ A continuación, se muestran los pasos para crear un proyecto de **React con Jav
 
    Este comando levanta un pequeño servidor local que sirve el contenido de la carpeta `dist`, tal y como se serviría en producción.
 
-> **Nota**: Como se ha visto en el apartado [1.5.2](#seccion-1-5-2), Vite genera automáticamente toda la configuración necesaria para trabajar con React (incluyendo el uso de esbuild para transpilar JSX), por lo que no es necesario configurar Babel ni Webpack manualmente.
+> **Nota**: Como se ha visto en el apartado [ejemplo de una aplicación React](#ejemplo-de-una-aplicación-react), Vite genera automáticamente toda la configuración necesaria para trabajar con React (incluyendo el uso de esbuild para transpilar JSX), por lo que no es necesario configurar Babel ni Webpack manualmente.
 
-# 2 Comentarios, literales, identificadores {#seccion-2}
+# 2. Variables y tipos de datos
 
-## 2.1 Comentarios en JavaScript {#seccion-2-1}
 
-Los comentarios en JavaScript funcionan de manera similar a los de Java. Son útiles para agregar
-notas, explicaciones o descripciones dentro del código, que no son ejecutadas por el intérprete. Los
-comentarios ayudan a que el código sea más legible y comprensible tanto para el autor como para
-otros desarrolladores que lo lean en el futuro.
+## 2.1 Sintaxis básica
 
-### 2.1.1 Comentario de una línea {#seccion-2-1-1}
-
-Para comentar una sola línea en JavaScript, se utiliza //. Todo lo que siga a // en esa línea será
-ignorado por el intérprete.
-
-**Ejemplo:**
-
-```js
-// Esto es un comentario de una sola línea
-let x = 5; // También se puede hacer aquí
-```
-
-En este caso, la primera línea es un comentario completo y la segunda línea tiene un comentario al
-final, explicando que se está asignando el valor 5 a la variable x.
-
-### 2.1.2 Comentario de múltiples líneas {#seccion-2-1-2}
-
-Para comentar varias líneas a la vez, se utiliza /* _/. Todo el texto entre /_ y */ será ignorado por
-el intérprete.
-
-**Ejemplo:**
-
-```js
-/*
-```
-
-Este es un comentario
-de múltiples líneas
-que puede abarcar varias
-líneas de código
-*/
-
-```js
-let y = 10;
-```
-
-Este tipo de comentario es útil cuando necesitas explicar un bloque de código o dejar una nota más
-extensa.
-
-## 2.2 Literales en JavaScript {#seccion-2-2}
+### 2.1.1 Literales
 
 Los literales son valores fijos que se escriben directamente en el código. No son variables, sino valores constantes que se asignan a variables o se utilizan directamente en las expresiones.
 
@@ -1238,7 +1136,7 @@ Los literales son valores fijos que se escriben directamente en el código. No s
   let objeto = null; // La variable 'objeto' no tiene ningún valor asignado
   ```
 
-## 2.3 Identificadores en JavaScript {#seccion-2-3}
+### 2.1.2 Identificadores en JavaScript
 
 Los identificadores son nombres utilizados para identificar variables, funciones, clases u otros elementos dentro del código. Siguen ciertas reglas para ser válidos en JavaScript.
 
@@ -1296,9 +1194,9 @@ const variable2 = 10; // Cambiado para comenzar con una letra
 En este caso, 2variable es incorrecto porque comienza con un número. Lo corregimos cambiando
 el nombre a variable2, que comienza con una letra.
 
-# 3 Palabras reservadas, unicode, punto y coma {#seccion-3}
+### 2.1.3 Palabras reservadas, Unicode y punto y coma
 
-## 3.1 Palabras reservadas {#seccion-3-1}
+### Palabras reservadas
 
 Las palabras reservadas son identificadores que tienen un significado especial en el lenguaje y, por
 lo tanto, no pueden ser utilizados como nombres de variables, funciones o etiquetas. Estas palabras
@@ -1328,7 +1226,7 @@ console.log("El nombre es Juan");
 }
 ```
 
-## 3.2 Unicode en JavaScript {#seccion-3-2}
+### Unicode en JavaScript
 
 JavaScript utiliza Unicode, un estándar de codificación que permite representar la mayoría de los
 caracteres escritos del mundo. Esto incluye caracteres de alfabetos no latinos, símbolos especiales,
@@ -1359,7 +1257,7 @@ let corazon = "\u2764";
 console.log(corazon); // ❤
 ```
 
-## 3.3 Uso del Punto y Coma en JavaScript {#seccion-3-3}
+### Uso del Punto y Coma en JavaScript
 
 El punto y coma (;) en JavaScript se utiliza para terminar una instrucción. Sin embargo, JavaScript
 tiene una característica llamada Automatic Semicolon Insertion (Inserción Automática de Punto
@@ -1373,11 +1271,7 @@ donde faltan.
 let nombre = "Juan";
 console.log(nombre);
 // JavaScript puede agregar un punto y coma automáticamente
-```
-
-`let` apellido = "Pérez"
-
-```js
+let apellido = "Pérez"
 console.log(apellido); // Aunque falta el punto y coma, no causará un error
 ```
 
@@ -1386,21 +1280,63 @@ Aunque ASI (Automatic Semicolon Insertion) ayuda a evitar errores, hay casos don
 
 ```js
 // Ejemplo donde la falta de punto y coma causa un problema
-```
-
-`let` suma = 5 + 5
+let suma = 5 + 5
 (function() {
-
-```js
-console.log("Esto es una función IIFE");
+  console.log("Esto es una función IIFE");
 })();
 // Esto causará un error, porque JavaScript intenta interpretar como una sola instrucción:
 // let suma = 5 + 5(function() { console.log("Esto es una función IIFE");})();
 ```
 
-# 4 Declaración de variables {#seccion-4}
 
-## 4.1 Declaración de Variables con `var` {#seccion-4-1}
+## 2.2 Comentarios
+
+Los comentarios en JavaScript funcionan de manera similar a los de Java. Son útiles para agregar
+notas, explicaciones o descripciones dentro del código, que no son ejecutadas por el intérprete. Los
+comentarios ayudan a que el código sea más legible y comprensible tanto para el autor como para
+otros desarrolladores que lo lean en el futuro.
+
+### 2.2.1 Comentario de una línea
+
+Para comentar una sola línea en JavaScript, se utiliza //. Todo lo que siga a // en esa línea será
+ignorado por el intérprete.
+
+**Ejemplo:**
+
+```js
+// Esto es un comentario de una sola línea
+let x = 5; // También se puede hacer aquí
+```
+
+En este caso, la primera línea es un comentario completo y la segunda línea tiene un comentario al
+final, explicando que se está asignando el valor 5 a la variable x.
+
+### 2.2.2 Comentario de múltiples líneas
+
+Para comentar varias líneas a la vez, se utiliza /* _/. Todo el texto entre /_ y */ será ignorado por
+el intérprete.
+
+**Ejemplo:**
+
+```js
+/*
+Este es un comentario
+de múltiples líneas
+que puede abarcar varias
+líneas de código
+*/
+let y = 10;
+```
+
+Este tipo de comentario es útil cuando necesitas explicar un bloque de código o dejar una nota más
+extensa.
+
+
+
+
+## 2.3 Variables
+
+### 2.3.1 Variables con var
 
 `var` es la forma tradicional de declarar variables en JavaScript, y ha sido utilizada desde las primeras
 versiones del lenguaje. Las variables declaradas con `var` tienen un **ámbito de función**, lo que significa
@@ -1439,7 +1375,7 @@ donde se definió.
 
 > Evita usar `var` para declarar variables. Usa `let` o `const` en su lugar.
 
-## 4.2 Hoisting {#seccion-4-2}
+### 2.3.2 Hoisting
 
 El **hoisting** es un comportamiento en JavaScript en el que las declaraciones de variables y funciones
 se mueven al comienzo del ámbito donde están declaradas. Este comportamiento afecta únicamente
@@ -1472,7 +1408,7 @@ function pruebaHoisting() {
 pruebaHoisting();
 ```
 
-## 4.3 Declaración de Variables con `let` y `const` (ES6) {#seccion-4-3}
+### 2.3.3 Variables con let
 
 La palabra reservada `let` se introdujo en ES6 y permite declarar variables con un ámbito de bloque.
 Esto significa que la variable sólo es accesible dentro del bloque {} donde se declaró.
@@ -1486,7 +1422,7 @@ if (a > 0) {
 console.log(b); // Error: b no está definida
 ```
 
-## 4.4 Declaración con `const` {#seccion-4-4}
+### 2.3.4 Declaraciones con const
 
 La palabra reservada `const` también fue introducido en ES6 y se utiliza para declarar constantes, es
 decir, variables cuyo valor no puede ser reasignado después de su declaración. Sin embargo, en el
@@ -1494,16 +1430,11 @@ caso de objetos, no se puede modificar la referencia, pero sí el contenido.
 
 ```js
 const mensaje = "hola mundo";
-```
-
-mensaje = "adios"; // Error: no se puede modificar el valor de una constante
-
-```js
 const persona = { nombre: "Lucia", apellidos: "Molina" };
+// mensaje = "adios"; // Error: no se puede reasignar una constante
+persona.nombre = "Antonio"; // Esto está permitido
+// persona = {}; // Error: no se puede reasignar una constante
 ```
-
-persona.nombre = "Antonio"; // Esto es permitido
-persona = {}; // Error: no se puede cambiar la referencia de un objeto constante
 El ámbito de `let` y `const` es de bloque, lo que significa que sólo existen dentro del bloque {} donde
 fueron declarados, al igual que en otros lenguajes como Java.
 
@@ -1523,7 +1454,7 @@ console.log(pi); // Error: pi no está definida
 > Opta en primer lugar por usar `const` para declarar todas las variables. Si el valor de la
 > variable necesita cambiar, entonces usa `let`.
 
-## 4.5 Tipado Dinámico en JavaScript {#seccion-4-5}
+### 2.3.5 Tipado dinámico
 
 A diferencia de lenguajes como Java, donde el tipo de una variable se declara de manera explícita y
 no puede cambiar, en JavaScript el tipo de una variable puede cambiar durante la ejecución. Esto
@@ -1542,13 +1473,138 @@ console.log(typeof variable); // Output: "string"
 
 Para depurar el código en JavaScript, utiliza herramientas como el `debugger` del navegador para observar cómo se comportan las variables y comprender mejor el flujo de tu programa.
 
-# 5 Tipos de datos en Javascript {#seccion-5}
 
-En este capítulo, exploraremos los tipos de datos disponibles en JavaScript a partir de la versión ES6
-y posteriores. Estos tipos de datos son fundamentales para la manipulación de valores en el lenguaje
-y comprenden tanto tipos primitivos como tipos de objetos.
 
-## 5.1 Tipos de Datos Primitivos {#seccion-5-1}
+
+## 2.4 Operadores
+
+### 2.4.1 Operadores aritméticos
+
+Los operadores aritméticos realizan cálculos con valores numéricos. `+` también concatena cadenas.
+
+```js
+const a = 10;
+const b = 3;
+console.log(a + b); // 13: suma
+console.log(a - b); // 7: resta
+console.log(a * b); // 30: multiplicación
+console.log(a / b); // 3.333...: división
+console.log(a % b); // 1: resto
+console.log(a ** b); // 1000: potencia
+console.log("Hola " + "mundo"); // "Hola mundo": concatenación
+```
+
+Los operadores unarios `+` y `-` indican signo. `++` y `--` incrementan o decrementan una variable en uno; en forma prefija devuelven el valor nuevo y en forma postfija el valor anterior.
+
+```js
+let contador = 2;
+console.log(++contador); // 3
+console.log(contador++); // 3; contador pasa a valer 4
+console.log(-contador); // -4
+```
+
+### 2.4.2 Asignación
+
+`=` asigna el valor de la derecha a la variable de la izquierda. Los operadores compuestos actualizan la variable aplicando una operación.
+
+```js
+let total = 10;
+total += 5; // Equivale a total = total + 5
+total -= 2; // Equivale a total = total - 2
+total *= 3; // Equivale a total = total * 3
+total /= 2; // Equivale a total = total / 2
+total %= 4; // Equivale a total = total % 4
+total **= 2; // Equivale a total = total ** 2
+```
+
+### Operadores de comparación
+
+Comparan dos valores y devuelven un booleano. Para comparar igualdad, se recomienda `===` y `!==`, que no convierten los tipos automáticamente.
+
+```js
+const edad = 20;
+console.log(edad === 20); // true
+console.log(edad !== 18); // true
+console.log(edad > 18); // true
+console.log(edad < 18); // false
+console.log(edad >= 20); // true
+console.log(edad <= 21); // true
+console.log(5 == "5"); // true: convierte el tipo
+console.log(5 === "5"); // false: compara valor y tipo
+```
+
+### Operadores lógicos
+
+`&&` (AND) requiere que ambas condiciones sean verdaderas; `||` (OR) requiere que una lo sea; `!` (NOT) invierte el valor. `??` devuelve el valor de la derecha solo cuando el de la izquierda es `null` o `undefined`.
+
+```js
+const tieneEntrada = true;
+const esMayor = false;
+console.log(tieneEntrada && esMayor); // false
+console.log(tieneEntrada || esMayor); // true
+console.log(!tieneEntrada); // false
+const nombre = null;
+console.log(nombre ?? "Invitado"); // "Invitado"
+```
+
+`&&` y `||` aplican cortocircuito: no evalúan la expresión de la derecha si el resultado ya queda determinado por la izquierda.
+
+### Operador condicional
+
+El operador ternario `condición ? valorSiVerdadero : valorSiFalso` elige entre dos expresiones.
+
+```js
+const edadMinima = 18;
+const mensaje = edadMinima >= 18 ? "Acceso permitido" : "Acceso denegado";
+```
+
+### Operadores bit a bit
+
+Operan sobre la representación binaria de números enteros. Los más comunes son AND `&`, OR `|`, XOR `^`, NOT `~`, desplazamiento a la izquierda `<<` y desplazamientos a la derecha `>>` y `>>>`.
+
+```js
+console.log(5 & 3); // 1
+console.log(5 | 3); // 7
+console.log(5 ^ 3); // 6
+console.log(5 << 1); // 10
+```
+
+### Operadores de tipo y pertenencia
+
+`typeof` devuelve el tipo de un valor, `instanceof` comprueba si un objeto deriva de un constructor y `in` comprueba si una propiedad existe en un objeto.
+
+```js
+const persona = { nombre: "Ana" };
+console.log(typeof persona.nombre); // "string"
+console.log(persona instanceof Object); // true
+console.log("nombre" in persona); // true
+```
+
+### Spread y rest
+
+`...` expande elementos en una llamada o literal (spread), y reúne argumentos o propiedades restantes (rest).
+
+```js
+const iniciales = [1, 2];
+const valores = [...iniciales, 3]; // [1, 2, 3]
+function sumar(...numeros) { // reúne argumentos en un array
+  return numeros.reduce((total, numero) => total + numero, 0);
+}
+console.log(sumar(...valores)); // expande el array como argumentos: 6
+```
+
+### Precedencia y paréntesis
+
+Al combinar operadores, JavaScript aplica reglas de precedencia. Los paréntesis hacen explícito el orden deseado.
+
+```js
+const resultado = 2 + 3 * 4; // 14: la multiplicación se evalúa primero
+const agrupado = (2 + 3) * 4; // 20
+```
+
+## 2.5 Data types
+
+### 2.5.1 Tipos primitivos
 
 Los tipos de datos primitivos en JavaScript son los más básicos y no pueden ser divididos en partes
 más pequeñas.
@@ -1573,7 +1629,51 @@ let saludoModificado = saludo.toUpperCase(); // 'saludoModificado' es una nueva 
 console.log(saludo); // "Hola" - La cadena original no ha cambiado
 ```
 
-### 5.1.1 Métodos y Propiedades en Tipos Primitivos {#seccion-5-1-1}
+### 2.5.2 Tipo Number
+
+### Numbers
+
+El tipo number representa tanto números enteros como de punto flotante. JavaScript no distingue
+entre tipos de números como lo hacen otros lenguajes de programación.
+
+```js
+const entero = 42;
+const decimal = 3.14;
+console.log(entero); // Output: 42
+console.log(decimal); // Output: 3.14
+const decimalPreciso = 1.00000000000000000000001; // Pérdida de precisión
+const hexadecimal = 0xff; // Valor Hexadecimal
+const binario = 0b0101; // Valor Binario
+console.log(binario); // Output: 5
+console.log(hexadecimal); // Output: 255
+console.log(decimalPreciso); // Output: 1
+```
+
+### Métodos de Numbers
+
+Los números disponen de métodos para convertirlos o dar formato a sus valores.
+
+```js
+const numero = 123.456;
+console.log(numero.toFixed(2)); // "123.46"
+console.log(Number.isInteger(numero)); // false
+console.log(Number.parseInt("42")); // 42
+console.log(Number.parseFloat("3.14")); // 3.14
+```
+
+### 2.5.3 Tipo String
+
+### Strings
+
+El tipo `string` representa texto. Se puede escribir con comillas simples, dobles o con backticks, que permiten crear plantillas de cadena.
+
+```js
+const cadena1 = "Hola, Mundo";
+const cadena2 = 'Hola, Mundo';
+const cadena3 = `Hola, Mundo`;
+```
+
+### Métodos String
 
 Aunque los tipos primitivos en JavaScript no poseen métodos ni propiedades inherentes, en la práctica, se comportan como si los tuvieran. Esto es posible porque JavaScript realiza un proceso automático conocido como auto‑boxing. Cuando intentas acceder a un método o propiedad de un valor
 primitivo, JavaScript temporalmente convierte ese valor primitivo en un objeto envoltorio (wrapper
@@ -1591,184 +1691,7 @@ JavaScript convierte temporalmente el valor primitivo “Hola” en un objeto St
 el uso del método `toUpperCase()`. Después de que el método se ejecuta, el objeto temporal se
 descarta y el resultado es devuelto como un nuevo valor primitivo.
 
-```js
-const numero = 123.456;
-console.log(numero.toFixed(2)); // "123.46" - 'numero' es temporalmente un objeto Number
-```
-
-En este caso, el valor primitivo 123.456 es convertido en un objeto Number temporalmente, lo que
-permite utilizar el método `toFixed()` para obtener una cadena con dos decimales. Después, el objeto temporal desaparece, y el valor primitivo sigue siendo inmutable.
-Hay seis tipos de datos primitivos en ES6+:
-
-### 5.1.2 Undefined {#seccion-5-1-2}
-
-El tipo `undefined` representa una variable que ha sido declarada pero no inicializada. Cuando una
-variable es declarada sin asignarle un valor, su tipo es `undefined`.
-
-```js
-let variable;
-console.log(variable); // Output: undefined
-```
-
-### 5.1.3 Null {#seccion-5-1-3}
-
-El tipo `null` es un valor especial que representa la ausencia intencional de cualquier valor u objeto. Es
-un valor asignable y se utiliza comúnmente para inicializar variables que se espera que luego contengan un objeto.
-
-```js
-const obj = null;
-console.log(obj); // Output: null
-```
-
-### 5.1.4 Boolean {#seccion-5-1-4}
-
-En JavaScript, un valor booleano es un tipo de dato que solo puede tener uno de dos valores posibles:
-`true` (verdadero) o `false` (falso). Este tipo de dato es fundamental para realizar comparaciones y
-controlar el flujo del programa mediante estructuras condicionales como `if`, `else`, `while`, y `for`.
-
-```js
-const esVerdadero = true;
-const esFalso = false;
-```
-
-#### 5.1.4.1 Conversiones de Booleanos {#subseccion-5-1-4-1}
-
-En JavaScript, cualquier valor puede ser convertido a un booleano utilizando la función Boolean(), o simplemente evaluándolo en un contexto que requiere un
-valor booleano (como en una condición `if`).
-5.1.4.1.1 Valores que se convierten a `false` (falsy values): Los siguientes valores son considerados como “falsy”, es decir, se convierten a `false` cuando son evaluados en un contexto booleano:
-
-- `false`
-- 0 (el número cero)
-- “” (cadena de texto vacía)
-- `null`
-- `undefined`
-- NaN (Not a Number)
-
-  ```js
-  console.log(Boolean(0)); // false
-  console.log(Boolean("")); // false
-  console.log(Boolean(null)); // false
-  console.log(Boolean(undefined)); // false
-  console.log(Boolean(NaN)); // false
-  ```
-
-5.1.4.1.2 Valores que se convierten a `true` (truthy values): Cualquier valor que no sea uno de
-los “falsy” mencionados anteriormente es considerado “truthy”, es decir, se convierte a `true` en un
-contexto booleano.
-
-```js
-console.log(Boolean(1)); // true
-console.log(Boolean("Hola")); // true
-console.log(Boolean([])); // true (un array vacío)
-console.log(Boolean({})); // true (un objeto vacío)
-console.log(Boolean(function () {})); // true (una función)
-```
-
-5.1.4.1.3 Igualdad estricta (===) En JavaScript, existen dos operadores de igualdad principales:
-el operador de igualdad == y el operador de igualdad estricta ===.
-
-- **Igualdad simple (==)**:
-
-  ```js
-  El operador == compara dos valores para ver si son iguales después de convertirlos a un tipo común,
-  ```
-
-lo que puede llevar a resultados inesperados debido a la coerción de tipos.
-
-```js
-console.log(1 == "1"); // true, debido a que "1" es convertido a número antes de la
-```
-
-comparación
-
-```js
-console.log(true == 1); // true, porque `true` se convierte a 1
-console.log(null == undefined); // true, porque null y undefined se consideran iguales en
-```
-
-este caso
-
-- **Igualdad estricta (===)**:
-  El operador === compara tanto el valor como el tipo sin realizar ninguna conversión. Esto significa
-  que ambos deben ser exactamente iguales en valor y tipo para que la comparación devuelva `true`
-
-.
-
-```js
-console.log(1 === "1"); // false, porque uno es número y el otro es cadena de texto
-console.log(true === 1); // false, porque uno es booleano y el otro es número
-console.log(null === undefined); // false, porque son tipos diferentes
-console.log(1 === 1); // true, porque ambos son números iguales
-```
-
-> Usar el operador de igualdad estricta === es recomendable porque evita errores sutiles
-> que pueden surgir por la coerción (conversión) de tipos cuando se usa ==. Con ===, te
-> aseguras de que no haya conversión de tipos automática, lo que hace que el código sea
-> más predecible y menos propenso a errores.
-
-### 5.1.5 Number {#seccion-5-1-5}
-
-El tipo number representa tanto números enteros como de punto flotante. JavaScript no distingue
-entre tipos de números como lo hacen otros lenguajes de programación.
-
-```js
-const entero = 42;
-const decimal = 3.14;
-console.log(entero); // Output: 42
-console.log(decimal); // Output: 3.14
-const decimal = 1.00000000000000000000001; // Pérdida de precisión
-const hexadecimal = 0xff; // Valor Hexadecimal
-const binario = 0b0101; // Valor Binario
-console.log(binario); // Output: 5
-console.log(hexadecimal); // Output: 255
-console.log(decimal); // Output: 1
-```
-
-El tipo number también soporta una variedad de operadores matemáticos y de comparación:
-
-- **Operadores matemáticos**: +, -, *, /, %, ** (Potencia).
-- **Operadores unarios**: ++, -- (Prefijo y postfijo).
-- **Operadores binarios**: >>, <<.
-  Math es un objeto incorporado que proporciona una serie de métodos y propiedades para realizar
-  operaciones matemáticas comunes. Math no es un constructor, lo que significa que no puedes instanciarlo como un objeto, sino que accedes a sus métodos y propiedades directamente desde el objeto
-  Math.
-  El objeto Math incluye funciones para operaciones como redondeo, potencias, trigonometría, logaritmos, generación de números aleatorios, y más. Es una herramienta esencial para cualquier desarrollo
-  que requiera cálculos matemáticos en JavaScript.
-
-  ```js
-  const resultado = Math.PI * Math.pow(2, 3); // Potencia
-  console.log(Math.abs(-5)); // Valor absoluto 5
-  console.log(Math.round(Math.PI)); // Redondea: 3
-  console.log(Math.ceil(1.9)); // Techo: 2
-  console.log(Math.floor(1.6)); // Piso: 1
-  console.log(Math.max(1, 3, 8, 9, 123, 5, 0)); // Máximo: 123
-  console.log(Math.min(5, -2, 100, 10, 9)); // Mínimo: -2
-  console.log(Math.random()); // Número aleatorio entre 0 y 1
-  console.log(Math.sqrt(9)); // Raiz cuadrada: 3
-  console.log(Math.sin(Math.PI / 2)); // Función seno: 1
-  ```
-
-> El objeto Math es nativo de JavaScript y no necesita ser importado.
-
-### 5.1.6 String {#seccion-5-1-6}
-
-El tipo string se utiliza para representar texto. Los valores de tipo string se pueden definir utilizando
-comillas simples (' '), comillas dobles (" "), o plantillas de cadena (template literals) usando comillas invertidas (``).
-
-```js
-const cadena1 = "Hola, Mundo"; // Cadena con comillas dobles
-const cadena2 = "Hola, Mundo"; // Cadena con comillas simples
-const cadena3 = `Hola, Mundo`; // Template String
-const nombre = "Luis";
-const saludoConTemplate = `Hola, ${nombre}`; // Template String. Interpolación de variables.
-console.log(saludoConTemplate); // Output: Hola, Luis
-```
-
-Las tres formas de definir cadenas son equivalentes en términos de contenido, pero las template
-strings (``) ofrecen funcionalidades adicionales, como la interpolación de variables y la facilidad
-para escribir cadenas multilínea.
-
-#### 5.1.6.1 Escapado de Caracteres {#subseccion-5-1-6-1}
+### Métodos de Strings
 
 Los strings pueden contener caracteres especiales que necesitan
 ser “escapados” utilizando la barra invertida (\\). Algunos de los más comunes son:
@@ -1780,7 +1703,7 @@ const str3 = "Una línea\nOtra línea"; // Nueva línea
 const str4 = "C:\\Users\\Usuario"; // Barra invertida
 ```
 
-#### 5.1.6.2 Concatenación de Strings {#subseccion-5-1-6-2}
+### Concatenación de Strings
 
 La concatenación de strings se puede hacer utilizando el operador + o el método concat().
 
@@ -1792,7 +1715,7 @@ console.log(mensaje); // "Hola Juan!"
 console.log(saludo.concat(" ", nombre, ".")); // "Hola Juan."
 ```
 
-#### 5.1.6.3 Comparación de Strings {#subseccion-5-1-6-3}
+### Comparación de Strings
 
 Los strings en JavaScript se comparan utilizando operadores como ==, ===, !=, !==, <, >, etc. Las comparaciones de strings son sensibles a mayúsculas y minúsculas
 y se realizan en base al valor Unicode de los caracteres.
@@ -1805,7 +1728,7 @@ console.log(str1 < str2); // true, porque "a" es menor que "d" en Unicode
 console.log(str1 < str3); // true, porque "abc" es lexicográficamente menor que "ABC"
 ```
 
-#### 5.1.6.4 Conversión de Otros Tipos a String {#subseccion-5-1-6-4}
+### Conversión de Otros Tipos a String
 
 Puedes convertir otros tipos de datos a strings usando
 el método String() o toString().
@@ -1816,7 +1739,9 @@ let str = String(num); // "123"
 let str2 = num.toString(); // "123"
 ```
 
-#### 5.1.6.5 Propiedades y métodos {#subseccion-5-1-6-5}
+
+
+
 
 Las cadenas en JavaScript vienen con varios métodos y propiedades útiles que permiten manipular y analizar el texto de manera eficiente.
 
@@ -1885,23 +1810,7 @@ Métodos de Manipulación:
   console.log(nuevoTexto); // "Hola, JavaScript!"
   ```
 
-- **includes(substring)**: Devuelve `true` si la cadena contiene la subcadena especificada.
-
-  ```js
-  let texto = "Hola, Mundo!";
-  console.log(texto.includes("Mundo")); // true
-  ```
-
-- **indexOf(substring) y lastIndexOf(substring)**: Devuelve la posición de la primera
-  o última aparición de la subcadena.
-
-  ```js
-  let texto = "Hola, Mundo! Hola!";
-  console.log(texto.indexOf("Hola")); // 0
-  console.log(texto.lastIndexOf("Hola")); // 13
-  ```
-
-#### 5.1.6.6 Template Strings {#subseccion-5-1-6-6}
+### String templates
 
 Los Template Strings (o Template Literals) son una característica avanzada de JavaScript introducida en ECMAScript 2015 (ES6) que ofrece una forma más flexible y potente
 de trabajar con cadenas de texto. A continuación, se explican en profundidad sus características, usos,
@@ -1934,20 +1843,12 @@ console.log(resultado); // "La suma de 5 y 10 es 15."
 
 - Multi‑línea
   Los Template Strings permiten la creación de cadenas de texto que abarcan múltiples líneas sin necesidad de concatenar strings o usar secuencias de escape como \\n.
-  `let` mensaje = `Este es un mensaje
-que se extiende
-a través de varias líneas.`;
-
   ```js
+  const mensaje = `Este es un mensaje
+  que se extiende
+  a través de varias líneas.`;
   console.log(mensaje);
-  /*
   ```
-
-Salida:
-Este es un mensaje
-que se extiende
-a través de varias líneas.
-*/
 Este uso de Template Strings mejora enormemente la legibilidad y la gestión de textos largos o estructuras HTML en JavaScript.
 
 - Tags o Funciones de Plantilla
@@ -1994,27 +1895,25 @@ En el primer caso, las secuencias de escape no se procesan y se mantienen tal cu
   de cómo podrías usarlo:
 
   ```js
-  function escapeHTML(literals, ...values) {
-  let resultado = "";
-  for (let i = 0; i < literals.length; i++) {
+  function escapeHTML(strings, ...values) {
+    let resultado = strings[0];
+    for (let i = 0; i < values.length; i++) {
+      const escaped = String(values[i])
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+      resultado += escaped + strings[i + 1];
+    }
+    return resultado;
+  }
+
+  const userInput = "<script>alert('Malicious Code');</script>";
+  const sanitizedString = escapeHTML`Usuario dijo: ${userInput}`;
+  console.log(sanitizedString);
+  // "Usuario dijo: &lt;script&gt;alert(&#39;Malicious Code&#39;);&lt;/script&gt;"
   ```
-
-resultado += literals[i] + (values[i] || '')
-
-```js
-.replace(/&/g, "&amp;")
-.replace(/</g, "&lt;")
-.replace(/>/g, "&gt;")
-.replace(/"/g, "&quot;")
-.replace(/'/g, "&#39;");
-}
-return resultado;
-}
-let userInput = "<script>alert('Malicious Code');</script>";
-let sanitizedString = escapeHTML`Usuario dijo: ${userInput}`;
-console.log(sanitizedString);
-// "Usuario dijo: &lt;script&gt;alert(&#39;Malicious Code&#39;);&lt;/script&gt;"
-```
 
 En este ejemplo, escapeHTML es una función que toma una cadena de plantilla y reemplaza caracteres especiales para prevenir ataques de inyección de HTML.
 
@@ -2022,17 +1921,10 @@ En este ejemplo, escapeHTML es una función que toma una cadena de plantilla y r
   Construcción de HTML dinámico:
 
   ```js
-  let items = ["Manzana", "Banana", "Cereza"];
+  const items = ["Manzana", "Banana", "Cereza"];
+  const listaHTML = `<ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+  console.log(listaHTML);
   ```
-
-`let` listaHTML = `
-<ul>
-${items.`map`(item => `<li>${item}</li>`).join('')}
-</ul>`;
-
-```js
-console.log(listaHTML);
-```
 
 Generación de consultas SQL dinámicas:
 
@@ -2043,323 +1935,134 @@ let sqlQuery = `SELECT ${columns.join(", ")} FROM ${tableName}`;
 console.log(sqlQuery); // "SELECT name, age, email FROM users"
 ```
 
-#### 5.1.6.7 Tratamiento de Cadenas como Arrays {#subseccion-5-1-6-7}
+### Búsqueda en String
 
-Las cadenas en JavaScript pueden ser tratadas de
-manera similar a un array de caracteres, permitiendo el acceso a caracteres individuales utilizando la
-notación de corchetes ([]).
+- **includes(substring)**: Devuelve `true` si la cadena contiene la subcadena especificada.
+
+  ```js
+  let texto = "Hola, Mundo!";
+  console.log(texto.includes("Mundo")); // true
+  ```
+
+- **indexOf(substring) y lastIndexOf(substring)**: Devuelve la posición de la primera
+  o última aparición de la subcadena.
+
+  ```js
+  let texto = "Hola, Mundo! Hola!";
+  console.log(texto.indexOf("Hola")); // 0
+  console.log(texto.lastIndexOf("Hola")); // 13
+  ```
+
+### 2.5.4 Tipo Boolean
+
+En JavaScript, un valor booleano es un tipo de dato que solo puede tener uno de dos valores posibles:
+`true` (verdadero) o `false` (falso). Este tipo de dato es fundamental para realizar comparaciones y
+controlar el flujo del programa mediante estructuras condicionales como `if`, `else`, `while`, y `for`.
 
 ```js
-let texto = "JavaScript";
-console.log(texto[0]); // "J"
-console.log(texto[4]); // "S"
-const cadena = “Mi ”cadena;
-const letra = cadena[0];
-for(let i=0; i < cadena.length; i++) {
-console.log(cadena[i]);
-}
+const esVerdadero = true;
+const esFalso = false;
 ```
 
-#### 5.1.6.8 Expresiones Regulares {#subseccion-5-1-6-8}
 
-Las expresiones regulares, o regex (por su nombre en inglés, regular expressions), son una herramienta poderosa para buscar y manipular cadenas de texto. En JavaScript, las expresiones regulares se utilizan para realizar operaciones de búsqueda, coincidencia y
-reemplazo en cadenas de texto. Vamos a explorar en profundidad cómo funcionan las expresiones
-regulares en JavaScript, su sintaxis, y algunos ejemplos prácticos.
+En JavaScript, cualquier valor puede ser convertido a un booleano utilizando la función Boolean(), o simplemente evaluándolo en un contexto que requiere un
+valor booleano (como en una condición `if`).
 
-1. Creación de Expresiones Regulares
-   En JavaScript, las expresiones regulares se pueden crear de dos formas:
-   - **Usando la sintaxis literal**: Se encierran entre barras / /.
+### Conversiones de Booleanos
 
-   ```js
-   let regex = /abc/;
-   ```
+### Valores falsy
 
-- **Usando el constructor RegExp**: Este enfoque es útil cuando se desea crear una expresión regular de manera dinámica.
+Los siguientes valores se convierten a `false` cuando se evalúan en un contexto booleano:
+
+- `false`
+- 0 (el número cero)
+- “” (cadena de texto vacía)
+- `null`
+- `undefined`
+- NaN (Not a Number)
 
   ```js
-  let regex = new RegExp("abc");
+  console.log(Boolean(0)); // false
+  console.log(Boolean("")); // false
+  console.log(Boolean(null)); // false
+  console.log(Boolean(undefined)); // false
+  console.log(Boolean(NaN)); // false
   ```
 
-Ambas formas son equivalentes, pero la sintaxis literal es más común. 2. Elementos Básicos de las Expresiones Regulares
-Las expresiones regulares están formadas por una combinación de caracteres literales y metacaracteres especiales. Aquí se describen algunos de los elementos más básicos y comunes:
+### Valores truthy
 
-- Caracteres Literales
-  Son los caracteres que se buscan tal cual en el texto.
+Cualquier valor que no sea uno de
+los “falsy” mencionados anteriormente es considerado “truthy”, es decir, se convierte a `true` en un
+contexto booleano.
 
 ```js
-let regex = /cat/;
-let str = "The cat is on the roof.";
-console.log(regex.test(str)); // true
+console.log(Boolean(1)); // true
+console.log(Boolean("Hola")); // true
+console.log(Boolean([])); // true (un array vacío)
+console.log(Boolean({})); // true (un objeto vacío)
+console.log(Boolean(function () {})); // true (una función)
 ```
 
-- Metacaracteres Especiales
-  Estos caracteres tienen significados especiales en las expresiones regulares. Algunos de los más comunes incluyen:
-- **. (punto)**: Coincide con cualquier carácter, excepto con un salto de línea.
+### Igualdad y coerción
+
+En JavaScript, existen dos operadores de igualdad principales:
+el operador de igualdad == y el operador de igualdad estricta ===.
+
+- **Igualdad simple (==)**:
+
+  El operador `==` compara valores después de convertirlos a un tipo común, lo que puede producir resultados inesperados.
 
   ```js
-  let regex = /c.t/;
-  console.log(regex.test("cat")); // true
-  console.log(regex.test("cut")); // true
-  console.log(regex.test("cmt")); // true
+  console.log(1 == "1"); // true
+  console.log(true == 1); // true
+  console.log(null == undefined); // true
   ```
 
-- **\d**: Coincide con cualquier dígito (equivalente a [0‑9]).
+- **Igualdad estricta (===)**: compara valor y tipo sin conversión.
 
   ```js
-  let regex = /\d/;
-  console.log(regex.test("abc123")); // true
-  console.log(regex.test("abc")); // false
+  console.log(1 === "1"); // false
+  console.log(true === 1); // false
+  console.log(null === undefined); // false
+  console.log(1 === 1); // true
   ```
 
-- **\w**: Coincide con cualquier carácter alfanumérico (letras, dígitos y guion bajo).
+> Usar el operador de igualdad estricta === es recomendable porque evita errores sutiles
+> que pueden surgir por la coerción (conversión) de tipos cuando se usa ==. Con ===, te
+> aseguras de que no haya conversión de tipos automática, lo que hace que el código sea
+> más predecible y menos propenso a errores.
 
-  ```js
-  let regex = /\w/;
-  console.log(regex.test("hello_world")); // true
-  ```
+### 2.5.5 Otros tipos primitivos
 
-- **\s**: Coincide con cualquier carácter de espacio en blanco (espacios, tabulaciones, saltos de línea).
+Hay seis tipos de datos primitivos en ES6+:
 
-  ```js
-  let regex = /\s/;
-  console.log(regex.test("hello world")); // true
-  ```
 
-- **^**: Indica el inicio de una cadena.
 
-  ```js
-  let regex = /^hello/;
-  console.log(regex.test("hello world")); // true
-  console.log(regex.test("world hello")); // false
-  ```
+### Undefined
 
-- **$**: Indica el final de una cadena.
-
-  ```js
-  let regex = /world$/;
-  console.log(regex.test("hello world")); // true
-  console.log(regex.test("world hello")); // false
-  ```
-
-- *****: Coincide con cero o más repeticiones del carácter o patrón anterior.
-
-  ```js
-  let regex = /ca*t/;
-  console.log(regex.test("ct")); // true
-  console.log(regex.test("cat")); // true
-  console.log(regex.test("caaat")); // true
-  ```
-
-- **+**: Coincide con una o más repeticiones del carácter o patrón anterior.
-
-  ```js
-  let regex = /ca+t/;
-  console.log(regex.test("cat")); // true
-  console.log(regex.test("caaat")); // true
-  console.log(regex.test("ct")); // false
-  ```
-
-- **?**: Coincide con cero o una repetición del carácter o patrón anterior.
-
-  ```js
-  let regex = /ca?t/;
-  console.log(regex.test("cat")); // true
-  console.log(regex.test("ct")); // true
-  console.log(regex.test("caat")); // false
-  ```
-
-- **{n}**: Coincide exactamente con n repeticiones del carácter o patrón anterior.
-
-  ```js
-  let regex = /a{3}/;
-  console.log(regex.test("aaa")); // true
-  console.log(regex.test("aa")); // false
-  ```
-
-- **{n,m}**: Coincide con entre n y m repeticiones del carácter o patrón anterior.
-
-  ```js
-  let regex = /a{2,4}/;
-  console.log(regex.test("aa")); // true
-  console.log(regex.test("aaa")); // true
-  console.log(regex.test("aaaa")); // true
-  console.log(regex.test("a")); // false
-  ```
-
-- Conjuntos y Rangos
-- **[abc]**: Coincide con cualquier carácter dentro de los corchetes.
-
-  ```js
-  let regex = /[abc]/;
-  console.log(regex.test("apple")); // true
-  console.log(regex.test("banana")); // true
-  console.log(regex.test("cherry")); // true
-  ```
-
-- **[a-z]**: Coincide con cualquier carácter en el rango especificado.
-
-  ```js
-  let regex = /[a-z]/;
-  console.log(regex.test("HELLO")); // false
-  console.log(regex.test("hello")); // true
-  ```
-
-- **[^abc]**: Coincide con cualquier carácter excepto los especificados.
-
-  ```js
-  let regex = /[^abc]/;
-  console.log(regex.test("d")); // true
-  console.log(regex.test("a")); // false
-  ```
-
-3. Modificadores (Flags)
-   Las expresiones regulares en JavaScript pueden tener modificadores que cambian su comportamiento:
-   - **i**: Ignora la distinción entre mayúsculas y minúsculas.
-
-   ```js
-   let regex = /hello/i;
-   console.log(regex.test("HELLO")); // true
-   ```
-
-- **g**: Busca todas las coincidencias en lugar de detenerse en la primera.
-
-  ```js
-  let regex = /l/g;
-  let str = "hello world";
-  console.log(str.match(regex)); // ["l", "l", "l"]
-  ```
-
-- **m**: Habilita el modo multilínea, afectando ^ y $ para que coincidan al inicio y al final de cada
-  línea, no solo del inicio y final de la cadena completa.
-
-  ```js
-  let regex = /^world/m;
-  ```
-
-`let` str = `hello
-world`;
+El tipo `undefined` representa una variable que ha sido declarada pero no inicializada. Cuando una
+variable es declarada sin asignarle un valor, su tipo es `undefined`.
 
 ```js
-console.log(regex.test(str)); // true
+let variable;
+console.log(variable); // Output: undefined
 ```
 
-4. Métodos Comunes que Usan Expresiones Regulares
-   - test()
-     El método test() verifica si una cadena cumple con la expresión regular y devuelve `true` o `false`.
+### Null
 
-   ```js
-   let regex = /world/;
-   console.log(regex.test("hello world")); // true
-   ```
+El tipo `null` es un valor especial que representa la ausencia intencional de cualquier valor u objeto. Es
+un valor asignable y se utiliza comúnmente para inicializar variables que se espera que luego contengan un objeto.
 
-- exec()
-  El método exec() busca una coincidencia en una cadena y devuelve un array con la primera coincidencia encontrada o `null` si no hay coincidencia.
+```js
+const obj = null;
+console.log(obj); // Output: null
+```
 
-  ```js
-  let regex = /world/;
-  console.log(regex.exec("hello world")); // ["world", index: 6, input: "hello world", groups:
-  ```
 
-`undefined`]
 
-- match()
-  El método match() busca una coincidencia en una cadena y devuelve las coincidencias encontradas.
-  Si se usa con el modificador g, devuelve todas las coincidencias en un array.
 
-  ```js
-  let regex = /l/g;
-  let str = "hello world";
-  console.log(str.match(regex)); // ["l", "l", "l"]
-  ```
 
-- replace()
-  El método replace() busca una coincidencia en una cadena y reemplaza la primera (o todas si se usa
-  g) coincidencia con una nueva subcadena.
-
-  ```js
-  let regex = /world/;
-  let str = "hello world";
-  let nuevoStr = str.replace(regex, "JavaScript");
-  console.log(nuevoStr); // "hello JavaScript"
-  ```
-
-- search()
-  El método search() busca una coincidencia en una cadena y devuelve el índice de la primera coincidencia, o ‑1 si no hay coincidencia.
-
-  ```js
-  let regex = /world/;
-  let str = "hello world";
-  console.log(str.search(regex)); // 6
-  ```
-
-- split()
-  El método split() divide una cadena en un array de subcadenas utilizando una expresión regular como
-  delimitador.
-
-  ```js
-  let regex = /\s/;
-  let str = "hello world";
-  console.log(str.split(regex)); // ["hello", "world"]
-  ```
-
-5. Grupos y Referencias
-   Las expresiones regulares permiten agrupar partes de una expresión y referirse a ellas más tarde. Los
-   grupos se crean con paréntesis () y se pueden referenciar con \1, \2, etc., dependiendo de su orden.
-
-   ```js
-   let regex = /(cat|dog)s/;
-   console.log(regex.test("cats")); // true
-   console.log(regex.test("dogs")); // true
-   console.log(regex.test("mice")); // false
-   ```
-
-6. Ejemplos
-   - **Validar una dirección de correo electrónico**:
-
-   ```js
-   let regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-   console.log(regex.test("example@mail.com")); // true
-   console.log(regex.test("example@.com")); // false
-   ```
-
-- **Buscar números de teléfono**:
-
-  ```js
-  let regex = /^(6|7|8|9)\d{8}$/;
-  let validPhoneNumber = "612345678";
-  let invalidPhoneNumber = "512345678";
-  console.log(regex.test(validPhoneNumber)); // true
-  console.log(regex.test(invalidPhoneNumber)); // false
-  ```
-
-- **Extraer números de una cadena**:
-
-  ```js
-  let regex = /\d+/g;
-  let str = "El precio es 50 dólares";
-  console.log(str.match(regex)); // ["50"]
-  ```
-
-- Validar si una cadena contiene solo letras y espacios
-
-  ```js
-  let regex = /^[A-Za-z\s]+$/;
-  let text = "Hello World";
-  console.log(regex.test(text)); // true
-  ```
-
-- Reemplazar todas las ocurrencias de un carácter o palabra
-
-  ```js
-  let regex = /foo/g;
-  let text = "foo bar foo baz";
-  let newText = text.replace(regex, "qux");
-  console.log(newText); // "qux bar qux baz"
-  ```
-
-> Las expresiones regulares son ideales para validar datos, como correos electrónicos, números de teléfono, direcciones IP, entre otros. En el frontend puedes usarlas para realizar las validaciones en los formularios antes de enviar los datos al servidor.
-
-### 5.1.7 Symbol {#seccion-5-1-7}
+### Symbol
 
 Introducido en ES6, el tipo symbol es un tipo de dato primitivo único e inmutable que se utiliza como
 identificador para propiedades de objetos. Los valores de tipo symbol son únicos, incluso si se crean
@@ -2370,7 +2073,6 @@ let id = Symbol("id");
 console.log(id); // Output: Symbol(id)
 ```
 
-#### 5.1.7.1 Unicidad de Symbol {#subseccion-5-1-7-1}
 
 Cada símbolo es único, incluso si dos símbolos tienen la misma descripción:
 
@@ -2383,7 +2085,7 @@ console.log(simboloA === simboloB); // false
 Esto significa que simboloA y simboloB son completamente diferentes, a pesar de que fueron
 creados con la misma descripción.
 
-#### 5.1.7.2 Usos de Symbol {#subseccion-5-1-7-2}
+### Usos de Symbol
 
 Symbol es útil para crear propiedades en objetos que no colisionen con
 otras propiedades y que no sean accesibles de forma accidental. Esto es especialmente útil en el desarrollo de bibliotecas o frameworks, donde el riesgo de colisión de nombres es alto.
@@ -2404,7 +2106,7 @@ console.log(objeto[claveSimbolo2]); // Output: Valor secreto 2
 En este ejemplo, la propiedad id es única y no se puede acceder a ella usando una cadena de texto
 como clave (usuario.id devuelve `undefined`).
 
-#### 5.1.7.3 Propiedades ocultas {#subseccion-5-1-7-3}
+### Propiedades ocultas
 
 Las propiedades de un objeto definidas usando un Symbol
 no se enumeran en un bucle `for`...in y no se ven cuando se usa `Object.keys()` o
@@ -2415,11 +2117,7 @@ getOwnPropertySymbols().
 let id = Symbol("id");
 let usuario = {
 nombre: "Juan",
-```
-
-[id]: 123
-
-```js
+  [id]: 123,
 };
 for (let clave in usuario) {
 console.log(clave); // solo "nombre", no se ve la propiedad simbolo
@@ -2433,11 +2131,13 @@ console.log(Object.getOwnPropertySymbols(usuario)); // [Symbol(id)]
 El uso de Symbol es muy poco común, pero es útil para crear propiedades de objetos
 que no se pueden acceder o modificar accidentalmente.
 
-## 5.2 Tipos de Datos de Objeto {#seccion-5-2}
+
 
 Además de los tipos primitivos, JavaScript tiene un tipo especial de objeto que se utiliza para almacenar colecciones de datos y funcionalidades más complejas. Los tipos de objetos incluyen:
 
-### 5.2.1 Objetos (Object) {#seccion-5-2-1}
+### 2.5.6 Tipos de datos de objeto
+
+### Objetos (Object)
 
 Un objeto es una colección de propiedades y métodos. Cada propiedad es una asociación entre una
 clave y un valor. Los objetos se crean utilizando llaves {} o utilizando constructores como Object.
@@ -2445,17 +2145,13 @@ clave y un valor. Los objetos se crean utilizando llaves {} o utilizando constru
 ```js
 let persona = {
 nombre: 'Juan',
-```
-
-edad: 30
-
-```js
+  edad: 30,
 };
 console.log(persona.nombre); // Output: Juan
 console.log(persona.edad); // Output: 30
 ```
 
-### 5.2.2 Arrays (Array) {#seccion-5-2-2}
+### Arrays (Array)
 
 Un array es una colección ordenada de elementos, que puede contener valores de cualquier tipo. Los
 arrays se crean utilizando corchetes [] o utilizando el constructor Array.
@@ -2466,7 +2162,7 @@ console.log(colores[0]); // Output: rojo
 console.log(colores.length); // Output: 3
 ```
 
-### 5.2.3 Funciones (Function) {#seccion-5-2-3}
+### Funciones (Function)
 
 Una función es un bloque de código que se puede definir y ejecutar cuando se necesite. Las funciones
 en JavaScript también son un tipo especial de objeto.
@@ -2489,7 +2185,7 @@ let saludo = saludar;
 console.log(saludo("Carlos")); // Output: Hola, Carlos
 ```
 
-### 5.2.4 Mapas (Map) {#seccion-5-2-4}
+### Mapas (Map)
 
 Un mapa es una nueva estructura de datos introducida en ES6 que permite almacenar pares clavevalor, donde cualquier tipo de datos puede ser una clave.
 
@@ -2501,7 +2197,7 @@ console.log(mapa.get("nombre")); // Output: Pedro
 console.log(mapa.get(1)); // Output: uno
 ```
 
-### 5.2.5 Sets (Set) {#seccion-5-2-5}
+### Sets (Set)
 
 Un set es una colección de valores únicos, es decir, no permite duplicados. Los sets se utilizan cuando
 se necesita asegurarse de que una colección de valores no tenga duplicados.
@@ -2511,11 +2207,15 @@ let set = new Set([1, 2, 3, 3, 4]);
 console.log(set); // Output: Set(4) {1, 2, 3, 4}
 ```
 
-## 5.3 Tipos de Datos Especiales {#seccion-5-3}
+
+
+
 
 Además de los tipos de datos mencionados, JavaScript tiene otros tipos y construcciones especiales.
 
-### 5.3.1 BigInt {#seccion-5-3-1}
+### 2.5.7 Tipos de datos especiales
+
+### BigInt
 
 Introducido en ES2020, el tipo BigInt permite representar números enteros más grandes que el máximo permitido por el tipo number.
 
@@ -2524,7 +2224,7 @@ let numeroGrande = BigInt(9007199254740991);
 console.log(numeroGrande); // Output: 9007199254740991n
 ```
 
-### 5.3.2 TypedArray {#seccion-5-3-2}
+### TypedArray
 
 Los TypedArray son objetos similares a los arrays que proporcionan una vista sobre buffers binarios.
 Se utilizan cuando se trabaja con datos binarios en JavaScript.
@@ -2532,115 +2232,13 @@ Se utilizan cuando se trabaja con datos binarios en JavaScript.
 ```js
 let buffer = new ArrayBuffer(16);
 let vista = new Uint8Array(buffer);
-console.log(vista); // Output: Uint8Array(16) [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+console.log(vista.length); // 16
 ```
 
-0]
 
-## 5.4 El objeto global en Javascript {#seccion-5-4}
 
-El objeto global en JavaScript es un objeto que está disponible en todo el entorno de ejecución,
-es decir, en cualquier lugar del código. Es el contenedor de todos los objetos globales, funciones y
-variables que están disponibles en un entorno específico de JavaScript (como un navegador web o
-Node.js).
-Dependiendo del entorno, el nombre de este objeto global puede variar.
 
-### 5.4.1 En entornos de navegador: {#seccion-5-4-1}
-
-En los navegadores web, el objeto global es window. Todas las variables y funciones globales que
-declares se convierten en propiedades del objeto window.
-
-```js
-var nombre = "John";
-console.log(window.nombre); // "John"
-```
-
-Aquí, la variable nombre se convierte en una propiedad del objeto global window.
-
-### 5.4.2 En Node.js: {#seccion-5-4-2}
-
-En Node.js, el objeto global se llama global. Funciona de manera similar al objeto window en el
-navegador, pero es específico para el entorno de Node.js:
-
-```js
-global.nombre = "John";
-console.log(global.nombre); // "John"
-```
-
-### 5.4.3 Acceso a objetos globales: {#seccion-5-4-3}
-
-El objeto global contiene muchas funciones y objetos estándar de JavaScript, como Math, Date, setTimeout, entre otros. Además, cualquier variable que no esté declarada con `var`, `let` o `const` se agregará
-automáticamente al objeto global (aunque esto es una mala práctica y debería evitarse).
-
-```js
-function saludar() {
-  console.log("Hola");
-}
-console.log(window.saludar === saludar); // true en navegadores
-```
-
-### 5.4.4 Propiedades y métodos comunes: {#seccion-5-4-4}
-
-El objeto global incluye propiedades y métodos que se pueden usar sin necesidad de hacer referencia
-explícita al objeto global:
-
-- Propiedades y Objetos
-  - **console**: Para mostrar mensajes en la consola (log(), error(), warn(), table()).
-  - **window (navegadores) / global (Node.js) / globalThis (todos)**: Objeto global que
-    contiene todas las variables y funciones globales.
-  - **Math**: Funciones matemáticas (random(), floor(), ceil(), round(), max(), min
-    ()).
-  - **Date**: Trabaja con fechas y horas (new Date(), Date.now()).
-  - **JSON**: Manipula datos JSON (stringify(), parse()).
-  - **Infinity**: Representa un valor numérico infinito.
-  - **NaN**: Indica que un valor no es un número.
-  - **`undefined`**: Representa un valor no definido.
-  - **document (navegadores)**: Representa el DOM del documento HTML.
-  - **navigator (navegadores)**: Información sobre el agente de usuario (navegador).
-  - **location**: Información sobre la URL actual.
-  - **history**: Permite la manipulación del historial del navegador.
-  - **process (Node.js)**: Información sobre el proceso en ejecución.
-  - **module (Node.js)**: Información sobre el módulo actual.
-  - **require (Node.js)**: Carga módulos en Node.js.
-- **Funciones**:
-  - **setTimeout()**: Ejecuta una función después de un tiempo.
-  - **setInterval()**: Ejecuta una función repetidamente con un intervalo fijo.
-  - **clearTimeout()/ clearInterval()**: Cancelan setTimeout o setInterval.
-  - **parseInt()**: Convierte una cadena a un número entero.
-  - **parseFloat()**: Convierte una cadena a un número de punto flotante.
-  - **isNaN()**: Determina si un valor es NaN.
-  - **isFinite()**: Verifica si un valor es un número finito.
-  - **encodeURI()/ decodeURI()**: Codifican y decodifican una URI completa.
-  - **encodeURIComponent()/ decodeURIComponent()**: Codifican y decodifican
-    componentes de una URI.
-  - **eval()**: Ejecuta código JavaScript representado como una cadena (se recomienda evitar
-    su uso por seguridad).
-  - **alert() (navegadores)**: Muestra un cuadro de diálogo de alerta.
-  - **prompt() (navegadores)**: Solicita una entrada al usuario.
-  - **confirm() (navegadores)**: Solicita una confirmación del usuario.
-  - **`fetch()`**: Realiza solicitudes HTTP/HTTPS y devuelve promesas.
-  - **atob()/ btoa()**: Decodifica y codifica en Base64.
-
-### 5.4.5 Módulos y el objeto global: {#seccion-5-4-5}
-
-En JavaScript moderno, especialmente en entornos como Node.js o cuando se usa ES6 (o ECMAScript 2015) en navegadores, se utilizan módulos para evitar la contaminación del espacio de nombres global. Las variables y funciones dentro de los módulos no se agregan al objeto global, lo que promueve
-un código más limpio y evita conflictos entre diferentes partes de un programa.
-
-> El uso de módulos en Javascript se verá más adelante en el curso.
-
-### 5.4.6 El uso de “globalThis”: {#seccion-5-4-6}
-
-ECMAScript 2020 introdujo globalThis, un estándar que proporciona una forma consistente de
-acceder al objeto global en cualquier entorno, ya sea en el navegador, Node.js, Web Workers, etc.:
-
-```js
-console.log(globalThis); // Accede al objeto global en cualquier entorno
-```
-
-globalThis resuelve el problema de tener que saber si estás en un navegador o en Node.js para
-acceder al objeto global.
-
-## 5.5 Coerción {#seccion-5-5}
+### 2.5.8 Coerción
 
 La coerción en JavaScript es el proceso mediante el cual el lenguaje convierte automáticamente
 un valor de un tipo de dato a otro, cuando es necesario para que una operación tenga sentido o sea
@@ -2701,42 +2299,345 @@ let texto = String(numero); // "123"
   ```
 
 - Ejemplos de coerción en operaciones comunes
-  - Coerción en Comparaciones con == (Doble Igual)
-    El operador == realiza coerción de tipos si los valores comparados son de diferentes tipos.
+  - **Igualdad flexible (`==`)**: convierte los operandos antes de compararlos.
 
-5 == '5'; // `true`
+    ```js
+    console.log(5 == "5"); // true
+    ```
 
-Aquí, JavaScript convierte la cadena ‘5’ en el número 5 antes de comparar.
+  - **Igualdad estricta (`===`)**: compara sin convertir los operandos.
 
-- Coerción en Comparaciones con === (Triple Igual)
-  El operador === no realiza coerción de tipos, compara tanto el valor como el tipo.
+    ```js
+    console.log(5 === "5"); // false
+    ```
 
-5 === '5'; // `false`
+  - **Operaciones matemáticas**: los operadores convierten a número cuando es necesario.
 
-- Coerción en Operaciones Matemáticas
-  Cuando se utilizan operadores como +, -, *, /, JavaScript intenta convertir los operandos en números
-  si no lo son.
-  '10' * 2; // 20
+    ```js
+    console.log("10" * 2); // 20
+    ```
 
-### 5.5.1 Peligros y Consideraciones {#seccion-5-5-1}
+### Peligros y Consideraciones
 
 - **Inconsistencia**: La coerción implícita puede llevar a resultados inesperados, especialmente
   cuando se usan operadores como == en lugar de ===.
 - **Legibilidad del Código**: La coerción explícita es generalmente preferible porque hace el código
   más claro y predecible, ya que es evidente cuándo y cómo se realiza la conversión de tipos.
 
-### 5.5.2 Ejemplos problemáticos {#seccion-5-5-2}
+### Ejemplos problemáticos
 
-- **Concatenación de Strings con Números**:
-  '10' + 1; // "101" (concatenación, no suma)
-- **Comparaciones Imprecisas**:
-  [] == `false`; // `true` (coerción de [] a "")
+- **Concatenación de strings con números** y **comparaciones flexibles**:
 
-# 6 Estructuras condicionales: `if`, `switch`, ternario {#seccion-6}
+  ```js
+  console.log("10" + 1); // "101" (concatenación, no suma)
+  console.log([] == false); // true
+  ```
+
+
+## 2.6 Dates
+
+### 2.6.1 Date formats
+
+Las fechas se pueden expresar como cadenas ISO 8601. Para mostrarlas según el idioma y la región, se puede usar `Intl.DateTimeFormat`.
+
+```js
+const fecha = new Date("2024-05-20T09:30:00Z");
+console.log(new Intl.DateTimeFormat("es-ES", { dateStyle: "long" }).format(fecha));
+```
+
+### 2.6.2 Métodos Date
+
+El constructor `Date` crea fechas y horas. `Date.now()` devuelve los milisegundos transcurridos desde el 1 de enero de 1970. `getMonth()` devuelve un mes entre 0 y 11.
+
+```js
+const ahora = new Date();
+console.log(ahora.getFullYear());
+console.log(ahora.getMonth() + 1);
+console.log(ahora.getDate());
+console.log(Date.now());
+```
+
+
+## 2.7 Math
+
+`Math` es un objeto integrado que proporciona propiedades y métodos para operaciones matemáticas, como redondeos, potencias y trigonometría. No se instancia; sus propiedades y métodos se consultan directamente.
+
+```js
+const resultado = Math.PI * Math.pow(2, 3); // Potencia
+console.log(Math.abs(-5)); // Valor absoluto 5
+console.log(Math.round(Math.PI)); // Redondea: 3
+console.log(Math.ceil(1.9)); // Techo: 2
+console.log(Math.floor(1.6)); // Piso: 1
+console.log(Math.max(1, 3, 8, 9, 123, 5, 0)); // Máximo: 123
+console.log(Math.min(5, -2, 100, 10, 9)); // Mínimo: -2
+console.log(Math.sqrt(9)); // Raíz cuadrada: 3
+console.log(Math.sin(Math.PI / 2)); // Función seno: 1
+```
+
+> El objeto Math es nativo de JavaScript y no necesita ser importado.
+
+### 2.7.1 Random
+
+```js
+console.log(Math.random()); // Número aleatorio entre 0 y 1
+```
+
+
+## 2.8 Pedir datos al usuario
+
+`prompt()` muestra un cuadro de diálogo y devuelve el texto introducido por el usuario.
+
+```js
+const nombre = prompt("¿Cómo te llamas?");
+```
+
+
+## 2.9 Mostrar mensajes de alerta
+
+`alert()` muestra un mensaje en un cuadro de diálogo del navegador.
+
+```js
+alert("Hola, mundo");
+```
+
+
+## 2.10 Desestructuración
+
+La desestructuración en JavaScript es una característica del lenguaje introducida en ECMAScript 6
+(ES6) que permite extraer valores de arrays o propiedades de objetos y asignarlos a variables de manera más concisa y clara. Esto es particularmente útil para trabajar con estructuras complejas de datos,
+como objetos anidados o arrays multidimensionales. A continuación, se explica la desestructuración
+en detalle para ambos casos: arrays y objetos.
+
+### 2.10.1 Desestructuración de Arrays
+
+La desestructuración de arrays permite extraer valores de un array y asignarlos a variables de manera
+directa. La sintaxis básica es:
+
+```js
+const array = [1, 2, 3, 4];
+// Desestructuración
+const [a, b, c] = array;
+console.log(a); // 1
+console.log(b); // 2
+console.log(c); // 3
+```
+
+### Características clave:
+
+- **Asignación por posición**: Los valores son asignados a las variables en función de su posición
+  en el array. En el ejemplo anterior, a toma el valor del primer elemento del array, b del segundo,
+  y así sucesivamente.
+- **Valores por defecto**: Puedes asignar valores por defecto a las variables en caso de que los elementos del array sean `undefined`.
+
+  ```js
+  const array = [1, 2];
+  const [a, b, c = 3] = array;
+  console.log(a); // 1
+  console.log(b); // 2
+  console.log(c); // 3
+  ```
+
+- **Omisión de valores**: Si no te interesa algún valor intermedio del array, puedes omitirlo usando
+  una coma.
+
+  ```js
+  const array = [1, 2, 3, 4];
+  const [a, , c] = array;
+  console.log(a); // 1
+  console.log(c); // 3
+  ```
+
+- **Rest operator**: Puedes capturar el resto de los elementos del array en una variable utilizando
+  el operador rest (…).
+
+  ```js
+  const array = [1, 2, 3, 4];
+  const [a, b, ...rest] = array;
+  console.log(a); // 1
+  console.log(b); // 2
+  console.log(rest); // [3, 4]
+  ```
+
+### 2.10.2 Desestructuración de Objetos
+
+La desestructuración de objetos permite extraer propiedades de un objeto y asignarlas a variables. La
+sintaxis básica es:
+
+```js
+const objeto = { x: 1, y: 2, z: 3 };
+// Desestructuración
+const { x, y } = objeto;
+console.log(x); // 1
+console.log(y); // 2
+```
+
+### Características clave:
+
+- **Asignación por nombre**: A diferencia de los arrays, la desestructuración de objetos se basa
+  en los nombres de las propiedades. En el ejemplo anterior, x y y son asignados a las variables
+  correspondientes con los mismos nombres.
+- **Asignación a nuevos nombres de variables**: Puedes asignar las propiedades a variables con
+  nombres diferentes.
+
+  ```js
+  const objeto = { x: 1, y: 2 };
+  const { x: a, y: b } = objeto;
+  console.log(a); // 1
+  console.log(b); // 2
+  ```
+
+- **Valores por defecto**: Similar a los arrays, puedes definir valores por defecto para propiedades
+  que no existen o son `undefined`.
+
+  ```js
+  const objeto = { x: 1 };
+  const { x, y = 2 } = objeto;
+  console.log(x); // 1
+  console.log(y); // 2
+  ```
+
+- **Desestructuración anidada**: Puedes desestructurar objetos anidados.
+
+  ```js
+  const objeto = {
+    a: 1,
+    b: {
+      c: 2,
+      d: 3,
+    },
+  };
+  const { b: { c, d } } = objeto;
+  console.log(c); // 2
+  console.log(d); // 3
+  ```
+
+**Operador rest**: También es posible usar el operador rest para capturar el resto de las propiedades en un nuevo objeto.
+
+```js
+const objeto = { x: 1, y: 2, z: 3 };
+const { x, ...resto } = objeto;
+console.log(x); // 1
+console.log(resto); // { y: 2, z: 3 }
+```
+
+### 2.10.3 Aplicaciones Prácticas
+
+La desestructuración es muy útil en diversas situaciones, como:
+
+- **Intercambio de valores**: Intercambiar valores entre dos variables sin una variable temporal.
+
+  ```js
+  let a = 1,
+    b = 2;
+  [a, b] = [b, a];
+  console.log(a); // 2
+  console.log(b); // 1
+  ```
+
+- **Extracción de datos de funciones**: Cuando una función retorna un objeto, puedes desestructurarlo directamente en la llamada.
+
+  ```js
+  function obtenerCoordenadas() {
+    return { x: 10, y: 22 };
+  }
+  const { x, y } = obtenerCoordenadas();
+  console.log(x, y); // 10 22
+  ```
+
+- **Parámetros de función**: Puedes desestructurar directamente en los parámetros de una función.
+
+  ```js
+  function imprimirCoordenadas({ x, y }) {
+    console.log(`Coordenadas: ${x}, ${y}`);
+  }
+  imprimirCoordenadas({ x: 10, y: 22 });
+  ```
+
+## 2.11 PRÁCTICA 2: Variables y tipos de datos
+
+### Preparación del repositorio
+
+1. Crea en tu equipo una carpeta llamada `Javascript` para guardar los ejercicios de JavaScript.
+2. Inicializa el control de versiones en esa carpeta.
+3. Desde tu cuenta de GitHub del centro, crea un repositorio privado llamado `Javascript` y publícalo desde la carpeta anterior.
+4. Guarda cada ejercicio en su propia carpeta y nombra el archivo `.js` según el ejercicio. Por ejemplo:
+
+  ```text
+  Javascript/
+    ejercicio-1-hola-mundo/
+     index.html
+     holamundo.js
+    ejercicio-2-number-math/
+     number-math.js
+  ```
+
+5. Comparte el repositorio con el profesor para que pueda acceder.
+
+### Tareas
+
+1. **Hola, mundo**
+
+  Crea `index.html` y `holamundo.js`. La página debe mostrar tu nombre y apellidos, e incluir el script `holamundo.js`. El script mostrará un mensaje de bienvenida con `alert()` e incluirá un comentario con la fecha de realización y tu nombre.
+
+  a. Añade al mensaje de bienvenida la fecha y hora actuales.
+
+2. **Number y Math**
+
+  Crea una variable para el radio y una constante numérica para Pi con cinco decimales. Puedes obtenerla con `Number(Math.PI.toFixed(5))`. Calcula el área de un círculo de radio 3,5 metros mediante:
+
+  $$A = \pi r^2$$
+
+  a. Muestra el área por consola.
+  b. Convierte el resultado a `string` y muéstralo.
+  c. Muéstralo como `string` con tres decimales.
+  d. Convierte el área en un entero y muéstralo.
+  e. Redondea el área al entero más cercano con `Math`.
+  f. Multiplica el área por un entero aleatorio entre 1 y 20.
+  g. Comprueba con `Number.isFinite()` que el valor guardado en la variable del radio sea finito y positivo antes de calcular el área.
+
+3. **String**
+
+  Crea e inicializa una variable para tu nombre y otra para tus apellidos.
+
+  a. Muestra la concatenación de ambas variables.
+  b. Muestra la longitud de la cadena resultante.
+  c. Extrae los caracteres de las posiciones 7 a 10. Recuerda que los índices empiezan en 0 y que el segundo argumento de `slice()` no se incluye.
+  d. Reemplaza tu segundo apellido por otro distinto.
+  e. Convierte la cadena a mayúsculas.
+  f. Muestra el último carácter.
+  g. Convierte la cadena concatenada en un array, usando el espacio como separador.
+  h. Busca la posición en la que comienza tu apellido.
+  i. Usa un template literal para mostrar un mensaje que concatene `Bienvenido/a` con la cadena creada.
+  j. Genera las iniciales del nombre y los apellidos en mayúsculas a partir del array.
+
+4. **Date**
+
+  Crea una variable con la fecha de hoy y usa sus métodos para obtener:
+
+  a. El día del mes.
+  b. El mes. Ten en cuenta que `getMonth()` devuelve valores de 0 a 11.
+  c. El año.
+  d. Muestra la fecha completa, incluido el día de la semana, con `Intl.DateTimeFormat` para la región `es-ES`.
+
+5. **Entrada, operaciones y tipos**
+
+  Pide al usuario su edad y la nota media de su expediente, con tres decimales, y almacena ambos valores como números.
+
+  a. Muestra la nota con dos decimales.
+  b. Calcula y muestra la suma, resta, multiplicación y división de ambos valores.
+  c. Convierte el resultado de la división a `string` y muéstralo.
+  d. Crea una variable booleana con valor `true`.
+  e. Usa `typeof` para mostrar el tipo de las variables utilizadas.
+  f. Comprueba que la edad y la nota sean números válidos, que la nota esté entre 0 y 10 y que no se intente dividir entre cero.
+
+<!--
+# 3. Estructuras de control
+
+## 3.1 Estructuras condicionales: `if`, `switch`, ternario
 
 A continuación, se repasa el uso de las estructuras `if`, `else`, `switch`, y otros conceptos relacionados.
 
-## 6.1 Estructura `if`, `else` `if`, `else` {#seccion-6-1}
+### 3.1.1 Estructura `if`, `else` `if`, `else`
 
 ```js
 let hora = 10;
@@ -2795,7 +2696,7 @@ console.log("Excelente");
 }
 ```
 
-## 6.2 Evaluación implícita de valores a booleanos {#seccion-6-2}
+### 3.1.2 Evaluación implícita de valores a booleanos
 
 JavaScript convierte automáticamente los valores en condiciones a booleanos (`true` o `false`). Esto significa que no solo los valores `true` y `false` son válidos, sino también otros tipos de datos, como números,
 cadenas, arrays, objetos, etc.
@@ -2811,7 +2712,7 @@ Aquí, cualquier valor que no sea 0, `null`, `undefined`, NaN, una cadena vacía
 cuando se evalúa en un `if`. Puedes probar diferentes valores para bandera como 1, 0, “ “,”cadena”, [], {},
 [`true`], `null`, `undefined`, {x:1}, [1,2,3] y observar cómo se comporta el `if`.
 
-## 6.3 Comprobación de inicialización de variables {#seccion-6-3}
+### 3.1.3 Comprobación de inicialización de variables
 
 Para comprobar si una variable ha sido inicializada, puedes utilizar una condición `if`. Sin embargo,
 declarar una variable sin inicializarla (solo con `const`) lanzará un error en JavaScript. La declaración
@@ -2833,9 +2734,9 @@ console.log('No inicializada');
 Este código verifica si variable tiene un valor considerado truthy. Si no ha sido inicializada o es un
 valor falsy (como `null` o `undefined`), se ejecutará el bloque `else`.
 
-## 6.4 Uso de operadores lógicos {#seccion-6-4}
+### 3.1.4 Uso de operadores lógicos
 
-### 6.4.1 Operador lógico AND (&&) {#seccion-6-4-1}
+#### 3.1.4.1 Operador lógico AND (&&)
 
 El operador && evalúa expresiones de izquierda a derecha y detiene la evaluación tan pronto como
 una expresión es `false`. Esto se conoce como “corto‑circuito AND”.
@@ -2855,7 +2756,7 @@ console.log(A() && B());
 En este ejemplo, B nunca es llamada porque A() retorna `null`, que es un valor falsy. Como resultado, la
 evaluación se detiene y se retorna `null`.
 
-### 6.4.2 Operador lógico OR (||) {#seccion-6-4-2}
+#### 3.1.4.2 Operador lógico OR (||)
 
 El operador || también se evalúa de izquierda a derecha, pero se detiene tan pronto como una expresión es `true`, devolviendo el valor truthy.
 
@@ -2874,7 +2775,7 @@ console.log(A() || B());
 Aquí, B no es llamada porque A() retorna un array [], que es un valor truthy. La evaluación se corta y
 se devuelve [].
 
-## 6.5 Estructura `switch` {#seccion-6-5}
+### 3.1.5 Estructura `switch`
 
 La estructura `switch` se utiliza para seleccionar uno entre varios bloques de código para ejecutar, según el valor de una expresión.
 
@@ -2921,7 +2822,7 @@ console.log(aNotaNumerica(calificacion)); // 0
 En este ejemplo, `switch` compara el valor de calificacion con cada `case` y ejecuta el código asociado al
 primer `case` que coincida. Si no hay coincidencia, se ejecuta el bloque `default`.
 
-## 6.6 Operador ternario {#seccion-6-6}
+### 3.1.6 Operador ternario
 
 El operador ternario (? :) es una forma concisa de escribir un `if`‑`else`. Se utiliza para evaluar una expresión y retornar un valor basado en la condición. Es una expresión a diferencia de `if` que es una
 estructura de control.
@@ -2943,13 +2844,13 @@ console.log(person ? person.name : ""); // ""
 Este operador es útil para realizar asignaciones rápidas basadas en una condición, manteniendo el
 código limpio y legible.
 
-# 7 Bucles {#seccion-7}
+## 3.2 Bucles
 
 Existen varios tipos de bucles que te permiten ejecutar un bloque de código varias veces, lo cual es útil
 cuando se trabaja con estructuras de datos como arrays, objetos, o incluso cuando necesitas repetir
 una operación bajo ciertas condiciones.
 
-## 7.1 `for` {#seccion-7-1}
+### 3.2.1 `for`
 
 El bucle `for` es el tipo de bucle más tradicional en JavaScript. Se utiliza cuando conoces de antemano
 cuántas veces quieres que se ejecute el bloque de código.
@@ -2960,7 +2861,7 @@ for (let i = 0; i < 5; i++) {
 }
 ```
 
-## 7.2 `while` {#seccion-7-2}
+### 3.2.2 `while`
 
 El bucle `while` se utiliza cuando no se conoce de antemano el número exacto de iteraciones. Continúa
 ejecutándose mientras la condición especificada sea verdadera.
@@ -2977,7 +2878,7 @@ i++;
 }
 ```
 
-## 7.3 do…`while` {#seccion-7-3}
+### 3.2.3 do…`while`
 
 El bucle do…`while` es similar a `while`, pero con una diferencia importante: el bloque de código se
 ejecuta al menos una vez antes de que la condición sea evaluada.
@@ -2991,7 +2892,7 @@ console.log('Iteración número: ' + i);
 i++;
 } `while` (i < 5);
 
-## 7.4 `for`…in {#seccion-7-4}
+### 3.2.4 `for`…in
 
 El bucle `for`…in se utiliza para iterar sobre las propiedades enumerables de un objeto. Es útil cuando
 trabajas con objetos, no con arrays.
@@ -3003,7 +2904,7 @@ for (let clave in persona) {
 }
 ```
 
-## 7.5 `for`…of {#seccion-7-5}
+### 3.2.5 `for`…of
 
 El bucle `for`…of se utiliza para iterar sobre elementos iterables, como arrays, strings, o cualquier objeto
 que implemente el protocolo iterable (por ejemplo, Map, Set).
@@ -3015,7 +2916,7 @@ for (let letra of array) {
 }
 ```
 
-## 7.6 `forEach` {#seccion-7-6}
+### 3.2.6 `forEach`
 
 `forEach` es un método de los arrays en JavaScript que te permite ejecutar una función específica para
 cada elemento del array.
@@ -3037,756 +2938,282 @@ Explicación:
 - `forEach` no puede romperse (usar `break`), por lo que es menos flexible que un bucle `for`.
   Más adelante veremos otras funciones iteradoras de arrays.
 
-# 8 Objetos Javascript {#seccion-8}
 
-En JavaScript, los objetos son una estructura fundamental que permite almacenar y manipular
-datos de manera flexible y poderosa. A diferencia de los tipos primitivos, que son inmutables y se
-manejan por valor, los objetos son mutables y se manejan por referencia. Esto los convierte en una
-herramienta versátil para modelar datos complejos y comportamientos en aplicaciones.
-¿Qué es un Objeto en JavaScript?
-Un objeto en JavaScript es una colección desordenada de propiedades, donde cada propiedad tiene
-una clave (o key) y un valor asociado. La clave siempre es un tipo string o symbol, mientras que el
-valor puede ser de cualquier tipo: primitivo, objeto, función, etc.
-Por ejemplo:
+# 4. Funciones
+
+## 4.1 Declaración y uso de funciones
+
+En JavaScript, las funciones son bloques fundamentales de código que permiten encapsular lógica
+reutilizable. Existen varias formas de declarar y utilizar funciones, cada una con sus propias características y usos específicos.
+La forma más común de declarar una función en JavaScript es utilizando la palabra clave `function`.
+Aquí un ejemplo básico:
 
 ```js
-const persona = {
-nombre: "Luis",
-apellidos: "Molina",
-edad: 30,
+function suma(x, y) {
+  return x + y;
+}
+const s = suma(349, 123);
+imprime(s);
+function imprime(msg) {
+  console.log(msg);
+  // En ausencia de un return explícito, JavaScript retorna undefined por defecto.
+}
 ```
 
-`saludar: function() {`
+### 4.1.1 Hoisting en Funciones
+
+El hoisting es un comportamiento en JavaScript donde las declaraciones de funciones y variables se
+mueven al inicio de su contexto de ejecución. Esto significa que puedes invocar una función antes de
+su declaración:
 
 ```js
-console.log(`Hola, mi nombre es ${this.nombre}`);
+console.log(suma(5, 7)); // Funciona debido al hoisting
+function suma(x, y) {
+  return x + y;
+}
+```
+
+En este ejemplo, la función suma se puede llamar antes de su declaración porque JavaScript eleva su
+definición al comienzo del ámbito.
+
+### 4.1.2 Funciones como Expresiones
+
+En JavaScript, las funciones también pueden ser expresiones, lo que significa que pueden asignarse
+a variables o pasarse como argumentos a otras funciones:
+
+```js
+const cuadrado = function (x) {
+  return x * x;
+};
+console.log(cuadrado(8));
+```
+
+En este caso, hemos creado una función anónima (una función sin nombre) y la hemos asignado a la
+variable cuadrado. Esta función no está sujeta al hoisting, por lo que no puede ser llamada antes de
+su definición.
+
+```js
+function calcularAreaRectangulo(base, altura) {
+  return base * altura;
+}
+function calcularAreaTriangulo(base, altura) {
+  return (base * altura) / 2;
+}
+function calcularArea(figura, base, altura, calcularAreaFunc) {
+  console.log(`El área del ${figura} es: ${calcularAreaFunc(base, altura)}`);
+}
+```
+
+calcularArea('rectángulo', 5, 10, calcularAreaRectangulo); // El área del rectángulo es: 50
+calcularArea('triángulo', 5, 10, calcularAreaTriangulo); // El área del triángulo es: 25
+En este ejemplo, la función calcularArea acepta una función como argumento. Esto permite que
+la función calcularArea pueda operar con diferentes tipos de figuras geométricas sin tener que
+modificar su propia implementación.
+
+### 4.1.3 Funciones Anónimas y Recursividad
+
+A veces, incluso una función expresada puede tener un nombre, particularmente en casos de recursividad:
+
+```js
+const f = function factorial(x) {
+  if (x <= 1) return 1;
+  else return x * factorial(x - 1);
+};
+console.log(f(5)); // 120
+```
+
+En este ejemplo, aunque factorial es el nombre dentro de la función, la función es llamada a
+través de f.
+
+### 4.1.4 Funciones Arrow (Funciones Flecha)
+
+Introducidas en ES6, las funciones flecha (arrow functions) proporcionan una sintaxis más concisa:
+
+```js
+const suma1 = (x, y) => {
+  return x + y;
+};
+console.log(suma1(1, 3)); // 4
+// Simplificando aún más:
+const suma2 = (x, y) => x + y;
+console.log(suma2(4, 7)); // 11
+// Con un solo parámetro:
+const polinomio = (x) => x * x + 2 * x;
+console.log(polinomio(2)); // 8
+// Sin parámetros:
+const dospi = () => 3.1415 * 2;
+console.log(dospi()); // 6.283
+```
+
+#### 4.1.4.1 Consideraciones sobre `this` en Funciones Arrow
+
+Una característica clave de las funciones arrow es que no tienen su propio contexto `this`; en su lugar,
+heredan `this` del contexto donde se definieron:
+
+```js
+let o = {
+```
+
+m: `function` () {
+
+```js
+console.log(this === o); // true
+const f = () => {
+console.log(this === o); // true
+};
+f();
 }
 };
-console.log(persona.nombre);
+o.m();
 ```
 
-En este ejemplo, persona es un objeto con varias propiedades: nombre, apellidos, edad y
-saludar. Esta última es una función y, en este contexto, se llama “método”.
-
-> En JavaScript, los objetos son mutables, lo que significa que se pueden modificar después de su creación. Es una estructura fundamental para modelar datos y comportamientos en aplicaciones.
-
-## 8.1 Herencia y Prototipos {#seccion-8-1}
-
-JavaScript implementa un modelo de herencia basado en prototipos. Cada objeto tiene un prototipo (otra instancia de objeto) del cual hereda propiedades y métodos. Esta herencia se establece
-mediante una referencia al prototipo en la propiedad interna [Prototype] (accesible a través de
-**proto** u `Object.getPrototypeOf()`).
-Por ejemplo:
+Por esta razón, las funciones arrow son especialmente útiles en funciones anidadas para evitar el uso
+de trucos como `const` that = `this`.
 
 ```js
-const padre = {
+let o = {
 ```
 
-apellido: "Sánchez"
+m: `function` () {
 
 ```js
-};
-const hijo = Object.create(padre);
-hijo.nombre = "Alfonso";
-console.log(hijo.apellido); // "Sánchez"
+let that = this;
+console.log(this === o);
 ```
 
-En este caso, hijo hereda la propiedad apellido de padre a través de la cadena de prototipos.
-
-## 8.2 Creación de Objetos {#seccion-8-2}
-
-Existen varias formas de crear objetos en JavaScript:
-
-- **Literales de Objetos**:
-
-  ```js
-  const vacio = {};
-  const punto = {x:0, y:0};
-  const libro = {
-  titulo: "Introducción a JavaScript",
-  paginas: 200,
-  descripcion: "Un libro sobre JavaScript",
-  ```
-
-autor: {
+f(); //hoisting
 
 ```js
-nombre: "Alfonso",
+function f() {
+console.log(this === o); //false. Vemos que no se hereda el valor de this en la
 ```
 
-apellidos: "Sánchez"
+función anidada.
 
 ```js
+console.log(this === global); //this es el objeto global
+console.log(that === o); // truco para poder usar o en funciones anidadas.
+}
 }
 };
 ```
 
-- **Con el Operador new**:
+**Uso Inadecuado de Funciones Arrow en Objetos**
 
-  ```js
-  const objeto = new Object();
-  const fecha = new Date();
-  const lista = new Array(10);
-  ```
-
-- **Con el Método `Object.create()`**:
-
-  ```js
-  const prototipo = { nombre: "Luis" };
-  const objeto = Object.create(prototipo);
-  console.log(objeto.nombre); // "Luis"
-  ```
-
-- Acabamos de crear un objeto “objeto” que hereda las propiedades de “prototipo”.
-- objeto no tiene propiedades propias, solo heredadas.
-- **Para acceder al prototipo desde objeto**:
-
-  ```js
-  console.log(objeto.__proto__);
-  console.log(Object.getPrototypeOf(objeto));
-  ```
-
-- El padre de prototipo es Object
-
-  ```js
-  console.log(Object.getPrototypeOf(prototipo));
-  ```
-
-- **Los objetos creados mediante un literal tienen un prototipo**: Object.prototype
-
-  ```js
-  Object.getPrototypeOf(prototipo) === Object.prototype;
-  ```
-
-- Por este motivo los objetos creados con literales tienen métodos heredados de Object.
-  prototype:
-  - toString
-  - valueOf
-  - isPrototypeOf
-  - hasOwnProperty
-  - toLocaleString
-- **Podemos crear un objeto cuyo prototipo es `null`**:
-
-  ```js
-  let o2 = Object.create(null);
-  Object.getPrototypeOf(o2); // null
-  ```
-
-o2.toString(); // error el método toString no existe.
-
-- Object.prototype no tiene prototipo y por lo tanto finaliza la cadena de prototipos.
-
-  ```js
-  Object.getPrototypeOf(Object.prototype); //null
-  ```
-
-## 8.3 Propiedades y Configuración {#seccion-8-3}
-
-En JavaScript, las propiedades de los objetos no solo almacenan valores, sino que también tienen
-atributos internos que determinan su comportamiento. Estos atributos controlan aspectos clave sobre cómo se puede interactuar con esas propiedades, lo que proporciona un control detallado sobre
-la estructura y la seguridad del objeto.
-
-### 8.3.1 Atributos de las Propiedades {#seccion-8-3-1}
-
-Cada propiedad de un objeto tiene tres atributos principales que pueden ser configurados:
-
-- **Enumerable (enumerable)**: Indica si la propiedad aparecerá durante la enumeración del objeto, como cuando se utiliza un bucle `for`…in o el método `Object.keys()`. Si enumerable es `true`, la
-  propiedad se incluye en estas enumeraciones.
-- **Configurable (configurable)**: Determina si la propiedad puede ser eliminada del objeto y si sus
-  atributos (excepto writable) pueden ser modificados posteriormente. Si configurable es `false`,
-  no podrás eliminar la propiedad ni cambiar su configurabilidad o enumerabilidad.
-- **Writable (writable)**: Define si el valor de la propiedad puede ser cambiado mediante asignación. Si writable es `false`, cualquier intento de modificar el valor será ignorado (en modo estricto,
-  lanzará un error).
-  El método `Object.defineProperty()` se utiliza para definir o modificar una propiedad de un objeto, especificando los valores de estos atributos. Esto es útil cuando necesitas un control más granular sobre
-  cómo se comportan las propiedades del objeto.
-
-  ```js
-  const persona = {};
-  Object.defineProperty(persona, 'edad', {
-  ```
-
-value: 30, // El valor de la propiedad
-writable: `false`, // No se puede cambiar el valor de la propiedad
-enumerable: `true`, // La propiedad aparecerá en la enumeración del objeto
-configurable: `false` // No se puede eliminar ni reconfigurar la propiedad
+Sin embargo, debido a cómo manejan `this`, no se recomienda usar funciones arrow como métodos
+en objetos:
 
 ```js
-});
-console.log(persona.edad); // 30
+const calculadora = {
+op1: 100,
+op2: 200,
 ```
 
-persona.edad = 35; // No hará nada porque writable es `false`
-
-```js
-console.log(persona.edad); // Sigue siendo 30
-for (let key in persona) {
-  console.log(key); // 'edad' aparecerá aquí porque enumerable es true
-}
-```
-
-delete persona.edad; // Esto fallará porque configurable es `false`
-
-```js
-console.log(persona.edad); // Sigue siendo 30
-```
-
-### 8.3.2 Atributos get y set {#seccion-8-3-2}
-
-Además de los tres atributos mencionados, también puedes definir una propiedad utilizando funciones getter y setter en lugar de simplemente un valor. Estas funciones permiten controlar cómo se
-accede y modifica el valor de la propiedad.
-
-```js
-Object.defineProperty(persona, 'nombreCompleto', {
-```
-
-get() {
-
-```js
-return `${this.nombre} ${this.apellido}`;
-```
-
-},
-set(value) {
-
-```js
-[this.nombre, this.apellido] = value.split(" ");
-```
-
-},
-
-```js
-enumerable: true,
-```
-
-configurable: `true`
-
-```js
-});
-persona.nombre = 'Juan';
-persona.apellido = 'Pérez';
-console.log(persona.nombreCompleto); // 'Juan Pérez'
-persona.nombreCompleto = 'Carlos López';
-console.log(persona.nombre); // 'Carlos'
-console.log(persona.apellido); // 'López'
-```
-
-### 8.3.3 Métodos Object.defineProperties y Object.getOwnPropertyDescriptor {#seccion-8-3-3}
-
-- **Object.defineProperties()**: Permite definir varias propiedades a la vez, proporcionando un objeto con múltiples descripciones de propiedades.
-- **Object.getOwnPropertyDescriptor()**: Devuelve la descripción completa de una
-  propiedad específica, lo que incluye sus atributos value, writable, enumerable,
-  configurable, y funciones get y set si las tiene.
-
-  ```js
-  const persona = {};
-  Object.defineProperties(persona, {
-  ```
-
-nombre: {
-
-```js
-value: 'Ana',
-writable: true,
-enumerable: true,
-```
-
-configurable: `true`
-},
-edad: {
-
-```js
-value: 25,
-writable: false,
-enumerable: false,
-```
-
-configurable: `false`
-
-```js
-}
-});
-console.log(Object.getOwnPropertyDescriptor(persona, 'nombre'));
-// {
-// value: 'Ana',
-// writable: true,
-// enumerable: true,
-// configurable: true
-// }
-```
-
-## 8.4 Acceso y Modificación de Propiedades {#seccion-8-4}
-
-En JavaScript, las propiedades de los objetos pueden ser accedidas y modificadas utilizando dos
-notaciones principales:
-
-- **Notación de punto**: objeto.propiedad
-- **Notación de corchetes**: objeto["propiedad"]
-
-  ```js
-  const libro = {
-  titulo: "Introducción a Javascript",
-  paginas: 200,
-  "descripción": "Este es un libro sobre los fundamentos de JavaScript", // Las claves (keys)
-  ```
-
-pueden ser strings con o sin comillas.
-autor: { // El valor de una propiedad puede ser otro objeto.
-
-```js
-nombre: "Alfonso",
-```
-
-apellidos: "Sánchez"
-},
-
-```json
-"contenidos del libro": "Resumen del contenido del libro"
-};
-// Acceso a propiedades usando notación de punto
-const titulo = libro.titulo; // "Introducción a JavaScript"
-// Acceso a propiedades usando notación de corchetes
-const paginas = libro["paginas"]; // 200
-```
-
-### 8.4.1 Ejemplos Avanzados con Herencia de Prototipos: {#seccion-8-4-1}
-
-```js
-let o = {}; // El prototipo de o es Object.prototype
-o.x = 1;
-let p = Object.create(o); // p hereda propiedades de o
-```
-
-p["y"] = 0; // Creación de una propiedad en p usando notación de corchetes.
-
-```js
-let q = Object.create(p); // El prototipo de q es p
-q.z = 3;
-console.log(q); // {z: 3} - q tiene la propiedad z, y hereda x e y
-console.log(p); // {y: 0} - p tiene la propiedad y, y hereda x
-console.log(o); // {x: 1} - o tiene la propiedad x
-// Acceso a propiedades heredadas:
-console.log(q.x); // 1 - q hereda la propiedad x de o
-console.log(q.y); // 0 - q hereda la propiedad y de p
-console.log(q.z); // 3 - z es propiedad directa de q
-// Ejemplo con método heredado:
-console.log(q.toString()); // Devuelve una representación en string - Método heredado de
-```
-
-Object.prototype
-Cadena de Prototipos en JavaScript: JavaScript sigue una cadena de prototipos cuando intenta acceder a una propiedad que no está presente en el objeto. Si la propiedad no se encuentra en el objeto
-actual, el motor de JavaScript busca en el prototipo del objeto, y continúa hasta que encuentra la
-propiedad o llega al final de la cadena de prototipos.
-
-### 8.4.2 Modificación de Propiedades: {#seccion-8-4-2}
-
-Cuando se asigna un valor a una propiedad, se modifica directamente la propiedad del objeto en sí,
-sin afectar las propiedades heredadas:
-
-```js
-let o = {}; // El prototipo de o es Object.prototype
-o.x = 1;
-let p = Object.create(o); // p hereda propiedades de o
-p["y"] = 0;
-let q = Object.create(p); // El prototipo de q es p
-q.z = 3;
-```
-
-q.x = 0; // Crea la propiedad x en q, no modifica x en o.
-
-```js
-console.log(q); // {z: 3, x: 0} - x es ahora una propiedad directa de q
-console.log(o); // {x: 1} - x en o permanece inalterada
-console.log(q.x); // 0 - q tiene su propia propiedad x
-console.log(o.x); // 1 - x en o no ha sido modificada
-```
-
-### 8.4.3 Acceso a Propiedades Inexistentes: {#seccion-8-4-3}
-
-Cuando se intenta acceder a una propiedad que no existe en un objeto, el resultado es `undefined`.
-No se lanza una excepción en este caso.
-
-```js
-console.log(q.a); // undefined - la propiedad a no existe en q
-```
-
-Sin embargo, intentar acceder a una propiedad de una propiedad inexistente genera una excepción:
-q.a.x // Genera un TypeError porque q.a es `undefined` y no tiene propiedades.
-
-### 8.4.4 Operador Opcional Encadenado (?.): {#seccion-8-4-4}
-
-Para evitar excepciones cuando se accede a propiedades de objetos que podrían no existir, se utiliza
-el operador opcional encadenado (?.):
-
-```js
-let apellidos = libro?.autor?.apellidos; // "Sánchez"
-// Si alguna propiedad en la cadena es null o undefined, el resultado será undefined, no se
-```
-
-lanza excepción.
-
-### 8.4.5 Eliminación de Propiedades: {#seccion-8-4-5}
-
-Para eliminar una propiedad de un objeto, se utiliza el operador delete:
-
-```js
-console.log(libro.autor.nombre); // "Alfonso"
-```
-
-delete libro.autor.nombre;
-
-```js
-console.log(libro.autor.nombre); // undefined - la propiedad ha sido eliminada
-```
-
-### 8.4.6 Comprobación de la Existencia de Propiedades: {#seccion-8-4-6}
-
-Existen varias maneras de verificar si una propiedad existe en un objeto:
-
-- **Operador in**:
-
-  ```js
-  console.log("autor" in libro); // true - La propiedad autor existe en libro
-  console.log("toString" in libro); // true - toString existe en Object.prototype, que es el
-  ```
-
-prototipo de libro
-
-- **Método hasOwnProperty()**:
-
-  ```js
-  console.log(libro.hasOwnProperty("autor")); // true - autor es una propiedad directa de libro
-  console.log(libro.hasOwnProperty("toString")); // false - toString no es una propiedad
-  ```
-
-directa de libro
-
-- **Comparación con `undefined`**: Este método es menos fiable, porque una propiedad puede
-  existir y tener un valor de `undefined`:
-
-  ```js
-  libro.autor = undefined;
-  console.log(libro.autor !== undefined); // false - propiedad autor existe pero su valor es
-  ```
-
-`undefined`
-
-```js
-console.log("autor" in libro); // true - la propiedad autor sigue existiendo
-```
-
-Este método puede llevar a errores al intentar determinar si una propiedad realmente existe o si simplemente su valor es `undefined`. Por ello, es más seguro utilizar in o hasOwnProperty() para
-verificar la existencia de una propiedad.
-
-## 8.5 Enumeración de Propiedades {#seccion-8-5}
-
-Para enumerar las propiedades de un objeto en JavaScript, una de las técnicas más comunes es utilizar el bucle `for`-in. Este bucle recorre todas las propiedades de un objeto, tanto las propias como
-las heredadas.
-
-```js
-for (const key in libro) {
-  console.log(key);
-}
-```
-
-El bucle `for`-in itera sobre todas las propiedades enumerables de un objeto, incluidas aquellas heredadas a través de la cadena de prototipos. Sin embargo, es importante tener en cuenta que no todas
-las propiedades se incluyen en esta enumeración. Por ejemplo, las propiedades como toString,
-valueOf, y otras que forman parte de Object.prototype no aparecen porque son no enumerables.
-
-```js
-const libro = {
-titulo: "JavaScript: La Guía Definitiva",
-autor: "David Flanagan",
-```
-
-año: 2020
+suma: () => `this`.op1 + `this`.op2 // Esto no funcionará como se espera
 
 ```js
 };
-for (const propiedad in libro) {
-console.log(propiedad); // título, autor, año
+```
+
+Aquí, `this` no se refiere al objeto calculadora, sino al contexto donde fue definida la función, lo
+que podría ser el objeto global o `undefined` en modo estricto.
+
+#### 4.1.4.2 Parámetros en Funciones
+
+##### 4.1.4.2.1 Parámetros Opcionales y Valores por Defecto
+
+En ES6, es posible asignar valores por defecto a los parámetros de una función:
+
+```js
+function params(a, b = [], c = 10) {
+  console.log(a, b, c);
 }
 ```
 
-En este ejemplo, se listan las propiedades titulo, autor y año, pero no aparecerán otras propiedades
-heredadas o no enumerables.
+params(100); // 100 [] 10
+Esto es útil para definir comportamientos predeterminados cuando no se pasan ciertos argumentos.
 
-### 8.5.1 Propiedades No Enumerables {#seccion-8-5-1}
+##### 4.1.4.2.2 Operador Rest
 
-Las propiedades no enumerables son aquellas que no se pueden recorrer mediante un bucle `for`-in.
-Estas propiedades son configuradas con un descriptor especial que establece su no enumerabilidad.
-Un ejemplo claro de esto son las propiedades como toString y valueOf, que existen en todos los
-objetos ya que forman parte de Object.prototype, pero no se incluyen en la enumeración.
+El operador rest (...) permite a una función aceptar un número indefinido de argumentos como un array:
 
 ```js
-Object.defineProperty(libro, 'editor', {
-value: "O'Reilly Media",
-```
-
-enumerable: `false`
-
-```js
-});
-for (const propiedad in libro) {
-console.log(propiedad); // título, autor, año (pero no 'editor')
-}
-```
-
-En este ejemplo, la propiedad editor no aparecerá en la lista porque ha sido definida como no enumerable.
-
-### 8.5.2 Otras Opciones para Enumerar Propiedades {#seccion-8-5-2}
-
-Si deseas obtener únicamente las propiedades propias del objeto, sin incluir las heredadas, puedes
-utilizar los métodos `Object.keys()` y Object.getOwnPropertyNames().
-
-- **Object.keys(obj)**: Devuelve un array con las propiedades enumerables propias del objeto.
-- **Object.getOwnPropertyNames(obj)**: Devuelve un array con todas las propiedades propias del objeto, incluidas las no enumerables.
-
-  ```js
-  const propiedadesEnumerables = Object.keys(libro);
-  console.log(propiedadesEnumerables); // ["titulo", "autor", "año"]
-  const todasLasPropiedades = Object.getOwnPropertyNames(libro);
-  console.log(todasLasPropiedades); // ["titulo", "autor", "año", "editor"]
-  ```
-
-En este ejemplo, Object.keys(libro) devuelve solo las propiedades enumerables, mientras
-que Object.getOwnPropertyNames(libro) devuelve todas las propiedades propias, incluidas las no enumerables como editor.
-
-## 8.6 Extensión y Clonación de Objetos {#seccion-8-6}
-
-En JavaScript, extender un objeto significa copiar las propiedades de un objeto a otro. Esto es útil
-cuando deseas combinar las propiedades de múltiples objetos en un solo objeto o clonar un objeto
-existente.
-
-```js
-const origen = { y: 2, z: 3 };
-const destino = { x: 1 };
-```
-
-Queremos extender las propiedades de origen en el objeto destino. Una forma sencilla de hacerlo
-es mediante un bucle `for`...in:
-
-```js
-for (let key in origen) {
-  destino[key] = origen[key];
-}
-```
-
-Este código recorre todas las propiedades enumerables del objeto origen y las copia en el objeto destino.
-
-- **Usando `Object.keys()`**:
-  Otra forma de lograr lo mismo es utilizando `Object.keys()`, que devuelve un array con las propiedades enumerables de un objeto. Podemos iterar sobre este array con un bucle `for`...of:
-
-  ```js
-  for (const key of Object.keys(origen)) {
-    destino[key] = origen[key];
+function max(first = -Infinity, ...rest) {
+  let maxValue = first;
+  for (let n of rest) {
+    if (n > maxValue) maxValue = n;
   }
-  ```
-
-Aquí usamos `for`...of en lugar de `for`...in porque `Object.keys()` devuelve un array, y `for`
-
-...of es ideal para recorrer arrays. Ambos enfoques logran el mismo resultado.
-
-- **Usando `Object.assign()`**:
-  JavaScript proporciona una función incorporada, `Object.assign()`, que es una forma más directa y concisa de extender un objeto. Este método copia todas las propiedades enumerables de uno o
-  más objetos de origen a un objeto destino. La sintaxis básica es la siguiente:
-
-  ```js
-  Object.assign(destino, origen);
-  ```
-
-Esto copia todas las propiedades de origen a destino. Si necesitas combinar varios objetos,
-`Object.assign()` también lo permite:
-
-```js
-Object.assign(nuevoObjeto, destino, origen);
-```
-
-En este caso, nuevoObjeto contendrá las propiedades combinadas de destino y origen. Si hay
-propiedades con el mismo nombre, las propiedades del último objeto (en este caso, origen) sobrescribirán las de los objetos anteriores.
-
-- Consideraciones adicionales
-  - **Inmutabilidad**: `Object.assign()` modifica el objeto destino directamente. Si necesitas mantener la inmutabilidad (es decir, no modificar los objetos originales), puedes
-    crear un nuevo objeto combinando las propiedades de varios objetos:
-
-  ```js
-  const nuevoObjeto = Object.assign({}, destino, origen);
-  ```
-
-Aquí, nuevoObjeto es un nuevo objeto que contiene las propiedades combinadas de destino y
-origen, sin modificar los objetos originales.
-
-- **Propiedades no enumerables**: `Object.assign()` solo copia propiedades enumerables. No
-  copia propiedades no enumerables, getters/setters, ni la cadena de prototipos.
-- **Métodos modernos**: A partir de ECMAScript 2018, también puedes usar el operador de propagación (…) para combinar objetos de manera aún más concisa:
-
-  ```js
-  const nuevoObjeto = { ...destino, ...origen };
-  ```
-
-Esto crea un nuevo objeto con las propiedades combinadas de destino y origen. Es una sintaxis
-más moderna y generalmente preferida en el código actual.
-
-- Serialización de Objetos
-  Serializar un objeto significa convertirlo en una cadena de texto que puede ser fácilmente almacenada o transmitida. En JavaScript, esto se hace usando JSON:
-- **Serialización**:
-
-  ```js
-  const data = JSON.stringify(libro);
-  ```
-
-- **Deserialización**:
-
-  ```js
-  const copia = JSON.parse(data);
-  ```
-
-> La serialización y deserialización de objetos es útil cuando necesitas transferir datos
-> entre diferentes sistemas o almacenar datos en bases de datos.
-
-JSON es un formato de texto estándar que se utiliza para representar datos estructurados. Es fácil de leer y escribir para los humanos y fácil de interpretar para las máquinas.
-Usaremos JSON para el intercambio de datos entre el frontend y el backend.
-
-## 8.7 Propiedades Abreviadas, Computadas y Símbolos {#seccion-8-7}
-
-A partir de ES6 (ECMAScript 2015), JavaScript introdujo nuevas funcionalidades para trabajar con objetos de una manera más conveniente y legible. Dos de las más destacadas son las propiedades abreviadas y las propiedades computadas.
-
-1. Propiedades Abreviadas
-   Las propiedades abreviadas permiten crear objetos de manera más concisa cuando el nombre de la
-   propiedad coincide con el nombre de la variable. En lugar de repetir el nombre de la propiedad y la
-   variable, puedes simplemente escribir el nombre una vez.
-
-   ```js
-   let x = 1, y = 2;
-   // Manera tradicional
-   let o = {
-   x: x,
-   ```
-
-y: y
-
-```js
-};
-// Uso de propiedades abreviadas
-let z = { x, y };
-console.log(z); // Resultado: { x: 1, y: 2 }
-```
-
-En el objeto z, no es necesario escribir x: x y y: y porque los nombres de las propiedades coinciden con
-los nombres de las variables. Es suficiente con escribir { x, y }. 2. Propiedades Computadas
-Las propiedades computadas permiten definir los nombres de las propiedades de un objeto de manera dinámica utilizando expresiones. Esto es útil cuando necesitas que el nombre de la propiedad
-sea el resultado de alguna operación o función.
-
-```js
-function nombre(i) {
-return "propiedad" + i;
+  return maxValue;
 }
-let p = {
+console.log(max(1, 2, 3, 4, 5, 6, 7)); // 7
 ```
 
-nombre: 1 // Aquí, la propiedad se llama literalmente 'nombre'
+En este ejemplo, rest recoge todos los argumentos adicionales, lo que permite a la función trabajar
+con una cantidad variable de entradas.
+
+### 4.1.5 Objeto arguments
+
+Antes de ES6, el objeto arguments permitía acceder a todos los parámetros pasados a una función:
 
 ```js
-};
-let q = {
-```
-
-[nombre(1)]: 1 // Aquí, el nombre de la propiedad se calcula como 'propiedad1'
-
-```js
-};
-console.log(q); // Resultado: { propiedad1: 1 }
-```
-
-En el objeto q, la propiedad se define utilizando una expresión dentro de corchetes. La función
-nombre(1) retorna el string “propiedad1”, por lo que el objeto q tiene una propiedad con el
-nombre “propiedad1”, cuyo valor es 1.
-
-> Usaremos las propiedades computadas cuando queramos que el nombre de una propiedad se calcule en tiempo de ejecución. En React, lo usaremos en la validación de
-> formularios para crear un objeto con los valores de los campos del formulario.
-
-3. Propiedades con Símbolos
-   En JavaScript, los símbolos (introducidos en ES6) son un tipo de dato primitivo que se utiliza para
-   crear identificadores únicos. Los símbolos pueden ser utilizados como claves de propiedades en objetos, lo que permite definir propiedades que son únicas y no colisionan con otras propiedades, incluso
-   si tienen el mismo nombre.
-
-   ```js
-   const simbolo = Symbol("Mi nuevo símbolo");
-   let q = {
-   ```
-
-[simbolo]: 1 // El símbolo se utiliza como clave para la propiedad
-
-```js
-};
-console.log(q); // Muestra un objeto con la propiedad cuyo clave es un símbolo
-console.log(q[simbolo]); // Resultado: 1
-```
-
-## 8.8 Operador spread en objetos {#seccion-8-8}
-
-El operador spread (...) en objetos en JavaScript es una herramienta muy útil para copiar propiedades de un objeto a otro de una manera sencilla y elegante. Este operador se ha convertido en una
-alternativa moderna a métodos tradicionales como Object.assign.
-El operador spread se utiliza para “descomponer” un objeto en sus propiedades individuales. Esto
-permite crear un nuevo objeto que contenga las propiedades de uno o más objetos originales.
-
-```js
-let posicion = { x: 0, y: 0 };
-let tam = { ancho: 100, alto: 100 };
-let rectangulo = { ...posicion, ...tam };
-// rectangulo = {x: 0, y: 0, ancho: 100, alto: 100}
-```
-
-Manejo de Propiedades Repetidas
-Una característica importante del operador spread es cómo maneja las propiedades repetidas al combinar objetos. Las propiedades se añaden de izquierda a derecha, y si una propiedad ya existe, es
-sobrescrita por la última asignada.
-
-```js
-let posicion = { x: 0, y: 0 };
-let tam = { ancho: 100, alto: 100 };
-let tam2 = { ancho: 200 };
-let rectangulo = { ...posicion, ...tam, ...tam2 };
-// rectangulo = {x: 0, y: 0, ancho: 200, alto: 100}
-```
-
-> En React, el operador spread se utiliza frecuentemente para hacer copias de las variables de estado.
-
-El operador spread no crea una copia profunda del objeto, sino que crea una nueva referencia a los mismos datos. Si necesitas una copia profunda, puedes usar JSON.parse
-(JSON.stringify(objeto)).
-
-## 8.9 Métodos en Objetos {#seccion-8-9}
-
-En JavaScript, una propiedad de un objeto puede ser una función. Estas propiedades se denominan métodos. Los métodos pueden definirse de manera tradicional o usando la sintaxis abreviada
-de ES6:
-Método tradicional:
-
-```js
-let cuadrado = {
-lado: 10,
-```
-
-`area: function() { return this.lado * this.lado; }`
-
-```js
-};
-cuadrado.area();
-```
-
-Métodos abreviados:
-
-```js
-const cuadrado = {
-lado: 10,
-```
-
-area() {
-
-```js
-return this.lado * this.lado;
+function max() {
+  let maxValue = -Infinity;
+  for (let i = 0; i < arguments.length; i++) {
+    if (arguments[i] > maxValue) maxValue = arguments[i];
+  }
+  return maxValue;
 }
-};
-console.log(cuadrado.area()); // 100
+console.log(max(1, 2, 3)); // 3
 ```
 
-# 9 Arrays {#seccion-9}
+Aunque arguments sigue siendo útil, es menos eficiente y claro que el operador rest.
+
+### 4.1.6 Operador Spread
+
+El operador spread (...) permite expandir un array en argumentos individuales para una función:
+
+```js
+let numbers = [1, 2, 3, 4, 5, 6];
+let nmin = Math.min(...numbers);
+console.log(nmin); // 1
+let nmax = Math.max(...numbers);
+console.log(nmax); // 6
+```
+
+Esto simplifica mucho la manipulación de arrays cuando se trabaja con funciones que requieren múltiples argumentos.
+
+### 4.1.7 Desestructuración de Argumentos
+
+La desestructuración permite extraer valores de arrays u objetos directamente en los parámetros de
+una función:
+
+```js
+function vectorSuma([x1, y1], [x2, y2]) {
+  return [x1 + x2, y1 + y2];
+}
+console.log(vectorSuma([1, 2], [3, 4])); // [4, 6]
+function toHtml({ titulo, contenido }) {
+  return `<h1>${titulo}</h1><article>${contenido}</article>`;
+}
+const html = toHtml({
+  titulo: "Javascript",
+  contenido: "Es muy importante saber Javascript",
+  color: "red",
+  autor: "Antonia",
+});
+console.log(html);
+```
+
+Este enfoque hace el código más legible y reduce errores relacionados con el acceso manual a las
+propiedades de objetos y elementos de arrays.
+
+> El uso de la desestructuración de argumentos es muy habitual en los frameworks de
+> JavaScript modernos como React, al crear componentes funcionales.
+
+
+# 5. Arrays
+
+## 5.1 Fundamentos de arrays
 
 Los arrays en JavaScript son estructuras de datos versátiles que permiten almacenar y manipular
 colecciones de valores. Estos valores pueden ser de distintos tipos, como números, cadenas, objetos,
@@ -3867,7 +3294,7 @@ console.log(lista); // [1, 2]
   console.log(int8); // Int8Array [10, 20, 30]
   ```
 
-## 9.1 Creación de Arrays {#seccion-9-1}
+### 5.1.1 Creación de Arrays
 
 - **Literal de Corchetes**: Es la forma más común y simple de crear un array.
 
@@ -3904,7 +3331,7 @@ const h = Array.from([1, 2, 3, 4]); // [1, 2, 3, 4]
 const i = Array.from("Prueba"); // ['P', 'r', 'u', 'e', 'b', 'a']
 ```
 
-## 9.2 Operador Spread (…) {#seccion-9-2}
+### 5.1.2 Operador Spread (…)
 
 El operador spread permite expandir un array en sus elementos individuales, lo que es útil para combinar arrays o copiar elementos.
 
@@ -3920,7 +3347,7 @@ copia[0] = 100;
 console.log(a); // [1, 2, 3] (no cambia)
 ```
 
-## 9.3 Leer y escribir elementos {#seccion-9-3}
+### 5.1.3 Leer y escribir elementos
 
 En JavaScript, los arrays son objetos especiales que permiten almacenar múltiples elementos indexados, y como tales, pueden ser manipulados de diversas formas.
 
@@ -4087,7 +3514,7 @@ console.log(a.length); // 5 (el tamaño sigue siendo 5)
   }
   ```
 
-## 9.4 Arrays Multidimensionales: Matriz Dispersa de 10x10 {#seccion-9-4}
+### 5.1.4 Arrays Multidimensionales: Matriz Dispersa de 10x10
 
 Ahora vamos a crear una matriz dispersa de 10x10, donde cada elemento será la suma de su fila y
 columna.
@@ -4121,7 +3548,7 @@ Explicación de la Matriz Dispersa
   El resultado es una matriz de 10x10 donde cada elemento es la suma de su índice de fila y
   columna.
 
-## 9.5 Métodos iteradores de Array {#seccion-9-5}
+### 5.1.5 Métodos iteradores de Array
 
 Para ver los métodos disponibles en un array, puedes acceder al prototipo del array mediante Object
 
@@ -4228,7 +3655,7 @@ vacíos.
 > Es importante dominar los métodos iteradores de arrays, ya que son fundamentales
 > para un estilo de programación funcional y para el manejo de datos en general.
 
-## 9.6 Otros Métodos Útiles de Arrays {#seccion-9-6}
+### 5.1.6 Otros Métodos Útiles de Arrays
 
 Además de los iteradores, hay otros métodos de arrays que puedes probar:
 
@@ -4246,584 +3673,925 @@ Además de los iteradores, hay otros métodos de arrays que puedes probar:
 - **toString**: Convierte el array a una cadena.
 - **Array.isArray**: Verifica si un valor es un array.
 
-# 10 Desestructuración {#seccion-10}
 
-La desestructuración en JavaScript es una característica del lenguaje introducida en ECMAScript 6
-(ES6) que permite extraer valores de arrays o propiedades de objetos y asignarlos a variables de manera más concisa y clara. Esto es particularmente útil para trabajar con estructuras complejas de datos,
-como objetos anidados o arrays multidimensionales. A continuación, se explica la desestructuración
-en detalle para ambos casos: arrays y objetos.
+# 6. Objetos
 
-## 10.1 Desestructuración de Arrays {#seccion-10-1}
+## 6.1 Conceptos básicos de objetos
 
-La desestructuración de arrays permite extraer valores de un array y asignarlos a variables de manera
-directa. La sintaxis básica es:
-
-```js
-const array = [1, 2, 3, 4];
-// Desestructuración
-const [a, b, c] = array;
-console.log(a); // 1
-console.log(b); // 2
-console.log(c); // 3
-```
-
-### 10.1.1 Características clave: {#seccion-10-1-1}
-
-- **Asignación por posición**: Los valores son asignados a las variables en función de su posición
-  en el array. En el ejemplo anterior, a toma el valor del primer elemento del array, b del segundo,
-  y así sucesivamente.
-- **Valores por defecto**: Puedes asignar valores por defecto a las variables en caso de que los elementos del array sean `undefined`.
-
-  ```js
-  const array = [1, 2];
-  const [a, b, c = 3] = array;
-  console.log(a); // 1
-  console.log(b); // 2
-  console.log(c); // 3
-  ```
-
-- **Omisión de valores**: Si no te interesa algún valor intermedio del array, puedes omitirlo usando
-  una coma.
-
-  ```js
-  const array = [1, 2, 3, 4];
-  const [a, , c] = array;
-  console.log(a); // 1
-  console.log(c); // 3
-  ```
-
-- **Rest operator**: Puedes capturar el resto de los elementos del array en una variable utilizando
-  el operador rest (…).
-
-  ```js
-  const array = [1, 2, 3, 4];
-  const [a, b, ...rest] = array;
-  console.log(a); // 1
-  console.log(b); // 2
-  console.log(rest); // [3, 4]
-  ```
-
-## 10.2 Desestructuración de Objetos {#seccion-10-2}
-
-La desestructuración de objetos permite extraer propiedades de un objeto y asignarlas a variables. La
-sintaxis básica es:
+En JavaScript, los objetos son una estructura fundamental que permite almacenar y manipular
+datos de manera flexible y poderosa. A diferencia de los tipos primitivos, que son inmutables y se
+manejan por valor, los objetos son mutables y se manejan por referencia. Esto los convierte en una
+herramienta versátil para modelar datos complejos y comportamientos en aplicaciones.
+¿Qué es un Objeto en JavaScript?
+Un objeto en JavaScript es una colección desordenada de propiedades, donde cada propiedad tiene
+una clave (o key) y un valor asociado. La clave siempre es un tipo string o symbol, mientras que el
+valor puede ser de cualquier tipo: primitivo, objeto, función, etc.
+Por ejemplo:
 
 ```js
-const objeto = { x: 1, y: 2, z: 3 };
-// Desestructuración
-const { x, y } = objeto;
-console.log(x); // 1
-console.log(y); // 2
+const persona = {
+nombre: "Luis",
+apellidos: "Molina",
+edad: 30,
 ```
 
-### 10.2.1 Características clave: {#seccion-10-2-1}
-
-- **Asignación por nombre**: A diferencia de los arrays, la desestructuración de objetos se basa
-  en los nombres de las propiedades. En el ejemplo anterior, x y y son asignados a las variables
-  correspondientes con los mismos nombres.
-- **Asignación a nuevos nombres de variables**: Puedes asignar las propiedades a variables con
-  nombres diferentes.
-
-  ```js
-  const objeto = { x: 1, y: 2 };
-  const { x: a, y: b } = objeto;
-  console.log(a); // 1
-  console.log(b); // 2
-  ```
-
-- **Valores por defecto**: Similar a los arrays, puedes definir valores por defecto para propiedades
-  que no existen o son `undefined`.
-
-  ```js
-  const objeto = { x: 1 };
-  const { x, y = 2 } = objeto;
-  console.log(x); // 1
-  console.log(y); // 2
-  ```
-
-- **Desestructuración anidada**: Puedes desestructurar objetos anidados.
-
-  ```js
-  const objeto = {
-  a: 1,
-  ```
-
-b: {
+`saludar: function() {`
 
 ```js
-c: 2,
+console.log(`Hola, mi nombre es ${this.nombre}`);
+}
+};
+console.log(persona.nombre);
 ```
 
-d: 3
+En este ejemplo, persona es un objeto con varias propiedades: nombre, apellidos, edad y
+saludar. Esta última es una función y, en este contexto, se llama “método”.
+
+> En JavaScript, los objetos son mutables, lo que significa que se pueden modificar después de su creación. Es una estructura fundamental para modelar datos y comportamientos en aplicaciones.
+
+### 6.1.1 Herencia y Prototipos
+
+JavaScript implementa un modelo de herencia basado en prototipos. Cada objeto tiene un prototipo (otra instancia de objeto) del cual hereda propiedades y métodos. Esta herencia se establece
+mediante una referencia al prototipo en la propiedad interna [Prototype] (accesible a través de
+**proto** u `Object.getPrototypeOf()`).
+Por ejemplo:
+
+```js
+const padre = {
+```
+
+apellido: "Sánchez"
+
+```js
+};
+const hijo = Object.create(padre);
+hijo.nombre = "Alfonso";
+console.log(hijo.apellido); // "Sánchez"
+```
+
+En este caso, hijo hereda la propiedad apellido de padre a través de la cadena de prototipos.
+
+### 6.1.2 Creación de Objetos
+
+Existen varias formas de crear objetos en JavaScript:
+
+- **Literales de Objetos**:
+
+  ```js
+  const vacio = {};
+  const punto = {x:0, y:0};
+  const libro = {
+  titulo: "Introducción a JavaScript",
+  paginas: 200,
+  descripcion: "Un libro sobre JavaScript",
+  ```
+
+autor: {
+
+```js
+nombre: "Alfonso",
+```
+
+apellidos: "Sánchez"
 
 ```js
 }
 };
-const { b: { c, d } } = objeto;
-console.log(c); // 2
-console.log(d); // 3
 ```
 
-- **Rest operator**: También es posible usar el operador rest para capturar el resto de las propiedades en un nuevo objeto.
+- **Con el Operador new**:
 
   ```js
-  const objeto = { x: 1, y: 2, z: 3 };
-  const { x, ...resto } = objeto;
-  console.log(x); // 1
-  console.log(resto); // { y: 2, z: 3 }
+  const objeto = new Object();
+  const fecha = new Date();
+  const lista = new Array(10);
   ```
 
-## 10.3 Aplicaciones Prácticas {#seccion-10-3}
-
-La desestructuración es muy útil en diversas situaciones, como:
-
-- **Intercambio de valores**: Intercambiar valores entre dos variables sin una variable temporal.
+- **Con el Método `Object.create()`**:
 
   ```js
-  let a = 1,
-    b = 2;
-  [a, b] = [b, a];
-  console.log(a); // 2
-  console.log(b); // 1
+  const prototipo = { nombre: "Luis" };
+  const objeto = Object.create(prototipo);
+  console.log(objeto.nombre); // "Luis"
   ```
 
-- **Extracción de datos de funciones**: Cuando una función retorna un objeto, puedes desestructurarlo directamente en la llamada.
+- Acabamos de crear un objeto “objeto” que hereda las propiedades de “prototipo”.
+- objeto no tiene propiedades propias, solo heredadas.
+- **Para acceder al prototipo desde objeto**:
 
   ```js
-  function obtenerCoordenadas() {
-    return { x: 10, y: 22 };
-  }
-  const { x, y } = obtenerCoordenadas();
-  console.log(x, y); // 10 22
+  console.log(objeto.__proto__);
+  console.log(Object.getPrototypeOf(objeto));
   ```
 
-- **Parámetros de función**: Puedes desestructurar directamente en los parámetros de una función.
+- El padre de prototipo es Object
 
   ```js
-  function imprimirCoordenadas({ x, y }) {
-    console.log(`Coordenadas: ${x}, ${y}`);
-  }
-  imprimirCoordenadas({ x: 10, y: 22 });
+  console.log(Object.getPrototypeOf(prototipo));
   ```
 
-# 11 Funciones {#seccion-11}
+- **Los objetos creados mediante un literal tienen un prototipo**: Object.prototype
 
-En JavaScript, las funciones son bloques fundamentales de código que permiten encapsular lógica
-reutilizable. Existen varias formas de declarar y utilizar funciones, cada una con sus propias características y usos específicos.
-La forma más común de declarar una función en JavaScript es utilizando la palabra clave `function`.
-Aquí un ejemplo básico:
+  ```js
+  Object.getPrototypeOf(prototipo) === Object.prototype;
+  ```
 
-```js
-function suma(x, y) {
-  return x + y;
-}
-const s = suma(349, 123);
-imprime(s);
-function imprime(msg) {
-  console.log(msg);
-  // En ausencia de un return explícito, JavaScript retorna undefined por defecto.
-}
-```
+- Por este motivo los objetos creados con literales tienen métodos heredados de Object.
+  prototype:
+  - toString
+  - valueOf
+  - isPrototypeOf
+  - hasOwnProperty
+  - toLocaleString
+- **Podemos crear un objeto cuyo prototipo es `null`**:
 
-## 11.1 Hoisting en Funciones {#seccion-11-1}
+  ```js
+  let o2 = Object.create(null);
+  Object.getPrototypeOf(o2); // null
+  ```
 
-El hoisting es un comportamiento en JavaScript donde las declaraciones de funciones y variables se
-mueven al inicio de su contexto de ejecución. Esto significa que puedes invocar una función antes de
-su declaración:
+o2.toString(); // error el método toString no existe.
 
-```js
-console.log(suma(5, 7)); // Funciona debido al hoisting
-function suma(x, y) {
-  return x + y;
-}
-```
+- Object.prototype no tiene prototipo y por lo tanto finaliza la cadena de prototipos.
 
-En este ejemplo, la función suma se puede llamar antes de su declaración porque JavaScript eleva su
-definición al comienzo del ámbito.
+  ```js
+  Object.getPrototypeOf(Object.prototype); //null
+  ```
 
-## 11.2 Funciones como Expresiones {#seccion-11-2}
+### 6.1.3 Propiedades y Configuración
 
-En JavaScript, las funciones también pueden ser expresiones, lo que significa que pueden asignarse
-a variables o pasarse como argumentos a otras funciones:
+En JavaScript, las propiedades de los objetos no solo almacenan valores, sino que también tienen
+atributos internos que determinan su comportamiento. Estos atributos controlan aspectos clave sobre cómo se puede interactuar con esas propiedades, lo que proporciona un control detallado sobre
+la estructura y la seguridad del objeto.
 
-```js
-const cuadrado = function (x) {
-  return x * x;
-};
-console.log(cuadrado(8));
-```
+#### 6.1.3.1 Atributos de las Propiedades
 
-En este caso, hemos creado una función anónima (una función sin nombre) y la hemos asignado a la
-variable cuadrado. Esta función no está sujeta al hoisting, por lo que no puede ser llamada antes de
-su definición.
+Cada propiedad de un objeto tiene tres atributos principales que pueden ser configurados:
 
-```js
-function calcularAreaRectangulo(base, altura) {
-  return base * altura;
-}
-function calcularAreaTriangulo(base, altura) {
-  return (base * altura) / 2;
-}
-function calcularArea(figura, base, altura, calcularAreaFunc) {
-  console.log(`El área del ${figura} es: ${calcularAreaFunc(base, altura)}`);
-}
-```
+- **Enumerable (enumerable)**: Indica si la propiedad aparecerá durante la enumeración del objeto, como cuando se utiliza un bucle `for`…in o el método `Object.keys()`. Si enumerable es `true`, la
+  propiedad se incluye en estas enumeraciones.
+- **Configurable (configurable)**: Determina si la propiedad puede ser eliminada del objeto y si sus
+  atributos (excepto writable) pueden ser modificados posteriormente. Si configurable es `false`,
+  no podrás eliminar la propiedad ni cambiar su configurabilidad o enumerabilidad.
+- **Writable (writable)**: Define si el valor de la propiedad puede ser cambiado mediante asignación. Si writable es `false`, cualquier intento de modificar el valor será ignorado (en modo estricto,
+  lanzará un error).
+  El método `Object.defineProperty()` se utiliza para definir o modificar una propiedad de un objeto, especificando los valores de estos atributos. Esto es útil cuando necesitas un control más granular sobre
+  cómo se comportan las propiedades del objeto.
 
-calcularArea('rectángulo', 5, 10, calcularAreaRectangulo); // El área del rectángulo es: 50
-calcularArea('triángulo', 5, 10, calcularAreaTriangulo); // El área del triángulo es: 25
-En este ejemplo, la función calcularArea acepta una función como argumento. Esto permite que
-la función calcularArea pueda operar con diferentes tipos de figuras geométricas sin tener que
-modificar su propia implementación.
+  ```js
+  const persona = {};
+  Object.defineProperty(persona, 'edad', {
+  ```
 
-## 11.3 Funciones Anónimas y Recursividad {#seccion-11-3}
-
-A veces, incluso una función expresada puede tener un nombre, particularmente en casos de recursividad:
+value: 30, // El valor de la propiedad
+writable: `false`, // No se puede cambiar el valor de la propiedad
+enumerable: `true`, // La propiedad aparecerá en la enumeración del objeto
+configurable: `false` // No se puede eliminar ni reconfigurar la propiedad
 
 ```js
-const f = function factorial(x) {
-  if (x <= 1) return 1;
-  else return x * factorial(x - 1);
-};
-console.log(f(5)); // 120
-```
-
-En este ejemplo, aunque factorial es el nombre dentro de la función, la función es llamada a
-través de f.
-
-## 11.4 Funciones Arrow (Funciones Flecha) {#seccion-11-4}
-
-Introducidas en ES6, las funciones flecha (arrow functions) proporcionan una sintaxis más concisa:
-
-```js
-const suma1 = (x, y) => {
-  return x + y;
-};
-console.log(suma1(1, 3)); // 4
-// Simplificando aún más:
-const suma2 = (x, y) => x + y;
-console.log(suma2(4, 7)); // 11
-// Con un solo parámetro:
-const polinomio = (x) => x * x + 2 * x;
-console.log(polinomio(2)); // 8
-// Sin parámetros:
-const dospi = () => 3.1415 * 2;
-console.log(dospi()); // 6.283
-```
-
-### 11.4.1 Consideraciones sobre `this` en Funciones Arrow {#seccion-11-4-1}
-
-Una característica clave de las funciones arrow es que no tienen su propio contexto `this`; en su lugar,
-heredan `this` del contexto donde se definieron:
-
-```js
-let o = {
-```
-
-m: `function` () {
-
-```js
-console.log(this === o); // true
-const f = () => {
-console.log(this === o); // true
-};
-f();
-}
-};
-o.m();
-```
-
-Por esta razón, las funciones arrow son especialmente útiles en funciones anidadas para evitar el uso
-de trucos como `const` that = `this`.
-
-```js
-let o = {
-```
-
-m: `function` () {
-
-```js
-let that = this;
-console.log(this === o);
-```
-
-f(); //hoisting
-
-```js
-function f() {
-console.log(this === o); //false. Vemos que no se hereda el valor de this en la
-```
-
-función anidada.
-
-```js
-console.log(this === global); //this es el objeto global
-console.log(that === o); // truco para poder usar o en funciones anidadas.
-}
-}
-};
-```
-
-**Uso Inadecuado de Funciones Arrow en Objetos**
-
-Sin embargo, debido a cómo manejan `this`, no se recomienda usar funciones arrow como métodos
-en objetos:
-
-```js
-const calculadora = {
-op1: 100,
-op2: 200,
-```
-
-suma: () => `this`.op1 + `this`.op2 // Esto no funcionará como se espera
-
-```js
-};
-```
-
-Aquí, `this` no se refiere al objeto calculadora, sino al contexto donde fue definida la función, lo
-que podría ser el objeto global o `undefined` en modo estricto.
-
-### 11.4.2 Parámetros en Funciones {#seccion-11-4-2}
-
-#### 11.4.2.1 Parámetros Opcionales y Valores por Defecto {#subseccion-11-4-2-1}
-
-En ES6, es posible asignar valores por defecto a los parámetros de una función:
-
-```js
-function params(a, b = [], c = 10) {
-  console.log(a, b, c);
-}
-```
-
-params(100); // 100 [] 10
-Esto es útil para definir comportamientos predeterminados cuando no se pasan ciertos argumentos.
-
-#### 11.4.2.2 Operador Rest {#subseccion-11-4-2-2}
-
-El operador rest (...) permite a una función aceptar un número indefinido de argumentos como un array:
-
-```js
-function max(first = -Infinity, ...rest) {
-  let maxValue = first;
-  for (let n of rest) {
-    if (n > maxValue) maxValue = n;
-  }
-  return maxValue;
-}
-console.log(max(1, 2, 3, 4, 5, 6, 7)); // 7
-```
-
-En este ejemplo, rest recoge todos los argumentos adicionales, lo que permite a la función trabajar
-con una cantidad variable de entradas.
-
-## 11.5 Objeto arguments {#seccion-11-5}
-
-Antes de ES6, el objeto arguments permitía acceder a todos los parámetros pasados a una función:
-
-```js
-function max() {
-  let maxValue = -Infinity;
-  for (let i = 0; i < arguments.length; i++) {
-    if (arguments[i] > maxValue) maxValue = arguments[i];
-  }
-  return maxValue;
-}
-console.log(max(1, 2, 3)); // 3
-```
-
-Aunque arguments sigue siendo útil, es menos eficiente y claro que el operador rest.
-
-## 11.6 Operador Spread {#seccion-11-6}
-
-El operador spread (...) permite expandir un array en argumentos individuales para una función:
-
-```js
-let numbers = [1, 2, 3, 4, 5, 6];
-let nmin = Math.min(...numbers);
-console.log(nmin); // 1
-let nmax = Math.max(...numbers);
-console.log(nmax); // 6
-```
-
-Esto simplifica mucho la manipulación de arrays cuando se trabaja con funciones que requieren múltiples argumentos.
-
-## 11.7 Desestructuración de Argumentos {#seccion-11-7}
-
-La desestructuración permite extraer valores de arrays u objetos directamente en los parámetros de
-una función:
-
-```js
-function vectorSuma([x1, y1], [x2, y2]) {
-  return [x1 + x2, y1 + y2];
-}
-console.log(vectorSuma([1, 2], [3, 4])); // [4, 6]
-function toHtml({ titulo, contenido }) {
-  return `<h1>${titulo}</h1><article>${contenido}</article>`;
-}
-const html = toHtml({
-  titulo: "Javascript",
-  contenido: "Es muy importante saber Javascript",
-  color: "red",
-  autor: "Antonia",
 });
-console.log(html);
+console.log(persona.edad); // 30
 ```
 
-Este enfoque hace el código más legible y reduce errores relacionados con el acceso manual a las
-propiedades de objetos y elementos de arrays.
-
-> El uso de la desestructuración de argumentos es muy habitual en los frameworks de
-> JavaScript modernos como React, al crear componentes funcionales.
-
-# 13 Actividades {#seccion-13}
-
-## 13.1 Ejercicios I de strings {#seccion-13-1}
-
-1. Crea una cadena multilínea usando comillas dobles.
-2. Agrega a la cadena un retorno de carro y tabuladores utilizando los símbolos de escape correspondientes.
-3. Incluye en la cadena el carácter \.
-4. Concatena otra cadena utilizando el operador +.
-5. Concatena cadenas usando un template string. Muestra el valor de varias variables en el template string.
-6. Separa un texto que contenga varias frases en un array, donde cada elemento del array sea una
-   frase.
-7. Convierte un texto dado a minúsculas.
-8. Convierte un texto dado a mayúsculas.
-9. Recorre el texto carácter por carácter usando un bucle e imprímelo.
-10. Busca una subcadena dentro de un texto.
-11. Extrae una subcadena desde la posición 3 hasta el final del texto y guárdala en una variable.
-12. Extrae una subcadena desde la posición 3 hasta la primera ocurrencia de una palabra en el texto
-    y guárdala en una variable.
-13. Reemplaza todos los espacios en el texto por un guion ‑.
-14. Elimina los espacios en blanco antes y después del texto.
-15. Crea una cadena que no contenga ningún espacio partiendo de otra cadena dada.
-16. Crea una función que invierta una cadena de texto.
-17. Usa una expresión regular para comprobar si la cadena contiene números.
-18. Usa una expresión regular para comprobar si la cadena termina en un punto.
-19. Usa una expresión regular para comprobar si la cadena comienza con una mayúscula.
-20. Usa una expresión regular para comprobar si la cadena contiene un número de teléfono con
-    código internacional.
-21. Reemplaza cualquier ocurrencia de un + seguido de números por la cadena “SECRETO”.
-
-## 13.2 Ejercicios II sobre desestructuración {#seccion-13-2}
-
-1. Desestructura el día, mes y año e imprime la fecha dado el array [‘06’, ‘Octubre’, ‘2021’].
-2. Dado un array de números, desestructura los números en posiciones impares.
-3. Desestructura el primer número, el segundo y el resto en otra variable.
-4. **Desestructura nombre, apellidos y teléfono del siguiente objeto**:
+persona.edad = 35; // No hará nada porque writable es `false`
 
 ```js
-const person = {
-  nombre: "Luis",
-  apellidos: "Molina",
-  telefono: "+34666554433",
-};
-```
-
-5. Cambia el siguiente bucle para desestructurar cada entrada e imprimir llave y valor por separado:
-
-```js
-for (const [key, value] of Object.entries(person)) {
-  console.log(key, value);
+console.log(persona.edad); // Sigue siendo 30
+for (let key in persona) {
+  console.log(key); // 'edad' aparecerá aquí porque enumerable es true
 }
 ```
 
-6. **Dado [{x**: 1, y: 2}, {x: 3, y: 4}], desestructura los puntos en las variables x1, y1, x2, y2.
-7. Crea una función a la que le pasas un único objeto como parámetro con 5 propiedades cualesquiera, incluida la propiedad nombre y apellidos. Desestructura en la función la propiedad
-   nombre y apellidos e imprime el nombre completo:
-8. Dados dos objetos, combínalos en uno solo utilizando el operador spread. Después, elimina
-   alguna de las propiedades:
-9. Crea una función que retorna un array con 3 valores. Usa la función y desestructura los valores:
-10. Realiza una clonación profunda de un objeto que contiene otros objetos o arrays como propiedades:
+delete persona.edad; // Esto fallará porque configurable es `false`
 
-## 13.3 Ejercicios III sobre arrays {#seccion-13-3}
+```js
+console.log(persona.edad); // Sigue siendo 30
+```
 
-1. Crea un array “datos” vacío con un literal.
-2. Añade a “datos” los números del 1 al 50 con un bucle `for`.
-3. Elimina los elementos del 25 al 50 asignando un nuevo tamaño a la propiedad `length`.
-4. Usa el operador spread para hacer una copia del array anterior.
-5. Crea un array de tamaño 50 con el constructor Array.
-6. Copia el array anterior a otro con la factoría from.
-7. Crea un array multidimensional de 10 filas (i) y 10 columnas (j). Inicializa cada celda con el valor
-   i*j.
-8. Crea un array con la factoría of con los números del 1 al 5. Después, añade un elemento en la
-   posición 10 y otro en la 50. Recorre el array con un `for` imprimiendo los valores, y después con
-   `forEach`. ¿Cuál es la diferencia? ¿Cuál es el tamaño del array?
-9. Elimina dos elementos con delete.
-10. Calcula el producto de todos los números del array “datos” con `forEach`.
-11. Cada elemento x del array “datos” debe cambiarse por x*x. Usa `forEach`.
-12. Crea un nuevo array con `map` recorriendo cada elemento x de “datos”, donde cada elemento
-    sea un string “El valor es: x”. Usa template strings.
-13. Crea un nuevo array mediante `map` que incremente cada elemento de “datos” en 5 unidades.
-14. Mediante `filter`, quédate con los números impares en un nuevo array impares.
-15. Usa find para buscar el número 13.
-16. Usa every para comprobar si todos los números son positivos.
-17. Calcula la sumatoria del array “datos” mediante `reduce`.
-18. Calcula el valor más pequeño del array mediante `reduce`.
-19. Usa flat para aplanar el array multidimensional que creaste anteriormente.
-20. **Tenemos la cadena**: “Vamos a usar flatMap. Es igual que `map`. Pero aplana los arrays”. Separa
-    mediante split las distintas frases. Después, mediante `map`, quita los espacios sobrantes (trim).
-    A continuación, usa flatMap para extraer todas las palabras de cada frase en un único array.
-21. Crea el array a = [1,2,3,4,5] y b = [6,7,8,9,10] con literales. Concatena los arrays a y b con concat.
-    Después, usa el operador spread. Crea una variable `const` cola. Usa unshift y shift para añadir y
-    quitar elementos. Dado el array resultante de la concatenación de a y b, obtén el subarray desde
-    el índice 2 hasta el penúltimo elemento (slice). Usa splice para quitar los 2 últimos elementos
-    de un array.
-22. Rellena con fill un array de 100 elementos con ‑1.
-23. Crea un array de cadenas. Busca con indexOf una cadena.
-24. Comprueba si la cadena “hola” está dentro del array anterior.
-25. Ordena la lista de cadenas anterior de forma alfabética con sort.
-26. Crea un array vacío de 50 posiciones. Con `forEach`, asigna valores aleatorios entre 0 y 100. Después, ordena con sort de menor a mayor. Cambia y ordena de mayor a menor.
-27. Usa reverse para invertir el array anterior.
+#### 6.1.3.2 Atributos get y set
 
-## 13.4 Ejercicios IV sobre lógica de programación {#seccion-13-4}
+Además de los tres atributos mencionados, también puedes definir una propiedad utilizando funciones getter y setter en lugar de simplemente un valor. Estas funciones permiten controlar cómo se
+accede y modifica el valor de la propiedad.
 
-1. Crea una función que cuente el número de vocales de una cadena de caracteres.
-2. Crea una función que determine si una cadena es un palíndromo, es decir, que se lee igual hacia
-   delante que hacia atrás.
-3. Crea una función que capitalice una cadena de texto. Es decir que todas las palabras empiecen
-   por mayúscula.
-4. Dado un array de cadenas y una longitud n, crea una función que filtre el array dejando solo las
-   cadenas de menor longitud que n.
-5. Crea una función que cree el acrónimo de una cadena de caracteres tomando la primera letra de
-   cada palabra y convirtiéndola a mayúscula. Por ejemplo la frase anterior sería CUFQCEADU….
-6. Crea una función que cuente las frases, palabras y letras presentes en un texto.
-7. Crea una función que identifique si hay elementos duplicados en un array.
-8. Crea una función que debe retornar verdadero si alguno de los elementos de un array está repetido n veces.
-9. Crea un array que intercale dos arrays dados. Por ejemplo dados [a,b,c,d] y [1,2,3,4] el resultado
-   sería [a,1,b,2,c,3,d,4]
-10. Crea una función que rote los elementos de un array n posiciones. Por ejemplo, dado el array
-    [1,2,3,4,5,6] y el número 2 el resultado será: [5,6,1,2,3,4]
-11. Crea una función que elimine de una cadena los caracteres dados en un array.
-12. **Crea una función que rote una matriz de tamaño nxn, 90 grados a la derecha. Ejemplo**: [1,2,3]
-    [7, 4, 1] [4,5,6] => [8, 5, 2] [7,8,9] [9, 6, 3]
-13. Crea una función que determine si los paréntesis presentes en una cadena de texto están balanceados. Por ejemplo (a(b)) → Balanceado, (a(b(a)) → No balanceado.
-14. Busca una submatriz dentro de una matriz más grande. El resultado debe ser las coordenadas
-    donde se encuentra dicha matriz.
-15. Crea una función que verifique si una matriz de 9x9 es una solución de un sudoku. Una cuadrícula válida de Sudoku es aquella que cumple las siguientes condiciones:
+```js
+Object.defineProperty(persona, 'nombreCompleto', {
+```
 
-- **Filas Únicas**: Cada fila debe contener los números del 1 al 9 sin repetición.
-- **Columnas Únicas**: Cada columna debe contener los números del 1 al 9 sin repetición.
-- **Subcuadrículas Únicas**: Cada una de las nueve subcuadrículas de 3x3 debe contener los
-  números del 1 al 9 sin repetición.
+get() {
 
-## 13.5 Ejercicios V de Javascript {#seccion-13-5}
+```js
+return `${this.nombre} ${this.apellido}`;
+```
 
-1. Crea un programa que genere un array con 1000 números aleatorios del 0 al 99.
-   - Crea una función que calcule la media aritmética.
-   - Calcula la frecuencia de cada número del 0 al 99. Es decir, si el número 0 aparece 80 veces
-     en el array de 1000 posiciones, se guardará un 80 en la posición 0 del nuevo array. Si el
-     número 1 aparece 50 veces, se guardará un 50 en la posición 1, etc.
-   - Crea una función que ordene el array de menor a mayor sin usar métodos de Javascript.
-   - Ahora, usa una función de Javascript para realizar la ordenación.
-2. Crea una función que calcule el factorial de un número usando un bucle.
-3. Crea una función que busque todas las ocurrencias de una palabra en un texto dado. La función
-   retorna un array con las posiciones encontradas.
-4. El programa FizzBuzz se ha usado habitualmente para descartar candidatos en pruebas de selección de personal. Consiste en escribir un programa que muestre en pantalla los números del 1 al 100, sustituyendo los múltiplos de 3 por la palabra “fizz”, los múltiplos de 5 por “buzz”, y los múltiplos de ambos, es decir, los múltiplos de 3 y 5 (o de 15), por la palabra “fizzbuzz”.
-5. Crea una página que genere un acertijo matemático simple formado por sumas y restas. El usuario inserta la respuesta y el script le indica si ha acertado o no.
-6. Crea una página web que genere contraseñas aleatorias con una mezcla de letras, números y símbolos. La página tiene un campo de entrada numérico en el que el usuario especifica el tamaño de la contraseña a generar. La contraseña se mostrará al pulsar un botón.
-7. Implementa un script que cuente el número de vocales y consonantes en una cadena.
-8. Crea una página web con un formulario que contenga los campos nombre, correo electrónico y edad. Cuando el usuario pulse el botón enviar, se validará el formulario comprobando que el nombre tiene más de 3 caracteres, la edad es un número entre 0 y 120, y el email se valida mediante una expresión regular.
-9. Implementa el cifrado César, un tipo de cifrado por sustitución en el que cada letra en el texto original es reemplazada por otra que se encuentra un número fijo de posiciones más adelante en el alfabeto. Crea una página web con un área de texto que contenga el texto original. Al pulsar un botón, se mostrará debajo, en otro área de texto, el texto cifrado.
-10. Crea una página web con un cronómetro que muestre minutos y segundos. Deberá contar con los botones Comenzar, Parar y Reiniciar. Ayúdate de las funciones setInterval, clearInterval y setTimeout.
-11. Crea una página web que imprima, mediante un script, la tabla de multiplicar especificada por el usuario al cambiar un valor en un desplegable.
-12. Crea una página web para jugar a Piedra, Papel o Tijera contra la máquina. Gana el primero que gane 2 de 3 jugadas. En cualquier momento, el usuario puede interrumpir la partida e iniciar una nueva.
+},
+set(value) {
+
+```js
+[this.nombre, this.apellido] = value.split(" ");
+```
+
+},
+
+```js
+enumerable: true,
+```
+
+configurable: `true`
+
+```js
+});
+persona.nombre = 'Juan';
+persona.apellido = 'Pérez';
+console.log(persona.nombreCompleto); // 'Juan Pérez'
+persona.nombreCompleto = 'Carlos López';
+console.log(persona.nombre); // 'Carlos'
+console.log(persona.apellido); // 'López'
+```
+
+#### 6.1.3.3 Métodos Object.defineProperties y Object.getOwnPropertyDescriptor
+
+- **Object.defineProperties()**: Permite definir varias propiedades a la vez, proporcionando un objeto con múltiples descripciones de propiedades.
+- **Object.getOwnPropertyDescriptor()**: Devuelve la descripción completa de una
+  propiedad específica, lo que incluye sus atributos value, writable, enumerable,
+  configurable, y funciones get y set si las tiene.
+
+  ```js
+  const persona = {};
+  Object.defineProperties(persona, {
+  ```
+
+nombre: {
+
+```js
+value: 'Ana',
+writable: true,
+enumerable: true,
+```
+
+configurable: `true`
+},
+edad: {
+
+```js
+value: 25,
+writable: false,
+enumerable: false,
+```
+
+configurable: `false`
+
+```js
+}
+});
+console.log(Object.getOwnPropertyDescriptor(persona, 'nombre'));
+// {
+// value: 'Ana',
+// writable: true,
+// enumerable: true,
+// configurable: true
+// }
+```
+
+### 6.1.4 Acceso y Modificación de Propiedades
+
+En JavaScript, las propiedades de los objetos pueden ser accedidas y modificadas utilizando dos
+notaciones principales:
+
+- **Notación de punto**: objeto.propiedad
+- **Notación de corchetes**: objeto["propiedad"]
+
+  ```js
+  const libro = {
+  titulo: "Introducción a Javascript",
+  paginas: 200,
+  "descripción": "Este es un libro sobre los fundamentos de JavaScript", // Las claves (keys)
+  ```
+
+pueden ser strings con o sin comillas.
+autor: { // El valor de una propiedad puede ser otro objeto.
+
+```js
+nombre: "Alfonso",
+```
+
+apellidos: "Sánchez"
+},
+
+```json
+"contenidos del libro": "Resumen del contenido del libro"
+};
+// Acceso a propiedades usando notación de punto
+const titulo = libro.titulo; // "Introducción a JavaScript"
+// Acceso a propiedades usando notación de corchetes
+const paginas = libro["paginas"]; // 200
+```
+
+#### 6.1.4.1 Ejemplos Avanzados con Herencia de Prototipos:
+
+```js
+let o = {}; // El prototipo de o es Object.prototype
+o.x = 1;
+let p = Object.create(o); // p hereda propiedades de o
+```
+
+p["y"] = 0; // Creación de una propiedad en p usando notación de corchetes.
+
+```js
+let q = Object.create(p); // El prototipo de q es p
+q.z = 3;
+console.log(q); // {z: 3} - q tiene la propiedad z, y hereda x e y
+console.log(p); // {y: 0} - p tiene la propiedad y, y hereda x
+console.log(o); // {x: 1} - o tiene la propiedad x
+// Acceso a propiedades heredadas:
+console.log(q.x); // 1 - q hereda la propiedad x de o
+console.log(q.y); // 0 - q hereda la propiedad y de p
+console.log(q.z); // 3 - z es propiedad directa de q
+// Ejemplo con método heredado:
+console.log(q.toString()); // Devuelve una representación en string - Método heredado de
+```
+
+Object.prototype
+Cadena de Prototipos en JavaScript: JavaScript sigue una cadena de prototipos cuando intenta acceder a una propiedad que no está presente en el objeto. Si la propiedad no se encuentra en el objeto
+actual, el motor de JavaScript busca en el prototipo del objeto, y continúa hasta que encuentra la
+propiedad o llega al final de la cadena de prototipos.
+
+#### 6.1.4.2 Modificación de Propiedades:
+
+Cuando se asigna un valor a una propiedad, se modifica directamente la propiedad del objeto en sí,
+sin afectar las propiedades heredadas:
+
+```js
+let o = {}; // El prototipo de o es Object.prototype
+o.x = 1;
+let p = Object.create(o); // p hereda propiedades de o
+p["y"] = 0;
+let q = Object.create(p); // El prototipo de q es p
+q.z = 3;
+```
+
+q.x = 0; // Crea la propiedad x en q, no modifica x en o.
+
+```js
+console.log(q); // {z: 3, x: 0} - x es ahora una propiedad directa de q
+console.log(o); // {x: 1} - x en o permanece inalterada
+console.log(q.x); // 0 - q tiene su propia propiedad x
+console.log(o.x); // 1 - x en o no ha sido modificada
+```
+
+#### 6.1.4.3 Acceso a Propiedades Inexistentes:
+
+Cuando se intenta acceder a una propiedad que no existe en un objeto, el resultado es `undefined`.
+No se lanza una excepción en este caso.
+
+```js
+console.log(q.a); // undefined - la propiedad a no existe en q
+```
+
+Sin embargo, intentar acceder a una propiedad de una propiedad inexistente genera una excepción:
+q.a.x // Genera un TypeError porque q.a es `undefined` y no tiene propiedades.
+
+#### 6.1.4.4 Operador Opcional Encadenado (?.):
+
+Para evitar excepciones cuando se accede a propiedades de objetos que podrían no existir, se utiliza
+el operador opcional encadenado (?.):
+
+```js
+let apellidos = libro?.autor?.apellidos; // "Sánchez"
+// Si alguna propiedad en la cadena es null o undefined, el resultado será undefined, no se
+```
+
+lanza excepción.
+
+#### 6.1.4.5 Eliminación de Propiedades:
+
+Para eliminar una propiedad de un objeto, se utiliza el operador delete:
+
+```js
+console.log(libro.autor.nombre); // "Alfonso"
+```
+
+delete libro.autor.nombre;
+
+```js
+console.log(libro.autor.nombre); // undefined - la propiedad ha sido eliminada
+```
+
+#### 6.1.4.6 Comprobación de la Existencia de Propiedades:
+
+Existen varias maneras de verificar si una propiedad existe en un objeto:
+
+- **Operador in**:
+
+  ```js
+  console.log("autor" in libro); // true - La propiedad autor existe en libro
+  console.log("toString" in libro); // true - toString existe en Object.prototype, que es el
+  ```
+
+prototipo de libro
+
+- **Método hasOwnProperty()**:
+
+  ```js
+  console.log(libro.hasOwnProperty("autor")); // true - autor es una propiedad directa de libro
+  console.log(libro.hasOwnProperty("toString")); // false - toString no es una propiedad
+  ```
+
+directa de libro
+
+- **Comparación con `undefined`**: Este método es menos fiable, porque una propiedad puede
+  existir y tener un valor de `undefined`:
+
+  ```js
+  libro.autor = undefined;
+  console.log(libro.autor !== undefined); // false - propiedad autor existe pero su valor es
+  ```
+
+`undefined`
+
+```js
+console.log("autor" in libro); // true - la propiedad autor sigue existiendo
+```
+
+Este método puede llevar a errores al intentar determinar si una propiedad realmente existe o si simplemente su valor es `undefined`. Por ello, es más seguro utilizar in o hasOwnProperty() para
+verificar la existencia de una propiedad.
+
+### 6.1.5 Enumeración de Propiedades
+
+Para enumerar las propiedades de un objeto en JavaScript, una de las técnicas más comunes es utilizar el bucle `for`-in. Este bucle recorre todas las propiedades de un objeto, tanto las propias como
+las heredadas.
+
+```js
+for (const key in libro) {
+  console.log(key);
+}
+```
+
+El bucle `for`-in itera sobre todas las propiedades enumerables de un objeto, incluidas aquellas heredadas a través de la cadena de prototipos. Sin embargo, es importante tener en cuenta que no todas
+las propiedades se incluyen en esta enumeración. Por ejemplo, las propiedades como toString,
+valueOf, y otras que forman parte de Object.prototype no aparecen porque son no enumerables.
+
+```js
+const libro = {
+titulo: "JavaScript: La Guía Definitiva",
+autor: "David Flanagan",
+```
+
+año: 2020
+
+```js
+};
+for (const propiedad in libro) {
+console.log(propiedad); // título, autor, año
+}
+```
+
+En este ejemplo, se listan las propiedades titulo, autor y año, pero no aparecerán otras propiedades
+heredadas o no enumerables.
+
+#### 6.1.5.1 Propiedades No Enumerables
+
+Las propiedades no enumerables son aquellas que no se pueden recorrer mediante un bucle `for`-in.
+Estas propiedades son configuradas con un descriptor especial que establece su no enumerabilidad.
+Un ejemplo claro de esto son las propiedades como toString y valueOf, que existen en todos los
+objetos ya que forman parte de Object.prototype, pero no se incluyen en la enumeración.
+
+```js
+Object.defineProperty(libro, 'editor', {
+value: "O'Reilly Media",
+```
+
+enumerable: `false`
+
+```js
+});
+for (const propiedad in libro) {
+console.log(propiedad); // título, autor, año (pero no 'editor')
+}
+```
+
+En este ejemplo, la propiedad editor no aparecerá en la lista porque ha sido definida como no enumerable.
+
+#### 6.1.5.2 Otras Opciones para Enumerar Propiedades
+
+Si deseas obtener únicamente las propiedades propias del objeto, sin incluir las heredadas, puedes
+utilizar los métodos `Object.keys()` y Object.getOwnPropertyNames().
+
+- **Object.keys(obj)**: Devuelve un array con las propiedades enumerables propias del objeto.
+- **Object.getOwnPropertyNames(obj)**: Devuelve un array con todas las propiedades propias del objeto, incluidas las no enumerables.
+
+  ```js
+  const propiedadesEnumerables = Object.keys(libro);
+  console.log(propiedadesEnumerables); // ["titulo", "autor", "año"]
+  const todasLasPropiedades = Object.getOwnPropertyNames(libro);
+  console.log(todasLasPropiedades); // ["titulo", "autor", "año", "editor"]
+  ```
+
+En este ejemplo, Object.keys(libro) devuelve solo las propiedades enumerables, mientras
+que Object.getOwnPropertyNames(libro) devuelve todas las propiedades propias, incluidas las no enumerables como editor.
+
+### 6.1.6 Extensión y Clonación de Objetos
+
+En JavaScript, extender un objeto significa copiar las propiedades de un objeto a otro. Esto es útil
+cuando deseas combinar las propiedades de múltiples objetos en un solo objeto o clonar un objeto
+existente.
+
+```js
+const origen = { y: 2, z: 3 };
+const destino = { x: 1 };
+```
+
+Queremos extender las propiedades de origen en el objeto destino. Una forma sencilla de hacerlo
+es mediante un bucle `for`...in:
+
+```js
+for (let key in origen) {
+  destino[key] = origen[key];
+}
+```
+
+Este código recorre todas las propiedades enumerables del objeto origen y las copia en el objeto destino.
+
+- **Usando `Object.keys()`**:
+  Otra forma de lograr lo mismo es utilizando `Object.keys()`, que devuelve un array con las propiedades enumerables de un objeto. Podemos iterar sobre este array con un bucle `for`...of:
+
+  ```js
+  for (const key of Object.keys(origen)) {
+    destino[key] = origen[key];
+  }
+  ```
+
+Aquí usamos `for`...of en lugar de `for`...in porque `Object.keys()` devuelve un array, y `for`
+
+...of es ideal para recorrer arrays. Ambos enfoques logran el mismo resultado.
+
+- **Usando `Object.assign()`**:
+  JavaScript proporciona una función incorporada, `Object.assign()`, que es una forma más directa y concisa de extender un objeto. Este método copia todas las propiedades enumerables de uno o
+  más objetos de origen a un objeto destino. La sintaxis básica es la siguiente:
+
+  ```js
+  Object.assign(destino, origen);
+  ```
+
+Esto copia todas las propiedades de origen a destino. Si necesitas combinar varios objetos,
+`Object.assign()` también lo permite:
+
+```js
+Object.assign(nuevoObjeto, destino, origen);
+```
+
+En este caso, nuevoObjeto contendrá las propiedades combinadas de destino y origen. Si hay
+propiedades con el mismo nombre, las propiedades del último objeto (en este caso, origen) sobrescribirán las de los objetos anteriores.
+
+- Consideraciones adicionales
+  - **Inmutabilidad**: `Object.assign()` modifica el objeto destino directamente. Si necesitas mantener la inmutabilidad (es decir, no modificar los objetos originales), puedes
+    crear un nuevo objeto combinando las propiedades de varios objetos:
+
+  ```js
+  const nuevoObjeto = Object.assign({}, destino, origen);
+  ```
+
+Aquí, nuevoObjeto es un nuevo objeto que contiene las propiedades combinadas de destino y
+origen, sin modificar los objetos originales.
+
+- **Propiedades no enumerables**: `Object.assign()` solo copia propiedades enumerables. No
+  copia propiedades no enumerables, getters/setters, ni la cadena de prototipos.
+- **Métodos modernos**: A partir de ECMAScript 2018, también puedes usar el operador de propagación (…) para combinar objetos de manera aún más concisa:
+
+  ```js
+  const nuevoObjeto = { ...destino, ...origen };
+  ```
+
+Esto crea un nuevo objeto con las propiedades combinadas de destino y origen. Es una sintaxis
+más moderna y generalmente preferida en el código actual.
+
+### 6.1.7 Propiedades Abreviadas, Computadas y Símbolos
+
+A partir de ES6 (ECMAScript 2015), JavaScript introdujo nuevas funcionalidades para trabajar con objetos de una manera más conveniente y legible. Dos de las más destacadas son las propiedades abreviadas y las propiedades computadas.
+
+1. Propiedades Abreviadas
+   Las propiedades abreviadas permiten crear objetos de manera más concisa cuando el nombre de la
+   propiedad coincide con el nombre de la variable. En lugar de repetir el nombre de la propiedad y la
+   variable, puedes simplemente escribir el nombre una vez.
+
+   ```js
+   let x = 1, y = 2;
+   // Manera tradicional
+   let o = {
+   x: x,
+   ```
+
+y: y
+
+```js
+};
+// Uso de propiedades abreviadas
+let z = { x, y };
+console.log(z); // Resultado: { x: 1, y: 2 }
+```
+
+En el objeto z, no es necesario escribir x: x y y: y porque los nombres de las propiedades coinciden con
+los nombres de las variables. Es suficiente con escribir { x, y }. 2. Propiedades Computadas
+Las propiedades computadas permiten definir los nombres de las propiedades de un objeto de manera dinámica utilizando expresiones. Esto es útil cuando necesitas que el nombre de la propiedad
+sea el resultado de alguna operación o función.
+
+```js
+function nombre(i) {
+return "propiedad" + i;
+}
+let p = {
+```
+
+nombre: 1 // Aquí, la propiedad se llama literalmente 'nombre'
+
+```js
+};
+let q = {
+```
+
+[nombre(1)]: 1 // Aquí, el nombre de la propiedad se calcula como 'propiedad1'
+
+```js
+};
+console.log(q); // Resultado: { propiedad1: 1 }
+```
+
+En el objeto q, la propiedad se define utilizando una expresión dentro de corchetes. La función
+nombre(1) retorna el string “propiedad1”, por lo que el objeto q tiene una propiedad con el
+nombre “propiedad1”, cuyo valor es 1.
+
+> Usaremos las propiedades computadas cuando queramos que el nombre de una propiedad se calcule en tiempo de ejecución. En React, lo usaremos en la validación de
+> formularios para crear un objeto con los valores de los campos del formulario.
+
+3. Propiedades con Símbolos
+   En JavaScript, los símbolos (introducidos en ES6) son un tipo de dato primitivo que se utiliza para
+   crear identificadores únicos. Los símbolos pueden ser utilizados como claves de propiedades en objetos, lo que permite definir propiedades que son únicas y no colisionan con otras propiedades, incluso
+   si tienen el mismo nombre.
+
+   ```js
+   const simbolo = Symbol("Mi nuevo símbolo");
+   let q = {
+   ```
+
+[simbolo]: 1 // El símbolo se utiliza como clave para la propiedad
+
+```js
+};
+console.log(q); // Muestra un objeto con la propiedad cuyo clave es un símbolo
+console.log(q[simbolo]); // Resultado: 1
+```
+
+### 6.1.8 Operador spread en objetos
+
+El operador spread (...) en objetos en JavaScript es una herramienta muy útil para copiar propiedades de un objeto a otro de una manera sencilla y elegante. Este operador se ha convertido en una
+alternativa moderna a métodos tradicionales como Object.assign.
+El operador spread se utiliza para “descomponer” un objeto en sus propiedades individuales. Esto
+permite crear un nuevo objeto que contenga las propiedades de uno o más objetos originales.
+
+```js
+let posicion = { x: 0, y: 0 };
+let tam = { ancho: 100, alto: 100 };
+let rectangulo = { ...posicion, ...tam };
+// rectangulo = {x: 0, y: 0, ancho: 100, alto: 100}
+```
+
+Manejo de Propiedades Repetidas
+Una característica importante del operador spread es cómo maneja las propiedades repetidas al combinar objetos. Las propiedades se añaden de izquierda a derecha, y si una propiedad ya existe, es
+sobrescrita por la última asignada.
+
+```js
+let posicion = { x: 0, y: 0 };
+let tam = { ancho: 100, alto: 100 };
+let tam2 = { ancho: 200 };
+let rectangulo = { ...posicion, ...tam, ...tam2 };
+// rectangulo = {x: 0, y: 0, ancho: 200, alto: 100}
+```
+
+> En React, el operador spread se utiliza frecuentemente para hacer copias de las variables de estado.
+
+El operador spread no crea una copia profunda del objeto, sino que crea una nueva referencia a los mismos datos. Si necesitas una copia profunda, puedes usar JSON.parse
+(JSON.stringify(objeto)).
+
+### 6.1.9 Métodos en Objetos
+
+En JavaScript, una propiedad de un objeto puede ser una función. Estas propiedades se denominan métodos. Los métodos pueden definirse de manera tradicional o usando la sintaxis abreviada
+de ES6:
+Método tradicional:
+
+```js
+let cuadrado = {
+lado: 10,
+```
+
+`area: function() { return this.lado * this.lado; }`
+
+```js
+};
+cuadrado.area();
+```
+
+Métodos abreviados:
+
+```js
+const cuadrado = {
+lado: 10,
+```
+
+area() {
+
+```js
+return this.lado * this.lado;
+}
+};
+console.log(cuadrado.area()); // 100
+```
+
+
+# 7. JSON
+
+## 7.1 Serialización y deserialización
+Serializar un objeto significa convertirlo en una cadena de texto que puede ser fácilmente almacenada o transmitida. En JavaScript, esto se hace usando JSON:
+- **Serialización**:
+
+  ```js
+  const libro = { titulo: "JavaScript" };
+  const data = JSON.stringify(libro);
+  ```
+
+- **Deserialización**:
+
+  ```js
+  const copia = JSON.parse(data);
+  ```
+
+> La serialización y deserialización de objetos es útil cuando necesitas transferir datos
+> entre diferentes sistemas o almacenar datos en bases de datos.
+
+JSON es un formato de texto estándar que se utiliza para representar datos estructurados. Es fácil de leer y escribir para los humanos y fácil de interpretar para las máquinas.
+Usaremos JSON para el intercambio de datos entre el frontend y el backend.
+
+
+# 8. Promesas
+
+## 8.1 Solicitudes con fetch y depuración de red
+
+La pestaña Network (Red) permite ver todas las solicitudes de red realizadas por la página, lo que es útil para depurar API calls,
+cargar recursos, etc.
+
+**Ejemplo:**
+
+Supongamos que tienes una llamada `fetch` en tu código:
+
+```js
+fetch('https://api.example.com/data')
+  .then(response => response.json())
+  .then(data => {
+    console.log("Datos recibidos:", data);
+  }
+).catch(error => {
+  console.error("Error:", error);
+  }
+);
+```
+
+**Pasos para Depurar:**
+
+- Abre las herramientas de desarrollo y ve a la pestaña Network.
+- Recarga la página o ejecuta la función que hace la solicitud `fetch`.
+- Observa la solicitud en la lista de la pestaña Network.
+- Haz clic en la solicitud para ver detalles como encabezados, respuesta, tiempo de carga, etc.
+- Si hay errores, aparecerán resaltados en rojo y podrás inspeccionarlos.
+
+## 8.2 Promesas y código asíncrono
+
+Depurar promesas, async/await y callbacks puede ser más complejo. Las herramientas de desarrollo
+modernas facilitan esto permitiendo pausas en puntos específicos.
+
+**Ejemplo con async/await:**
+
+```js
+async function obtenerDatos() {
+  try {
+    let respuesta = await fetch('https://api.example.com/data');
+    let datos = await respuesta.json();
+    console.log("Datos obtenidos:", datos);
+  } catch (error) {
+    console.error("Error al obtener datos:", error);
+  }
+} obtenerDatos();
+```
+
+**Pasos para Depurar:**
+
+- Establece breakpoints en las líneas con await.
+- Cuando la ejecución se pause, puedes inspeccionar el estado de las variables antes y después
+  de las llamadas asíncronas.
+- Utiliza Step Into para entrar en funciones asíncronas si es necesario.
+
+> **Repasa este apartado cuando tengas que depurar código JavaScript**.
+> Algunos conceptos como la programación asíncrona, promesas, callbacks, etc. se verán
+> con más detalle en el siguiente volumen de este curso.
+
+
+# 9. DOM
+
+## 9.1 Acceso al DOM
+
+Generalmente, los scripts se colocan al final de la etiqueta `<body>`, aunque si se trata de librerías que no se ejecutan hasta que ocurre un evento, pueden situarse dentro del `<head>`. El motivo de situar los scripts al final del `<body>` es que el navegador debe cargar primero el contenido del `<body>` y luego el de los `<script>` para que el código JavaScript pueda acceder a los elementos cargados en la página web (DOM).
+En el navegador, `document` representa el DOM del documento HTML.
+# 10. BOM y Eventos
+
+## 10.1 El objeto global y las APIs del navegador
+
+El objeto global en JavaScript es un objeto que está disponible en todo el entorno de ejecución,
+es decir, en cualquier lugar del código. Es el contenedor de todos los objetos globales, funciones y
+variables que están disponibles en un entorno específico de JavaScript (como un navegador web o
+Node.js).
+Dependiendo del entorno, el nombre de este objeto global puede variar.
+
+### 10.1.1 En entornos de navegador:
+
+En los navegadores web, el objeto global es window. Todas las variables y funciones globales que
+declares se convierten en propiedades del objeto window.
+
+```js
+var nombre = "John";
+console.log(window.nombre); // "John"
+```
+
+Aquí, la variable nombre se convierte en una propiedad del objeto global window.
+
+### 10.1.2 En Node.js:
+
+En Node.js, el objeto global se llama global. Funciona de manera similar al objeto window en el
+navegador, pero es específico para el entorno de Node.js:
+
+```js
+global.nombre = "John";
+console.log(global.nombre); // "John"
+```
+
+### 10.1.3 Acceso a objetos globales:
+
+El objeto global contiene muchas funciones y objetos estándar de JavaScript, como Math, Date, setTimeout, entre otros. Además, cualquier variable que no esté declarada con `var`, `let` o `const` se agregará
+automáticamente al objeto global (aunque esto es una mala práctica y debería evitarse).
+
+```js
+function saludar() {
+  console.log("Hola");
+}
+console.log(window.saludar === saludar); // true en navegadores
+```
+
+### 10.1.4 Propiedades y métodos comunes:
+
+El objeto global incluye propiedades y métodos que se pueden usar sin necesidad de hacer referencia
+explícita al objeto global:
+
+- Propiedades y Objetos
+  - **console**: Para mostrar mensajes en la consola (log(), error(), warn(), table()).
+  - **window (navegadores) / global (Node.js) / globalThis (todos)**: Objeto global que
+    contiene todas las variables y funciones globales.
+    ()).
+  - **Infinity**: Representa un valor numérico infinito.
+  - **NaN**: Indica que un valor no es un número.
+  - **`undefined`**: Representa un valor no definido.
+  - **navigator (navegadores)**: Información sobre el agente de usuario (navegador).
+  - **location**: Información sobre la URL actual.
+  - **history**: Permite la manipulación del historial del navegador.
+  - **process (Node.js)**: Información sobre el proceso en ejecución.
+  - **module (Node.js)**: Información sobre el módulo actual.
+  - **require (Node.js)**: Carga módulos en Node.js.
+- **Funciones**:
+  - **setTimeout()**: Ejecuta una función después de un tiempo.
+  - **setInterval()**: Ejecuta una función repetidamente con un intervalo fijo.
+  - **clearTimeout()/ clearInterval()**: Cancelan setTimeout o setInterval.
+  - **isNaN()**: Determina si un valor es NaN.
+  - **isFinite()**: Verifica si un valor es un número finito.
+  - **encodeURI()/ decodeURI()**: Codifican y decodifican una URI completa.
+  - **encodeURIComponent()/ decodeURIComponent()**: Codifican y decodifican
+    componentes de una URI.
+  - **eval()**: Ejecuta código JavaScript representado como una cadena (se recomienda evitar
+    su uso por seguridad).
+  - **confirm() (navegadores)**: Solicita una confirmación del usuario.
+  - **`fetch()`**: Realiza solicitudes HTTP/HTTPS y devuelve promesas.
+  - **atob()/ btoa()**: Decodifica y codifica en Base64.
+
+### 10.1.5 Módulos y el objeto global:
+
+En JavaScript moderno, especialmente en entornos como Node.js o cuando se usa ES6 (o ECMAScript 2015) en navegadores, se utilizan módulos para evitar la contaminación del espacio de nombres global. Las variables y funciones dentro de los módulos no se agregan al objeto global, lo que promueve
+un código más limpio y evita conflictos entre diferentes partes de un programa.
+
+> El uso de módulos en Javascript se verá más adelante en el curso.
+
+### 10.1.6 El uso de “globalThis”:
+
+ECMAScript 2020 introdujo globalThis, un estándar que proporciona una forma consistente de
+acceder al objeto global en cualquier entorno, ya sea en el navegador, Node.js, Web Workers, etc.:
+
+```js
+console.log(globalThis); // Accede al objeto global en cualquier entorno
+```
+
+globalThis resuelve el problema de tener que saber si estás en un navegador o en Node.js para
+acceder al objeto global.
+-->
