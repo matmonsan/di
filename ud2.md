@@ -2467,9 +2467,7 @@ Crea `index.html` y `holamundo.js`. La página debe mostrar tu nombre y apellido
 
 **2. Number y Math**
 
-Crea una variable para el radio y una constante numérica para Pi con cinco decimales. Puedes obtenerla con `Number(Math.PI.toFixed(5))`. Calcula el área de un círculo de radio 3,5 metros mediante:
-
-$$A = \pi r^2$$
+Crea una variable para el radio y una constante numérica para Pi con cinco decimales. Puedes obtenerla con `Math.PI`. Calcula el área de un círculo de radio 3,5 metros mediante: **A = π × r²**, donde **A** es el área y **r** es el radio.
 
 - **a.** Muestra el área por consola.
 - **b.** Convierte el resultado a `string` y muéstralo.
