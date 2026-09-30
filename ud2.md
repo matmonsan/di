@@ -10,7 +10,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 1. [Introducción](#1-introducción)
 2. [Variables y tipos de datos](#2-variables-y-tipos-de-datos)
     - [Práctica 2](#211-práctica-2-variables-y-tipos-de-datos)
-<!--
+{% comment %}
 3. [Estructuras de control](#estructuras-de-control)
 4. [Funciones](#funciones)
 5. [Arrays](#arrays)
@@ -19,7 +19,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 8. [Promesas](#promesas)
 9. [DOM](#dom)
 10. [BOM y Eventos](#bom-y-eventos)
--->
+{% endcomment %}
 
 # 1. Introducción
 
@@ -2630,7 +2630,7 @@ La desestructuración es muy útil en diversas situaciones, como:
   e. Usa `typeof` para mostrar el tipo de las variables utilizadas.
   f. Comprueba que la edad y la nota sean números válidos, que la nota esté entre 0 y 10 y que no se intente dividir entre cero.
 
-<!--
+{% comment %}
 # 3. Estructuras de control
 
 ## 3.1 Estructuras condicionales: `if`, `switch`, ternario
@@ -4594,4 +4594,4 @@ console.log(globalThis); // Accede al objeto global en cualquier entorno
 
 globalThis resuelve el problema de tener que saber si estás en un navegador o en Node.js para
 acceder al objeto global.
--->
+{% endcomment %}
