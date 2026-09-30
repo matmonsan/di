@@ -2764,19 +2764,25 @@ for (const letra of array) {
 
 ### 3.2.6 `forEach`
 
-`forEach` es un método de los arrays que ejecuta una función para cada elemento. A diferencia de los bucles, no permite detener la iteración con `break` ni saltar una vuelta con `continue`; `return` solo termina la llamada actual a la función callback.
+`forEach` ejecuta una función una vez por cada elemento del array. La función que recibe se llama *callback* y puede tener nombre; no tiene que ser anónima.
 
 ```js
 const numeros = [1, 2, 3, 4, 5];
-numeros.forEach(function (numero) {
+
+function mostrarNumero(numero) {
   console.log(numero);
-});
+}
+
+numeros.forEach(mostrarNumero);
 ```
 
-Explicación:
+También puedes escribir la función directamente dentro de `forEach`, por ejemplo como función flecha:
 
-- En este ejemplo, la función anónima se ejecuta para cada elemento en el array numeros.
-- Usa `for`, `while` o `for...of` cuando necesites controlar la iteración con `break` o `continue`.
+```js
+numeros.forEach((numero) => console.log(numero));
+```
+
+`forEach` no permite detener el recorrido con `break` ni saltar una vuelta con `continue`. Para controlar el bucle, usa `for`, `while` o `for...of`.
 
 ### 3.2.7 Sentencias `break` y `continue`
 
