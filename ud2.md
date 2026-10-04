@@ -12,8 +12,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica 2](#211-práctica-2-variables-y-tipos-de-datos)
 3. [Estructuras de control](#estructuras-de-control)
     - [Práctica 3](#34-práctica-3-estructuras-de-control)
+4. [Funciones](#4-funciones-funciones)
+    - [Práctica 4](#45-práctica-4-funciones-practica-4-funciones)
 {% comment %}
-4. [Funciones](#funciones)
 5. [Arrays](#arrays)
 6. [Objetos](#objetos)
 7. [JSON](#json)
@@ -2858,279 +2859,335 @@ try {
 
 15. Realiza una cuenta atrás desde 10 hasta 0 y muestra cada número.
 
-{% comment %}
 # 4. Funciones
 
 ## 4.1 Declaración y uso de funciones
 
-En JavaScript, las funciones son bloques fundamentales de código que permiten encapsular lógica
-reutilizable. Existen varias formas de declarar y utilizar funciones, cada una con sus propias características y usos específicos.
-La forma más común de declarar una función en JavaScript es utilizando la palabra clave `function`.
-Aquí un ejemplo básico:
+Una **función** es un bloque de código con nombre (o asignado a una variable) que realiza una tarea.
+Puede recibir datos de entrada mediante **parámetros** y devolver un resultado con `return`. Así se
+puede reutilizar una operación sin repetir su implementación. Una llamada a una función ejecuta su
+cuerpo; el valor que devuelve se puede guardar, mostrar o utilizar en otra operación. Conviene que
+cada función tenga una responsabilidad clara y un nombre que describa lo que hace.
 
 ```js
-function suma(x, y) {
-  return x + y;
+function sumar(a, b) {
+  return a + b;
 }
-### Tareas
-const s = suma(349, 123);
-1. Pide al usuario dos números. Comprueba si son iguales, si el primero es mayor que el segundo o si el segundo es mayor que el primero. Muestra un mensaje de alerta con el resultado.
 
-2. Amplía el ejercicio anterior: comprueba que ambos valores sean números válidos y distintos de cero antes de compararlos. Si algún valor no es válido, muestra un mensaje de error.
+const resultado = sumar(349, 123);
+console.log(resultado); // 472
+console.log(sumar(10, 5) * 2); // 30
+```
 
-3. Muestra una sola vez el siguiente menú y, según la opción elegida, indica el nivel del usuario. Usa `switch`.
-  - `1`. Usuario principiante
-  - `2`. Usuario intermedio
-  - `3`. Usuario avanzado
-  - `4`. Salir
+En este ejemplo, `a` y `b` son parámetros; `349` y `123` son los argumentos que se pasan al llamar
+a la función. `return` entrega el resultado al código que la llamó. Si una función no ejecuta `return`,
+el resultado de la llamada es `undefined`. No hay que confundir devolver un valor con mostrarlo:
+`console.log` escribe un mensaje en la consola, mientras que `return` proporciona un valor que otra
+parte del programa puede reutilizar.
 
-4. Muestra los números pares del 1 al 20.
+### 4.1.1 Declaraciones de función y hoisting
 
-5. Usa un bucle para pedir números y calcular su suma y su media. Cuando el usuario introduzca un número negativo, muestra los resultados; no incluyas ese número en los cálculos.
+La forma habitual de definir una función es mediante una **declaración de función**. JavaScript permite
+llamarla antes de la línea donde aparece su declaración: esta característica se conoce como *hoisting*.
 
-6. Pide dos números al usuario y muestra todos los números comprendidos entre ellos, incluidos los extremos.
+```js
+console.log(multiplicar(5, 7)); // 35
 
-7. Define un array con los nombres de tus compañeros de clase y muestra su contenido usando el bucle `for...in`.
-
-8. Pide al usuario una palabra y calcula cuántas vocales contiene.
-
-9. Guarda una contraseña en una variable y pide al usuario que la introduzca hasta que acierte.
-
-10. **El adivino**: genera un número aleatorio entre 1 y 10 y pide al usuario que lo adivine. Repite la pregunta hasta que acierte e indica si cada intento es menor o mayor que el número secreto.
-
-11. Modifica el ejercicio 3 para que el menú se muestre repetidamente hasta que el usuario elija `4. Salir`.
-
-12. Muestra el mensaje de confirmación `¿Deseas continuar?`. Según el usuario acepte o rechace, muestra un mensaje distinto.
-
-13. Pide un número al usuario y muestra todos sus divisores.
-
-14. Pide un número y muestra si es par o impar.
-
-15. Realiza una cuenta atrás desde 10 hasta 0 y muestra cada número.
-imprime(s);
-function imprime(msg) {
-  console.log(msg);
-  // En ausencia de un return explícito, JavaScript retorna undefined por defecto.
+function multiplicar(a, b) {
+  return a * b;
 }
 ```
 
-### 4.1.1 Hoisting en Funciones
+El hoisting no significa que el código se reordene literalmente: describe cómo JavaScript prepara las
+declaraciones al crear el ámbito. Esta posibilidad puede dificultar la lectura; por claridad, suele ser
+preferible definir la función antes de usarla. Esta regla se aplica a las declaraciones completas de
+función, no a cualquier variable que contenga una función. Por ejemplo, intentar llamar a una función
+asignada a `const` antes de su definición provoca un error porque esa variable todavía no está
+inicializada.
 
-El hoisting es un comportamiento en JavaScript donde las declaraciones de funciones y variables se
-mueven al inicio de su contexto de ejecución. Esto significa que puedes invocar una función antes de
-su declaración:
+### 4.1.2 Funciones como expresiones
 
-```js
-console.log(suma(5, 7)); // Funciona debido al hoisting
-function suma(x, y) {
-  return x + y;
-}
-```
-
-En este ejemplo, la función suma se puede llamar antes de su declaración porque JavaScript eleva su
-definición al comienzo del ámbito.
-
-### 4.1.2 Funciones como Expresiones
-
-En JavaScript, las funciones también pueden ser expresiones, lo que significa que pueden asignarse
-a variables o pasarse como argumentos a otras funciones:
+Las funciones también son valores. Una **expresión de función** permite asignar una función a una
+variable, guardarla en una estructura o pasarla como argumento. Si no tiene nombre, se denomina
+**función anónima**.
 
 ```js
 const cuadrado = function (x) {
   return x * x;
 };
-console.log(cuadrado(8));
+console.log(cuadrado(8)); // 64
 ```
 
-En este caso, hemos creado una función anónima (una función sin nombre) y la hemos asignado a la
-variable cuadrado. Esta función no está sujeta al hoisting, por lo que no puede ser llamada antes de
-su definición.
+Una función asignada a `const` no se puede llamar antes de inicializar esa variable. A diferencia de
+una declaración de función, la expresión no está disponible mediante hoisting.
+
+Las funciones también se pueden pasar como argumentos. En ese caso se pasa la función sin
+paréntesis, para entregar la función en sí y no ejecutar su resultado en ese momento. Una función que
+recibe otra función como argumento se denomina **función de orden superior**. Así se puede separar
+la operación común (mostrar el área) de la regla concreta que calcula cada figura:
 
 ```js
-function calcularAreaRectangulo(base, altura) {
+function areaRectangulo(base, altura) {
   return base * altura;
 }
-function calcularAreaTriangulo(base, altura) {
+function areaTriangulo(base, altura) {
   return (base * altura) / 2;
 }
-function calcularArea(figura, base, altura, calcularAreaFunc) {
-  console.log(`El área del ${figura} es: ${calcularAreaFunc(base, altura)}`);
+function mostrarArea(figura, base, altura, calcularArea) {
+  console.log(`El área del ${figura} es: ${calcularArea(base, altura)}`);
 }
+
+mostrarArea("rectángulo", 5, 10, areaRectangulo); // 50
+mostrarArea("triángulo", 5, 10, areaTriangulo); // 25
 ```
 
-calcularArea('rectángulo', 5, 10, calcularAreaRectangulo); // El área del rectángulo es: 50
-calcularArea('triángulo', 5, 10, calcularAreaTriangulo); // El área del triángulo es: 25
-En este ejemplo, la función calcularArea acepta una función como argumento. Esto permite que
-la función calcularArea pueda operar con diferentes tipos de figuras geométricas sin tener que
-modificar su propia implementación.
+La función `mostrarArea` no necesita conocer la fórmula: recibe el cálculo que debe realizar. A la
+función que se pasa para que otra la ejecute se la suele llamar **callback**. Este patrón permite
+reutilizar una operación con comportamientos diferentes.
 
-### 4.1.3 Funciones Anónimas y Recursividad
+### 4.1.3 Recursividad
 
-A veces, incluso una función expresada puede tener un nombre, particularmente en casos de recursividad:
-
-```js
-const f = function factorial(x) {
-  if (x <= 1) return 1;
-  else return x * factorial(x - 1);
-};
-console.log(f(5)); // 120
-```
-
-En este ejemplo, aunque factorial es el nombre dentro de la función, la función es llamada a
-través de f.
-
-### 4.1.4 Funciones Arrow (Funciones Flecha)
-
-Introducidas en ES6, las funciones flecha (arrow functions) proporcionan una sintaxis más concisa:
+Una función es **recursiva** cuando se llama a sí misma. Debe tener un caso base que detenga las
+llamadas; si no, seguirá ejecutándose hasta producir un error por exceso de llamadas.
 
 ```js
-const suma1 = (x, y) => {
-  return x + y;
-};
-// Simplificando aún más:
-const suma2 = (x, y) => x + y;
-console.log(suma2(4, 7)); // 11
-// Con un solo parámetro:
-const polinomio = (x) => x * x + 2 * x;
-console.log(polinomio(2)); // 8
-
-m: `function` () {
-
-```js
-let that = this;
-console.log(this === o);
-```
-
-f(); //hoisting
-
-```js
-function f() {
-console.log(this === o); //false. Vemos que no se hereda el valor de this en la
-```
-
-función anidada.
-
-```js
-console.log(this === global); //this es el objeto global
-console.log(that === o); // truco para poder usar o en funciones anidadas.
+function factorial(n) {
+  if (n <= 1) return 1; // Caso base
+  return n * factorial(n - 1);
 }
-}
-};
+
+console.log(factorial(5)); // 120
 ```
 
-**Uso Inadecuado de Funciones Arrow en Objetos**
+En cada llamada, `n` disminuye en uno hasta llegar al caso base. El caso base evita que la función
+se llame indefinidamente; el paso recursivo debe acercar los datos a ese caso. Esta solución asume
+un entero positivo. Si los valores proceden del usuario, hay que validarlos antes de llamar a la
+función. La recursividad resulta útil para ciertos problemas, aunque para repeticiones sencillas un
+bucle suele ser más fácil de seguir y no acumula llamadas en la pila.
 
-Sin embargo, debido a cómo manejan `this`, no se recomienda usar funciones arrow como métodos
-en objetos:
+## 4.2 Funciones flecha
+
+Las **funciones flecha**, introducidas en ES6, ofrecen una sintaxis concisa. Si el cuerpo contiene una
+sola expresión, su resultado se devuelve automáticamente. Con varias instrucciones se usan llaves y
+`return` explícito. Por tanto, estas dos funciones hacen lo mismo:
+
+```js
+const sumar = (a, b) => a + b;
+const sumarConReturn = (a, b) => {
+  return a + b;
+};
+
+console.log(sumar(4, 7)); // 11
+console.log(sumarConReturn(4, 7)); // 11
+```
+
+Con un único parámetro se pueden omitir los paréntesis; con cero o más de uno, son necesarios.
+Cuando una flecha devuelve un objeto literal, hay que rodearlo con paréntesis para que las llaves no
+se interpreten como el cuerpo de la función:
+
+```js
+const duplicar = numero => numero * 2;
+const crearPunto = (x, y) => ({ x: x, y: y });
+console.log(duplicar(6)); // 12
+console.log(crearPunto(3, 4)); // { x: 3, y: 4 }
+```
+
+Una diferencia importante es que las funciones flecha **no tienen un `this` propio**: usan el valor
+del contexto donde se crearon. En cambio, un método tradicional llamado desde un objeto puede
+utilizar `this` para acceder a las propiedades de ese objeto. Por eso, no conviene definir como flecha
+un método que necesite su propio `this`:
 
 ```js
 const calculadora = {
-op1: 100,
-op2: 200,
-```
-
-suma: () => `this`.op1 + `this`.op2 // Esto no funcionará como se espera
-
-```js
+  valor: 10,
+  sumar(n) {
+    return this.valor + n;
+  },
 };
+
+console.log(calculadora.sumar(5)); // 15
 ```
 
-Aquí, `this` no se refiere al objeto calculadora, sino al contexto donde fue definida la función, lo
-que podría ser el objeto global o `undefined` en modo estricto.
+## 4.3 Parámetros y argumentos
 
-#### 4.1.4.2 Parámetros en Funciones
+Los **parámetros** son los nombres que aparecen en la definición de la función; los **argumentos**
+son los valores concretos que se entregan al llamarla. Se asignan en orden, de izquierda a derecha.
+Si se pasan menos argumentos que parámetros, los que falten valen `undefined`, salvo que tengan un
+valor predeterminado.
 
-##### 4.1.4.2.1 Parámetros Opcionales y Valores por Defecto
+### 4.3.1 Parámetros opcionales y valores por defecto
 
-En ES6, es posible asignar valores por defecto a los parámetros de una función:
+Se puede asignar un valor predeterminado a un parámetro. JavaScript lo utiliza cuando el argumento
+se omite o vale `undefined` (no cuando vale `null`). Los parámetros con valores predeterminados se
+colocan normalmente después de los obligatorios para que la llamada sea más fácil de entender.
 
 ```js
-function params(a, b = [], c = 10) {
-  console.log(a, b, c);
+function presentar(nombre, prefijo = "Hola") {
+  return `${prefijo}, ${nombre}`;
 }
+
+console.log(presentar("Ana")); // "Hola, Ana"
+console.log(presentar("Ana", "Bienvenida")); // "Bienvenida, Ana"
 ```
 
-params(100); // 100 [] 10
-Esto es útil para definir comportamientos predeterminados cuando no se pasan ciertos argumentos.
+### 4.3.2 Parámetro rest
 
-##### 4.1.4.2.2 Operador Rest
-
-El operador rest (...) permite a una función aceptar un número indefinido de argumentos como un array:
+El parámetro **rest** (`...`) agrupa en un array los argumentos restantes. Debe ser el último
+parámetro de la función y permite que una llamada reciba cero o más valores adicionales. Aquí se
+recorren esos valores con un bucle y se devuelve el total:
 
 ```js
-function max(first = -Infinity, ...rest) {
-  let maxValue = first;
-  for (let n of rest) {
-    if (n > maxValue) maxValue = n;
+function sumarTodos(...numeros) {
+  let total = 0;
+  for (const numero of numeros) {
+    total += numero;
   }
-  return maxValue;
+  return total;
 }
-console.log(max(1, 2, 3, 4, 5, 6, 7)); // 7
+
+console.log(sumarTodos(1, 2, 3, 4)); // 10
+console.log(sumarTodos()); // 0
 ```
 
-En este ejemplo, rest recoge todos los argumentos adicionales, lo que permite a la función trabajar
-con una cantidad variable de entradas.
+### 4.3.3 Objeto `arguments`
 
-### 4.1.5 Objeto arguments
-
-Antes de ES6, el objeto arguments permitía acceder a todos los parámetros pasados a una función:
+En las funciones tradicionales existe el objeto `arguments`, que contiene los argumentos recibidos.
+No es un array real: permite consultar su longitud y acceder a cada posición, pero no ofrece
+directamente los métodos de los arrays. Tampoco está disponible dentro de las funciones flecha. En
+código moderno se suele preferir el parámetro rest, que sí crea un array y deja explícito qué
+parámetros son fijos y cuáles son variables.
 
 ```js
-function max() {
-  let maxValue = -Infinity;
+function mostrarArgumentos() {
   for (let i = 0; i < arguments.length; i++) {
-    if (arguments[i] > maxValue) maxValue = arguments[i];
+    console.log(arguments[i]);
   }
-  return maxValue;
 }
-console.log(max(1, 2, 3)); // 3
+
+mostrarArgumentos("rojo", "verde", "azul");
 ```
 
-Aunque arguments sigue siendo útil, es menos eficiente y claro que el operador rest.
+## 4.4 Spread y desestructuración
 
-### 4.1.6 Operador Spread
+Spread y rest usan los mismos tres puntos (`...`), pero cumplen papeles distintos según dónde
+aparezcan: **rest reúne** varios argumentos en un array al definir una función; **spread expande**
+los elementos de un array al hacer una llamada.
 
-El operador spread (...) permite expandir un array en argumentos individuales para una función:
+### 4.4.1 Operador spread
+
+Por ejemplo, `Math.max` espera recibir números como argumentos individuales. Spread permite
+entregarle todos los valores de un array sin escribir cada uno por separado:
 
 ```js
-let numbers = [1, 2, 3, 4, 5, 6];
-let nmin = Math.min(...numbers);
-console.log(nmin); // 1
-let nmax = Math.max(...numbers);
-console.log(nmax); // 6
+const numeros = [1, 2, 3, 4, 5, 6];
+console.log(Math.min(...numeros)); // 1
+console.log(Math.max(...numeros)); // 6
 ```
 
-Esto simplifica mucho la manipulación de arrays cuando se trabaja con funciones que requieren múltiples argumentos.
+En una llamada, la cantidad de argumentos expandidos depende del contenido del array. Rest y spread
+son complementarios: una función puede recibir valores agrupados con rest y otra llamada puede
+expandir un array con spread.
 
-### 4.1.7 Desestructuración de Argumentos
+### 4.4.2 Desestructuración de parámetros
 
-La desestructuración permite extraer valores de arrays u objetos directamente en los parámetros de
-una función:
+La desestructuración permite extraer propiedades de un objeto o elementos de un array directamente
+en los parámetros. Resulta útil cuando varios datos relacionados viajan agrupados en un array u
+objeto: la firma de la función muestra de inmediato qué información necesita.
 
 ```js
-function vectorSuma([x1, y1], [x2, y2]) {
+function sumarVectores([x1, y1], [x2, y2]) {
   return [x1 + x2, y1 + y2];
 }
-console.log(vectorSuma([1, 2], [3, 4])); // [4, 6]
-function toHtml({ titulo, contenido }) {
-  return `<h1>${titulo}</h1><article>${contenido}</article>`;
+
+function crearTitulo({ titulo, nivel = 1 }) {
+  return `<h${nivel}>${titulo}</h${nivel}>`;
 }
-const html = toHtml({
-  titulo: "Javascript",
-  contenido: "Es muy importante saber Javascript",
-  color: "red",
-  autor: "Antonia",
-});
-console.log(html);
+
+console.log(sumarVectores([1, 2], [3, 4])); // [4, 6]
+console.log(crearTitulo({ titulo: "JavaScript", nivel: 2 }));
 ```
 
-Este enfoque hace el código más legible y reduce errores relacionados con el acceso manual a las
-propiedades de objetos y elementos de arrays.
+Al desestructurar un objeto, los nombres de las variables coinciden con los nombres de sus
+propiedades; también se puede asignar un valor predeterminado, como `nivel = 1`. Al desestructurar
+un array, en cambio, los valores se asignan según su posición. La persona que llama debe pasar un
+objeto o array con la estructura esperada.
 
-> El uso de la desestructuración de argumentos es muy habitual en los frameworks de
-> JavaScript modernos como React, al crear componentes funcionales.
+> **Idea clave:** usa declaraciones de función para operaciones con nombre; expresiones o funciones
+> flecha cuando necesites guardar una función o pasarla como callback. Elige la forma que haga más
+> claro el propósito y recuerda que la sintaxis de flecha cambia el comportamiento de `this`.
 
+## 4.5 PRÁCTICA 4: Funciones
 
+Resuelve los retos en JavaScript. Se pretende practicar el diseño de funciones, no concentrar todo
+el programa en un único bloque: divide cada solución en funciones pequeñas con nombres claros.
+Usa las entradas y salidas que se indican y prueba también los casos límite antes de darla por
+terminada. Puedes emplear `prompt` para pedir datos y `console.log` o `alert` para mostrar resultados.
+
+1. **Informe de notas de una clase.** Crea un programa que solicite notas de `0` a `10` hasta que se
+   introduzca `-1`, que será la señal de fin y no se incluirá en los cálculos.
+   - Crea una función para comprobar si cada entrada representa una nota válida. Una entrada vacía,
+     texto no numérico u otro número fuera del intervalo debe rechazarse y volverse a pedir sin
+     terminar la captura.
+   - Implementa funciones para clasificar una nota (suspenso, aprobado, notable o sobresaliente) y
+     para calcular la media. La función que calcula la media debe recibir los datos necesarios como
+     argumentos y devolver el resultado, no limitarse a mostrarlo.
+   - Al final, muestra cuántas notas válidas se introdujeron, la media con dos decimales, la nota
+     máxima y la mínima. Si no se introdujo ninguna nota, informa de ello sin dividir entre cero.
+   - Comprueba, entre otros casos, que la primera entrada sea `-1`, que haya una sola nota y que se
+     introduzca texto en vez de un número.
+
+2. **Presupuesto de un viaje por carretera.** Pide la distancia del viaje en kilómetros, el consumo
+   del vehículo en litros cada 100 km, el precio del litro de combustible y el número de viajeros.
+   - Escribe una función que calcule los litros necesarios y otra que calcule el coste total. Crea
+     además una función que devuelva el coste por viajero; usa un valor predeterminado para el
+     precio del combustible cuando no se proporcione.
+   - Valida que distancia y consumo sean mayores que cero, y que precio y número de viajeros sean
+     valores válidos. Si un dato no es correcto, explica el motivo y vuelve a solicitarlo.
+   - Muestra el combustible estimado, el coste total y el coste por viajero con dos decimales.
+     Añade una función que reciba otra función de cálculo para poder mostrar el coste total o el
+     coste compartido sin duplicar el formato del informe.
+   - Verifica el resultado con un viaje de `250 km`, consumo de `6 l/100 km`, combustible a `1,60 €`
+     y `2` viajeros. Piensa qué debería ocurrir si el número de viajeros fuera cero.
+
+3. **Menú de conversión con funciones.** Construye un menú que se repita hasta elegir «Salir».
+   Incluye conversiones entre Celsius y Fahrenheit, kilómetros y millas, y euros y dólares.
+   - Usa `do...while` o `while` para repetir el menú y `switch` para decidir qué operación ejecutar.
+   - Implementa cada conversión en su propia función; las funciones reciben el valor de entrada y
+     devuelven el convertido. No pongas las fórmulas dentro del `switch`.
+   - Valida que la opción exista y que el valor introducido sea numérico. Si se proporciona una tasa
+     de cambio, usa un valor predeterminado documentado cuando se omita.
+   - Añade una función de orden superior para mostrar el resultado con una etiqueta adecuada
+     (por ejemplo, «12 km equivalen a ... millas»). El menú debe recuperarse de una opción inválida
+     sin finalizar el programa.
+
+4. **Analizador de una secuencia de números.** Implementa `analizar(...numeros)` para recibir una
+   cantidad variable de números y devolver un informe con la suma, la media, el mínimo y el máximo.
+   - Recorre los valores con un bucle; no uses métodos de arrays que todavía no se hayan explicado.
+     Si no se reciben valores, devuelve un mensaje claro o un resultado que indique que no hay datos.
+   - Valida que todos los argumentos sean números finitos. Decide y documenta qué hará la función
+     si recibe un valor inválido; no debe producir un informe parcial como si todo hubiera sido
+     correcto.
+   - Prueba la función con argumentos escritos directamente y con un array expandido mediante
+     spread. Incluye un array vacío, un único número, valores repetidos y números negativos.
+   - Separa el cálculo del formato: una función debe calcular y devolver los resultados, y otra debe
+     presentarlos de forma legible. Explica por qué usar rest al definir la función y spread al
+     llamarla resuelve problemas opuestos.
+
+5. **Juego de adivinar con niveles y puntuación.** Genera un número secreto entre `1` y `100` y
+   permite que la persona juegue varias rondas hasta elegir salir.
+   - Presenta un menú de dificultad con `switch`. Cada nivel establece un número distinto de intentos
+     mediante una función que devuelva el límite correspondiente.
+   - Separa en funciones la generación del número secreto, la validación del intento y la comparación
+     del intento con el número secreto. Indica si hay que probar con un número mayor o menor y termina
+     la ronda al acertar o agotar los intentos.
+   - Mantén la puntuación entre rondas: suma puntos al acertar y resta puntos por cada intento
+     fallido, sin permitir que una ronda ya terminada siga modificándola. Muestra el resultado de la
+     ronda y la puntuación acumulada.
+   - Usa un parámetro predeterminado para permitir iniciar una partida con una dificultad inicial.
+     Comprueba entradas vacías, texto, números fuera del intervalo, acierto en el último intento y
+     salida antes de empezar una ronda. Evita repetir código entre rondas.
+
+{% comment %}
 # 5. Arrays
 
 ## 5.1 Fundamentos de arrays
