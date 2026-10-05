@@ -3161,7 +3161,35 @@ el programa en un único bloque: divide cada solución en funciones pequeñas co
 Usa las entradas y salidas que se indican y prueba también los casos límite antes de darla por
 terminada. Puedes emplear `prompt` para pedir datos y `console.log` o `alert` para mostrar resultados.
 
-1. **Informe de notas de una clase.** Crea un programa que solicite notas de `0` a `10` hasta que se
+1. **Conversor de euros a dólares.** Define una función que transforme euros a dólares.
+   - Normalmente `1 $ = 1,01 €`; este valor debe estar definido como **parámetro por defecto** y
+     permitir cambiarlo cuando el precio varíe.
+   - Invoca a la función para que se ejecute, tanto con el valor por defecto como indicando otro.
+
+2. **Parámetros rest.** Define una función que reciba 3 parámetros y procese el resto de parámetros
+   recibidos con `rest`. La función mostrará los parámetros recibidos.
+   - Invócala pasando 5 parámetros para comprobar que funciona.
+
+3. **Operador spread.** Define una función que reciba 4 parámetros independientes (por ejemplo,
+   cuatro nombres o cuatro valores).
+   - Invócala, pero en lugar de pasarle los 4 valores, pásale solo un array con los 4 valores
+     (usa el operador `spread`).
+
+4. **Funciones flecha.** Transforma estas funciones en funciones flecha:
+   - a)
+     ```js
+     function (a, b) {
+       return a + b + 100;
+     }
+     ```
+   - b)
+     ```js
+     var x = function (x, y) {
+       return x * y;
+     };
+     ```
+
+5. **Informe de notas de una clase.** Crea un programa que solicite notas de `0` a `10` hasta que se
    introduzca `-1`, que será la señal de fin y no se incluirá en los cálculos.
    - Crea una función para comprobar si cada entrada representa una nota válida. Una entrada vacía,
      texto no numérico u otro número fuera del intervalo debe rechazarse y volverse a pedir sin
@@ -3174,7 +3202,7 @@ terminada. Puedes emplear `prompt` para pedir datos y `console.log` o `alert` pa
    - Comprueba, entre otros casos, que la primera entrada sea `-1`, que haya una sola nota y que se
      introduzca texto en vez de un número.
 
-2. **Presupuesto de un viaje por carretera.** Pide la distancia del viaje en kilómetros, el consumo
+6. **Presupuesto de un viaje por carretera.** Pide la distancia del viaje en kilómetros, el consumo
    del vehículo en litros cada 100 km, el precio del litro de combustible y el número de viajeros.
    - Escribe una función que calcule los litros necesarios y otra que calcule el coste total. Crea
      además una función que devuelva el coste por viajero; usa un valor predeterminado para el
@@ -3187,7 +3215,7 @@ terminada. Puedes emplear `prompt` para pedir datos y `console.log` o `alert` pa
    - Verifica el resultado con un viaje de `250 km`, consumo de `6 l/100 km`, combustible a `1,60 €`
      y `2` viajeros. Piensa qué debería ocurrir si el número de viajeros fuera cero.
 
-3. **Menú de conversión con funciones.** Construye un menú que se repita hasta elegir «Salir».
+7. **Menú de conversión con funciones.** Construye un menú que se repita hasta elegir «Salir».
    Incluye conversiones entre Celsius y Fahrenheit, kilómetros y millas, y euros y dólares.
    - Usa `do...while` o `while` para repetir el menú y `switch` para decidir qué operación ejecutar.
    - Implementa cada conversión en su propia función; las funciones reciben el valor de entrada y
@@ -3198,7 +3226,7 @@ terminada. Puedes emplear `prompt` para pedir datos y `console.log` o `alert` pa
      (por ejemplo, «12 km equivalen a ... millas»). El menú debe recuperarse de una opción inválida
      sin finalizar el programa.
 
-4. **Analizador de una secuencia de números.** Implementa `analizar(...numeros)` para recibir una
+8. **Analizador de una secuencia de números.** Implementa `analizar(...numeros)` para recibir una
    cantidad variable de números y devolver un informe con la suma, la media, el mínimo y el máximo.
    - Recorre los valores con un bucle; no uses métodos de arrays que todavía no se hayan explicado.
      Si no se reciben valores, devuelve un mensaje claro o un resultado que indique que no hay datos.
@@ -3211,7 +3239,7 @@ terminada. Puedes emplear `prompt` para pedir datos y `console.log` o `alert` pa
      presentarlos de forma legible. Explica por qué usar rest al definir la función y spread al
      llamarla resuelve problemas opuestos.
 
-5. **Juego de adivinar con niveles y puntuación.** Genera un número secreto entre `1` y `100` y
+9. **Juego de adivinar con niveles y puntuación.** Genera un número secreto entre `1` y `100` y
    permite que la persona juegue varias rondas hasta elegir salir.
    - Presenta un menú de dificultad con `switch`. Cada nivel establece un número distinto de intentos
      mediante una función que devuelva el límite correspondiente.
