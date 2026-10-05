@@ -12,8 +12,8 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica 2](#211-práctica-2-variables-y-tipos-de-datos)
 3. [Estructuras de control](#estructuras-de-control)
     - [Práctica 3](#34-práctica-3-estructuras-de-control)
-4. [Funciones](#4-funciones-funciones)
-    - [Práctica 4](#45-práctica-4-funciones-practica-4-funciones)
+4. [Funciones](#4-funciones)
+    - [Práctica 4](#45-práctica-4-funciones)
 {% comment %}
 5. [Arrays](#arrays)
 6. [Objetos](#objetos)
@@ -3032,9 +3032,17 @@ console.log(presentar("Ana", "Bienvenida")); // "Bienvenida, Ana"
 
 ### 4.3.2 Parámetro rest
 
-El parámetro **rest** (`...`) agrupa en un array los argumentos restantes. Debe ser el último
-parámetro de la función y permite que una llamada reciba cero o más valores adicionales. Aquí se
-recorren esos valores con un bucle y se devuelve el total:
+El parámetro **rest** (`...`) permite que una función reciba un **número variable de argumentos**.
+Todos los valores sobrantes se recogen en un **array real**.
+
+Reglas:
+
+- Se escribe con tres puntos antes del nombre: `...numeros`.
+- Debe ser el **último** parámetro de la función.
+- Solo puede haber **uno** por función.
+- Si no se pasan argumentos adicionales, el array queda vacío (`[]`).
+
+En el ejemplo se recorren esos valores con un bucle y se devuelve el total:
 
 ```js
 function sumarTodos(...numeros) {
@@ -3048,6 +3056,29 @@ function sumarTodos(...numeros) {
 console.log(sumarTodos(1, 2, 3, 4)); // 10
 console.log(sumarTodos()); // 0
 ```
+
+Paso a paso con `sumarTodos(1, 2, 3, 4)`:
+
+1. `numeros` pasa a ser `[1, 2, 3, 4]`.
+2. `total` empieza en `0`.
+3. El bucle acumula cada elemento: `0+1 → 1`, `1+2 → 3`, `3+3 → 6`, `6+4 → 10`.
+4. Se devuelve `10`.
+
+Con `sumarTodos()` el array está vacío, el bucle no se ejecuta y se devuelve `0`.
+
+El parámetro rest puede combinarse con parámetros normales, que van siempre primero:
+
+```js
+function saludar(saludo, ...nombres) {
+  return nombres.map((nombre) => `${saludo}, ${nombre}`);
+}
+
+console.log(saludar("Hola", "Ana", "Luis")); // ["Hola, Ana", "Hola, Luis"]
+```
+
+> **No confundir con spread:** ambos usan `...`, pero hacen lo contrario. *Rest* (en la definición)
+> **agrupa** valores en un array; *spread* (en la llamada) **expande** un array en valores sueltos,
+> por ejemplo `sumarTodos(...[1, 2, 3])`.
 
 ### 4.3.3 Objeto `arguments`
 
@@ -3075,46 +3106,53 @@ los elementos de un array al hacer una llamada.
 
 ### 4.4.1 Operador spread
 
-Por ejemplo, `Math.max` espera recibir números como argumentos individuales. Spread permite
-entregarle todos los valores de un array sin escribir cada uno por separado:
+El operador **spread** (`...`) hace lo contrario que rest: toma un array (o cualquier iterable) y
+**lo expande en valores sueltos**, como si los hubieras escrito uno a uno separados por comas.
+
+Es útil cuando una función espera argumentos individuales pero los datos están en un array. Por
+ejemplo, `Math.max` y `Math.min` no aceptan un array: esperan `Math.max(1, 2, 3)`.
 
 ```js
 const numeros = [1, 2, 3, 4, 5, 6];
+
+console.log(Math.max(numeros)); // NaN: recibe UN único argumento (el array)
+console.log(Math.max(...numeros)); // 6: equivale a Math.max(1, 2, 3, 4, 5, 6)
 console.log(Math.min(...numeros)); // 1
-console.log(Math.max(...numeros)); // 6
 ```
 
-En una llamada, la cantidad de argumentos expandidos depende del contenido del array. Rest y spread
-son complementarios: una función puede recibir valores agrupados con rest y otra llamada puede
-expandir un array con spread.
-
-### 4.4.2 Desestructuración de parámetros
-
-La desestructuración permite extraer propiedades de un objeto o elementos de un array directamente
-en los parámetros. Resulta útil cuando varios datos relacionados viajan agrupados en un array u
-objeto: la firma de la función muestra de inmediato qué información necesita.
+Spread también sirve para **copiar y combinar arrays** sin modificar los originales:
 
 ```js
-function sumarVectores([x1, y1], [x2, y2]) {
-  return [x1 + x2, y1 + y2];
-}
+const a = [1, 2];
+const b = [3, 4];
 
-function crearTitulo({ titulo, nivel = 1 }) {
-  return `<h${nivel}>${titulo}</h${nivel}>`;
-}
-
-console.log(sumarVectores([1, 2], [3, 4])); // [4, 6]
-console.log(crearTitulo({ titulo: "JavaScript", nivel: 2 }));
+const unidos = [...a, ...b, 5]; // [1, 2, 3, 4, 5]
+const copia = [...a]; // nuevo array con los mismos elementos
 ```
 
-Al desestructurar un objeto, los nombres de las variables coinciden con los nombres de sus
-propiedades; también se puede asignar un valor predeterminado, como `nivel = 1`. Al desestructurar
-un array, en cambio, los valores se asignan según su posición. La persona que llama debe pasar un
-objeto o array con la estructura esperada.
+#### Diferencia entre rest y spread
 
-> **Idea clave:** usa declaraciones de función para operaciones con nombre; expresiones o funciones
-> flecha cuando necesites guardar una función o pasarla como callback. Elige la forma que haga más
-> claro el propósito y recuerda que la sintaxis de flecha cambia el comportamiento de `this`.
+Los dos usan `...`; lo que los distingue es **dónde** aparecen:
+
+| | **Rest** | **Spread** |
+|---|---|---|
+| Dónde se usa | En la **definición** de la función (parámetros) | En la **llamada** a la función o dentro de un array/objeto literal |
+| Qué hace | **Agrupa** varios valores sueltos en un array | **Expande** un array en valores sueltos |
+| Dirección | Valores sueltos → array | Array → valores sueltos |
+
+```js
+function sumarTodos(...numeros) {
+  // REST: agrupa los argumentos recibidos en un array
+  return numeros.reduce((total, n) => total + n, 0);
+}
+
+const datos = [1, 2, 3];
+console.log(sumarTodos(...datos)); // SPREAD: expande [1, 2, 3] en 1, 2, 3 → 6
+```
+
+En este ejemplo se ven los dos a la vez: en la llamada, spread convierte `datos` en tres
+argumentos; dentro de la función, rest vuelve a reunirlos en el array `numeros`. Son
+complementarios.
 
 ## 4.5 PRÁCTICA 4: Funciones
 
