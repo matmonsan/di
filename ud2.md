@@ -14,8 +14,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica 3](#34-práctica-3-estructuras-de-control)
 4. [Funciones](#4-funciones)
     - [Práctica 4](#45-práctica-4-funciones)
+5. [Arrays](#5-arrays)
+    - [Práctica 5](#52-práctica-5-arrays)
 {% comment %}
-5. [Arrays](#arrays)
 6. [Objetos](#objetos)
 7. [JSON](#json)
 8. [Promesas](#promesas)
@@ -3253,89 +3254,63 @@ terminada. Puedes emplear `prompt` para pedir datos y `console.log` o `alert` pa
      Comprueba entradas vacías, texto, números fuera del intervalo, acierto en el último intento y
      salida antes de empezar una ronda. Evita repetir código entre rondas.
 
-{% comment %}
 # 5. Arrays
 
 ## 5.1 Fundamentos de arrays
 
-Los arrays en JavaScript son estructuras de datos versátiles que permiten almacenar y manipular
-colecciones de valores. Estos valores pueden ser de distintos tipos, como números, cadenas, objetos,
-e incluso otros arrays.
+Un **array** es una colección ordenada de elementos. Cada elemento ocupa una posición identificada
+por un índice que empieza en `0`; por eso, el primer elemento está en `lista[0]` y el último en
+`lista[lista.length - 1]`. Los arrays son objetos y pueden contener valores de cualquier tipo,
+incluso otros arrays. Aunque JavaScript permite mezclar tipos, normalmente conviene guardar en un
+mismo array valores relacionados y de tipo coherente.
 
-- Un array es una colección de elementos ordenados que pueden ser accedidos mediante un índice.
-- **Índices en un Array**: Los índices en un array comienzan desde 0, por lo que el primer elemento
-  se accede mediante array[0]. El índice máximo teórico de un array en JavaScript es 2^32 ‑ 2 (es
-  decir, 4.294.967.294), aunque en la práctica, los arrays suelen ser mucho más pequeños.
-- **Propiedad `length`**: Los arrays son objetos especializados en JavaScript que poseen una propiedad `length`, la cual indica el número de elementos en el array.Esta propiedad puede cambiar
-  dinámicamente si se añaden o eliminan elementos.
-
-  ```js
-  const lista = [1, 2, 3, 4, 5];
-  console.log(lista.length); // 5
-  ```
-
-- Los arrays en JavaScript son dinámicos, lo que significa que pueden crecer o decrecer en tamaño durante la ejecución del programa.
-- **Agregar y eliminar elementos**: Puedes agregar elementos usando métodos como push() o modificar directamente la longitud del array usando la propiedad `length`.
-
-  ```js
-  const lista = [1, 2, 3];
-  ```
-
-lista.push(4); // Añade 4 al final del array
+La propiedad `length` indica el límite de posiciones del array, no necesariamente cuántos valores
+definidos hay. Los arrays son dinámicos: pueden crecer con métodos como `push()` o reducirse
+ajustando `length`. Reducirla elimina las posiciones que quedan fuera del nuevo límite.
 
 ```js
-console.log(lista); // [1, 2, 3, 4]
+const lista = [10, 20, 30];
+console.log(lista[0]); // 10
+console.log(lista.length); // 3
+
+lista.push(40);
+console.log(lista); // [10, 20, 30, 40]
+
+lista.length = 2;
+console.log(lista); // [10, 20]
 ```
 
-lista.`length` = 2; // Reduce el array a 2 elementos
+Un **hueco** (*hole*) es una posición sin propiedad asignada. No es exactamente lo mismo que
+guardar el valor `undefined`: la propiedad existe en el segundo caso, pero no en el primero.
+`length` cuenta ambos tipos de posición.
 
 ```js
-console.log(lista); // [1, 2]
+const disperso = [10, , undefined];
+console.log(disperso.length); // 3
+console.log(1 in disperso); // false: hay un hueco
+console.log(2 in disperso); // true: existe y contiene undefined
 ```
 
-- JavaScript permite crear arrays dispersos, donde algunas posiciones del array pueden no estar definidas (es decir, no tienen valor asignado). A pesar de la dispersión, la propiedad `length`
-  cuenta todas las posiciones, incluyendo las vacías.
+Los índices válidos son enteros no negativos. Acceder a un índice inexistente devuelve `undefined`;
+asignar a un índice superior a `length` aumenta la longitud y deja huecos intermedios. Una
+propiedad como `lista[-1]` no es un índice de array y no cambia `length`.
 
-  ```js
-  const disperso = [0, 1, 2, 3, , , , 7, 8, 9];
-  console.log(disperso.length); // 10
-  console.log(disperso); // [0, 1, 2, 3, empty × 3, 7, 8, 9]
-  ```
+```js
+const numeros = [10, 20, 30];
+console.log(numeros[8]); // undefined
 
-- Los índices de un array son en realidad propiedades del objeto array, y en JavaScript, las propiedades de los objetos son cadenas (strings). Sin embargo, los índices se tratan y comportan
-  como números.
+numeros[5] = 60;
+console.log(numeros.length); // 6
+console.log(3 in numeros); // false: quedó un hueco
+```
 
-  ```js
-  const array = [10, 20, 30];
-  console.log(array["1"]); // 20 (índice como cadena)
-  console.log(array[1]); // 20 (índice como número)
-  ```
+Las cadenas también permiten leer caracteres por índice (`texto[0]`), pero son inmutables y no
+son arrays: no tienen métodos como `push()` o `map()`. Si se necesita un array de caracteres, se
+puede usar el operador spread: `[..."Hola"]`.
 
-- Los arrays heredan métodos útiles de su prototipo, Array.prototype, que incluye funciones como `map()`, `filter()`, `reduce()`, entre otras.
-
-  ```js
-  const numeros = [1, 2, 3, 4, 5];
-  const cuadrados = numeros.map((x) => x * x);
-  console.log(cuadrados); // [1, 4, 9, 16, 25]
-  ```
-
-- En JavaScript, las cadenas de caracteres (strings) se comportan de manera similar a los arrays,
-  lo que permite acceder a cada carácter usando un índice.
-
-  ```js
-  const cadena = "Prueba";
-  console.log(cadena[0]); // 'P'
-  ```
-
-- Introducidos en ES6, los arrays tipados permiten manejar datos binarios de manera eficiente.
-  Estos arrays tienen un tamaño fijo y solo pueden contener un tipo específico de datos, como enteros (Int8Array), enteros sin signo (UInt8Array), enteros grandes (BigUint64Array), entre otros.
-- Son especialmente útiles en aplicaciones que manejan gráficos o datos binarios, como en
-  WebGL.
-
-  ```js
-  const int8 = new Int8Array([10, 20, 30]);
-  console.log(int8); // Int8Array [10, 20, 30]
-  ```
+Los arrays tipados, como `Int8Array` o `Uint8Array`, son estructuras especializadas de tamaño fijo
+para datos numéricos binarios. No son arrays normales y se emplean en casos como gráficos o
+procesamiento de archivos; en los ejercicios iniciales de este tema se utilizarán arrays comunes.
 
 ### 5.1.1 Creación de Arrays
 
@@ -3346,7 +3321,9 @@ console.log(lista); // [1, 2]
   const lista = [1, 2, 3, 4, 5];
   ```
 
-- **Constructor Array**: Permite crear arrays con un tamaño fijo o con elementos iniciales específicos.
+- **Constructor `Array`**: Puede crear un array vacío, uno con una longitud determinada o uno con
+  elementos iniciales. `new Array(3)` crea tres huecos, mientras que `new Array(1, 2, 3)` crea un
+  array con esos tres valores.
 
   ```js
   const milista = new Array(); // Array vacío
@@ -3355,24 +3332,25 @@ console.log(lista); // [1, 2]
   ```
 
 - **Método `Array.of()`**: Crea un array con los elementos pasados como argumento, incluso si es
-  uno solo.
+  uno solo. Así se evita la particularidad de `new Array(3)`, que crea tres huecos en vez del
+  número `3`.
 
   ```js
-  let g = Array.of(10); // [10]
+  const uno = Array.of(10); // [10]
+  const varios = Array.of(1, 2, 3); // [1, 2, 3]
+  const tresHuecos = new Array(3); // length es 3, pero no hay valores definidos
   ```
 
-g = Array.of(1, 2, 3, 4, 5); // [1, 2, 3, 4, 5]
+- **Método `Array.from()`**: Crea un array nuevo a partir de un iterable o de un objeto similar
+  a un array. También puede transformar cada elemento mientras lo copia.
 
-```js
-- Método Array.from(): Crea un nuevo array a partir de un objeto iterable o similar a un array,
-```
-
-copiando sus elementos.
-
-```js
-const h = Array.from([1, 2, 3, 4]); // [1, 2, 3, 4]
-const i = Array.from("Prueba"); // ['P', 'r', 'u', 'e', 'b', 'a']
-```
+  ```js
+  const copia = Array.from([1, 2, 3, 4]);
+  const letras = Array.from("Prueba");
+  const cuadrados = Array.from([1, 2, 3], (numero) => numero ** 2);
+  console.log(letras); // ["P", "r", "u", "e", "b", "a"]
+  console.log(cuadrados); // [1, 4, 9]
+  ```
 
 ### 5.1.2 Operador Spread (…)
 
@@ -3384,15 +3362,21 @@ const b = [4, 5, 6];
 const c = [...a, ...b]; // [1, 2, 3, 4, 5, 6]
 const cadena = "Prueba";
 const d = [...cadena]; // ['P', 'r', 'u', 'e', 'b', 'a']
-let e = a; // Referencia al mismo array
+const referencia = a; // Es el mismo array, no una copia
 const copia = [...a]; // Copia del array
 copia[0] = 100;
 console.log(a); // [1, 2, 3] (no cambia)
+referencia[0] = 9;
+console.log(a); // [9, 2, 3]: referencia y a son el mismo array
 ```
+
+La copia con spread es **superficial**: si un elemento es otro array u objeto, la copia y el
+original siguen compartiendo ese elemento anidado.
 
 ### 5.1.3 Leer y escribir elementos
 
-En JavaScript, los arrays son objetos especiales que permiten almacenar múltiples elementos indexados, y como tales, pueden ser manipulados de diversas formas.
+Los elementos se leen y escriben con corchetes y un índice numérico. Los índices empiezan en cero;
+leer un índice fuera de rango devuelve `undefined`.
 
 - **Acceso a Elementos**: Puedes acceder a un elemento de un array utilizando su índice, que es un
   número entero positivo. El índice comienza en 0 para el primer elemento.
@@ -3410,89 +3394,33 @@ En JavaScript, los arrays son objetos especiales que permiten almacenar múltipl
   console.log(a); // [0, 2, 3, 4, 5]
   ```
 
-- **Creación de Propiedades Adicionales**: Aunque los arrays son estructuras indexadas, también
-  son objetos en JavaScript, lo que significa que puedes agregar propiedades personalizadas que
-  no afectan la funcionalidad principal del array.
-  a.prop = `true`; // Se añade una propiedad llamada 'prop'
-
-  ```js
-  a.first = function () {
-    return this[0];
-  };
-  a.last = function () {
-    return this[this.length - 1];
-  };
-  console.log(a.first()); // 0
-  console.log(a.last()); // 5
-  ```
-
-- **Acceso a Índices No Existentes**: Si intentas acceder a un índice que no existe en el array, JavaScript no lanza una excepción, sino que retorna `undefined`.
+- **Acceso a índices no existentes**: Si intentas leer un índice que no existe, JavaScript
+  devuelve `undefined`.
 
   ```js
   console.log(a[100]); // undefined
   ```
 
-- En JavaScript, los índices de un array son técnicamente propiedades de objeto, y por lo tanto,
-  pueden ser accedidos también como cadenas de texto.
+- El operador `in` permite comprobar si existe una posición concreta. Esta comprobación también
+  distingue un hueco de una posición que contiene `undefined`.
 
   ```js
-  console.log(a["0"]); // 0
+  const valores = [10, , undefined];
+  console.log(0 in valores); // true
+  console.log(1 in valores); // false
+  console.log(2 in valores); // true
   ```
 
-- **Índices Negativos o No Enteros**: Asignar valores a índices negativos o no enteros no cambia el
-  tamaño del array, pero sí crea propiedades adicionales.
+- **Cambiar `length`**: Aumentar `length` crea huecos; reducirla elimina los elementos que quedan
+  fuera del nuevo límite.
 
   ```js
-  a[-1] = 0;
-  console.log(a[-1]); // 0
-  console.log(a.length); // 5 (el tamaño del array no cambia)
+  const letras = ["a", "b", "c"];
+  letras.length = 5;
+  console.log(letras.length); // 5; las dos posiciones nuevas son huecos
+  letras.length = 2;
+  console.log(letras); // ["a", "b"]; se eliminó "c"
   ```
-
-- Verificación de Existencia de Elementos
-  Puedes utilizar el operador in para verificar si un índice existe en el array.
-
-  ```js
-  console.log(0 in a); // true
-  console.log(100 in a); // false
-  ```
-
-- **Uso en Arrays Dispersos**: Este operador es particularmente útil en arrays dispersos, donde algunas posiciones pueden no estar definidas.
-
-  ```js
-  const disperso = [1, 2, , , 5];
-  console.log(2 in disperso); // false
-  console.log(4 in disperso); // true
-  - Propiedad length: La propiedad length de un array indica cuántos elementos tiene el array,
-  ```
-
-pero también puede ser modificada manualmente para cambiar el tamaño del array.
-
-```js
-const b = Array(10);
-console.log(b.length); // 10
-```
-
-- Al modificar `length`, puedes aumentar o reducir el tamaño del array. Si reduces el tamaño, los
-  elementos que queden fuera del nuevo límite se eliminan.
-
-  ```js
-  b[6] = "h";
-  console.log(b); // [ <6 empty items>, 'h', <3 empty items> ]
-  ```
-
-b.`length` = 20; // Aumenta el tamaño
-
-```js
-console.log(b); // [ <6 empty items>, 'h', <13 empty items> ]
-b[19] = "cadena";
-console.log(b); // 'cadena' está en la última posición
-```
-
-b.`length` = 10; // Reduce el tamaño, eliminando 'cadena'
-
-```js
-console.log(b); // [ <6 empty items>, 'h', <3 empty items> ]
-```
 
 - **Añadir Elementos**:
   - **push()**: Añade uno o más elementos al final del array.
@@ -3500,10 +3428,10 @@ console.log(b); // [ <6 empty items>, 'h', <3 empty items> ]
 
   ```js
   const a = [1, 2, 3, 4];
+  a.push(5); // Añade al final: [1, 2, 3, 4, 5]
+  a.unshift(0); // Añade al inicio: [0, 1, 2, 3, 4, 5]
+  console.log(a);
   ```
-
-a.push(5); // [1, 2, 3, 4, 5]
-a.unshift(0); // [0, 1, 2, 3, 4, 5]
 
 - **Eliminar Elementos**:
   - **pop()**: Elimina y retorna el último elemento del array.
@@ -3515,87 +3443,66 @@ a.unshift(0); // [0, 1, 2, 3, 4, 5]
   console.log(a); // [1, 2, 3, 4]
   ```
 
-- **El operador delete**: en JavaScript se puede usar para eliminar elementos de un array, pero es
-  importante notar que este operador no modifica el tamaño del array. En su lugar, simplemente
-  elimina el valor en la posición especificada, dejando un espacio vacío (`undefined`) en su lugar.
+- **Evita `delete` para eliminar elementos**: `delete` no reduce `length`; deja un hueco en la
+  posición. Para quitar elementos y desplazar el resto, utiliza `splice()` o, según el caso,
+  `pop()` y `shift()`.
 
   ```js
   const a = [1, 2, 3, 4, 5];
+  delete a[2];
+  console.log(a.length); // 5
+  console.log(2 in a); // false: ahora hay un hueco
+  a.splice(2, 1); // Quita una posición y desplaza los elementos siguientes
+  console.log(a); // [1, 2, 4, 5]
   ```
 
-delete a[2]; // Elimina el valor en la posición 2
-
-```js
-console.log(a); // [1, 2, undefined, 4, 5]
-```
-
-delete a[a.`length` - 1]; // Elimina el último valor
-
-```js
-console.log(a.length); // 5 (el tamaño sigue siendo 5)
-```
-
-- Cuando se trabaja con arrays dispersos, es útil saber cómo iterar sobre ellos sin procesar los
-  índices vacíos. Aquí se muestra cómo hacerlo usando un `for`‑of loop y el operador spread:
+- En un array disperso, un bucle `for...of` visita cada índice y produce `undefined` para un
+  hueco. Si se quiere distinguir huecos de valores `undefined`, se puede comprobar el índice con
+  `in`. En cambio, métodos como `forEach()` omiten los huecos.
 
   ```js
   const c = [1, 2, 3, , , 5, 6];
-  // Iteración con for-of ignorando los índices vacíos
-  for (const value of c) {
-    if (value !== undefined) {
-      console.log(value); // Solo imprimirá 1, 2, 3, 5, 6
-    }
-  }
-  // Usando el operador spread con c.entries()
-  const entries = [...c.entries()];
-  console.log(entries); // Muestra los índices y valores, incluyendo los undefined
-  // Recorriendo c.entries() y desestructurando key y value
-  for (const [key, value] of c.entries()) {
-    if (value !== undefined) {
-      console.log(`Key: ${key}, Value: ${value}`);
+  // for...of visita todos los índices; un hueco se lee como undefined
+  for (const [indice, value] of c.entries()) {
+    if (indice in c) {
+      console.log(value); // Imprime los valores de las posiciones existentes
     }
   }
   ```
 
-### 5.1.4 Arrays Multidimensionales: Matriz Dispersa de 10x10
+### 5.1.4 Arrays multidimensionales
 
-Ahora vamos a crear una matriz dispersa de 10x10, donde cada elemento será la suma de su fila y
-columna.
+Un array puede contener otros arrays. Esta estructura permite representar una tabla o matriz. En
+el ejemplo se crea una matriz **densa** de 10 por 10; cada celda contiene la suma de su índice de
+fila y su índice de columna.
 
 ```js
-const matrix = Array(10)
-  .fill()
-  .map(() => Array(10).fill());
+const matriz = Array.from({ length: 10 }, () => Array(10).fill(0));
+
 for (let i = 0; i < 10; i++) {
   for (let j = 0; j < 10; j++) {
-    matrix[i][j] = i + j;
+    matriz[i][j] = i + j;
   }
 }
-console.log(matrix);
+console.log(matriz[2][3]); // 5
 ```
 
-Explicación de la Matriz Dispersa
-
-- **Creación de la Matriz Dispersa:**
-  Usamos Array(10).fill() para crear un array de 10 elementos, todos inicialmente `undefined`
-
-.
-
-`map`(() => Array(10).fill()) convierte cada elemento en un array de 10 elementos `undefined`
-, formando así una matriz dispersa.
-
-- **Relleno de la Matriz:**
-  Recorremos cada fila i y cada columna j, asignando a cada posición matrix[i][j] la suma
-  de i + j.
-- **Resultado:**
-  El resultado es una matriz de 10x10 donde cada elemento es la suma de su índice de fila y
-  columna.
+`Array.from()` crea diez filas independientes y `Array(10).fill(0)` inicializa las diez celdas
+de cada fila. Los bucles anidados recorren las filas (`i`) y las columnas (`j`). Para acceder a
+una celda se utilizan dos índices: `matriz[fila][columna]`. Crear cada fila de forma independiente
+es importante; si se repitiera la misma referencia de fila, modificar una fila cambiaría todas.
 
 ### 5.1.5 Métodos iteradores de Array
 
-Para ver los métodos disponibles en un array, puedes acceder al prototipo del array mediante Object
+Los métodos iteradores reciben una función que se ejecuta con el valor de cada elemento y, en
+muchos casos, también con su índice y el array original. Los huecos de un array disperso se omiten.
+La elección del método depende del resultado buscado: recorrer (`forEach`), transformar (`map`),
+seleccionar (`filter`), buscar (`find`) o acumular (`reduce`).
 
-.getPrototypeOf([]) y compararlo con Array.prototype.
+La función callback puede recibir `(valor, indice, array)`. Por ejemplo, `map()` y `filter()`
+devuelven arrays nuevos, `find()` devuelve el primer valor que cumple la condición y `reduce()`
+devuelve el acumulado. En un array vacío, `find()` devuelve `undefined`; al usar `reduce()`, indica
+un valor inicial para definir el resultado.
 
 ```js
 console.log(Object.getPrototypeOf([]) === Array.prototype); // true
@@ -3607,8 +3514,9 @@ array. Es importante notar que en arrays dispersos, estos métodos no se ejecuta
 vacíos.
 
 1. **`forEach`**: Iterar sobre cada elemento
-   `forEach` ejecuta una función para cada elemento del array, pero no retorna un nuevo array. No se
-   ejecuta para elementos vacíos en un array disperso.
+   `forEach` ejecuta una función para cada elemento, pero su resultado no es un array nuevo. Puede
+   usarse para mostrar valores o actualizar una variable externa; si se necesita transformar la
+   colección, suele ser más claro usar `map`.
 
    ```js
    const datos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -3638,7 +3546,7 @@ vacíos.
 
    ```js
    const menores = datos.filter((valor) => valor <= 5);
-   console.log(menores); // [2, 4, 6, 8, 10]
+   console.log(menores); // [2, 4]
    const pares = datos.filter((valor) => valor % 2 === 0);
    console.log(pares); // [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
    ```
@@ -3666,7 +3574,10 @@ vacíos.
    ```
 
 6. **`reduce` y reduceRight**: Reducir un array a un solo valor
-   `reduce` aplica una función a un acumulador y cada valor del array (de izquierda a derecha) para reducirlo a un solo valor. reduceRight hace lo mismo pero de derecha a izquierda.
+   `reduce` aplica una función a un acumulador y a cada valor, de izquierda a derecha, para
+   obtener un único resultado (por ejemplo, una suma). Conviene proporcionar un valor inicial
+   para que el resultado esté definido también cuando el array está vacío. `reduceRight` recorre
+   en sentido contrario.
 
    ```js
    const sumaReduce = datos.reduce(
@@ -3700,23 +3611,112 @@ vacíos.
 
 ### 5.1.6 Otros Métodos Útiles de Arrays
 
-Además de los iteradores, hay otros métodos de arrays que puedes probar:
+Estos métodos resuelven tareas frecuentes. Algunos crean un array nuevo (`concat`, `slice`) y otros
+modifican el array original (`splice`, `fill`, `reverse`, `sort`); consulta esa diferencia antes de
+usarlos.
 
-- **concat**: Combina dos o más arrays.
-- **slice**: Retorna una copia de una parte del array.
-- **splice**: Añade o elimina elementos en un array.
-- **fill**: Rellena todos los elementos de un array con un valor estático.
-- **copyWithin**: Copia una parte del array a otra ubicación en el mismo array.
-- **indexOf**: Retorna el primer índice en el que se encuentra un elemento.
-- **lastIndexOf**: Retorna el último índice en el que se encuentra un elemento.
-- **includes**: Verifica si un array contiene un elemento.
-- **sort**: Ordena los elementos de un array.
-- **reverse**: Invierte el orden de los elementos en un array.
-- **join**: Une todos los elementos de un array en una cadena.
-- **toString**: Convierte el array a una cadena.
-- **Array.isArray**: Verifica si un valor es un array.
+| Método | Para qué sirve |
+| --- | --- |
+| `concat(otro)` | Combina arrays y devuelve uno nuevo. |
+| `slice(inicio, fin)` | Copia una parte sin incluir el índice `fin`; no modifica el original. |
+| `splice(inicio, cantidad, ...elementos)` | Elimina, inserta o sustituye elementos modificando el original. |
+| `fill(valor)` | Sustituye los valores de un tramo del array por un mismo valor; modifica el original. |
+| `copyWithin(destino, inicio, fin)` | Copia un tramo a otra posición del mismo array; lo modifica. |
+| `indexOf(valor)` / `lastIndexOf(valor)` | Devuelven el primer/último índice del valor, o `-1` si no aparece. |
+| `includes(valor)` | Indica con `true` o `false` si el valor está presente. |
+| `sort()` | Ordena y modifica el array; para números se debe indicar una función de comparación. |
+| `reverse()` | Invierte y modifica el orden del array. |
+| `join(separador)` | Une los elementos en una cadena usando el separador indicado. |
+| `toString()` | Convierte los elementos en una cadena separados por comas. |
+| `Array.isArray(valor)` | Comprueba si un valor es un array. |
 
+```js
+const valores = [12, 3, 25, 8];
+const copiaOrdenada = [...valores].sort((a, b) => a - b);
+const primerosDos = valores.slice(0, 2);
 
+console.log(copiaOrdenada); // [3, 8, 12, 25]
+console.log(primerosDos); // [12, 3]
+console.log(valores.includes(25)); // true
+console.log(valores.join(" - ")); // "12 - 3 - 25 - 8"
+console.log(Array.isArray(valores)); // true
+```
+
+Sin función de comparación, `sort()` ordena los valores como cadenas; por eso, por ejemplo,
+`[2, 10].sort()` produce `[10, 2]`. La función `(a, b) => a - b` especifica un orden numérico
+ascendente.
+
+## 5.2 PRÁCTICA 5: Arrays
+
+En cada solución utiliza variables con tipos adecuados, estructuras de control y funciones con
+responsabilidades claras. Añade pruebas de los casos límite indicados.
+
+1. **Reproductor con cola e historial.** Simula un reproductor que procesa esta secuencia de
+   instrucciones: `["añadir:A", "añadir:B", "añadir:C", "siguiente", "añadir:D", "siguiente",
+   "anterior", "siguiente"]`.
+   - Mantén un array como cola de reproducción y otro como historial de canciones ya reproducidas.
+     Al añadir una canción, se incorpora al final de la cola; al avanzar, se quita la primera y se
+     añade al historial.
+   - Implementa funciones para procesar una instrucción, avanzar y volver a la canción anterior.
+     Si la cola está vacía o no existe una canción anterior, el estado debe mantenerse y mostrarse
+     un mensaje adecuado.
+   - Recorre la secuencia con un bucle y usa una estructura condicional para interpretar cada tipo
+     de instrucción. Después de cada paso muestra la canción actual, la cola y el historial.
+   - Como ampliación, permite deshacer la última instrucción guardando copias del estado anterior.
+     Comprueba qué ocurre al intentar avanzar con la cola vacía.
+
+2. **Robot explorador en un mapa.** Representa el terreno con una matriz de caracteres, donde `#`
+   es una pared, `.` una casilla libre y `S` la posición inicial. El robot recibe una lista de
+   órdenes como `["derecha", "derecha", "abajo", "izquierda", "abajo"]`.
+   - Guarda el mapa como un array de arrays y la posición del robot en variables numéricas de fila
+     y columna. Crea una función que calcule la posición siguiente a partir de la orden.
+   - Recorre las órdenes en orden. Si el destino queda fuera del mapa o contiene una pared, no
+     muevas el robot y registra ese intento en un array de movimientos rechazados.
+   - Usa otra función para dibujar el mapa final con el robot marcado. No modifiques la casilla de
+     inicio ni compartas la misma fila para todas las filas de la matriz.
+   - Prueba una orden que choque con una pared, otra que intente salir del mapa y una ruta válida.
+
+3. **Compresión de una secuencia.** Dada la secuencia
+   `[4, 4, 4, 2, 2, 7, 7, 7, 7, 1, 4, 4]`, crea una versión comprimida que agrupe valores iguales
+   consecutivos como pares `[valor, cantidad]`. El resultado esperado es
+   `[[4, 3], [2, 2], [7, 4], [1, 1], [4, 2]]`.
+   - Implementa `comprimir(secuencia)` y `descomprimir(datos)` como funciones separadas. La primera
+     debe construir un array de pares; la segunda debe reconstruir la secuencia original.
+   - Recorre la secuencia sin ordenar sus valores: los grupos son consecutivos, así que los dos
+     valores `4` separados por un `1` deben pertenecer a grupos distintos.
+   - Usa condicionales para empezar un grupo nuevo o incrementar el actual. No cambies el array
+     recibido y devuelve un array vacío cuando la entrada esté vacía.
+   - Comprueba una secuencia con todos los valores iguales, una secuencia alternada y la ida y
+     vuelta `descomprimir(comprimir(secuencia))`.
+
+4. **Simulador de torneo por rondas.** Organiza los equipos
+   `["Lince", "Tigre", "Águila", "Zorro", "Lobo", "Oso", "Puma", "Búho"]` en un torneo de
+   eliminación directa. Cada equipo tiene una puntuación de habilidad guardada en un array paralelo.
+   - Crea una función que juegue un enfrentamiento: gana el equipo con mayor habilidad; si empatan,
+     decide el ganador con `Math.random()`. Devuelve el nombre del equipo ganador.
+   - En cada ronda, recorre los participantes de dos en dos y guarda los ganadores en un array nuevo.
+     Repite hasta que quede un campeón. Conserva también un array con los resultados de cada ronda.
+   - Usa variables numéricas y de texto para la ronda, los equipos y el campeón, además de bucles y
+     condicionales para avanzar el torneo. No sobrescribas los participantes de una ronda antes de
+     terminar de emparejarlos.
+   - Comprueba que el torneo termina con un único campeón y prueba una lista impar de participantes:
+     define y documenta qué regla aplicarás al equipo que quede sin pareja.
+
+5. **Buscaminas reducido.** Crea una cuadrícula de 5 por 5 con minas en posiciones predeterminadas,
+   por ejemplo `[[1, 3], [3, 0], [4, 4]]`. El jugador descubre casillas indicando fila y columna;
+   no hace falta utilizar `prompt`, puedes definir de antemano una secuencia de jugadas.
+   - Representa por separado el tablero de minas y el tablero visible por el jugador. Usa `true` o
+     `false` para representar si una casilla contiene una mina y cadenas como `"?"`, `"X"` o el
+     número de minas vecinas para representar lo que se muestra.
+   - Escribe funciones para comprobar coordenadas, contar minas vecinas y procesar una jugada.
+     Cuenta las ocho casillas adyacentes sin acceder a posiciones fuera de la matriz.
+   - La partida termina al descubrir una mina o al revelar todas las casillas seguras. Usa bucles
+     para ejecutar las jugadas y condiciones para detectar ambos finales; una casilla ya descubierta
+     no debe contarse dos veces.
+   - Prueba una jugada repetida, una mina en un borde, una casilla segura rodeada de minas y la
+     victoria al descubrir todas las casillas seguras.
+
+{% comment %}
 # 6. Objetos
 
 ## 6.1 Conceptos básicos de objetos
