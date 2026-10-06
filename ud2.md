@@ -3703,15 +3703,14 @@ responsabilidades claras. Añade pruebas de los casos límite indicados.
      define y documenta qué regla aplicarás al equipo que quede sin pareja.
 
 5. **Buscaminas reducido.** Crea una cuadrícula de 5 por 5 con minas en posiciones predeterminadas,
-   por ejemplo `[[1, 3], [3, 0], [4, 4]]`. El jugador descubre casillas indicando fila y columna;
-   no hace falta utilizar `prompt`, puedes definir de antemano una secuencia de jugadas.
+   por ejemplo `[[1, 3], [3, 0], [4, 4]]`. El jugador descubre casillas indicando fila y columna.
    - Representa por separado el tablero de minas y el tablero visible por el jugador. Usa `true` o
      `false` para representar si una casilla contiene una mina y cadenas como `"?"`, `"X"` o el
      número de minas vecinas para representar lo que se muestra.
    - Escribe funciones para comprobar coordenadas, contar minas vecinas y procesar una jugada.
      Cuenta las ocho casillas adyacentes sin acceder a posiciones fuera de la matriz.
    - La partida termina al descubrir una mina o al revelar todas las casillas seguras. Usa bucles
-     para ejecutar las jugadas y condiciones para detectar ambos finales; una casilla ya descubierta
+     para ejecutar las jugadas y condiciones para detectar ambos finales, una casilla ya descubierta
      no debe contarse dos veces.
    - Prueba una jugada repetida, una mina en un borde, una casilla segura rodeada de minas y la
      victoria al descubrir todas las casillas seguras.
