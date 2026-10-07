@@ -16,8 +16,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica 4](#45-práctica-4-funciones)
 5. [Arrays](#5-arrays)
     - [Práctica 5](#52-práctica-5-arrays)
+6. [Objetos](#6-objetos)
+    - [Práctica 6](#610-práctica-6-objetos-y-clases)
 {% comment %}
-6. [Objetos](#objetos)
 7. [JSON](#json)
 8. [Promesas](#promesas)
 9. [DOM](#dom)
@@ -3715,739 +3716,372 @@ responsabilidades claras. Añade pruebas de los casos límite indicados.
    - Prueba una jugada repetida, una mina en un borde, una casilla segura rodeada de minas y la
      victoria al descubrir todas las casillas seguras.
 
-{% comment %}
 # 6. Objetos
 
-## 6.1 Conceptos básicos de objetos
+La programación orientada a objetos (POO) organiza un programa alrededor de **objetos**: entidades que reúnen datos y operaciones relacionadas. En JavaScript, los objetos se pueden crear directamente con literales y también mediante **clases**, una sintaxis que permite definir de forma reutilizable cómo crear objetos con el mismo tipo de datos y comportamiento.
 
-En JavaScript, los objetos son una estructura fundamental que permite almacenar y manipular
-datos de manera flexible y poderosa. A diferencia de los tipos primitivos, que son inmutables y se
-manejan por valor, los objetos son mutables y se manejan por referencia. Esto los convierte en una
-herramienta versátil para modelar datos complejos y comportamientos en aplicaciones.
-¿Qué es un Objeto en JavaScript?
-Un objeto en JavaScript es una colección desordenada de propiedades, donde cada propiedad tiene
-una clave (o key) y un valor asociado. La clave siempre es un tipo string o symbol, mientras que el
-valor puede ser de cualquier tipo: primitivo, objeto, función, etc.
-Por ejemplo:
+En este apartado veremos cómo modelar objetos y cómo se relacionan los conceptos principales de la POO con el modelo basado en prototipos de JavaScript.
 
-```js
-const persona = {
-nombre: "Luis",
-apellidos: "Molina",
-edad: 30,
-```
+## 6.1 Objetos: estado y comportamiento
 
-`saludar: function() {`
+Un **objeto** permite representar una cosa del programa y reunir en un mismo lugar:
+
+- sus **datos**, que se guardan en propiedades;
+- las **acciones** que puede realizar, que se escriben como métodos.
+
+Por ejemplo, podemos representar una lámpara. Su propiedad `encendida` indica si está encendida o
+apagada. Esa información es su **estado**. Los métodos `encender()` y `apagar()` son acciones que
+modifican ese estado; por eso decimos que forman parte de su **comportamiento**.
 
 ```js
-console.log(`Hola, mi nombre es ${this.nombre}`);
-}
-};
-console.log(persona.nombre);
-```
-
-En este ejemplo, persona es un objeto con varias propiedades: nombre, apellidos, edad y
-saludar. Esta última es una función y, en este contexto, se llama “método”.
-
-> En JavaScript, los objetos son mutables, lo que significa que se pueden modificar después de su creación. Es una estructura fundamental para modelar datos y comportamientos en aplicaciones.
-
-### 6.1.1 Herencia y Prototipos
-
-JavaScript implementa un modelo de herencia basado en prototipos. Cada objeto tiene un prototipo (otra instancia de objeto) del cual hereda propiedades y métodos. Esta herencia se establece
-mediante una referencia al prototipo en la propiedad interna [Prototype] (accesible a través de
-**proto** u `Object.getPrototypeOf()`).
-Por ejemplo:
-
-```js
-const padre = {
-```
-
-apellido: "Sánchez"
-
-```js
-};
-const hijo = Object.create(padre);
-hijo.nombre = "Alfonso";
-console.log(hijo.apellido); // "Sánchez"
-```
-
-En este caso, hijo hereda la propiedad apellido de padre a través de la cadena de prototipos.
-
-### 6.1.2 Creación de Objetos
-
-Existen varias formas de crear objetos en JavaScript:
-
-- **Literales de Objetos**:
-
-  ```js
-  const vacio = {};
-  const punto = {x:0, y:0};
-  const libro = {
-  titulo: "Introducción a JavaScript",
-  paginas: 200,
-  descripcion: "Un libro sobre JavaScript",
-  ```
-
-autor: {
-
-```js
-nombre: "Alfonso",
-```
-
-apellidos: "Sánchez"
-
-```js
-}
-};
-```
-
-- **Con el Operador new**:
-
-  ```js
-  const objeto = new Object();
-  const fecha = new Date();
-  const lista = new Array(10);
-  ```
-
-- **Con el Método `Object.create()`**:
-
-  ```js
-  const prototipo = { nombre: "Luis" };
-  const objeto = Object.create(prototipo);
-  console.log(objeto.nombre); // "Luis"
-  ```
-
-- Acabamos de crear un objeto “objeto” que hereda las propiedades de “prototipo”.
-- objeto no tiene propiedades propias, solo heredadas.
-- **Para acceder al prototipo desde objeto**:
-
-  ```js
-  console.log(objeto.__proto__);
-  console.log(Object.getPrototypeOf(objeto));
-  ```
-
-- El padre de prototipo es Object
-
-  ```js
-  console.log(Object.getPrototypeOf(prototipo));
-  ```
-
-- **Los objetos creados mediante un literal tienen un prototipo**: Object.prototype
-
-  ```js
-  Object.getPrototypeOf(prototipo) === Object.prototype;
-  ```
-
-- Por este motivo los objetos creados con literales tienen métodos heredados de Object.
-  prototype:
-  - toString
-  - valueOf
-  - isPrototypeOf
-  - hasOwnProperty
-  - toLocaleString
-- **Podemos crear un objeto cuyo prototipo es `null`**:
-
-  ```js
-  let o2 = Object.create(null);
-  Object.getPrototypeOf(o2); // null
-  ```
-
-o2.toString(); // error el método toString no existe.
-
-- Object.prototype no tiene prototipo y por lo tanto finaliza la cadena de prototipos.
-
-  ```js
-  Object.getPrototypeOf(Object.prototype); //null
-  ```
-
-### 6.1.3 Propiedades y Configuración
-
-En JavaScript, las propiedades de los objetos no solo almacenan valores, sino que también tienen
-atributos internos que determinan su comportamiento. Estos atributos controlan aspectos clave sobre cómo se puede interactuar con esas propiedades, lo que proporciona un control detallado sobre
-la estructura y la seguridad del objeto.
-
-#### 6.1.3.1 Atributos de las Propiedades
-
-Cada propiedad de un objeto tiene tres atributos principales que pueden ser configurados:
-
-- **Enumerable (enumerable)**: Indica si la propiedad aparecerá durante la enumeración del objeto, como cuando se utiliza un bucle `for`…in o el método `Object.keys()`. Si enumerable es `true`, la
-  propiedad se incluye en estas enumeraciones.
-- **Configurable (configurable)**: Determina si la propiedad puede ser eliminada del objeto y si sus
-  atributos (excepto writable) pueden ser modificados posteriormente. Si configurable es `false`,
-  no podrás eliminar la propiedad ni cambiar su configurabilidad o enumerabilidad.
-- **Writable (writable)**: Define si el valor de la propiedad puede ser cambiado mediante asignación. Si writable es `false`, cualquier intento de modificar el valor será ignorado (en modo estricto,
-  lanzará un error).
-  El método `Object.defineProperty()` se utiliza para definir o modificar una propiedad de un objeto, especificando los valores de estos atributos. Esto es útil cuando necesitas un control más granular sobre
-  cómo se comportan las propiedades del objeto.
-
-  ```js
-  const persona = {};
-  Object.defineProperty(persona, 'edad', {
-  ```
-
-value: 30, // El valor de la propiedad
-writable: `false`, // No se puede cambiar el valor de la propiedad
-enumerable: `true`, // La propiedad aparecerá en la enumeración del objeto
-configurable: `false` // No se puede eliminar ni reconfigurar la propiedad
-
-```js
-});
-console.log(persona.edad); // 30
-```
-
-persona.edad = 35; // No hará nada porque writable es `false`
-
-```js
-console.log(persona.edad); // Sigue siendo 30
-for (let key in persona) {
-  console.log(key); // 'edad' aparecerá aquí porque enumerable es true
-}
-```
-
-delete persona.edad; // Esto fallará porque configurable es `false`
-
-```js
-console.log(persona.edad); // Sigue siendo 30
-```
-
-#### 6.1.3.2 Atributos get y set
-
-Además de los tres atributos mencionados, también puedes definir una propiedad utilizando funciones getter y setter en lugar de simplemente un valor. Estas funciones permiten controlar cómo se
-accede y modifica el valor de la propiedad.
-
-```js
-Object.defineProperty(persona, 'nombreCompleto', {
-```
-
-get() {
-
-```js
-return `${this.nombre} ${this.apellido}`;
-```
-
-},
-set(value) {
-
-```js
-[this.nombre, this.apellido] = value.split(" ");
-```
-
-},
-
-```js
-enumerable: true,
-```
-
-configurable: `true`
-
-```js
-});
-persona.nombre = 'Juan';
-persona.apellido = 'Pérez';
-console.log(persona.nombreCompleto); // 'Juan Pérez'
-persona.nombreCompleto = 'Carlos López';
-console.log(persona.nombre); // 'Carlos'
-console.log(persona.apellido); // 'López'
-```
-
-#### 6.1.3.3 Métodos Object.defineProperties y Object.getOwnPropertyDescriptor
-
-- **Object.defineProperties()**: Permite definir varias propiedades a la vez, proporcionando un objeto con múltiples descripciones de propiedades.
-- **Object.getOwnPropertyDescriptor()**: Devuelve la descripción completa de una
-  propiedad específica, lo que incluye sus atributos value, writable, enumerable,
-  configurable, y funciones get y set si las tiene.
-
-  ```js
-  const persona = {};
-  Object.defineProperties(persona, {
-  ```
-
-nombre: {
-
-```js
-value: 'Ana',
-writable: true,
-enumerable: true,
-```
-
-configurable: `true`
-},
-edad: {
-
-```js
-value: 25,
-writable: false,
-enumerable: false,
-```
-
-configurable: `false`
-
-```js
-}
-});
-console.log(Object.getOwnPropertyDescriptor(persona, 'nombre'));
-// {
-// value: 'Ana',
-// writable: true,
-// enumerable: true,
-// configurable: true
-// }
-```
-
-### 6.1.4 Acceso y Modificación de Propiedades
-
-En JavaScript, las propiedades de los objetos pueden ser accedidas y modificadas utilizando dos
-notaciones principales:
-
-- **Notación de punto**: objeto.propiedad
-- **Notación de corchetes**: objeto["propiedad"]
-
-  ```js
-  const libro = {
-  titulo: "Introducción a Javascript",
-  paginas: 200,
-  "descripción": "Este es un libro sobre los fundamentos de JavaScript", // Las claves (keys)
-  ```
-
-pueden ser strings con o sin comillas.
-autor: { // El valor de una propiedad puede ser otro objeto.
-
-```js
-nombre: "Alfonso",
-```
-
-apellidos: "Sánchez"
-},
-
-```json
-"contenidos del libro": "Resumen del contenido del libro"
-};
-// Acceso a propiedades usando notación de punto
-const titulo = libro.titulo; // "Introducción a JavaScript"
-// Acceso a propiedades usando notación de corchetes
-const paginas = libro["paginas"]; // 200
-```
-
-#### 6.1.4.1 Ejemplos Avanzados con Herencia de Prototipos:
-
-```js
-let o = {}; // El prototipo de o es Object.prototype
-o.x = 1;
-let p = Object.create(o); // p hereda propiedades de o
-```
-
-p["y"] = 0; // Creación de una propiedad en p usando notación de corchetes.
-
-```js
-let q = Object.create(p); // El prototipo de q es p
-q.z = 3;
-console.log(q); // {z: 3} - q tiene la propiedad z, y hereda x e y
-console.log(p); // {y: 0} - p tiene la propiedad y, y hereda x
-console.log(o); // {x: 1} - o tiene la propiedad x
-// Acceso a propiedades heredadas:
-console.log(q.x); // 1 - q hereda la propiedad x de o
-console.log(q.y); // 0 - q hereda la propiedad y de p
-console.log(q.z); // 3 - z es propiedad directa de q
-// Ejemplo con método heredado:
-console.log(q.toString()); // Devuelve una representación en string - Método heredado de
-```
-
-Object.prototype
-Cadena de Prototipos en JavaScript: JavaScript sigue una cadena de prototipos cuando intenta acceder a una propiedad que no está presente en el objeto. Si la propiedad no se encuentra en el objeto
-actual, el motor de JavaScript busca en el prototipo del objeto, y continúa hasta que encuentra la
-propiedad o llega al final de la cadena de prototipos.
-
-#### 6.1.4.2 Modificación de Propiedades:
-
-Cuando se asigna un valor a una propiedad, se modifica directamente la propiedad del objeto en sí,
-sin afectar las propiedades heredadas:
-
-```js
-let o = {}; // El prototipo de o es Object.prototype
-o.x = 1;
-let p = Object.create(o); // p hereda propiedades de o
-p["y"] = 0;
-let q = Object.create(p); // El prototipo de q es p
-q.z = 3;
-```
-
-q.x = 0; // Crea la propiedad x en q, no modifica x en o.
-
-```js
-console.log(q); // {z: 3, x: 0} - x es ahora una propiedad directa de q
-console.log(o); // {x: 1} - x en o permanece inalterada
-console.log(q.x); // 0 - q tiene su propia propiedad x
-console.log(o.x); // 1 - x en o no ha sido modificada
-```
-
-#### 6.1.4.3 Acceso a Propiedades Inexistentes:
-
-Cuando se intenta acceder a una propiedad que no existe en un objeto, el resultado es `undefined`.
-No se lanza una excepción en este caso.
-
-```js
-console.log(q.a); // undefined - la propiedad a no existe en q
-```
-
-Sin embargo, intentar acceder a una propiedad de una propiedad inexistente genera una excepción:
-q.a.x // Genera un TypeError porque q.a es `undefined` y no tiene propiedades.
-
-#### 6.1.4.4 Operador Opcional Encadenado (?.):
-
-Para evitar excepciones cuando se accede a propiedades de objetos que podrían no existir, se utiliza
-el operador opcional encadenado (?.):
-
-```js
-let apellidos = libro?.autor?.apellidos; // "Sánchez"
-// Si alguna propiedad en la cadena es null o undefined, el resultado será undefined, no se
-```
-
-lanza excepción.
-
-#### 6.1.4.5 Eliminación de Propiedades:
-
-Para eliminar una propiedad de un objeto, se utiliza el operador delete:
-
-```js
-console.log(libro.autor.nombre); // "Alfonso"
-```
-
-delete libro.autor.nombre;
-
-```js
-console.log(libro.autor.nombre); // undefined - la propiedad ha sido eliminada
-```
-
-#### 6.1.4.6 Comprobación de la Existencia de Propiedades:
-
-Existen varias maneras de verificar si una propiedad existe en un objeto:
-
-- **Operador in**:
-
-  ```js
-  console.log("autor" in libro); // true - La propiedad autor existe en libro
-  console.log("toString" in libro); // true - toString existe en Object.prototype, que es el
-  ```
-
-prototipo de libro
-
-- **Método hasOwnProperty()**:
-
-  ```js
-  console.log(libro.hasOwnProperty("autor")); // true - autor es una propiedad directa de libro
-  console.log(libro.hasOwnProperty("toString")); // false - toString no es una propiedad
-  ```
-
-directa de libro
-
-- **Comparación con `undefined`**: Este método es menos fiable, porque una propiedad puede
-  existir y tener un valor de `undefined`:
-
-  ```js
-  libro.autor = undefined;
-  console.log(libro.autor !== undefined); // false - propiedad autor existe pero su valor es
-  ```
-
-`undefined`
-
-```js
-console.log("autor" in libro); // true - la propiedad autor sigue existiendo
-```
-
-Este método puede llevar a errores al intentar determinar si una propiedad realmente existe o si simplemente su valor es `undefined`. Por ello, es más seguro utilizar in o hasOwnProperty() para
-verificar la existencia de una propiedad.
-
-### 6.1.5 Enumeración de Propiedades
-
-Para enumerar las propiedades de un objeto en JavaScript, una de las técnicas más comunes es utilizar el bucle `for`-in. Este bucle recorre todas las propiedades de un objeto, tanto las propias como
-las heredadas.
-
-```js
-for (const key in libro) {
-  console.log(key);
-}
-```
-
-El bucle `for`-in itera sobre todas las propiedades enumerables de un objeto, incluidas aquellas heredadas a través de la cadena de prototipos. Sin embargo, es importante tener en cuenta que no todas
-las propiedades se incluyen en esta enumeración. Por ejemplo, las propiedades como toString,
-valueOf, y otras que forman parte de Object.prototype no aparecen porque son no enumerables.
-
-```js
-const libro = {
-titulo: "JavaScript: La Guía Definitiva",
-autor: "David Flanagan",
-```
-
-año: 2020
-
-```js
-};
-for (const propiedad in libro) {
-console.log(propiedad); // título, autor, año
-}
-```
-
-En este ejemplo, se listan las propiedades titulo, autor y año, pero no aparecerán otras propiedades
-heredadas o no enumerables.
-
-#### 6.1.5.1 Propiedades No Enumerables
-
-Las propiedades no enumerables son aquellas que no se pueden recorrer mediante un bucle `for`-in.
-Estas propiedades son configuradas con un descriptor especial que establece su no enumerabilidad.
-Un ejemplo claro de esto son las propiedades como toString y valueOf, que existen en todos los
-objetos ya que forman parte de Object.prototype, pero no se incluyen en la enumeración.
-
-```js
-Object.defineProperty(libro, 'editor', {
-value: "O'Reilly Media",
-```
-
-enumerable: `false`
-
-```js
-});
-for (const propiedad in libro) {
-console.log(propiedad); // título, autor, año (pero no 'editor')
-}
-```
-
-En este ejemplo, la propiedad editor no aparecerá en la lista porque ha sido definida como no enumerable.
-
-#### 6.1.5.2 Otras Opciones para Enumerar Propiedades
-
-Si deseas obtener únicamente las propiedades propias del objeto, sin incluir las heredadas, puedes
-utilizar los métodos `Object.keys()` y Object.getOwnPropertyNames().
-
-- **Object.keys(obj)**: Devuelve un array con las propiedades enumerables propias del objeto.
-- **Object.getOwnPropertyNames(obj)**: Devuelve un array con todas las propiedades propias del objeto, incluidas las no enumerables.
-
-  ```js
-  const propiedadesEnumerables = Object.keys(libro);
-  console.log(propiedadesEnumerables); // ["titulo", "autor", "año"]
-  const todasLasPropiedades = Object.getOwnPropertyNames(libro);
-  console.log(todasLasPropiedades); // ["titulo", "autor", "año", "editor"]
-  ```
-
-En este ejemplo, Object.keys(libro) devuelve solo las propiedades enumerables, mientras
-que Object.getOwnPropertyNames(libro) devuelve todas las propiedades propias, incluidas las no enumerables como editor.
-
-### 6.1.6 Extensión y Clonación de Objetos
-
-En JavaScript, extender un objeto significa copiar las propiedades de un objeto a otro. Esto es útil
-cuando deseas combinar las propiedades de múltiples objetos en un solo objeto o clonar un objeto
-existente.
-
-```js
-const origen = { y: 2, z: 3 };
-const destino = { x: 1 };
-```
-
-Queremos extender las propiedades de origen en el objeto destino. Una forma sencilla de hacerlo
-es mediante un bucle `for`...in:
-
-```js
-for (let key in origen) {
-  destino[key] = origen[key];
-}
-```
-
-Este código recorre todas las propiedades enumerables del objeto origen y las copia en el objeto destino.
-
-- **Usando `Object.keys()`**:
-  Otra forma de lograr lo mismo es utilizando `Object.keys()`, que devuelve un array con las propiedades enumerables de un objeto. Podemos iterar sobre este array con un bucle `for`...of:
-
-  ```js
-  for (const key of Object.keys(origen)) {
-    destino[key] = origen[key];
+const lampara = {
+  encendida: false,
+
+  encender() {
+    this.encendida = true;
+  },
+
+  apagar() {
+    this.encendida = false;
   }
-  ```
-
-Aquí usamos `for`...of en lugar de `for`...in porque `Object.keys()` devuelve un array, y `for`
-
-...of es ideal para recorrer arrays. Ambos enfoques logran el mismo resultado.
-
-- **Usando `Object.assign()`**:
-  JavaScript proporciona una función incorporada, `Object.assign()`, que es una forma más directa y concisa de extender un objeto. Este método copia todas las propiedades enumerables de uno o
-  más objetos de origen a un objeto destino. La sintaxis básica es la siguiente:
-
-  ```js
-  Object.assign(destino, origen);
-  ```
-
-Esto copia todas las propiedades de origen a destino. Si necesitas combinar varios objetos,
-`Object.assign()` también lo permite:
-
-```js
-Object.assign(nuevoObjeto, destino, origen);
-```
-
-En este caso, nuevoObjeto contendrá las propiedades combinadas de destino y origen. Si hay
-propiedades con el mismo nombre, las propiedades del último objeto (en este caso, origen) sobrescribirán las de los objetos anteriores.
-
-- Consideraciones adicionales
-  - **Inmutabilidad**: `Object.assign()` modifica el objeto destino directamente. Si necesitas mantener la inmutabilidad (es decir, no modificar los objetos originales), puedes
-    crear un nuevo objeto combinando las propiedades de varios objetos:
-
-  ```js
-  const nuevoObjeto = Object.assign({}, destino, origen);
-  ```
-
-Aquí, nuevoObjeto es un nuevo objeto que contiene las propiedades combinadas de destino y
-origen, sin modificar los objetos originales.
-
-- **Propiedades no enumerables**: `Object.assign()` solo copia propiedades enumerables. No
-  copia propiedades no enumerables, getters/setters, ni la cadena de prototipos.
-- **Métodos modernos**: A partir de ECMAScript 2018, también puedes usar el operador de propagación (…) para combinar objetos de manera aún más concisa:
-
-  ```js
-  const nuevoObjeto = { ...destino, ...origen };
-  ```
-
-Esto crea un nuevo objeto con las propiedades combinadas de destino y origen. Es una sintaxis
-más moderna y generalmente preferida en el código actual.
-
-### 6.1.7 Propiedades Abreviadas, Computadas y Símbolos
-
-A partir de ES6 (ECMAScript 2015), JavaScript introdujo nuevas funcionalidades para trabajar con objetos de una manera más conveniente y legible. Dos de las más destacadas son las propiedades abreviadas y las propiedades computadas.
-
-1. Propiedades Abreviadas
-   Las propiedades abreviadas permiten crear objetos de manera más concisa cuando el nombre de la
-   propiedad coincide con el nombre de la variable. En lugar de repetir el nombre de la propiedad y la
-   variable, puedes simplemente escribir el nombre una vez.
-
-   ```js
-   let x = 1, y = 2;
-   // Manera tradicional
-   let o = {
-   x: x,
-   ```
-
-y: y
-
-```js
 };
-// Uso de propiedades abreviadas
-let z = { x, y };
-console.log(z); // Resultado: { x: 1, y: 2 }
+
+console.log(lampara.encendida); // false: empieza apagada
+
+lampara.encender();
+console.log(lampara.encendida); // true: ahora está encendida
+
+lampara.apagar();
+console.log(lampara.encendida); // false: vuelve a estar apagada
 ```
 
-En el objeto z, no es necesario escribir x: x y y: y porque los nombres de las propiedades coinciden con
-los nombres de las variables. Es suficiente con escribir { x, y }. 2. Propiedades Computadas
-Las propiedades computadas permiten definir los nombres de las propiedades de un objeto de manera dinámica utilizando expresiones. Esto es útil cuando necesitas que el nombre de la propiedad
-sea el resultado de alguna operación o función.
+En el ejemplo, `encendida` es una **propiedad**: tiene un nombre y un valor. `encender()` y `apagar()`
+son **métodos**: son funciones definidas dentro del objeto. Al ejecutarlos con `lampara.encender()`,
+cambian la propiedad del mismo objeto.
+
+### ¿Qué significa `this`?
+
+Dentro de `encender()` y `apagar()`, `this` se refiere al objeto que recibe la llamada. Por ejemplo,
+al ejecutar `lampara.encender()`, `this` representa a `lampara`. Por eso,
+`this.encendida = true` cambia la propiedad `encendida` de esa lámpara.
+
+La notación de punto permite leer una propiedad (`lampara.encendida`) o ejecutar un método
+(`lampara.encender()`). También se puede usar la notación de corchetes:
 
 ```js
-function nombre(i) {
-return "propiedad" + i;
+const propiedad = "encendida";
+console.log(lampara[propiedad]); // false
+```
+
+Aquí el nombre de la propiedad está guardado en la variable `propiedad`. Los corchetes permiten usar
+ese valor para elegir qué propiedad consultar.
+
+### Los objetos se comparten por referencia
+
+Al asignar un objeto a otra variable no se crea otro objeto: las dos variables se refieren al mismo.
+Por eso, un cambio realizado mediante una de ellas también se ve al consultar la otra.
+
+```js
+const otraReferencia = lampara;
+otraReferencia.encender();
+
+console.log(lampara.encendida); // true
+```
+
+Aunque `lampara` se declaró con `const`, sus propiedades sí pueden cambiar. `const` impide asignar un
+objeto distinto a la variable; no hace que el objeto sea inmutable.
+
+## 6.2 Clases e instancias
+
+Una **clase** describe una estructura y un comportamiento comunes. Un objeto concreto creado a partir de esa clase es una **instancia**. El método especial `constructor()` se ejecuta al crear cada instancia con `new` y suele inicializar sus datos.
+
+```js
+class Persona {
+  constructor(nombre, edad) {
+    this.nombre = nombre;
+    this.edad = edad;
+  }
+
+  saludar() {
+    return `Hola, soy ${this.nombre}`;
+  }
 }
-let p = {
+
+const persona1 = new Persona("Lucía", 28);
+const persona2 = new Persona("Marcos", 34);
+
+console.log(persona1.saludar()); // "Hola, soy Lucía"
+console.log(persona2.edad);      // 34
+console.log(persona1 instanceof Persona); // true
 ```
 
-nombre: 1 // Aquí, la propiedad se llama literalmente 'nombre'
+`new Persona(...)` crea un nuevo objeto, ejecuta el constructor con ese objeto como `this` y devuelve la instancia. Cada instancia tiene sus propios valores de `nombre` y `edad`; los métodos definidos en la clase se comparten mediante el prototipo.
+
+### 6.2.1 `this` en los métodos
+
+El valor de `this` depende de cómo se llama a un método. Una llamada como `persona1.saludar()` establece `this` como `persona1`. Si se separa el método del objeto, esa relación se pierde:
 
 ```js
-};
-let q = {
+const saludar = persona1.saludar;
+// saludar(); // No usar así: el método ya no se invoca como persona1.saludar().
 ```
 
-[nombre(1)]: 1 // Aquí, el nombre de la propiedad se calcula como 'propiedad1'
+Si hace falta guardar el método para llamarlo más tarde, se puede enlazar explícitamente el objeto con `bind()`:
 
 ```js
-};
-console.log(q); // Resultado: { propiedad1: 1 }
+const saludarPersona1 = persona1.saludar.bind(persona1);
+console.log(saludarPersona1()); // "Hola, soy Lucía"
 ```
 
-En el objeto q, la propiedad se define utilizando una expresión dentro de corchetes. La función
-nombre(1) retorna el string “propiedad1”, por lo que el objeto q tiene una propiedad con el
-nombre “propiedad1”, cuyo valor es 1.
+## 6.3 Encapsulación y validación
 
-> Usaremos las propiedades computadas cuando queramos que el nombre de una propiedad se calcule en tiempo de ejecución. En React, lo usaremos en la validación de
-> formularios para crear un objeto con los valores de los campos del formulario.
-
-3. Propiedades con Símbolos
-   En JavaScript, los símbolos (introducidos en ES6) son un tipo de dato primitivo que se utiliza para
-   crear identificadores únicos. Los símbolos pueden ser utilizados como claves de propiedades en objetos, lo que permite definir propiedades que son únicas y no colisionan con otras propiedades, incluso
-   si tienen el mismo nombre.
-
-   ```js
-   const simbolo = Symbol("Mi nuevo símbolo");
-   let q = {
-   ```
-
-[simbolo]: 1 // El símbolo se utiliza como clave para la propiedad
+La **encapsulación** consiste en proteger el estado interno de un objeto y ofrecer operaciones controladas para consultarlo o modificarlo. Los campos privados de JavaScript empiezan con `#` y solo se pueden utilizar dentro de la clase que los declara.
 
 ```js
-};
-console.log(q); // Muestra un objeto con la propiedad cuyo clave es un símbolo
-console.log(q[simbolo]); // Resultado: 1
-```
+class CuentaBancaria {
+  #saldo = 0;
 
-### 6.1.8 Operador spread en objetos
+  constructor(titular, saldoInicial = 0) {
+    if (saldoInicial < 0) {
+      throw new RangeError("El saldo inicial no puede ser negativo.");
+    }
 
-El operador spread (...) en objetos en JavaScript es una herramienta muy útil para copiar propiedades de un objeto a otro de una manera sencilla y elegante. Este operador se ha convertido en una
-alternativa moderna a métodos tradicionales como Object.assign.
-El operador spread se utiliza para “descomponer” un objeto en sus propiedades individuales. Esto
-permite crear un nuevo objeto que contenga las propiedades de uno o más objetos originales.
+    this.titular = titular;
+    this.#saldo = saldoInicial;
+  }
 
-```js
-let posicion = { x: 0, y: 0 };
-let tam = { ancho: 100, alto: 100 };
-let rectangulo = { ...posicion, ...tam };
-// rectangulo = {x: 0, y: 0, ancho: 100, alto: 100}
-```
+  get saldo() {
+    return this.#saldo;
+  }
 
-Manejo de Propiedades Repetidas
-Una característica importante del operador spread es cómo maneja las propiedades repetidas al combinar objetos. Las propiedades se añaden de izquierda a derecha, y si una propiedad ya existe, es
-sobrescrita por la última asignada.
+  ingresar(cantidad) {
+    if (cantidad <= 0) {
+      throw new RangeError("La cantidad debe ser mayor que cero.");
+    }
 
-```js
-let posicion = { x: 0, y: 0 };
-let tam = { ancho: 100, alto: 100 };
-let tam2 = { ancho: 200 };
-let rectangulo = { ...posicion, ...tam, ...tam2 };
-// rectangulo = {x: 0, y: 0, ancho: 200, alto: 100}
-```
+    this.#saldo += cantidad;
+  }
 
-> En React, el operador spread se utiliza frecuentemente para hacer copias de las variables de estado.
+  retirar(cantidad) {
+    if (cantidad <= 0 || cantidad > this.#saldo) {
+      throw new RangeError("La cantidad no es válida para esta retirada.");
+    }
 
-El operador spread no crea una copia profunda del objeto, sino que crea una nueva referencia a los mismos datos. Si necesitas una copia profunda, puedes usar JSON.parse
-(JSON.stringify(objeto)).
-
-### 6.1.9 Métodos en Objetos
-
-En JavaScript, una propiedad de un objeto puede ser una función. Estas propiedades se denominan métodos. Los métodos pueden definirse de manera tradicional o usando la sintaxis abreviada
-de ES6:
-Método tradicional:
-
-```js
-let cuadrado = {
-lado: 10,
-```
-
-`area: function() { return this.lado * this.lado; }`
-
-```js
-};
-cuadrado.area();
-```
-
-Métodos abreviados:
-
-```js
-const cuadrado = {
-lado: 10,
-```
-
-area() {
-
-```js
-return this.lado * this.lado;
+    this.#saldo -= cantidad;
+  }
 }
-};
-console.log(cuadrado.area()); // 100
+
+const cuenta = new CuentaBancaria("Lucía", 100);
+cuenta.ingresar(25);
+cuenta.retirar(40);
+console.log(cuenta.saldo); // 85
+// console.log(cuenta.#saldo); // Error: el campo es privado.
 ```
 
+El saldo no se puede modificar directamente desde fuera de la clase. Los métodos `ingresar()` y `retirar()` comprueban las operaciones antes de cambiarlo. El getter `saldo` permite consultar su valor sin exponer el campo privado.
 
+Un getter se usa como una propiedad (`cuenta.saldo`), aunque se ejecuta como una función. También puede definirse un setter si se necesita permitir una asignación controlada; no es obligatorio añadirlo cuando una operación con nombre, como `ingresar()`, expresa mejor la regla del dominio.
+
+## 6.4 Miembros estáticos
+
+Los miembros **estáticos** pertenecen a la clase, no a cada instancia. Se declaran con `static` y resultan útiles para operaciones relacionadas con el tipo en su conjunto o para crear instancias con una regla común.
+
+```js
+class ConversorTemperatura {
+  static escala = "Celsius a Fahrenheit";
+
+  static celsiusAFahrenheit(celsius) {
+    return (celsius * 9) / 5 + 32;
+  }
+}
+
+console.log(ConversorTemperatura.escala); // "Celsius a Fahrenheit"
+console.log(ConversorTemperatura.celsiusAFahrenheit(20)); // 68
+```
+
+Se invocan mediante la clase (`ConversorTemperatura.celsiusAFahrenheit(...)`), no mediante una instancia.
+
+## 6.5 Herencia
+
+La **herencia** permite crear una clase especializada a partir de otra. La clase general se denomina clase base o padre; la especializada, clase derivada o hija. En JavaScript se utiliza `extends`, y el constructor de la clase derivada debe llamar a `super(...)` antes de usar `this`.
+
+```js
+class Empleado {
+  constructor(nombre, salario) {
+    this.nombre = nombre;
+    this.salario = salario;
+  }
+
+  describirTrabajo() {
+    return `${this.nombre} realiza tareas de la empresa`;
+  }
+}
+
+class Desarrollador extends Empleado {
+  constructor(nombre, salario, lenguaje) {
+    super(nombre, salario);
+    this.lenguaje = lenguaje;
+  }
+
+  describirTrabajo() {
+    return `${this.nombre} desarrolla software con ${this.lenguaje}`;
+  }
+}
+
+const desarrollador = new Desarrollador("Marcos", 32000, "JavaScript");
+console.log(desarrollador.nombre); // "Marcos", heredado de Empleado
+console.log(desarrollador.describirTrabajo());
+// "Marcos desarrolla software con JavaScript"
+```
+
+`super(...)` ejecuta el constructor de la clase base. En otros métodos, `super.metodo()` permite llamar a la implementación heredada de un método cuando la clase derivada quiere ampliarla:
+
+```js
+class DesarrolladorSenior extends Desarrollador {
+  describirTrabajo() {
+    return `${super.describirTrabajo()} y revisa código`;
+  }
+}
+```
+
+La herencia expresa una relación «es un tipo de». Conviene utilizarla cuando la clase derivada realmente puede tratarse como la clase base, no solo para reutilizar unas pocas líneas de código.
+
+## 6.6 Polimorfismo
+
+El **polimorfismo** permite utilizar una misma operación con objetos de tipos distintos, dejando que cada objeto proporcione su propia implementación. En el ejemplo, ambas clases responden a `describirTrabajo()`, pero cada una describe su trabajo de forma diferente.
+
+```js
+class Disenador extends Empleado {
+  describirTrabajo() {
+    return `${this.nombre} diseña interfaces`;
+  }
+}
+
+const equipo = [
+  new Desarrollador("Marcos", 32000, "JavaScript"),
+  new Disenador("Lucía", 30000)
+];
+
+for (const empleado of equipo) {
+  console.log(empleado.describirTrabajo());
+}
+```
+
+El bucle no necesita comprobar el tipo concreto de cada elemento: llama al mismo método y cada instancia ejecuta su versión. Esto facilita ampliar el programa con nuevos tipos de empleado.
+
+## 6.7 Composición
+
+La **composición** consiste en construir un objeto combinando otros objetos que colaboran entre sí. Es una alternativa a la herencia cuando la relación no es «es un tipo de», o cuando se quiere reutilizar comportamientos sin crear una jerarquía rígida.
+
+```js
+class Motor {
+  arrancar() {
+    return "Motor en marcha";
+  }
+}
+
+class Coche {
+  constructor(motor) {
+    this.motor = motor;
+  }
+
+  arrancar() {
+    return this.motor.arrancar();
+  }
+}
+
+const coche = new Coche(new Motor());
+console.log(coche.arrancar()); // "Motor en marcha"
+```
+
+El coche **tiene un** motor y delega en él la operación de arranque. La dependencia se recibe en el constructor, por lo que se podría usar otro objeto compatible sin cambiar la clase `Coche`.
+
+## 6.8 Prototipos: cómo funciona la herencia en JavaScript
+
+JavaScript utiliza **herencia basada en prototipos**. Cada objeto tiene una referencia interna a otro objeto, su prototipo. Cuando se consulta una propiedad, primero se busca en el objeto; si no está, JavaScript continúa la búsqueda por la cadena de prototipos hasta encontrarla o llegar a `null`.
+
+```js
+const animal = {
+  respirar() {
+    return `${this.nombre} respira`;
+  }
+};
+
+const gato = Object.create(animal);
+gato.nombre = "Misu";
+
+console.log(gato.respirar()); // "Misu respira"
+console.log(Object.getPrototypeOf(gato) === animal); // true
+```
+
+`gato` tiene su propiedad `nombre`, pero encuentra `respirar()` en su prototipo, `animal`. `Object.getPrototypeOf()` permite consultar ese prototipo; se recomienda frente a la propiedad histórica `__proto__`.
+
+Las clases no sustituyen este modelo: la sintaxis `class`, `extends` y `super` ofrece una forma más clara y familiar de trabajar con prototipos. Por ejemplo, los métodos declarados en una clase se guardan en el prototipo de sus instancias, en lugar de copiarse como una función nueva en cada objeto.
+
+```js
+const persona = new Persona("Lucía", 28);
+console.log(Object.getPrototypeOf(persona) === Persona.prototype); // true
+console.log(Object.hasOwn(persona, "nombre")); // true
+console.log(Object.hasOwn(persona, "saludar")); // false: es un método del prototipo
+```
+
+## 6.9 Conceptos clave
+
+- **Objeto**: reúne propiedades (estado) y métodos (comportamiento).
+- **Clase**: define una estructura y un comportamiento comunes para crear instancias.
+- **Instancia**: objeto concreto creado a partir de una clase mediante `new`.
+- **Constructor**: inicializa una instancia; `this` representa el objeto que se está construyendo.
+- **Encapsulación**: protege el estado interno y valida los cambios; `#campo` declara un campo privado.
+- **Miembro estático**: pertenece a la clase y se usa sin crear una instancia.
+- **Herencia**: especializa una clase con `extends`; `super()` inicializa la parte heredada.
+- **Polimorfismo**: permite usar la misma operación con implementaciones distintas.
+- **Composición**: construye objetos haciendo que colaboren otros objetos.
+- **Prototipo**: objeto en el que JavaScript busca propiedades que la instancia no tiene directamente.
+
+Como criterio práctico, modela con clases cuando necesites crear varias instancias con reglas y operaciones compartidas; para datos simples y puntuales, un objeto literal suele ser suficiente. Prefiere composición cuando represente mejor la relación entre las entidades, y encapsula las reglas importantes para evitar estados inválidos.
+
+## 6.10 PRÁCTICA 6: Objetos y clases
+
+Resuelve los ejercicios en JavaScript usando clases y objetos. Separa las responsabilidades en métodos
+con nombres claros y prueba los casos límite indicados. Muestra los resultados con `console.log()`.
+Cuando una operación no sea válida, informa del motivo de forma clara y evita dejar el objeto en un
+estado incoherente.
+
+1. **Catálogo de libros.** Crea una clase `Libro` para representar libros de una biblioteca.
+   - El constructor recibirá título, autor y número de páginas, y guardará esos datos en cada instancia.
+     Crea además un método `describir()` que devuelva una descripción completa del libro.
+   - Añade un método `esExtenso()` que indique si el libro tiene al menos 300 páginas. Comprueba este
+     límite con libros que tengan 299 y 300 páginas.
+   - Crea al menos tres instancias distintas y muestra la descripción y el resultado de `esExtenso()`
+     de cada una. Comprueba que cambiar el título de una instancia no modifica las demás.
+   - Valida los datos al crear el libro: título y autor no pueden estar vacíos y el número de páginas
+     debe ser un entero mayor que cero. Decide cómo informar de los datos inválidos y prueba cada caso.
+
+2. **Cuenta bancaria.** Crea una clase `CuentaBancaria` que mantenga privado el saldo de cada cuenta.
+   - El constructor recibirá el nombre del titular y un saldo inicial opcional, cuyo valor por defecto
+     será `0`. Define un getter `saldo` para consultar el saldo sin permitir modificarlo directamente.
+   - Implementa los métodos `ingresar(cantidad)` y `retirar(cantidad)`. Acepta únicamente cantidades
+     positivas; además, no permitas retirar más dinero del saldo disponible. Si una operación no es
+     válida, comunícalo claramente y no cambies el saldo.
+   - Crea dos cuentas con titulares y saldos distintos. Realiza varios ingresos y retiradas y muestra
+     el saldo después de cada operación para comprobar que las cuentas mantienen estados separados.
+   - Prueba un ingreso de cero, una retirada negativa y una retirada superior al saldo. Verifica también
+     que no se puede consultar ni modificar el campo privado desde fuera de la clase.
+
+3. **Equipo de trabajo: herencia y polimorfismo.** Crea una clase base `Empleado` y dos clases
+   derivadas, `Desarrollador` y `Disenador`.
+   - El constructor de `Empleado` recibirá nombre y salario. Cada clase derivada añadirá un dato propio:
+     por ejemplo, lenguaje de programación para `Desarrollador` y herramienta de diseño para `Disenador`.
+     Usa `extends` y llama a `super(...)` en los constructores derivados.
+   - Define en `Empleado` un método `describirTrabajo()`. Sobrescríbelo en cada clase derivada para que
+     describa las tareas de ese tipo de empleado.
+   - Crea una instancia de cada clase, guárdalas en un mismo array y recórrelo para mostrar el nombre,
+     salario y descripción del trabajo de cada una. Llama al mismo método en todas las instancias y
+     comprueba que cada una ejecuta su propia versión.
+   - Como ampliación, crea `DesarrolladorSenior`, derivada de `Desarrollador`, y sobrescribe
+     `describirTrabajo()` usando `super.describirTrabajo()` para ampliar la descripción heredada.
+
+{% comment %}
 # 7. JSON
 
 ## 7.1 Serialización y deserialización
