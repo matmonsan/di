@@ -3473,37 +3473,47 @@ leer un índice fuera de rango devuelve `undefined`.
 
 ### 5.1.4 Arrays multidimensionales
 
-Un array puede contener otros arrays. Esta estructura permite representar una tabla o matriz. En
-el ejemplo se crea una matriz **densa** de 10 por 10; cada celda contiene la suma de su índice de
-fila y su índice de columna.
+JavaScript no tiene un tipo especial de matriz: se representa con un array cuyos elementos son,
+a su vez, arrays. Cada array interior corresponde a una fila; sus elementos son las columnas.
 
 ```js
-const matriz = Array.from({ length: 10 }, () => Array(10).fill(0));
+const matriz = [
+  [1, 2, 3], // fila 0
+  [4, 5, 6], // fila 1
+  [7, 8, 9], // fila 2
+];
 
-for (let i = 0; i < 10; i++) {
-  for (let j = 0; j < 10; j++) {
-    matriz[i][j] = i + j;
-  }
-}
-console.log(matriz[2][3]); // 5
+console.log(matriz[1][2]); // 6: fila 1, columna 2
 ```
 
-`Array.from()` crea diez filas independientes y `Array(10).fill(0)` inicializa las diez celdas
-de cada fila. Los bucles anidados recorren las filas (`i`) y las columnas (`j`). Para acceder a
-una celda se utilizan dos índices: `matriz[fila][columna]`. Crear cada fila de forma independiente
-es importante; si se repitiera la misma referencia de fila, modificar una fila cambiaría todas.
+Los índices empiezan en `0`. Por eso, `matriz[1]` obtiene la segunda fila y, al añadir `[2]`,
+se obtiene el elemento de la tercera columna de esa fila. En general, se accede a una celda con
+`matriz[fila][columna]`. Como cada fila es un array independiente, puede tener una longitud distinta
+si la estructura no necesita ser rectangular.
+
+Para recorrer todos los elementos, se puede usar un `for` para las filas y otro para las columnas
+de cada fila:
+
+```js
+for (let fila = 0; fila < matriz.length; fila++) {
+  for (let columna = 0; columna < matriz[fila].length; columna++) {
+    console.log(matriz[fila][columna]);
+  }
+}
+```
+
+El bucle exterior visita cada fila. El interior recorre sus columnas; se usa
+`matriz[fila].length` para que también funcione si las filas tienen longitudes distintas.
 
 ### 5.1.5 Métodos iteradores de Array
 
 Los métodos iteradores reciben una función que se ejecuta con el valor de cada elemento y, en
 muchos casos, también con su índice y el array original. Los huecos de un array disperso se omiten.
 La elección del método depende del resultado buscado: recorrer (`forEach`), transformar (`map`),
-seleccionar (`filter`), buscar (`find`) o acumular (`reduce`).
+seleccionar (`filter`), buscar (`find`) etc.
 
 La función callback puede recibir `(valor, indice, array)`. Por ejemplo, `map()` y `filter()`
-devuelven arrays nuevos, `find()` devuelve el primer valor que cumple la condición y `reduce()`
-devuelve el acumulado. En un array vacío, `find()` devuelve `undefined`; al usar `reduce()`, indica
-un valor inicial para definir el resultado.
+devuelven arrays nuevos, `find()` devuelve el primer valor que cumple la condición. En un array vacío, `find()` devuelve `undefined`.
 
 ```js
 console.log(Object.getPrototypeOf([]) === Array.prototype); // true
@@ -3574,39 +3584,6 @@ vacíos.
    console.log(alguno); // true
    ```
 
-6. **`reduce` y reduceRight**: Reducir un array a un solo valor
-   `reduce` aplica una función a un acumulador y a cada valor, de izquierda a derecha, para
-   obtener un único resultado (por ejemplo, una suma). Conviene proporcionar un valor inicial
-   para que el resultado esté definido también cuando el array está vacío. `reduceRight` recorre
-   en sentido contrario.
-
-   ```js
-   const sumaReduce = datos.reduce(
-     (acumulador, valor) => acumulador + valor,
-     0,
-   );
-   console.log(sumaReduce); // 110
-   const multiplicacion = datos.reduce(
-     (acumulador, valor) => acumulador * valor,
-     1,
-   );
-   console.log(multiplicacion); // 3715891200
-   const mayor = datos.reduce((max, valor) => (valor > max ? valor : max));
-   console.log(mayor); // 20
-   ```
-
-7. **flat y flatMap**: Aplanar arrays
-   flat aplana arrays anidados en un solo nivel o más dependiendo del parámetro. flatMap primero aplica
-   `map` a cada elemento y luego aplana el resultado en un nuevo array.
-
-   ```js
-   const arrAnidado = [1, 2, 3, [4, 5, 6], [7, 8, [9, 10]]];
-   console.log(arrAnidado.flat(2)); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-   const frases = ["Arrays en Javascript", "Aprendiendo Javascript"];
-   const palabras = frases.flatMap((frase) => frase.split(" "));
-   console.log(palabras); // ['Arrays', 'en', 'Javascript', 'Aprendiendo', 'Javascript']
-   ```
-
 > Es importante dominar los métodos iteradores de arrays, ya que son fundamentales
 > para un estilo de programación funcional y para el manejo de datos en general.
 
@@ -3652,30 +3629,48 @@ ascendente.
 En cada solución utiliza variables con tipos adecuados, estructuras de control y funciones con
 responsabilidades claras. Añade pruebas de los casos límite indicados.
 
-1. **Reproductor con cola e historial.** Simula un reproductor que procesa esta secuencia de
-   instrucciones: `["añadir:A", "añadir:B", "añadir:C", "siguiente", "añadir:D", "siguiente",
-   "anterior", "siguiente"]`.
-   - Mantén un array como cola de reproducción y otro como historial de canciones ya reproducidas.
-     Al añadir una canción, se incorpora al final de la cola; al avanzar, se quita la primera y se
-     añade al historial.
-   - Implementa funciones para procesar una instrucción, avanzar y volver a la canción anterior.
-     Si la cola está vacía o no existe una canción anterior, el estado debe mantenerse y mostrarse
-     un mensaje adecuado.
-   - Recorre la secuencia con un bucle y usa una estructura condicional para interpretar cada tipo
-     de instrucción. Después de cada paso muestra la canción actual, la cola y el historial.
-   - Como ampliación, permite deshacer la última instrucción guardando copias del estado anterior.
-     Comprueba qué ocurre al intentar avanzar con la cola vacía.
+1. **Analizador de palabras.** Analiza esta lista de palabras:
+   `["sol", "montaña", "río", "bosque", "mariposa", "luz", "montaña"]`.
+   - Implementa una función que cuente cuántas veces aparece una palabra indicada. La comparación
+     distingue entre mayúsculas y minúsculas.
+   - Crea otra función que devuelva un array nuevo con las palabras que tienen más de cuatro
+     caracteres. No cambies la lista original.
+   - Busca la posición de la primera aparición de una palabra. Si no aparece, devuelve `-1`.
+   - Prueba las funciones con una lista vacía y con una palabra que no esté en la lista.
 
-2. **Robot explorador en un mapa.** Representa el terreno con una matriz de caracteres, donde `#`
-   es una pared, `.` una casilla libre y `S` la posición inicial. El robot recibe una lista de
-   órdenes como `["derecha", "derecha", "abajo", "izquierda", "abajo"]`.
-   - Guarda el mapa como un array de arrays y la posición del robot en variables numéricas de fila
-     y columna. Crea una función que calcule la posición siguiente a partir de la orden.
-   - Recorre las órdenes en orden. Si el destino queda fuera del mapa o contiene una pared, no
-     muevas el robot y registra ese intento en un array de movimientos rechazados.
-   - Usa otra función para dibujar el mapa final con el robot marcado. No modifiques la casilla de
-     inicio ni compartas la misma fila para todas las filas de la matriz.
-   - Prueba una orden que choque con una pared, otra que intente salir del mapa y una ruta válida.
+   **Ejemplo de ejecución:**
+
+   ```text
+   Lista: ["sol", "montaña", "río", "bosque", "mariposa", "luz", "montaña"]
+   Veces que aparece "montaña": 2
+   Palabras con más de cuatro caracteres: ["montaña", "bosque", "mariposa", "montaña"]
+   Primera posición de "río": 2
+   Primera posición de "nube": -1
+   Búsqueda en una lista vacía: -1
+   ```
+
+2. **Robot en un pasillo.** El pasillo es una secuencia lineal de posiciones: `S` indica el punto
+   de inicio, `.` una posición libre y `#` un obstáculo. El robot recibe las órdenes
+   `["derecha", "derecha", "izquierda", "izquierda"]`.
+   - Guarda el pasillo en un único array y la posición del robot en un índice numérico. No hace falta
+     guardar fila y columna porque el robot solo puede moverse en una dimensión.
+   - Crea una función que calcule el índice de destino según la orden. Si el índice queda fuera del
+     array o la posición contiene `#`, no muevas el robot y guarda la orden en un array de rechazos.
+   - Recorre las órdenes en orden y muestra si se aceptó cada movimiento y la posición actual.
+     Dibuja el estado final marcando al robot como `R`, sin cambiar el array original del pasillo.
+   - Prueba un movimiento válido, uno que choque con un obstáculo y otro que intente salir del
+     pasillo.
+
+   **Ejemplo de ejecución** con el pasillo `["S", ".", "#", ".", ".", "."]`:
+
+   ```text
+   derecha: aceptado; posición 1.
+   derecha: rechazado; hay un obstáculo en la posición 2.
+   izquierda: aceptado; posición 0.
+   izquierda: rechazado; el destino queda fuera del pasillo.
+   Órdenes rechazadas: ["derecha", "izquierda"]
+   Pasillo final: ["R", ".", "#", ".", ".", "."]
+   ```
 
 3. **Compresión de una secuencia.** Dada la secuencia
    `[4, 4, 4, 2, 2, 7, 7, 7, 7, 1, 4, 4]`, crea una versión comprimida que agrupe valores iguales
@@ -3690,18 +3685,56 @@ responsabilidades claras. Añade pruebas de los casos límite indicados.
    - Comprueba una secuencia con todos los valores iguales, una secuencia alternada y la ida y
      vuelta `descomprimir(comprimir(secuencia))`.
 
-4. **Simulador de torneo por rondas.** Organiza los equipos
-   `["Lince", "Tigre", "Águila", "Zorro", "Lobo", "Oso", "Puma", "Búho"]` en un torneo de
-   eliminación directa. Cada equipo tiene una puntuación de habilidad guardada en un array paralelo.
-   - Crea una función que juegue un enfrentamiento: gana el equipo con mayor habilidad; si empatan,
-     decide el ganador con `Math.random()`. Devuelve el nombre del equipo ganador.
-   - En cada ronda, recorre los participantes de dos en dos y guarda los ganadores en un array nuevo.
-     Repite hasta que quede un campeón. Conserva también un array con los resultados de cada ronda.
-   - Usa variables numéricas y de texto para la ronda, los equipos y el campeón, además de bucles y
-     condicionales para avanzar el torneo. No sobrescribas los participantes de una ronda antes de
-     terminar de emparejarlos.
-   - Comprueba que el torneo termina con un único campeón y prueba una lista impar de participantes:
-     define y documenta qué regla aplicarás al equipo que quede sin pareja.
+   **Ejemplo de ejecución:**
+
+   ```text
+   Entrada:       [4, 4, 4, 2, 2, 7, 7, 7, 7, 1, 4, 4]
+   Comprimida:    [[4, 3], [2, 2], [7, 4], [1, 1], [4, 2]]
+   Descomprimida: [4, 4, 4, 2, 2, 7, 7, 7, 7, 1, 4, 4]
+   Entrada vacía: [] -> []
+   ```
+
+4. **Procesador de títulos de películas con callbacks.** Trabaja con el array
+   `["  Dune: Parte Dos ", "Coco", "Spider-Man: Cruzando el Multiverso", "dune: parte dos", "El viaje de Chihiro"]`.
+   Define una única función de orden superior, `procesarTitulos(titulos, callback)`, que reciba el
+   array y una función, y devuelva el resultado de llamar a esa función con el array. Después,
+   invócala tres veces, pasándole en cada ocasión una función flecha anónima distinta:
+
+   ```js
+   function procesarTitulos(titulos, callback) {
+     return callback(titulos);
+   }
+   ```
+
+   - La primera callback debe devolver un array nuevo con los títulos sin espacios exteriores,
+     numerados según su posición e indicando el número total de títulos.
+   - La segunda debe devolver un array nuevo con títulos que tengan más de 5 caracteres y aparezcan
+     por primera vez. Para decidir si un título ya apareció, ignora mayúsculas y espacios exteriores.
+   - La tercera debe devolver un array nuevo con los títulos ordenados de mayor a menor longitud,
+     sin contar espacios exteriores. Si dos títulos tienen la misma longitud, conserva entre ellos
+     el orden original.
+   - Cada callback recibe el array completo y devuelve el resultado de su operación. Pasa tres
+     funciones flecha anónimas diferentes a `procesarTitulos`, una en cada llamada. No crees más
+     funciones de orden superior propias ni modifiques el array original. Comprueba también el
+     comportamiento con un array vacío.
+
+   **Ejemplo de ejecución:**
+
+   ```text
+   Títulos numerados:
+   ["1. Dune: Parte Dos (5 títulos)", "2. Coco (5 títulos)",
+    "3. Spider-Man: Cruzando el Multiverso (5 títulos)",
+    "4. dune: parte dos (5 títulos)", "5. El viaje de Chihiro (5 títulos)"]
+
+   Títulos únicos con más de 5 caracteres:
+   ["  Dune: Parte Dos ", "Spider-Man: Cruzando el Multiverso", "El viaje de Chihiro"]
+
+   Títulos ordenados por longitud:
+   ["Spider-Man: Cruzando el Multiverso", "El viaje de Chihiro",
+    "  Dune: Parte Dos ", "dune: parte dos", "Coco"]
+
+   Array vacío: las tres llamadas devuelven []
+   ```
 
 5. **Buscaminas reducido.** Crea una cuadrícula de 5 por 5 con minas en posiciones predeterminadas,
    por ejemplo `[[1, 3], [3, 0], [4, 4]]`. El jugador descubre casillas indicando fila y columna.
@@ -3715,6 +3748,17 @@ responsabilidades claras. Añade pruebas de los casos límite indicados.
      no debe contarse dos veces.
    - Prueba una jugada repetida, una mina en un borde, una casilla segura rodeada de minas y la
      victoria al descubrir todas las casillas seguras.
+
+   **Ejemplo de ejecución** con las minas `[[1, 3], [3, 0], [4, 4]]`:
+
+   ```text
+   Jugada (0, 0): casilla segura; minas vecinas: 0; seguras descubiertas: 1/22.
+   Jugada (0, 0): casilla ya descubierta; seguras descubiertas: 1/22.
+   Jugada (3, 0): mina; fin de la partida.
+   ```
+
+   En las pruebas, la casilla `(3, 0)` confirma que se detecta una mina en el borde. Si se revelan
+   las 22 casillas seguras sin tocar una mina, el resultado final es `¡Victoria!`.
 
 # 6. Objetos
 
