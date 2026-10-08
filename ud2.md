@@ -3837,7 +3837,7 @@ objeto distinto a la variable; no hace que el objeto sea inmutable.
 
 ## 6.2 Clases e instancias
 
-Una **clase** describe una estructura y un comportamiento comunes. Un objeto concreto creado a partir de esa clase es una **instancia**. El método especial `constructor()` se ejecuta al crear cada instancia con `new` y suele inicializar sus datos.
+Una **clase** describe una estructura y un comportamiento comunes. Un objeto concreto creado a partir de esa clase es una **instancia**. El constructor permite preparar los datos iniciales de cada instancia cuando se crea con `new`.
 
 ```js
 class Persona {
@@ -3859,9 +3859,35 @@ console.log(persona2.edad);      // 34
 console.log(persona1 instanceof Persona); // true
 ```
 
-`new Persona(...)` crea un nuevo objeto, ejecuta el constructor con ese objeto como `this` y devuelve la instancia. Cada instancia tiene sus propios valores de `nombre` y `edad`; los métodos definidos en la clase se comparten mediante el prototipo.
+### 6.2.1 Sintaxis del constructor
 
-### 6.2.1 `this` en los métodos
+El constructor se declara dentro de la clase con la palabra `constructor`, como si fuera un método especial. No se escribe `function` delante y solo puede haber uno por clase.
+
+| Parte | Significado |
+| :--- | :--- |
+| `constructor(nombre, edad)` | Declara el constructor y los parámetros que recibirá. |
+| `new Persona("Lucía", 28)` | Crea una instancia y pasa los argumentos en el mismo orden. |
+| `this.nombre = nombre` | Guarda el valor del parámetro como propiedad de la nueva instancia. |
+
+```js
+class Persona {
+  constructor(nombre, edad) {
+    this.nombre = nombre; // "Lucía" queda guardado en la propiedad nombre
+    this.edad = edad;     // 28 queda guardado en la propiedad edad
+  }
+}
+
+const persona = new Persona("Lucía", 28);
+console.log(persona.nombre); // "Lucía"
+```
+
+Al ejecutar `new Persona("Lucía", 28)`, JavaScript crea el objeto y ejecuta el constructor. Dentro de él, `this` representa ese nuevo objeto. Así, cada instancia recibe sus propios valores.
+
+> **Recuerda:** el constructor no se llama directamente; se ejecuta al crear una instancia con `new`. Si no declaras uno, JavaScript proporciona un constructor vacío automáticamente.
+
+Los métodos definidos en la clase, como `saludar()`, se comparten mediante el prototipo.
+
+### 6.2.2 `this` en los métodos
 
 El valor de `this` depende de cómo se llama a un método. Una llamada como `persona1.saludar()` establece `this` como `persona1`. Si se separa el método del objeto, esa relación se pierde:
 
@@ -3880,6 +3906,12 @@ console.log(saludarPersona1()); // "Hola, soy Lucía"
 ## 6.3 Encapsulación y validación
 
 La **encapsulación** consiste en proteger el estado interno de un objeto y ofrecer operaciones controladas para consultarlo o modificarlo. Los campos privados de JavaScript empiezan con `#` y solo se pueden utilizar dentro de la clase que los declara.
+
+### Visibilidad de los miembros en JavaScript
+
+En JavaScript, los miembros de una clase son **públicos por defecto**: sus propiedades y métodos pueden consultarse o utilizarse desde fuera. No hace falta escribir la palabra `public`, y JavaScript no tiene un modificador `protected` nativo.
+
+Para declarar un miembro privado se usa `#` al principio de su nombre. Solo puede acceder a él el código de la clase que lo declara; no es accesible desde fuera ni directamente desde una subclase. Los objetos literales tampoco admiten modificadores de visibilidad.
 
 ```js
 class CuentaBancaria {
@@ -3988,7 +4020,41 @@ class DesarrolladorSenior extends Desarrollador {
 }
 ```
 
+### Tipos de herencia
+
+Según cómo se relacionan las clases, se suelen distinguir varios tipos:
+
+| Tipo | ¿Qué significa? | ¿Se puede hacer con clases de JavaScript? |
+| :--- | :--- | :--- |
+| **Simple** | Una clase hija hereda directamente de una clase padre. | Sí. `Desarrollador extends Empleado` es un ejemplo. |
+| **Múltiple** | Una clase hija hereda directamente de varias clases padre. | No. Una clase solo puede tener una clase después de `extends`. |
+| **Multinivel** | Una clase hereda de otra que, a su vez, hereda de una tercera. | Sí. `DesarrolladorSenior` hereda de `Desarrollador`, que hereda de `Empleado`. |
+| **Jerárquica** | Varias clases hijas heredan de la misma clase padre. | Sí. `Desarrollador` y `Disenador` pueden heredar de `Empleado`. |
+| **Híbrida** | Combina varios tipos de relación de herencia. | Puede construirse combinando herencia simple, multinivel y jerárquica, pero no habilita la herencia múltiple. |
+
+JavaScript permite encadenar prototipos, pero cada clase derivada tiene una sola clase base. Para reutilizar capacidades de varias fuentes, se puede preferir la **composición** (un objeto contiene y utiliza otros objetos) o aplicar patrones como los *mixins*; no es herencia múltiple nativa.
+
 La herencia expresa una relación «es un tipo de». Conviene utilizarla cuando la clase derivada realmente puede tratarse como la clase base, no solo para reutilizar unas pocas líneas de código.
+
+### Clases abstractas e interfaces en JavaScript
+
+JavaScript no tiene palabras clave nativas `abstract` ni `interface`. Por tanto, el lenguaje no puede impedir automáticamente que se cree una instancia de una clase abstracta ni comprobar que una clase implemente una interfaz.
+
+Se puede **imitar** una clase abstracta con comprobaciones en tiempo de ejecución, por ejemplo, lanzando un error si se intenta crear la clase base directamente o si un método que debía redefinirse sigue sin implementación. Aun así, JavaScript no obliga a las clases derivadas a implementar esos métodos.
+
+Una interfaz suele representarse como un **contrato de comportamiento**: una función recibe cualquier objeto que ofrezca los métodos que necesita. Puede comprobarse ese requisito cuando se ejecuta el programa:
+
+```js
+function arrancarVehiculo(vehiculo) {
+  if (typeof vehiculo.arrancar !== "function") {
+    throw new TypeError("El vehículo debe tener un método arrancar().");
+  }
+
+  return vehiculo.arrancar();
+}
+```
+
+Esta comprobación se hace en tiempo de ejecución; no es una declaración formal de interfaz ni se verifica antes de ejecutar el código.
 
 ## 6.6 Polimorfismo
 
@@ -4034,42 +4100,16 @@ class Coche {
   }
 }
 
-const coche = new Coche(new Motor());
+const motor = new Motor();
+const coche = new Coche(motor);
 console.log(coche.arrancar()); // "Motor en marcha"
 ```
 
-El coche **tiene un** motor y delega en él la operación de arranque. La dependencia se recibe en el constructor, por lo que se podría usar otro objeto compatible sin cambiar la clase `Coche`.
+`Motor` es la clase; `new Motor()` crea un objeto (una instancia) de esa clase. Ese objeto se pasa como argumento a `new Coche(motor)`, y el constructor de `Coche` guarda la misma referencia en `this.motor`. Así, cada coche tiene acceso a un objeto motor y puede delegarle la operación `arrancar()`.
 
-## 6.8 Prototipos: cómo funciona la herencia en JavaScript
+JavaScript no exige que el argumento se haya creado específicamente con `new Motor()`: no hay una declaración de tipo que lo imponga. `Coche` solo necesita que el objeto recibido tenga un método `arrancar()`. Por eso se puede pasar otro objeto compatible y cambiar la implementación del motor sin modificar `Coche`; esta colaboración entre objetos es la composición.
 
-JavaScript utiliza **herencia basada en prototipos**. Cada objeto tiene una referencia interna a otro objeto, su prototipo. Cuando se consulta una propiedad, primero se busca en el objeto; si no está, JavaScript continúa la búsqueda por la cadena de prototipos hasta encontrarla o llegar a `null`.
-
-```js
-const animal = {
-  respirar() {
-    return `${this.nombre} respira`;
-  }
-};
-
-const gato = Object.create(animal);
-gato.nombre = "Misu";
-
-console.log(gato.respirar()); // "Misu respira"
-console.log(Object.getPrototypeOf(gato) === animal); // true
-```
-
-`gato` tiene su propiedad `nombre`, pero encuentra `respirar()` en su prototipo, `animal`. `Object.getPrototypeOf()` permite consultar ese prototipo; se recomienda frente a la propiedad histórica `__proto__`.
-
-Las clases no sustituyen este modelo: la sintaxis `class`, `extends` y `super` ofrece una forma más clara y familiar de trabajar con prototipos. Por ejemplo, los métodos declarados en una clase se guardan en el prototipo de sus instancias, en lugar de copiarse como una función nueva en cada objeto.
-
-```js
-const persona = new Persona("Lucía", 28);
-console.log(Object.getPrototypeOf(persona) === Persona.prototype); // true
-console.log(Object.hasOwn(persona, "nombre")); // true
-console.log(Object.hasOwn(persona, "saludar")); // false: es un método del prototipo
-```
-
-## 6.9 Conceptos clave
+## 6.8 Conceptos clave
 
 - **Objeto**: reúne propiedades (estado) y métodos (comportamiento).
 - **Clase**: define una estructura y un comportamiento comunes para crear instancias.
@@ -4084,46 +4124,77 @@ console.log(Object.hasOwn(persona, "saludar")); // false: es un método del prot
 
 Como criterio práctico, modela con clases cuando necesites crear varias instancias con reglas y operaciones compartidas; para datos simples y puntuales, un objeto literal suele ser suficiente. Prefiere composición cuando represente mejor la relación entre las entidades, y encapsula las reglas importantes para evitar estados inválidos.
 
-## 6.10 PRÁCTICA 6: Objetos y clases
+## 6.9 PRÁCTICA 6: Objetos y clases
 
 Resuelve los ejercicios en JavaScript usando clases y objetos. Separa las responsabilidades en métodos
 con nombres claros y prueba los casos límite indicados. Muestra los resultados con `console.log()`.
 Cuando una operación no sea válida, informa del motivo de forma clara y evita dejar el objeto en un
 estado incoherente.
 
-1. **Catálogo de libros.** Crea una clase `Libro` para representar libros de una biblioteca.
+1. **Catálogo de libros.** Crea una clase `Libro` para representar libros de una biblioteca y una
+   clase `Catalogo` para gestionar una colección de libros.
    - El constructor recibirá título, autor y número de páginas, y guardará esos datos en cada instancia.
      Crea además un método `describir()` que devuelva una descripción completa del libro.
    - Añade un método `esExtenso()` que indique si el libro tiene al menos 300 páginas. Comprueba este
      límite con libros que tengan 299 y 300 páginas.
-   - Crea al menos tres instancias distintas y muestra la descripción y el resultado de `esExtenso()`
-     de cada una. Comprueba que cambiar el título de una instancia no modifica las demás.
    - Valida los datos al crear el libro: título y autor no pueden estar vacíos y el número de páginas
      debe ser un entero mayor que cero. Decide cómo informar de los datos inválidos y prueba cada caso.
+   - `Catalogo` mantendrá una colección de libros y ofrecerá métodos para añadir un libro, eliminarlo
+     por título, consultar un libro por título y listar todos los libros. Decide y documenta qué ocurre
+     si se intenta añadir otro libro con un título ya existente o eliminar o consultar un título que no
+     está en el catálogo.
+   - Crea al menos tres instancias de `Libro`, añádelas al catálogo y muestra la descripción y el
+     resultado de `esExtenso()` de cada una. Comprueba el límite de 299 y 300 páginas y que cambiar el
+     título de una instancia no modifica los títulos de las demás.
+   - Prueba añadir, consultar y eliminar libros, así como listar el catálogo antes y después de los
+     cambios. Comprueba también los casos de título duplicado y de título inexistente, además de los
+     datos inválidos al crear un libro.
 
-2. **Cuenta bancaria.** Crea una clase `CuentaBancaria` que mantenga privado el saldo de cada cuenta.
-   - El constructor recibirá el nombre del titular y un saldo inicial opcional, cuyo valor por defecto
-     será `0`. Define un getter `saldo` para consultar el saldo sin permitir modificarlo directamente.
-   - Implementa los métodos `ingresar(cantidad)` y `retirar(cantidad)`. Acepta únicamente cantidades
-     positivas; además, no permitas retirar más dinero del saldo disponible. Si una operación no es
-     válida, comunícalo claramente y no cambies el saldo.
-   - Crea dos cuentas con titulares y saldos distintos. Realiza varios ingresos y retiradas y muestra
-     el saldo después de cada operación para comprobar que las cuentas mantienen estados separados.
-   - Prueba un ingreso de cero, una retirada negativa y una retirada superior al saldo. Verifica también
-     que no se puede consultar ni modificar el campo privado desde fuera de la clase.
+2. **Banco.** Crea una clase `CuentaBancaria` y otra clase `Banco`
+   que gestione varias cuentas y permita realizar transferencias entre ellas.
+   - `CuentaBancaria` mantendrá privado el saldo. Su constructor recibirá un titular y un saldo inicial
+     opcional (por defecto, `0`). Valida que el saldo inicial no sea negativo y define un getter `saldo`
+     para consultarlo sin permitir modificarlo directamente.
+   - Implementa en `CuentaBancaria` los métodos `ingresar(cantidad)` y `retirar(cantidad)`. Acepta solo
+     cantidades positivas y no permitas retirar más del saldo disponible. Si una operación no es
+     válida, informa del motivo y no cambies el saldo.
+   - `Banco` recibirá un nombre y mantendrá una colección privada de cuentas. Implementa un método para
+     abrir una cuenta y devolverla, y otro para buscar una cuenta por el nombre de su titular. No
+     permitas abrir dos cuentas con el mismo titular.
+   - Añade a `Banco` un método `transferir(origen, destino, cantidad)` que retire el dinero de la cuenta
+     de origen y lo ingrese en la de destino. Si la retirada falla, la transferencia no debe ingresar
+     dinero en destino. Rechaza transferencias a la misma cuenta y cantidades no positivas.
+   - Implementa un método para calcular el saldo total de todas las cuentas del banco, consultando el
+     getter público de cada cuenta. No accedas directamente al campo privado de saldo.
+   - Crea un banco, abre al menos tres cuentas y realiza ingresos, retiradas y transferencias entre
+     ellas. Muestra los saldos de origen y destino antes y después de cada transferencia, y el saldo
+     total del banco.
+   - Prueba una transferencia con fondos insuficientes, una cantidad negativa o cero, una transferencia
+     a la misma cuenta y la apertura de dos cuentas con el mismo titular. Comprueba que las operaciones
+     rechazadas no alteran los saldos ni el saldo total.
 
-3. **Equipo de trabajo: herencia y polimorfismo.** Crea una clase base `Empleado` y dos clases
-   derivadas, `Desarrollador` y `Disenador`.
-   - El constructor de `Empleado` recibirá nombre y salario. Cada clase derivada añadirá un dato propio:
-     por ejemplo, lenguaje de programación para `Desarrollador` y herramienta de diseño para `Disenador`.
-     Usa `extends` y llama a `super(...)` en los constructores derivados.
-   - Define en `Empleado` un método `describirTrabajo()`. Sobrescríbelo en cada clase derivada para que
-     describa las tareas de ese tipo de empleado.
-   - Crea una instancia de cada clase, guárdalas en un mismo array y recórrelo para mostrar el nombre,
-     salario y descripción del trabajo de cada una. Llama al mismo método en todas las instancias y
-     comprueba que cada una ejecuta su propia versión.
-   - Como ampliación, crea `DesarrolladorSenior`, derivada de `Desarrollador`, y sobrescribe
-     `describirTrabajo()` usando `super.describirTrabajo()` para ampliar la descripción heredada.
+3. **Equipo de trabajo.** Crea un sistema para representar
+   un equipo formado por empleados de distintos perfiles.
+   - Implementa la clase base `Empleado`, cuyo constructor recibirá nombre y salario mensual. Valida
+     que el nombre no esté vacío y que el salario sea un número positivo; informa claramente de los
+     datos inválidos.
+   - Añade a `Empleado` los métodos `describirTrabajo()` y `calcularSalarioAnual()`. El primero
+     devolverá una descripción general y el segundo calculará doce mensualidades.
+   - Crea las clases derivadas `Desarrollador` y `Disenador`. Usa `extends` y `super(...)`; cada clase
+     recibirá además una especialidad propia (lenguaje de programación o herramienta de diseño) y
+     sobrescribirá `describirTrabajo()` para incluirla.
+   - Implementa `DesarrolladorSenior` como una clase derivada de `Desarrollador`. Añade un plus mensual
+     al constructor y sobrescribe `describirTrabajo()` usando `super.describirTrabajo()` para ampliar
+     la descripción. Sobrescribe también `calcularSalarioAnual()` para incluir el plus durante los
+     doce meses.
+   - Crea una clase `Equipo` que reciba un nombre y una lista de empleados. Añade métodos para incorporar
+     un empleado, mostrar la descripción de todos los empleados y calcular el coste anual total de la
+     nómina. El equipo debe trabajar con empleados de distintos tipos mediante los mismos métodos, sin
+     comprobar manualmente la clase de cada uno.
+   - Crea un equipo con al menos dos perfiles distintos y un desarrollador sénior. Muestra las
+     descripciones y el coste anual total. Comprueba que el cálculo del sénior incluye el plus.
+   - Prueba los casos límite: nombre vacío, salario no positivo y plus negativo. Comprueba también que
+     añadir un empleado permite que aparezca en las descripciones y modifica el coste total.
 
 {% comment %}
 # 7. JSON
