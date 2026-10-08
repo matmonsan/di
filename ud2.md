@@ -17,7 +17,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 5. [Arrays](#5-arrays)
     - [Práctica 5](#52-práctica-5-arrays)
 6. [Objetos](#6-objetos)
-    - [Práctica 6](#610-práctica-6-objetos-y-clases)
+    - [Práctica 6](#69-práctica-6-objetos-y-clases)
 {% comment %}
 7. [JSON](#json)
 8. [Promesas](#promesas)
