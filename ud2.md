@@ -21,8 +21,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 7. [JSON](#7-json)
     - [Práctica 7](#75-práctica-7-catálogo-de-cafés-y-json)
 {% comment %}
-8. [Promesas](#promesas)
-9. [DOM](#dom)
+8. [Promesas](#8-promesas)
+    - [Práctica 8](#811-práctica-8-pokémon-y-promesas)
+9. [DOM](#9-dom)
 10. [BOM y Eventos](#bom-y-eventos)
 {% endcomment %}
 
@@ -4408,7 +4409,7 @@ convertir una ficha en texto JSON.
    una sangría de dos espacios. Guarda esa cadena en una variable para usarla en el siguiente punto.
 
 8. Muestra la cadena JSON por consola y en la página, dentro de una etiqueta HTML `<pre>` para
-   conservar la sangría. Después, conviértela de nuevo en un objeto con, guarda el
+   conservar la sangría. Después, conviértela de nuevo en un objeto, guarda el
    resultado en una nueva variable y muéstralo por consola. Comprueba que el nuevo objeto no tiene
    la propiedad `imagen`, porque no la incluiste en el objeto del punto anterior.
 
@@ -4417,64 +4418,408 @@ convertir una ficha en texto JSON.
 {% comment %}
 # 8. Promesas
 
-## 8.1 Solicitudes con fetch y depuración de red
+## 8.1 ¿Qué problema resuelven las promesas?
 
-La pestaña Network (Red) permite ver todas las solicitudes de red realizadas por la página, lo que es útil para depurar API calls,
-cargar recursos, etc.
+Imagina que pides comida a domicilio. Haces el pedido ahora, pero la comida llegará más tarde.
+Mientras esperas, puedes hacer otras cosas. Cuando llegue, el pedido habrá terminado bien; si el
+restaurante no puede prepararlo, habrá terminado con un error.
 
-**Ejemplo:**
+En JavaScript ocurre algo parecido cuando se realiza una tarea que tarda un tiempo: pedir datos a
+Internet, leer un archivo o esperar un temporizador. El programa no debería quedarse bloqueado
+mientras espera. Una **promesa** es un objeto que representa un resultado que estará disponible más
+adelante: puede ser un resultado correcto o un error.
 
-Supongamos que tienes una llamada `fetch` en tu código:
+Por ejemplo, esta operación no entrega los datos inmediatamente:
 
 ```js
-fetch('https://api.example.com/data')
-  .then(response => response.json())
-  .then(data => {
-    console.log("Datos recibidos:", data);
-  }
-).catch(error => {
-  console.error("Error:", error);
-  }
-);
+const promesa = fetch("https://jsonplaceholder.typicode.com/todos/1");
+console.log(promesa);
 ```
 
-**Pasos para Depurar:**
-
-- Abre las herramientas de desarrollo y ve a la pestaña Network.
-- Recarga la página o ejecuta la función que hace la solicitud `fetch`.
-- Observa la solicitud en la lista de la pestaña Network.
-- Haz clic en la solicitud para ver detalles como encabezados, respuesta, tiempo de carga, etc.
-- Si hay errores, aparecerán resaltados en rojo y podrás inspeccionarlos.
-
-## 8.2 Promesas y código asíncrono
-
-Depurar promesas, async/await y callbacks puede ser más complejo. Las herramientas de desarrollo
-modernas facilitan esto permitiendo pausas en puntos específicos.
-
-**Ejemplo con async/await:**
+`fetch` empieza la solicitud y devuelve enseguida una promesa. La respuesta del servidor llegará
+después. Por eso, si intentas usar los datos justo en la siguiente línea, todavía no los tienes:
 
 ```js
-async function obtenerDatos() {
+const respuesta = fetch("https://jsonplaceholder.typicode.com/todos/1");
+console.log(respuesta); // No son todavía los datos: es una promesa.
+```
+
+La promesa es como un comprobante del pedido: todavía no contiene el resultado final, pero nos
+permite indicar qué hacer cuando el resultado esté disponible.
+
+## 8.2 Los tres estados de una promesa
+
+Una promesa solo puede estar en uno de estos tres estados:
+
+1. **Pendiente (`pending`)**: el trabajo todavía no ha terminado.
+2. **Cumplida (`fulfilled`)**: el trabajo terminó bien y hay un resultado.
+3. **Rechazada (`rejected`)**: el trabajo falló y hay un motivo o error.
+
+Una promesa empieza pendiente y, cuando termina, pasa a cumplida o rechazada. No vuelve atrás ni
+cambia de resultado después de terminar.
+
+| Estado | Qué significa | Ejemplo |
+| --- | --- | --- |
+| Pendiente | Aún estamos esperando | La petición al servidor sigue en curso |
+| Cumplida | La operación salió bien | El servidor envió los datos |
+| Rechazada | La operación falló | No hay conexión a Internet |
+
+## 8.3 Crear una promesa sencilla
+
+Normalmente usarás promesas que ya crean funciones como `fetch`. Aun así, crear una promesa
+pequeña ayuda a entender cómo funciona.
+
+```js
+const promesaDelPedido = new Promise((resolve, reject) => {
+  const pedidoPreparado = true;
+
+  if (pedidoPreparado) {
+    resolve("¡Aquí tienes tu pedido!");
+  } else {
+    reject(new Error("No se pudo preparar el pedido."));
+  }
+});
+```
+
+Vamos paso a paso:
+
+1. `new Promise(...)` crea la promesa.
+2. La función que se pasa a `Promise` se ejecuta para realizar el trabajo.
+3. `resolve(valor)` significa «todo ha salido bien» y entrega el resultado.
+4. `reject(error)` significa «algo ha fallado» y entrega el motivo.
+
+En este ejemplo `pedidoPreparado` vale `true`, así que la promesa terminará cumplida. Para recibir
+el resultado, usamos `.then(...)`:
+
+```js
+promesaDelPedido.then(resultado => {
+  console.log(resultado);
+});
+```
+
+La consola mostrará:
+
+```text
+¡Aquí tienes tu pedido!
+```
+
+Si el trabajo puede fallar, usamos `.catch(...)` para tratar el error:
+
+```js
+promesaDelPedido
+  .then(resultado => {
+    console.log(resultado);
+  })
+  .catch(error => {
+    console.error("El pedido ha fallado:", error.message);
+  });
+```
+
+Prueba a cambiar `pedidoPreparado` a `false`. En ese caso se ejecutará `.catch(...)` en vez del
+código de `.then(...)`.
+
+## 8.4 Usar `.then()`, `.catch()` y `.finally()`
+
+- **`.then(funcion)`** indica qué hacer cuando la promesa se cumple. Recibe el resultado.
+- **`.catch(funcion)`** indica qué hacer si la promesa se rechaza. Recibe el error.
+- **`.finally(funcion)`** indica qué hacer cuando la operación termina, tanto si sale bien como si
+  falla. No recibe el resultado.
+
+```js
+promesaDelPedido
+  .then(resultado => {
+    console.log("Éxito:", resultado);
+  })
+  .catch(error => {
+    console.error("Error:", error.message);
+  })
+  .finally(() => {
+    console.log("El pedido ya ha terminado.");
+  });
+```
+
+`finally` es útil para tareas de limpieza, como ocultar un indicador de carga. No sustituye a
+`then` ni a `catch`: no sirve para decidir si el resultado fue correcto o fallido.
+
+## 8.5 Esperar un poco: promesa con un temporizador
+
+Este ejemplo simula una tarea que tarda dos segundos:
+
+```js
+function prepararPedido() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve("Pedido preparado");
+    }, 2000);
+  });
+}
+
+console.log("1. Hago el pedido");
+
+prepararPedido().then(resultado => {
+  console.log("3.", resultado);
+});
+
+console.log("2. Mientras espero, sigo con otra tarea");
+```
+
+El orden que verás será:
+
+```text
+1. Hago el pedido
+2. Mientras espero, sigo con otra tarea
+3. Pedido preparado
+```
+
+Aunque la promesa tarde, JavaScript no se queda parado: ejecuta las instrucciones que puede y
+ejecuta el `then` cuando la tarea termina.
+
+## 8.6 Encadenar promesas
+
+Un `.then(...)` puede devolver un valor. Ese valor se entrega al siguiente `.then(...)`. Así puedes
+hacer varias operaciones en orden, sin anidar una función dentro de otra:
+
+```js
+prepararPedido()
+  .then(mensaje => {
+    console.log(mensaje);
+    return "Pedido enviado";
+  })
+  .then(mensaje => {
+    console.log(mensaje);
+  })
+  .catch(error => {
+    console.error("No se pudo completar el pedido:", error.message);
+  });
+```
+
+Piensa en la cadena como una cinta transportadora:
+
+1. La primera promesa termina y entrega un valor.
+2. El primer `.then` recibe ese valor y devuelve otro.
+3. El siguiente `.then` recibe lo que devolvió el anterior.
+4. Si ocurre un error en cualquier paso, se puede tratar en el `.catch`.
+
+Si dentro de un `.then` empiezas otra tarea asíncrona, devuelve su promesa para que la cadena espere
+a que termine:
+
+```js
+obtenerPedido()
+  .then(pedido => guardarPedido(pedido))
+  .then(resultadoGuardado => {
+    console.log("Guardado:", resultadoGuardado);
+  })
+  .catch(error => {
+    console.error("Falló algún paso:", error);
+  });
+```
+
+## 8.7 Obtener datos con `fetch`
+
+`fetch` permite hacer solicitudes HTTP, por ejemplo, para pedir datos a una API. Devuelve una
+promesa, así que usamos `.then(...)` para trabajar con la respuesta cuando llegue.
+
+```js
+fetch("https://jsonplaceholder.typicode.com/todos/1")
+  .then(respuesta => respuesta.json())
+  .then(tarea => {
+    console.log("Título:", tarea.title);
+    console.log("¿Completada?:", tarea.completed);
+  })
+  .catch(error => {
+    console.error("No se pudo completar la solicitud:", error);
+  });
+```
+
+Lee el ejemplo en este orden:
+
+1. `fetch(url)` pide el recurso y devuelve una promesa.
+2. El primer `.then` recibe un objeto `Response`.
+3. `respuesta.json()` lee el cuerpo de la respuesta y también devuelve una promesa. Por eso hay
+   otro `.then`.
+4. El segundo `.then` recibe los datos ya convertidos a un objeto JavaScript.
+5. `.catch` permite mostrar errores de red u otros errores ocurridos durante la cadena.
+
+**Importante:** `fetch` normalmente no rechaza la promesa solo porque el servidor responda con un
+código HTTP de error, como `404` o `500`. Hay que comprobar `respuesta.ok`:
+
+```js
+fetch("https://jsonplaceholder.typicode.com/todos/1")
+  .then(respuesta => {
+    if (!respuesta.ok) {
+      throw new Error(`Error HTTP: ${respuesta.status}`);
+    }
+
+    return respuesta.json();
+  })
+  .then(tarea => {
+    console.log("Datos recibidos:", tarea);
+  })
+  .catch(error => {
+    console.error("No se pudieron obtener los datos:", error.message);
+  });
+```
+
+Si `respuesta.ok` es `false`, `throw new Error(...)` genera un error y el flujo pasa al `.catch`.
+Devolver `respuesta.json()` también es importante: así el siguiente `.then` espera a que termine
+la lectura del cuerpo.
+
+## 8.8 La misma idea con `async` y `await`
+
+`async` y `await` permiten escribir código que usa promesas con una apariencia más parecida a una
+lista de instrucciones normal. No hacen que la tarea tarde menos ni convierten el trabajo en
+síncrono: solo ofrecen otra forma de organizar la espera.
+
+1. Pon `async` delante de la función que tendrá que esperar.
+2. Dentro de esa función, escribe `await` delante de la promesa que quieras esperar.
+3. Usa `try` y `catch` para tratar posibles errores.
+
+La solicitud anterior se puede escribir así:
+
+```js
+async function obtenerTarea() {
   try {
-    let respuesta = await fetch('https://api.example.com/data');
-    let datos = await respuesta.json();
-    console.log("Datos obtenidos:", datos);
+    const respuesta = await fetch(
+      "https://jsonplaceholder.typicode.com/todos/1"
+    );
+
+    if (!respuesta.ok) {
+      throw new Error(`Error HTTP: ${respuesta.status}`);
+    }
+
+    const tarea = await respuesta.json();
+    console.log("Título:", tarea.title);
+    console.log("¿Completada?:", tarea.completed);
   } catch (error) {
-    console.error("Error al obtener datos:", error);
+    console.error("No se pudieron obtener los datos:", error.message);
   }
-} obtenerDatos();
+}
+
+obtenerTarea();
 ```
 
-**Pasos para Depurar:**
+`await` significa «espera aquí el resultado de esta promesa antes de continuar con la siguiente
+instrucción de esta función». Mientras espera, el navegador puede seguir atendiendo otras tareas.
+`await` se usa dentro de una función `async`.
 
-- Establece breakpoints en las líneas con await.
-- Cuando la ejecución se pause, puedes inspeccionar el estado de las variables antes y después
-  de las llamadas asíncronas.
-- Utiliza Step Into para entrar en funciones asíncronas si es necesario.
+En este ejemplo:
 
-> **Repasa este apartado cuando tengas que depurar código JavaScript**.
-> Algunos conceptos como la programación asíncrona, promesas, callbacks, etc. se verán
-> con más detalle en el siguiente volumen de este curso.
+- `await fetch(...)` espera a que llegue la respuesta HTTP.
+- Se comprueba `respuesta.ok` para detectar respuestas HTTP fallidas.
+- `await respuesta.json()` espera a que el cuerpo se convierta en datos.
+- Si ocurre un error, `catch` lo recibe y lo muestra.
+
+Una función declarada con `async` siempre devuelve una promesa. Por eso, si quieres usar el valor
+que devuelve, puedes esperarlo desde otra función `async` o usar `.then(...)`:
+
+```js
+async function saludar() {
+  return "Hola";
+}
+
+saludar().then(mensaje => {
+  console.log(mensaje);
+});
+```
+
+## 8.9 Depurar una promesa o una solicitud
+
+Las herramientas de desarrollo del navegador ayudan a averiguar en qué paso se produce un
+problema.
+
+**Para revisar una solicitud de `fetch`:**
+
+1. Abre las herramientas de desarrollo del navegador (normalmente con F12).
+2. Entra en la pestaña **Network** (Red).
+3. Recarga la página o ejecuta la función que realiza la solicitud.
+4. Busca la solicitud en la lista y selecciónala.
+5. Revisa el estado HTTP, los encabezados, la respuesta y el tiempo de carga.
+6. Si la solicitud falla, comprueba la URL, la conexión y el código de estado. Recuerda que un
+   estado `404` o `500` no siempre activa por sí solo el `.catch` de `fetch`; comprueba `ok`.
+
+**Para revisar código con `async` y `await`:**
+
+1. Pon un breakpoint antes de un `await`.
+2. Ejecuta el código y, cuando se pare, comprueba los valores de las variables.
+3. Avanza paso a paso (*Step Over*) para continuar sin entrar en detalles internos del navegador.
+4. Después del `await`, comprueba el resultado recibido.
+5. Si se produce un error, revisa el bloque `catch` y el mensaje de la consola.
+
+## 8.10 Errores típicos al empezar
+
+- **Intentar usar el resultado inmediatamente:** `fetch(...)` devuelve una promesa, no los datos.
+  Usa `.then(...)` o `await`.
+- **Olvidar que `response.json()` también tarda:** devuelve otra promesa; espera su resultado con
+  otro `.then(...)` o con `await`.
+- **No devolver una promesa en una cadena:** si un `.then` inicia otra operación asíncrona, devuelve
+  esa promesa para que el siguiente paso espere.
+- **Pensar que cualquier estado HTTP activa `catch`:** comprueba `respuesta.ok` y genera un error si
+  la respuesta no es correcta.
+- **Olvidar tratar errores:** usa `.catch(...)` o un `try`/`catch` alrededor del código con `await`.
+- **Olvidar llamar a la función:** definir `async function obtenerTarea() { ... }` no la ejecuta;
+  hay que llamar a `obtenerTarea()`.
+
+> **Idea clave:** una promesa representa un resultado que llegará más tarde. Usa `.then()` y
+> `.catch()` para reaccionar a ese resultado, o `async` y `await` para escribir la espera de forma
+> más fácil de leer.
+
+## 8.11 PRÁCTICA 8: Pokémon y promesas
+
+En esta práctica construirás una página sencilla que muestre en pantalla los datos que devuelve la
+[PokeAPI](https://pokeapi.co/), una API pública y gratuita que no necesita registro ni API key.
+
+Endpoints que usarás:
+
+| Recurso | URL | Qué devuelve |
+| --- | --- | --- |
+| Listado de Pokémon | `https://pokeapi.co/api/v2/pokemon?limit=5` | Objeto con la propiedad `results`, un array de `{ name, url }` |
+| Detalle de un Pokémon | `https://pokeapi.co/api/v2/pokemon/pikachu` | Objeto con `id`, `name`, `types`, `sprites`... |
+
+Antes de empezar, abre las dos URL en el navegador y observa el JSON. Localiza la imagen
+(`sprites.front_default`) y el nombre del primer tipo (`types[0].type.name`).
+
+Crea un archivo `index.html` con un párrafo `<p id="estado"></p>` y que cargue un archivo
+`pokemon.js` al final del `<body>`. Trabaja mirando la consola del navegador y muestra el
+resultado con `document.body.innerHTML`, como en la práctica anterior.
+
+1. **Una petición con `.then()`.** Usa `fetch` para pedir el listado de 5 Pokémon. Convierte la
+   respuesta con `respuesta.json()` y muestra por consola el objeto recibido. Comprueba con
+   `typeof` que es un objeto.
+
+2. **Lista en la página.** Recorre `results` y muestra en la página el nombre de cada Pokémon dentro
+   de una lista `<ul>`.
+
+3. **Un Pokémon concreto.** Pide el detalle de `pikachu` y muestra en la página su nombre, su número
+   (`id`), su tipo y su imagen.
+
+4. **Peticiones encadenadas.** Pide el listado de Pokémon y, en el siguiente `.then()`, pide el
+   detalle del primero usando su `url`. Devuelve la promesa con `return` para que la cadena la
+   espere. Muestra su tarjeta como en el ejercicio anterior.
+
+5. **Funciones separadas.** Refactoriza el código con dos funciones: `obtenerDatos(url)`, que hace
+   el `fetch`, comprueba `respuesta.ok` y devuelve los datos, y `mostrarPokemon(pokemon)`, que
+   pinta su tarjeta en la página.
+
+6. **Errores y estado de carga.** Antes de pedir los datos, escribe «Cargando...» en el párrafo
+   `estado` con `document.getElementById("estado").textContent`. Usa `.catch()` para añadir un
+   mensaje de error a la página si algo falla, y `.finally()` para vaciar el párrafo `estado` en
+   cualquier caso. Pruébalo pidiendo un Pokémon que no existe (por ejemplo, `noexiste`) y
+   desconectando Internet. Recuerda que `fetch` no rechaza la promesa con un error `404`: por eso
+   debes comprobar `respuesta.ok` y lanzar el error con `throw`.
+
+7. **Un retraso de 5 segundos.** Crea una promesa propia que se cumpla a los 5 segundos con
+   `setTimeout` y encadénala antes de mostrar el Pokémon. Observa cómo «Cargando...» permanece en
+   pantalla durante la espera.
+
+   ```js
+   function esperar(ms) {
+     return new Promise(resolve => setTimeout(resolve, ms));
+   }
+   ```
+
+8. **Reescritura con `async`/`await`.** Reescribe el ejercicio 4 (encadenamiento de peticiones)
+   usando una función `async`, `await` y `try`/`catch`/`finally`. Comprueba que el resultado es el
+   mismo.
 
 
 # 9. DOM
