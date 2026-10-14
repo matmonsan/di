@@ -4371,47 +4371,14 @@ const libroInvalido = leerLibro("{titulo: JavaScript moderno}");
 > originales. Por ejemplo, una fecha serializada vuelve a ser una cadena y debe convertirse con
 > `new Date(valor)` si se necesita trabajar con ella como fecha.
 
-## 7.4 JSON en el intercambio de datos
-
-En una comunicación con una API, el cliente suele serializar el cuerpo de una petición y el
-servidor responde con JSON. Al usar `fetch`, `response.json()` lee la respuesta y la deserializa.
-
-```js
-// Declara una función asíncrona para poder esperar la respuesta de la petición.
-async function crearLibro(libro) {
-  // Envía el libro a la API mediante una petición HTTP POST.
-  const respuesta = await fetch("/api/libros", {
-    method: "POST",
-    headers: {
-      // Indica al servidor que el cuerpo contiene texto JSON.
-      "Content-Type": "application/json",
-    },
-    // Convierte el objeto de JavaScript en texto JSON antes de enviarlo.
-    body: JSON.stringify(libro),
-  });
-
-  // `ok` es falso si la respuesta tiene un código HTTP de error, como 404 o 500.
-  if (!respuesta.ok) {
-    throw new Error(`Error al crear el libro: ${respuesta.status}`);
-  }
-
-  // Lee el cuerpo de la respuesta, lo convierte desde JSON y lo devuelve.
-  return respuesta.json();
-}
-```
-
-No se debe usar `JSON.stringify()` sobre un valor que ya es texto JSON, ya que se añadirían
-comillas y caracteres de escape. Del mismo modo, no se debe aplicar `JSON.parse()` directamente a
-un objeto que ya ha sido deserializado.
-
 > La serialización y deserialización permiten transmitir y almacenar datos estructurados. Comprueba
 > siempre qué tipo de dato tienes en cada paso: objeto o array de JavaScript, por un lado, y cadena
 > JSON, por otro.
 
 ## 7.5 PRÁCTICA 7: Catálogo de cafés y JSON
 
-En esta práctica distinguirás entre una **cadena de texto con formato JSON** y un **objeto de
-JavaScript**. La API devuelve los datos de un café como JSON; primero copiarás ese contenido como
+En esta práctica distinguirás entre una cadena de texto con formato JSON y un objeto de
+JavaScript. La API devuelve los datos de un café como JSON; primero copiarás ese contenido como
 texto, después lo convertirás en un objeto para consultar sus propiedades y, al final, volverás a
 convertir una ficha en texto JSON.
 
@@ -4421,7 +4388,7 @@ convertir una ficha en texto JSON.
    `ingredients` e `image`. En esta respuesta, `ingredients` es un array y `image` contiene una URL.
 
 2. Crea un archivo HTML que cargue un archivo JavaScript. Copia el contenido JSON de la respuesta
-   (desde la llave `{` inicial hasta la llave `}` final) y guárdalo como **texto**, entre comillas,
+   (desde la llave `{` inicial hasta la llave `}` final) y guárdalo como texto, entre comillas,
    en una variable llamada `textoCafe`. Por tanto, `textoCafe` debe ser una cadena, no un objeto.
 
 3. Convierte la cadena `textoCafe` en un objeto de JavaScript y guarda el
@@ -4430,7 +4397,7 @@ convertir una ficha en texto JSON.
 
 4. Muestra por separado cada una de las propiedades de café.
 
-5. Crea un **objeto de JavaScript** llamado `fichaCafe` con las propiedades `id`, `nombre`,
+5. Crea un objeto de JavaScript llamado `fichaCafe` con las propiedades `id`, `nombre`,
    `ingredientes` e `imagen`. Asígnales, respectivamente, los valores de café, que hemos creado previamente. Observa que la propiedad `nombre` se obtiene del título.
 
 6. Muestra en la página una ficha con el nombre y la imagen. Utiliza
