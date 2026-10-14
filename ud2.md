@@ -18,8 +18,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica 5](#52-práctica-5-arrays)
 6. [Objetos](#6-objetos)
     - [Práctica 6](#69-práctica-6-objetos-y-clases)
+7. [JSON](#7-json)
+    - [Práctica 7](#75-práctica-7-catálogo-de-cafés-y-json)
 {% comment %}
-7. [JSON](#json)
 8. [Promesas](#promesas)
 9. [DOM](#dom)
 10. [BOM y Eventos](#bom-y-eventos)
@@ -4196,31 +4197,250 @@ estado incoherente.
    - Prueba los casos límite: nombre vacío, salario no positivo y plus negativo. Comprueba también que
      añadir un empleado permite que aparezca en las descripciones y modifica el coste total.
 
-{% comment %}
 # 7. JSON
 
-## 7.1 Serialización y deserialización
-Serializar un objeto significa convertirlo en una cadena de texto que puede ser fácilmente almacenada o transmitida. En JavaScript, esto se hace usando JSON:
-- **Serialización**:
+JSON (*JavaScript Object Notation*) es un formato de texto para representar datos estructurados.
+Aunque su sintaxis se inspira en los objetos literales de JavaScript, JSON es independiente del
+lenguaje: se utiliza habitualmente para intercambiar datos entre un frontend, un backend y otros
+sistemas.
 
-  ```js
-  const libro = { titulo: "JavaScript" };
-  const data = JSON.stringify(libro);
-  ```
+Un documento JSON puede contener un objeto, un array o un valor simple. Sus valores permitidos son:
 
-- **Deserialización**:
+- Objetos, delimitados por llaves: `{ "nombre": "Ada" }`.
+- Arrays, delimitados por corchetes: `[1, 2, 3]`.
+- Cadenas, números, booleanos (`true` y `false`) y `null`.
 
-  ```js
-  const copia = JSON.parse(data);
-  ```
+Por ejemplo, este es un JSON válido que representa datos de un libro:
 
-> La serialización y deserialización de objetos es útil cuando necesitas transferir datos
-> entre diferentes sistemas o almacenar datos en bases de datos.
+```json
+{
+  "titulo": "JavaScript moderno",
+  "paginas": 320,
+  "disponible": true,
+  "autores": ["Ana", "Luis"],
+  "editorial": null
+}
+```
 
-JSON es un formato de texto estándar que se utiliza para representar datos estructurados. Es fácil de leer y escribir para los humanos y fácil de interpretar para las máquinas.
-Usaremos JSON para el intercambio de datos entre el frontend y el backend.
+## 7.1 Sintaxis JSON y objetos de JavaScript
 
+JSON no es exactamente lo mismo que un objeto literal de JavaScript. En JSON, las claves y las
+cadenas deben escribirse siempre con comillas dobles, no se permiten comentarios ni comas finales,
+y solo se admiten los valores indicados anteriormente.
 
+```js
+// Objeto literal de JavaScript: válido en JavaScript, pero no es JSON.
+const libro = {
+  titulo: "JavaScript moderno",
+  categoria: undefined,
+};
+
+// Texto JSON válido.
+const libroJSON = `{
+  "titulo": "JavaScript moderno",
+  "paginas": 320
+}`;
+```
+
+No forman parte del formato JSON `undefined`, las funciones, los símbolos, `NaN`, `Infinity` ni las
+instancias de clases. Al enviar datos a una API conviene construir objetos con datos simples y
+validar el formato esperado por el servidor.
+
+## 7.2 Serialización con `JSON.stringify()`
+
+Serializar significa convertir un valor de JavaScript en una cadena JSON. Se realiza con
+`JSON.stringify(valor)`. Esta cadena puede enviarse en el cuerpo de una petición HTTP, guardarse en
+`localStorage` o persistirse en un archivo o una base de datos.
+
+```js
+const libro = {
+  titulo: "JavaScript moderno",
+  paginas: 320,
+  disponible: true,
+  etiquetas: ["web", "programacion"],
+};
+
+const textoJSON = JSON.stringify(libro);
+
+console.log(textoJSON);
+// {"titulo":"JavaScript moderno","paginas":320,"disponible":true,"etiquetas":["web","programacion"]}
+console.log(typeof textoJSON); // "string"
+```
+
+Los valores de un objeto se transforman de forma predecible:
+
+- Las propiedades cuyo valor es `undefined`, una función o un símbolo se omiten.
+- Esos mismos valores, cuando aparecen dentro de un array, se convierten en `null`.
+- `NaN` e `Infinity` se convierten en `null`.
+- Una fecha se serializa como una cadena ISO mediante su método `toJSON()`.
+
+```js
+const datos = {
+  nombre: "Ada",
+  telefono: undefined,
+  creadoEl: new Date("2026-01-15T10:30:00Z"),
+  calcular: () => 2 + 2,
+};
+
+console.log(JSON.stringify(datos));
+// {"nombre":"Ada","creadoEl":"2026-01-15T10:30:00.000Z"}
+```
+
+### 7.2.1 Elegir o transformar propiedades con `replacer`
+
+El segundo argumento de `JSON.stringify()` es opcional. Puede ser un array de nombres de
+propiedades que se deben incluir o una función que transforme cada valor durante la serialización.
+
+```js
+const usuario = {
+  id: 7,
+  nombre: "Marta",
+  contrasena: "no-se-debe-enviar",
+};
+
+const usuarioPublico = JSON.stringify(usuario, ["id", "nombre"]);
+console.log(usuarioPublico); // {"id":7,"nombre":"Marta"}
+```
+
+Una función *replacer* recibe la clave y el valor actual. Por ejemplo, puede ocultar propiedades
+sensibles antes de registrar o transmitir un objeto:
+
+```js
+const usuarioSeguro = JSON.stringify(usuario, (clave, valor) => {
+  return clave === "contrasena" ? undefined : valor;
+});
+
+console.log(usuarioSeguro); // {"id":7,"nombre":"Marta"}
+```
+
+### 7.2.2 Dar formato al resultado
+
+El tercer argumento, `space`, añade sangría al texto resultante. Es útil para mostrar, depurar o
+guardar JSON legible por personas; no es necesario para enviarlo por red, porque aumenta su tamaño.
+
+```js
+const textoLegible = JSON.stringify(libro, null, 2);
+console.log(textoLegible);
+/*
+{
+  "titulo": "JavaScript moderno",
+  "paginas": 320,
+  "disponible": true,
+  "etiquetas": [
+    "web",
+    "programacion"
+  ]
+}
+*/
+```
+
+Los objetos también pueden definir un método `toJSON()` para controlar cómo se representan al
+serializarlos. `Date` utiliza este mecanismo de forma nativa.
+
+## 7.3 Deserialización con `JSON.parse()`
+
+Deserializar es convertir una cadena JSON válida en un valor de JavaScript. Se realiza con
+`JSON.parse(texto)`.
+
+```js
+const copia = JSON.parse(textoJSON);
+
+console.log(copia.titulo); // "JavaScript moderno"
+console.log(Array.isArray(copia.etiquetas)); // true
+```
+
+`JSON.parse()` espera texto JSON correcto. Si recibe una cadena mal formada, lanza un
+`SyntaxError`; por ello, los datos externos deben tratarse como no fiables y el error debe
+gestionarse explícitamente.
+
+```js
+function leerLibro(texto) {
+  try {
+    return JSON.parse(texto);
+  } catch (error) {
+    console.error("No se ha podido interpretar el JSON:", error.message);
+    return null;
+  }
+}
+
+const libroLeido = leerLibro('{"titulo":"JavaScript moderno"}');
+const libroInvalido = leerLibro("{titulo: JavaScript moderno}");
+```
+
+> `JSON.parse()` reconstruye objetos y arrays simples, pero no recupera automáticamente los tipos
+> originales. Por ejemplo, una fecha serializada vuelve a ser una cadena y debe convertirse con
+> `new Date(valor)` si se necesita trabajar con ella como fecha.
+
+## 7.4 JSON en el intercambio de datos
+
+En una comunicación con una API, el cliente suele serializar el cuerpo de una petición y el
+servidor responde con JSON. Al usar `fetch`, `response.json()` lee la respuesta y la deserializa.
+
+```js
+// Declara una función asíncrona para poder esperar la respuesta de la petición.
+async function crearLibro(libro) {
+  // Envía el libro a la API mediante una petición HTTP POST.
+  const respuesta = await fetch("/api/libros", {
+    method: "POST",
+    headers: {
+      // Indica al servidor que el cuerpo contiene texto JSON.
+      "Content-Type": "application/json",
+    },
+    // Convierte el objeto de JavaScript en texto JSON antes de enviarlo.
+    body: JSON.stringify(libro),
+  });
+
+  // `ok` es falso si la respuesta tiene un código HTTP de error, como 404 o 500.
+  if (!respuesta.ok) {
+    throw new Error(`Error al crear el libro: ${respuesta.status}`);
+  }
+
+  // Lee el cuerpo de la respuesta, lo convierte desde JSON y lo devuelve.
+  return respuesta.json();
+}
+```
+
+No se debe usar `JSON.stringify()` sobre un valor que ya es texto JSON, ya que se añadirían
+comillas y caracteres de escape. Del mismo modo, no se debe aplicar `JSON.parse()` directamente a
+un objeto que ya ha sido deserializado.
+
+> La serialización y deserialización permiten transmitir y almacenar datos estructurados. Comprueba
+> siempre qué tipo de dato tienes en cada paso: objeto o array de JavaScript, por un lado, y cadena
+> JSON, por otro.
+
+## 7.5 PRÁCTICA 7: Catálogo de cafés y JSON
+
+En esta práctica consultarás la [API de cafés](https://api.sampleapis.com/coffee/hot/2) desde el
+navegador.
+
+1. Abre en el navegador la URL
+   [https://api.sampleapis.com/coffee/hot/2](https://api.sampleapis.com/coffee/hot/2). Observa la
+   respuesta JSON y localiza las propiedades `id`, `title`, `description`, `ingredients` e `image`.
+
+2. Crea un archivo HTML que cargue un archivo JavaScript. Copia la respuesta JSON del café y guárdala
+   en una variable de tipo cadena llamada `textoCafe`.
+
+3. Obtén a partir de `textoCafe` la información del café y guárdala en una variable llamada `cafe`.
+   Muestra el objeto completo por consola.
+
+4. Muestra por separado el título, la descripción, la URL de la imagen y el primer ingrediente. Muestra
+   también el array completo de ingredientes.
+
+5. Crea un objeto llamado `fichaCafe` que contenga las propiedades `id`, `nombre`, `ingredientes` e
+   `imagen`, tomando los datos del objeto `cafe`.
+
+6. Muestra en la página una ficha con el nombre y la imagen del café. Utiliza
+   `document.body.innerHTML` para crear el contenido y limita la imagen a 300 px de alto.
+
+7. Genera una versión en texto JSON de la ficha que incluya solo el identificador, el nombre y los
+   ingredientes. El resultado debe mostrarse con una sangría de dos espacios. Recordatorio, para esto necesitarás la etiqueta HTML `<pre>`.
+'
+8. Muestra el texto JSON por consola y también en la página. Recupera a partir de él una nueva ficha,
+   muéstrala por consola y comprueba que no incluye la imagen.
+
+![Solución Práctica 7](./assets/img/solucion_07.png)
+
+{% comment %}
 # 8. Promesas
 
 ## 8.1 Solicitudes con fetch y depuración de red
