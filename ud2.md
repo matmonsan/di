@@ -4410,33 +4410,40 @@ un objeto que ya ha sido deserializado.
 
 ## 7.5 PRÁCTICA 7: Catálogo de cafés y JSON
 
-En esta práctica consultarás la [API de cafés](https://api.sampleapis.com/coffee/hot/2) desde el
-navegador.
+En esta práctica distinguirás entre una **cadena de texto con formato JSON** y un **objeto de
+JavaScript**. La API devuelve los datos de un café como JSON; primero copiarás ese contenido como
+texto, después lo convertirás en un objeto para consultar sus propiedades y, al final, volverás a
+convertir una ficha en texto JSON.
 
 1. Abre en el navegador la URL
-   [https://api.sampleapis.com/coffee/hot/2](https://api.sampleapis.com/coffee/hot/2). Observa la
-   respuesta JSON y localiza las propiedades `id`, `title`, `description`, `ingredients` e `image`.
+   [https://api.sampleapis.com/coffee/hot/2](https://api.sampleapis.com/coffee/hot/2). Observa el
+   objeto que aparece en la respuesta JSON y localiza las propiedades `id`, `title`, `description`,
+   `ingredients` e `image`. En esta respuesta, `ingredients` es un array y `image` contiene una URL.
 
-2. Crea un archivo HTML que cargue un archivo JavaScript. Copia la respuesta JSON del café y guárdala
-   en una variable de tipo cadena llamada `textoCafe`.
+2. Crea un archivo HTML que cargue un archivo JavaScript. Copia el contenido JSON de la respuesta
+   (desde la llave `{` inicial hasta la llave `}` final) y guárdalo como **texto**, entre comillas,
+   en una variable llamada `textoCafe`. Por tanto, `textoCafe` debe ser una cadena, no un objeto.
 
-3. Obtén a partir de `textoCafe` la información del café y guárdala en una variable llamada `cafe`.
-   Muestra el objeto completo por consola.
+3. Convierte la cadena `textoCafe` en un objeto de JavaScript y guarda el
+   resultado en una variable llamada `cafe`. Muestra `cafe` por consola. A partir de este punto,
+   `cafe` es un objeto.
 
-4. Muestra por separado el título, la descripción, la URL de la imagen y el primer ingrediente. Muestra
-   también el array completo de ingredientes.
+4. Muestra por separado cada una de las propiedades de café.
 
-5. Crea un objeto llamado `fichaCafe` que contenga las propiedades `id`, `nombre`, `ingredientes` e
-   `imagen`, tomando los datos del objeto `cafe`.
+5. Crea un **objeto de JavaScript** llamado `fichaCafe` con las propiedades `id`, `nombre`,
+   `ingredientes` e `imagen`. Asígnales, respectivamente, los valores de café, que hemos creado previamente. Observa que la propiedad `nombre` se obtiene del título.
 
-6. Muestra en la página una ficha con el nombre y la imagen del café. Utiliza
+6. Muestra en la página una ficha con el nombre y la imagen. Utiliza
    `document.body.innerHTML` para crear el contenido y limita la imagen a 300 px de alto.
 
-7. Genera una versión en texto JSON de la ficha que incluya solo el identificador, el nombre y los
-   ingredientes. El resultado debe mostrarse con una sangría de dos espacios. Recordatorio, para esto necesitarás la etiqueta HTML `<pre>`.
-'
-8. Muestra el texto JSON por consola y también en la página. Recupera a partir de él una nueva ficha,
-   muéstrala por consola y comprueba que no incluye la imagen.
+7. Crea un segundo objeto de JavaScript con solo las propiedades `id`, `nombre` e `ingredientes` de
+   `fichaCafe`. Convierte ese objeto en una cadena de texto JSON usando con
+   una sangría de dos espacios. Guarda esa cadena en una variable para usarla en el siguiente punto.
+
+8. Muestra la cadena JSON por consola y en la página, dentro de una etiqueta HTML `<pre>` para
+   conservar la sangría. Después, conviértela de nuevo en un objeto con, guarda el
+   resultado en una nueva variable y muéstralo por consola. Comprueba que el nuevo objeto no tiene
+   la propiedad `imagen`, porque no la incluiste en el objeto del punto anterior.
 
 ![Solución Práctica 7](./assets/img/solucion_07.png)
 
