@@ -20,9 +20,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica 6](#69-práctica-6-objetos-y-clases)
 7. [JSON](#7-json)
     - [Práctica 7](#75-práctica-7-catálogo-de-cafés-y-json)
-{% comment %}
 8. [Promesas](#8-promesas)
     - [Práctica 8](#811-práctica-8-pokémon-y-promesas)
+{% comment %}
 9. [DOM](#9-dom)
 10. [BOM y Eventos](#bom-y-eventos)
 {% endcomment %}
@@ -4415,7 +4415,6 @@ convertir una ficha en texto JSON.
 
 ![Solución Práctica 7](./assets/img/solucion_07.png)
 
-{% comment %}
 # 8. Promesas
 
 ## 8.1 ¿Qué problema resuelven las promesas?
@@ -4821,6 +4820,7 @@ resultado con `document.body.innerHTML`, como en la práctica anterior.
    usando una función `async`, `await` y `try`/`catch`/`finally`. Comprueba que el resultado es el
    mismo.
 
+{% comment %}
 
 # 9. DOM
 
