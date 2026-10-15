@@ -5003,61 +5003,117 @@ petición a la API.
 
 ## 8.12 PRÁCTICA 8: Pokémon y promesas
 
-En esta práctica construirás una página sencilla que muestre en pantalla los datos que devuelve la
-[PokeAPI](https://pokeapi.co/), una API pública y gratuita que no necesita registro ni API key.
+En esta práctica aplicarás las promesas a una API real. Construirás una página que solicite un
+listado de Pokémon, consulte el detalle de uno de ellos y muestre sus datos. La práctica se
+construye por pasos: ejecuta y prueba cada paso antes de continuar.
 
-Endpoints que usarás:
+Cada paso parte del anterior. Conserva solo la versión correspondiente al paso que estés
+trabajando para no lanzar varias peticiones al mismo tiempo.
+
+### La API que vas a utilizar
+
+La [PokeAPI](https://pokeapi.co/) es pública y no necesita registro ni API key. Utilizarás estas
+dos direcciones:
 
 | Recurso | URL | Qué devuelve |
 | --- | --- | --- |
 | Listado de Pokémon | `https://pokeapi.co/api/v2/pokemon?limit=5` | Objeto con la propiedad `results`, un array de `{ name, url }` |
 | Detalle de un Pokémon | `https://pokeapi.co/api/v2/pokemon/pikachu` | Objeto con `id`, `name`, `types`, `sprites`... |
 
-Antes de empezar, abre las dos URL en el navegador y observa el JSON. Localiza la imagen
-(`sprites.front_default`) y el nombre del primer tipo (`types[0].type.name`).
+Abre ambas URL en el navegador. En el listado, localiza `results`, que es un array de objetos con
+las propiedades `name` y `url`. En el detalle, localiza `name`, `id`, `types[0].type.name` y
+`sprites.front_default`.
 
-Crea un archivo `index.html` con un párrafo `<p id="estado"></p>` y que cargue un archivo
-`pokemon.js` al final del `<body>`. Trabaja mirando la consola del navegador y muestra el
-resultado con `document.body.innerHTML`, como en la práctica anterior.
+### Preparación de los archivos
 
-1. **Una petición con `.then()`.** Usa `fetch` para pedir el listado de 5 Pokémon. Convierte la
-   respuesta con `respuesta.json()` y muestra por consola el objeto recibido. Comprueba con
-   `typeof` que es un objeto.
+1. Crea una carpeta con `index.html` y `pokemon.js`.
+2. Escribe en `index.html` una estructura HTML mínima con un título y un elemento `script` que
+   cargue `pokemon.js` al final del `body`. No es necesario crear todavía controles ni tarjetas:
+   la página se construirá desde JavaScript, como en la práctica 7.
 
-2. **Lista en la página.** Recorre `results` y muestra en la página el nombre de cada Pokémon dentro
-   de una lista `<ul>`.
+3. Abre la página con Live Server y deja abierta la consola del navegador.
 
-3. **Un Pokémon concreto.** Pide el detalle de `pikachu` y muestra en la página su nombre, su número
-   (`id`), su tipo y su imagen.
+### Paso 1. Pedir el listado
 
-4. **Peticiones encadenadas.** Pide el listado de Pokémon y, en el siguiente `.then()`, pide el
-   detalle del primero usando su `url`. Devuelve la promesa con `return` para que la cadena la
-   espere. Muestra su tarjeta como en el ejercicio anterior.
+4. En `pokemon.js`, declara una constante con la URL del listado y llama a `fetch`. Guarda el
+   resultado en otra variable y muéstralo por consola. Comprueba que lo que recibes es una
+   promesa, no el listado de Pokémon.
 
-5. **Funciones separadas.** Refactoriza el código con dos funciones: `obtenerDatos(url)`, que hace
-   el `fetch`, comprueba `respuesta.ok` y devuelve los datos, y `mostrarPokemon(pokemon)`, que
-   pinta su tarjeta en la página.
+5. Añade una cadena con dos `.then()`. En el primero recibe la respuesta HTTP y devuelve
+   `respuesta.json()`. En el segundo recibe los datos ya convertidos y muestra por consola el
+   objeto completo, su tipo mediante `typeof` y la propiedad `results`.
 
-6. **Errores y estado de carga.** Antes de pedir los datos, escribe «Cargando...» en el párrafo
-   `estado` con `document.getElementById("estado").textContent`. Usa `.catch()` para añadir un
-   mensaje de error a la página si algo falla, y `.finally()` para vaciar el párrafo `estado` en
-   cualquier caso. Pruébalo pidiendo un Pokémon que no existe (por ejemplo, `noexiste`) y
-   desconectando Internet. Recuerda que `fetch` no rechaza la promesa con un error `404`: por eso
-   debes comprobar `respuesta.ok` y lanzar el error con `throw`.
+   Hay dos esperas: `fetch` espera la respuesta HTTP y `respuesta.json()` espera la conversión del
+   cuerpo. El `return` del primer `.then()` es necesario para que el segundo espere a `json()`.
 
-7. **Un retraso de 5 segundos.** Crea una promesa propia que se cumpla a los 5 segundos con
-   `setTimeout` y encadénala antes de mostrar el Pokémon. Observa cómo «Cargando...» permanece en
-   pantalla durante la espera.
+### Paso 2. Mostrar los nombres
 
-   ```js
-   function esperar(ms) {
-     return new Promise(resolve => setTimeout(resolve, ms));
-   }
-   ```
+6. A partir de `datos.results`, utiliza `map()` para transformar cada Pokémon en un elemento
+   `<li>` y `join()` para unirlos. Inserta el resultado en una lista dentro de la página usando
+   `document.body.innerHTML`.
 
-8. **Reescritura con `async`/`await`.** Reescribe el ejercicio 4 (encadenamiento de peticiones)
-   usando una función `async`, `await` y `try`/`catch`/`finally`. Comprueba que el resultado es el
-   mismo.
+   Cada elemento de `results` contiene un resumen: el nombre y la URL del detalle. Todavía no
+   contiene todos los datos del Pokémon.
+
+### Paso 3. Pedir el detalle de un Pokémon
+
+7. Realiza una petición independiente a la URL de Pikachu. Convierte la respuesta a JSON y muestra
+   por consola el nombre, el número, el primer tipo y la URL de la imagen.
+
+   Para obtener el tipo debes recorrer `types`, después `type` y finalmente `name`.
+
+8. Muestra esos datos en una tarjeta creada con `document.body.innerHTML`. La tarjeta debe incluir
+   el nombre, el número, el primer tipo y la imagen. Comprueba que la imagen se carga y que el
+   texto alternativo coincide con el nombre.
+
+### Paso 4. Encadenar dos peticiones
+
+9. Pide el listado y, cuando lo recibas, guarda la URL del primer elemento de `results`. En el
+   siguiente `.then()`, realiza una segunda petición usando esa URL. Devuelve esa segunda promesa
+   con `return` para que la cadena la espere. Convierte también su respuesta a JSON y muestra la
+   tarjeta del Pokémon obtenido.
+
+   El orden es: pedir el listado, obtener la URL del primer Pokémon, pedir su detalle y mostrar
+   la tarjeta. Si olvidas `return`, la cadena no esperará correctamente la segunda petición.
+
+### Paso 5. Crear funciones reutilizables
+
+10. Crea una función `obtenerDatos(url)` que reciba cualquier URL, realice el `fetch`, compruebe
+    `respuesta.ok`, convierta la respuesta a JSON y devuelva la promesa resultante. Después, crea
+    `mostrarPokemon(pokemon)` para que se encargue únicamente de construir la tarjeta. Prueba las
+    dos funciones consultando Pikachu.
+
+    `obtenerDatos` realiza la petición y convierte la respuesta. `mostrarPokemon` solo pinta los
+    datos que recibe.
+
+### Paso 6. Gestionar la carga y los errores
+
+11. Antes de iniciar la petición, muestra «Cargando...» en la página. Añade `.catch()` para
+    mostrar un mensaje comprensible si se produce un error y `.finally()` para indicar en la
+    consola que la petición ha terminado.
+
+    Cambia `pikachu` por `noexiste`. La respuesta será `404`, pero `fetch` no rechaza por sí solo
+    la promesa; por eso `obtenerDatos` comprueba `respuesta.ok` y lanza un error con `throw`.
+    Prueba también a desconectar Internet para provocar un error de red.
+
+### Paso 7. Añadir una espera propia
+
+12. Crea una función `esperar(ms)` que devuelva una promesa y se resuelva después de `ms`
+    milisegundos mediante `setTimeout`. Encadena una espera de cinco segundos antes de consultar
+    Pikachu. Muestra «Cargando...» durante la espera y observa cuándo aparece la tarjeta.
+
+    Durante cinco segundos se verá el mensaje de carga. Después comenzará la petición a la API.
+
+### Paso 8. Reescribirlo con `async` y `await`
+
+13. Reescribe el encadenamiento del listado y del detalle dentro de una función `async`. Usa
+    `await` para esperar primero el listado y después el detalle del primer Pokémon. Añade
+    `try`/`catch`/`finally`, muestra el estado de carga y reutiliza las funciones de los pasos
+    anteriores.
+
+    Cada `await` espera una promesa antes de ejecutar la siguiente línea: el primero espera el
+    listado y el segundo espera el detalle del primer Pokémon. Comprueba que el resultado es el
+    mismo que en el paso 9.
 
 {% comment %}
 
