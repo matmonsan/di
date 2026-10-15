@@ -21,7 +21,8 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 7. [JSON](#7-json)
     - [Práctica 7](#75-práctica-7-catálogo-de-cafés-y-json)
 8. [Promesas](#8-promesas)
-    - [Práctica 8](#811-práctica-8-pokémon-y-promesas)
+    - [Práctica guiada](#811-práctica-guiada-api-del-café-y-promesas)
+    - [Práctica 8](#812-práctica-8-pokémon-y-promesas)
 {% comment %}
 9. [DOM](#9-dom)
 10. [BOM y Eventos](#bom-y-eventos)
@@ -4762,7 +4763,245 @@ problema.
 > `.catch()` para reaccionar a ese resultado, o `async` y `await` para escribir la espera de forma
 > más fácil de leer.
 
-## 8.11 PRÁCTICA 8: Pokémon y promesas
+## 8.11 PRÁCTICA GUIADA: API del café y promesas
+
+En la práctica 7 trabajaste con una respuesta de la API del café que habías copiado como una
+cadena de texto. Ahora realizarás la petición directamente desde el navegador. Así comprobarás que
+`fetch` devuelve una promesa, que `respuesta.json()` también es una operación asíncrona y que los
+datos solo se pueden utilizar cuando ambas operaciones han terminado.
+
+Usarás el mismo recurso de la práctica 7:
+
+| Recurso | URL | Qué devuelve |
+| --- | --- | --- |
+| Café caliente número 2 | `https://api.sampleapis.com/coffee/hot/2` | Un objeto con `id`, `title`, `description`, `ingredients` e `image` |
+
+Abre la URL en el navegador antes de empezar y comprueba que la estructura coincide con la que
+utilizaste en la práctica 7. En esta ocasión no copiarás el JSON: lo recibirás mediante una
+petición a la API.
+
+### Preparación
+
+1. Crea una carpeta con dos archivos: `index.html` y `cafe.js`.
+2. Escribe este contenido en `index.html`:
+
+   ```html
+   <!doctype html>
+   <html lang="es">
+     <head>
+       <meta charset="utf-8">
+       <title>API del café</title>
+     </head>
+     <body>
+       <h1>Catálogo de cafés</h1>
+       <script src="cafe.js"></script>
+     </body>
+   </html>
+   ```
+
+3. Abre el archivo con Live Server o desde un servidor web local. Deja abiertas la consola y la
+   pestaña **Network** de las herramientas de desarrollo para observar la petición.
+
+### Paso 1. Realizar la petición
+
+4. En `cafe.js`, guarda la URL en una constante y llama a `fetch`:
+
+   ```js
+   const urlCafe = "https://api.sampleapis.com/coffee/hot/2";
+
+   const promesaRespuesta = fetch(urlCafe);
+   console.log(promesaRespuesta);
+   ```
+
+   La consola muestra una `Promise`, no el objeto del café. La petición se ha iniciado, pero la
+   respuesta todavía puede no haber llegado.
+
+### Paso 2. Esperar a la respuesta y leer el JSON
+
+5. Añade `.then()` para recibir la respuesta y devuelve `respuesta.json()`:
+
+   ```js
+   fetch(urlCafe)
+     .then(respuesta => {
+       console.log("Respuesta recibida:", respuesta);
+       return respuesta.json();
+     })
+     .then(cafe => {
+       console.log("Objeto café:", cafe);
+       console.log("Tipo de dato:", typeof cafe);
+     });
+   ```
+
+   En el segundo `.then()`, `cafe` es un objeto JavaScript, igual que en la práctica 7. La
+   diferencia es que ahora `json()` ha realizado la conversión desde la respuesta de la red.
+
+### Paso 3. Comprobar la respuesta HTTP
+
+6. Una respuesta `404` o `500` no hace que `fetch` rechace automáticamente la promesa. Comprueba
+   `respuesta.ok` y lanza un error si la respuesta no es correcta:
+
+   ```js
+   fetch(urlCafe)
+     .then(respuesta => {
+       if (!respuesta.ok) {
+         throw new Error(`Error HTTP: ${respuesta.status}`);
+       }
+
+       return respuesta.json();
+     })
+     .then(cafe => {
+       console.log("Café recibido:", cafe);
+     });
+   ```
+
+   Cambia temporalmente el `2` final de la URL por un identificador que no exista y observa el
+   estado HTTP en la pestaña **Network**.
+
+### Paso 4. Mostrar la ficha del café
+
+7. Crea una función que reciba el objeto y muestre sus propiedades. El método `map()` permite
+   transformar cada ingrediente en un elemento de lista. Como todavía no se ha trabajado el acceso
+   a elementos concretos del DOM, utiliza `document.body.innerHTML`, igual que en la práctica 7:
+
+   ```js
+   function mostrarCafe(cafe) {
+     const ingredientes = cafe.ingredients
+       .map(ingrediente => `<li>${ingrediente}</li>`)
+       .join("");
+
+     document.body.innerHTML = `
+       <h1>Catálogo de cafés</h1>
+       <article>
+         <h2>${cafe.title}</h2>
+         <img src="${cafe.image}" alt="${cafe.title}" height="300">
+         <p>${cafe.description}</p>
+         <h3>Ingredientes</h3>
+         <ul>${ingredientes}</ul>
+       </article>
+     `;
+   }
+   ```
+
+8. Llama a la función en el último `.then()` y muestra por consola las propiedades de la práctica
+   7:
+
+   ```js
+   fetch(urlCafe)
+     .then(respuesta => {
+       if (!respuesta.ok) {
+         throw new Error(`Error HTTP: ${respuesta.status}`);
+       }
+
+       return respuesta.json();
+     })
+     .then(cafe => {
+       console.log("ID:", cafe.id);
+       console.log("Nombre:", cafe.title);
+       console.log("Descripción:", cafe.description);
+       console.log("Ingredientes:", cafe.ingredients);
+       console.log("Imagen:", cafe.image);
+       mostrarCafe(cafe);
+     });
+   ```
+
+### Paso 5. Mostrar el estado y tratar los errores
+
+9. Antes de iniciar la petición, muestra «Cargando...» escribiendo directamente en el cuerpo de la
+   página. Añade `.catch()` para informar de los errores y `.finally()` para indicar en la consola
+   que la petición ha terminado:
+
+   ```js
+   document.body.innerHTML = "<h1>Catálogo de cafés</h1><p>Cargando...</p>";
+
+   fetch(urlCafe)
+     .then(respuesta => {
+       if (!respuesta.ok) {
+         throw new Error(`Error HTTP: ${respuesta.status}`);
+       }
+
+       return respuesta.json();
+     })
+     .then(cafe => {
+       mostrarCafe(cafe);
+     })
+     .catch(error => {
+       console.error("No se pudo obtener el café:", error.message);
+       document.body.innerHTML = `
+         <h1>Catálogo de cafés</h1>
+         <p>No se pudo cargar el café: ${error.message}</p>
+       `;
+     })
+     .finally(() => console.log("Petición terminada"));
+   ```
+
+   Prueba a desconectar Internet y a solicitar un identificador inexistente. Comprueba que el
+   error aparece en la consola y que el usuario recibe un mensaje en la página.
+
+### Paso 6. Crear una función reutilizable
+
+10. Separa la petición en una función `obtenerDatos(url)`. Debe devolver la promesa para que quien
+    la llame pueda continuar la cadena:
+
+    ```js
+    function obtenerDatos(url) {
+      return fetch(url).then(respuesta => {
+        if (!respuesta.ok) {
+          throw new Error(`Error HTTP: ${respuesta.status}`);
+        }
+
+        return respuesta.json();
+      });
+    }
+
+    obtenerDatos(urlCafe)
+      .then(cafe => {
+        mostrarCafe(cafe);
+      })
+      .catch(error => {
+        console.error("No se pudo obtener el café:", error.message);
+      });
+    ```
+
+    Si no devuelves `respuesta.json()`, el siguiente `.then()` no recibirá el objeto del café.
+
+### Paso 7. Reescribir la solución con `async` y `await`
+
+11. Reescribe la ejecución anterior con `async` y `await`. Usa `try`, `catch` y `finally` para
+    conservar el tratamiento de errores y el estado de carga:
+
+    ```js
+    async function obtenerCafe() {
+      document.body.innerHTML = "<h1>Catálogo de cafés</h1><p>Cargando...</p>";
+
+      try {
+        const respuesta = await fetch(urlCafe);
+
+        if (!respuesta.ok) {
+          throw new Error(`Error HTTP: ${respuesta.status}`);
+        }
+
+        const cafe = await respuesta.json();
+        console.log("Café recibido:", cafe);
+        mostrarCafe(cafe);
+      } catch (error) {
+        console.error("No se pudo obtener el café:", error.message);
+        document.body.innerHTML = `
+          <h1>Catálogo de cafés</h1>
+          <p>No se pudo cargar el café: ${error.message}</p>
+        `;
+      } finally {
+        console.log("Petición terminada");
+      }
+    }
+
+    obtenerCafe();
+    ```
+
+    Comenta las versiones anteriores antes de probar esta última para no realizar varias
+    peticiones simultáneas. Comprueba que el resultado visual es el mismo que con `.then()`.
+
+
+## 8.12 PRÁCTICA 8: Pokémon y promesas
 
 En esta práctica construirás una página sencilla que muestre en pantalla los datos que devuelve la
 [PokeAPI](https://pokeapi.co/), una API pública y gratuita que no necesita registro ni API key.
