@@ -23,10 +23,10 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 8. [Promesas](#8-promesas)
     - [Práctica guiada](#811-práctica-guiada-api-del-café-y-promesas)
     - [Práctica 8](#812-práctica-8-pokémon-y-promesas)
-{% comment %}
-9. [DOM](#9-dom)
-10. [BOM y Eventos](#bom-y-eventos)
-{% endcomment %}
+9. [DOM y eventos](#9-dom-y-eventos)
+    - [DOM](#91-dom)
+    - [Eventos](#92-eventos)
+    - [Proyecto final](#93-práctica-9-pokédex-interactiva-con-dom-y-eventos)
 
 ---
 
@@ -5115,108 +5115,670 @@ las propiedades `name` y `url`. En el detalle, localiza `name`, `id`, `types[0].
     listado y el segundo espera el detalle del primer Pokémon. Comprueba que el resultado es el
     mismo que en el paso 9.
 
-{% comment %}
+# 9. DOM y eventos
 
-# 9. DOM
+Una página web no es solo el HTML que se descarga: el navegador lo interpreta, construye una
+representación que JavaScript puede consultar y modificar, y reacciona a las acciones del usuario.
+El **DOM** permite trabajar con esa representación; los **eventos** permiten responder a lo que
+sucede en ella.
 
-## 9.1 Acceso al DOM
+## 9.1 DOM
 
-Generalmente, los scripts se colocan al final de la etiqueta `<body>`, aunque si se trata de librerías que no se ejecutan hasta que ocurre un evento, pueden situarse dentro del `<head>`. El motivo de situar los scripts al final del `<body>` es que el navegador debe cargar primero el contenido del `<body>` y luego el de los `<script>` para que el código JavaScript pueda acceder a los elementos cargados en la página web (DOM).
-En el navegador, `document` representa el DOM del documento HTML.
-# 10. BOM y Eventos
+### 9.1.1 ¿Qué es el DOM?
 
-## 10.1 El objeto global y las APIs del navegador
+El **Document Object Model** (DOM, o Modelo de Objetos del Documento) es la representación del
+documento HTML como un árbol de objetos. Cada etiqueta se convierte en un nodo; los elementos
+pueden contener otros elementos, texto y atributos.
 
-El objeto global en JavaScript es un objeto que está disponible en todo el entorno de ejecución,
-es decir, en cualquier lugar del código. Es el contenedor de todos los objetos globales, funciones y
-variables que están disponibles en un entorno específico de JavaScript (como un navegador web o
-Node.js).
-Dependiendo del entorno, el nombre de este objeto global puede variar.
+Por ejemplo, este HTML:
 
-### 10.1.1 En entornos de navegador:
-
-En los navegadores web, el objeto global es window. Todas las variables y funciones globales que
-declares se convierten en propiedades del objeto window.
-
-```js
-var nombre = "John";
-console.log(window.nombre); // "John"
+```html
+<main>
+  <h1>Mi página</h1>
+  <p>Hola, <strong>mundo</strong>.</p>
+</main>
 ```
 
-Aquí, la variable nombre se convierte en una propiedad del objeto global window.
+se representa, de forma simplificada, así:
 
-### 10.1.2 En Node.js:
-
-En Node.js, el objeto global se llama global. Funciona de manera similar al objeto window en el
-navegador, pero es específico para el entorno de Node.js:
-
-```js
-global.nombre = "John";
-console.log(global.nombre); // "John"
+```text
+document
+└── html
+    └── body
+        └── main
+            ├── h1
+            │   └── "Mi página"
+            └── p
+                ├── "Hola, "
+                ├── strong
+                │   └── "mundo"
+                └── "."
 ```
 
-### 10.1.3 Acceso a objetos globales:
+El objeto `document` es el punto de entrada habitual para consultar el documento. Los elementos
+del árbol tienen propiedades y métodos: se pueden localizar, leer, crear, modificar y eliminar.
+Los cambios hechos al DOM se reflejan en la página sin tener que volver a cargar el HTML.
 
-El objeto global contiene muchas funciones y objetos estándar de JavaScript, como Math, Date, setTimeout, entre otros. Además, cualquier variable que no esté declarada con `var`, `let` o `const` se agregará
-automáticamente al objeto global (aunque esto es una mala práctica y debería evitarse).
+El DOM no es el lenguaje JavaScript ni el archivo HTML: es una API del navegador para trabajar con
+el documento ya interpretado. JavaScript también puede ejecutarse fuera del navegador, donde no
+existe necesariamente un `document`.
+
+### 9.1.2 Seleccionar elementos
+
+Antes de modificar un elemento hay que localizarlo. Los selectores CSS permiten buscar por id,
+clase, etiqueta u otras relaciones:
+
+```html
+<h1 id="titulo">Catálogo</h1>
+<p class="aviso">Elige un elemento.</p>
+<p class="aviso">Puedes cambiar la selección.</p>
+```
 
 ```js
-function saludar() {
-  console.log("Hola");
+const titulo = document.querySelector("#titulo");
+const primerAviso = document.querySelector(".aviso");
+const todosLosAvisos = document.querySelectorAll(".aviso");
+const parrafos = document.getElementsByTagName("p");
+```
+
+| Método | Resultado |
+| --- | --- |
+| `document.getElementById("titulo")` | El elemento cuyo `id` coincide, o `null` si no existe. |
+| `document.querySelector("selector")` | El primer elemento que coincide con un selector CSS, o `null`. |
+| `document.querySelectorAll("selector")` | Una colección estática (`NodeList`) de todos los elementos coincidentes; puede estar vacía. |
+| `element.closest("selector")` | El elemento más cercano (incluido el propio elemento) que coincide con el selector, o `null`. |
+
+`querySelector()` y `querySelectorAll()` admiten selectores CSS como `#id`, `.clase`,
+`button`, `main p` o `form > input`. Hay que comprobar que un resultado puede ser `null` antes de
+utilizarlo:
+
+```js
+const boton = document.querySelector("#guardar");
+
+if (boton !== null) {
+  boton.textContent = "Guardar cambios";
 }
-console.log(window.saludar === saludar); // true en navegadores
 ```
 
-### 10.1.4 Propiedades y métodos comunes:
-
-El objeto global incluye propiedades y métodos que se pueden usar sin necesidad de hacer referencia
-explícita al objeto global:
-
-- Propiedades y Objetos
-  - **console**: Para mostrar mensajes en la consola (log(), error(), warn(), table()).
-  - **window (navegadores) / global (Node.js) / globalThis (todos)**: Objeto global que
-    contiene todas las variables y funciones globales.
-    ()).
-  - **Infinity**: Representa un valor numérico infinito.
-  - **NaN**: Indica que un valor no es un número.
-  - **`undefined`**: Representa un valor no definido.
-  - **navigator (navegadores)**: Información sobre el agente de usuario (navegador).
-  - **location**: Información sobre la URL actual.
-  - **history**: Permite la manipulación del historial del navegador.
-  - **process (Node.js)**: Información sobre el proceso en ejecución.
-  - **module (Node.js)**: Información sobre el módulo actual.
-  - **require (Node.js)**: Carga módulos en Node.js.
-- **Funciones**:
-  - **setTimeout()**: Ejecuta una función después de un tiempo.
-  - **setInterval()**: Ejecuta una función repetidamente con un intervalo fijo.
-  - **clearTimeout()/ clearInterval()**: Cancelan setTimeout o setInterval.
-  - **isNaN()**: Determina si un valor es NaN.
-  - **isFinite()**: Verifica si un valor es un número finito.
-  - **encodeURI()/ decodeURI()**: Codifican y decodifican una URI completa.
-  - **encodeURIComponent()/ decodeURIComponent()**: Codifican y decodifican
-    componentes de una URI.
-  - **eval()**: Ejecuta código JavaScript representado como una cadena (se recomienda evitar
-    su uso por seguridad).
-  - **confirm() (navegadores)**: Solicita una confirmación del usuario.
-  - **`fetch()`**: Realiza solicitudes HTTP/HTTPS y devuelve promesas.
-  - **atob()/ btoa()**: Decodifica y codifica en Base64.
-
-### 10.1.5 Módulos y el objeto global:
-
-En JavaScript moderno, especialmente en entornos como Node.js o cuando se usa ES6 (o ECMAScript 2015) en navegadores, se utilizan módulos para evitar la contaminación del espacio de nombres global. Las variables y funciones dentro de los módulos no se agregan al objeto global, lo que promueve
-un código más limpio y evita conflictos entre diferentes partes de un programa.
-
-> El uso de módulos en Javascript se verá más adelante en el curso.
-
-### 10.1.6 El uso de “globalThis”:
-
-ECMAScript 2020 introdujo globalThis, un estándar que proporciona una forma consistente de
-acceder al objeto global en cualquier entorno, ya sea en el navegador, Node.js, Web Workers, etc.:
+`querySelectorAll()` permite recorrer los resultados con `for...of` o `forEach()`:
 
 ```js
-console.log(globalThis); // Accede al objeto global en cualquier entorno
+document.querySelectorAll(".aviso").forEach(aviso => {
+  console.log(aviso.textContent);
+});
 ```
 
-globalThis resuelve el problema de tener que saber si estás en un navegador o en Node.js para
-acceder al objeto global.
-{% endcomment %}
+### 9.1.3 Leer y cambiar el contenido
+
+Estas propiedades no son intercambiables:
+
+- **`textContent`** lee o cambia el texto de un elemento. El texto asignado se trata como texto,
+  no como etiquetas HTML.
+- **`innerHTML`** lee o reemplaza el contenido interpretándolo como HTML.
+- **`innerText`** representa el texto visible y tiene en cuenta el estilo y la presentación.
+
+```js
+const titulo = document.querySelector("#titulo");
+
+if (titulo !== null) {
+  titulo.textContent = "Pokédex";
+  console.log(titulo.textContent);
+}
+```
+
+Para mostrar texto procedente de una API, un formulario o una persona, prefiere `textContent`.
+Insertar ese dato concatenándolo en `innerHTML` puede interpretar texto malicioso como HTML.
+Reserva `innerHTML` para plantillas HTML controladas y nunca lo uses con contenido no confiable.
+
+También se pueden consultar o cambiar atributos y propiedades:
+
+```js
+const imagen = document.querySelector("img");
+
+if (imagen !== null) {
+  imagen.setAttribute("alt", "Imagen del Pokémon");
+  imagen.src = "pokemon.png";
+  console.log(imagen.getAttribute("alt"));
+}
+```
+
+Algunos atributos corresponden a propiedades del elemento. Por ejemplo, en un campo de texto,
+`input.value` contiene el valor actual escrito por el usuario; `input.getAttribute("value")` se
+refiere al atributo HTML inicial y no siempre refleja los cambios posteriores.
+
+### 9.1.4 Crear, añadir y eliminar elementos
+
+Para construir una interfaz desde JavaScript se crea cada nodo y se añade al árbol:
+
+```js
+const lista = document.querySelector("#lista");
+
+if (lista !== null) {
+  const elemento = document.createElement("li");
+  elemento.textContent = "Pikachu";
+  lista.append(elemento);
+}
+```
+
+| Método | Uso habitual |
+| --- | --- |
+| `document.createElement("li")` | Crear un elemento nuevo. |
+| `element.append(contenido)` | Añadir al final uno o más nodos o cadenas. |
+| `element.prepend(contenido)` | Añadir al principio. |
+| `element.replaceChildren(...)` | Vaciar el contenido y añadir los nodos indicados. |
+| `element.remove()` | Eliminar el elemento del documento. |
+| `element.before(...)` / `element.after(...)` | Insertar contenido antes o después de un elemento. |
+
+Para generar una lista, limpia el contenedor una vez y añade un nodo por cada resultado:
+
+```js
+lista.replaceChildren();
+
+for (const nombre of ["Pikachu", "Bulbasaur", "Charmander"]) {
+  const opcion = document.createElement("li");
+  opcion.textContent = nombre;
+  lista.append(opcion);
+}
+```
+
+### 9.1.5 Clases, estilos y relaciones entre nodos
+
+La propiedad `element.style` permite cambiar estilos CSS directamente desde JavaScript. Los nombres
+de propiedades CSS con guiones se escriben en *camelCase* (`background-color` pasa a
+`backgroundColor`) y los valores se asignan como cadenas:
+
+```js
+const titulo = document.querySelector("h1");
+
+if (titulo !== null) {
+  titulo.style.color = "navy";
+  titulo.style.backgroundColor = "lightyellow";
+  titulo.style.fontSize = "2rem";
+  titulo.style.display = "none";
+}
+```
+
+Para leer o cambiar una propiedad CSS usando su nombre CSS original, también puedes usar
+`style.setProperty()` y `style.getPropertyValue()`. `removeProperty()` quita una declaración en
+línea:
+
+```js
+if (titulo !== null) {
+  titulo.style.setProperty("border-color", "tomato");
+  console.log(titulo.style.getPropertyValue("border-color"));
+  titulo.style.removeProperty("display");
+}
+```
+
+`element.style` lee y modifica principalmente los estilos en línea del elemento, no todos los
+estilos que recibe de las hojas CSS. Para consultar el estilo calculado (el valor final aplicado
+por el navegador), usa `getComputedStyle()`:
+
+```js
+if (titulo !== null) {
+  const estiloCalculado = getComputedStyle(titulo);
+  console.log(estiloCalculado.color);
+}
+```
+
+Para estados visuales habituales sigue siendo preferible definir las reglas en CSS y activar o
+desactivar una clase desde JavaScript. Así se mantiene separada la presentación del comportamiento
+y es más fácil cambiar el diseño:
+
+```js
+const tarjeta = document.querySelector(".tarjeta");
+
+if (tarjeta !== null) {
+  tarjeta.classList.add("seleccionada");
+  tarjeta.classList.remove("oculta");
+  tarjeta.classList.toggle("favorita");
+  console.log(tarjeta.classList.contains("favorita"));
+}
+```
+
+```css
+.tarjeta.seleccionada {
+  border: 2px solid royalblue;
+  background-color: #eef4ff;
+}
+```
+
+Usa los estilos directos cuando el valor sea realmente dinámico (por ejemplo, una posición o un
+color calculado). Para estados con nombre —como `oculta`, `seleccionada` o `favorita`— utiliza
+clases CSS. Para ocultar un elemento, considera también el atributo `hidden` (asigna
+`element.hidden = true` para ocultarlo o `element.hidden = false` para mostrarlo) si la acción
+expresa que el contenido deja de estar disponible:
+
+```js
+const aviso = document.querySelector("#aviso");
+
+if (aviso !== null) {
+  aviso.hidden = true;
+}
+```
+
+Las relaciones entre nodos también sirven para recorrer la página:
+
+- `parentElement`: elemento padre.
+- `children`: elementos hijos.
+- `firstElementChild` y `lastElementChild`: primer y último elemento hijo.
+- `nextElementSibling` y `previousElementSibling`: elemento siguiente y anterior del mismo nivel.
+
+Usa estas relaciones cuando la estructura de HTML sea estable. Para localizar un elemento de forma
+clara, suele ser más sencillo seleccionar directamente por id o por un selector CSS específico.
+
+### 9.1.6 Cuándo ejecutar JavaScript
+
+Si el script intenta seleccionar un elemento antes de que el navegador haya leído su HTML, el
+resultado puede ser `null`. Hay tres patrones habituales:
+
+1. Cargar el archivo externo al final de `<body>`.
+2. Añadir `defer` a un script externo; se descarga en paralelo y se ejecuta cuando el HTML ya se ha
+   interpretado.
+3. Esperar al evento `DOMContentLoaded` si el código se carga desde el `<head>` o su orden no está
+   controlado.
+
+```html
+<script src="app.js" defer></script>
+```
+
+```js
+document.addEventListener("DOMContentLoaded", () => {
+  const titulo = document.querySelector("h1");
+  console.log(titulo?.textContent);
+});
+```
+
+El operador `?.` evita acceder a una propiedad si el valor de la izquierda es `null` o
+`undefined`. Es útil cuando la ausencia del elemento es aceptable; si el elemento es obligatorio,
+conviene comprobarlo y mostrar un error explícito.
+
+### 9.1.7 Buenas prácticas al trabajar con el DOM
+
+- Selecciona cada elemento una vez y guarda la referencia cuando vayas a reutilizarla.
+- Comprueba los resultados de selección y comunica los errores cuando falte un elemento obligatorio.
+- Usa `textContent` para insertar texto dinámico y `createElement()` para construir nodos.
+- Separa presentación y comportamiento: las clases CSS definen el aspecto; JavaScript añade o quita
+  clases según el estado.
+- Usa etiquetas, botones y formularios semánticos; añade texto alternativo a imágenes y mensajes de
+  estado accesibles, por ejemplo `aria-live="polite"`.
+- No confundas `window` con `document`: `window` representa la ventana y ofrece APIs del navegador;
+  `document` representa el documento HTML. El DOM se manipula a través de `document` y de los
+  elementos que contiene.
+
+## 9.2 Eventos
+
+### 9.2.1 ¿Qué es un evento?
+
+Un **evento** es una notificación de que ha ocurrido algo en el navegador o en la página: se ha
+hecho clic, se ha escrito una tecla, se ha enviado un formulario, ha terminado de cargar una imagen
+o se ha recibido una respuesta de red. El código que se ejecuta para reaccionar se llama
+**manejador** o *handler*.
+
+La forma recomendada de asociar un manejador es `addEventListener()`:
+
+```js
+const boton = document.querySelector("#saludar");
+
+if (boton !== null) {
+  boton.addEventListener("click", () => {
+    console.log("Se ha pulsado el botón");
+  });
+}
+```
+
+Su forma general es:
+
+```js
+elemento.addEventListener("tipoDeEvento", manejador);
+```
+
+El primer argumento es el nombre del evento, sin el prefijo `on`. El segundo es una función que
+el navegador ejecuta cuando se produce el evento. Se pasa la función, sin llamarla: escribe
+`() => ...` o `miFuncion`, no `miFuncion()`.
+
+`addEventListener()` es la forma recomendada de registrar eventos en JavaScript nativo. El
+manejador se puede escribir directamente como una función anónima o se puede definir aparte y pasar
+su nombre como segundo argumento.
+
+```js
+// Función anónima: se define en el mismo lugar donde se registra.
+boton.addEventListener("click", () => {
+  console.log("Se ha pulsado el botón");
+});
+
+// Función nombrada: se define aparte y se pasa sin paréntesis.
+function mostrarMensaje() {
+  console.log("Se ha pulsado el botón");
+}
+
+boton.addEventListener("click", mostrarMensaje);
+```
+
+En el segundo ejemplo se pasa la función como parámetro: `mostrarMensaje` es una referencia a la
+función, que el navegador ejecutará cuando ocurra el evento. No escribas `mostrarMensaje()`, porque
+eso la ejecutaría inmediatamente al registrar el manejador. La función nombrada resulta útil si se
+quiere reutilizar en varios elementos o quitar más adelante con `removeEventListener()`. Para
+retirarla, se pasa el mismo tipo de evento y la misma referencia a la función:
+
+```js
+boton.addEventListener("click", mostrarMensaje);
+boton.removeEventListener("click", mostrarMensaje);
+```
+
+Evita atributos HTML como `onclick="..."` y asignaciones como `boton.onclick = ...` para código
+nuevo: `addEventListener()` permite asociar varios manejadores, separar HTML y JavaScript y
+controlar mejor cuándo se registran.
+
+### 9.2.2 El objeto del evento y el comportamiento predeterminado
+
+El navegador pasa al manejador un objeto con información sobre lo ocurrido:
+
+```js
+const campo = document.querySelector("#nombre");
+
+if (campo !== null) {
+  campo.addEventListener("input", evento => {
+    console.log(evento.type);
+    console.log(evento.target.value);
+  });
+}
+```
+
+Propiedades y métodos de uso frecuente:
+
+- **`event.type`**: nombre del evento, por ejemplo `"click"`.
+- **`event.target`**: nodo donde se originó el evento.
+- **`event.currentTarget`**: elemento al que se registró el manejador.
+- **`event.preventDefault()`**: cancela la acción predeterminada si el evento lo permite.
+- **`event.stopPropagation()`**: evita que el evento siga propagándose; úsalo solo si hay una razón
+  concreta, porque puede interferir con otros manejadores.
+
+Al enviar un formulario, el navegador normalmente intenta navegar o recargar la página. Una
+aplicación que lo procesa con JavaScript puede evitar ese comportamiento:
+
+```js
+const formulario = document.querySelector("#busqueda");
+
+if (formulario !== null) {
+  formulario.addEventListener("submit", evento => {
+    evento.preventDefault();
+    console.log("Procesar el formulario sin recargar la página");
+  });
+}
+```
+
+Los eventos suelen **propagarse** por el árbol. En la fase de burbujeo, el evento parte del nodo
+objetivo y sube por sus antecesores. Por eso un clic en un botón dentro de una tarjeta también puede
+ser observado desde la tarjeta o desde un contenedor.
+
+Este comportamiento permite la **delegación de eventos**: registrar un solo manejador en un
+contenedor para atender eventos de muchos elementos hijos, incluso si se crean después:
+
+```js
+const lista = document.querySelector("#lista");
+
+if (lista !== null) {
+  lista.addEventListener("click", evento => {
+    if (!(evento.target instanceof Element)) {
+      return;
+    }
+
+    const opcion = evento.target.closest("li");
+    if (opcion !== null && lista.contains(opcion)) {
+      console.log("Elemento seleccionado:", opcion.textContent);
+    }
+  });
+}
+```
+
+### 9.2.3 Tipos de eventos habituales
+
+| Grupo | Eventos comunes | Cuándo se producen |
+| --- | --- | --- |
+| Ratón y puntero | `click`, `dblclick`, `pointerdown`, `pointerup`, `pointermove` | Al pulsar o mover el puntero. Los eventos `pointer` cubren ratón, lápiz y pantallas táctiles. |
+| Teclado | `keydown`, `keyup` | Al pulsar y soltar teclas. `event.key` indica la tecla, por ejemplo `"Enter"`. |
+| Formularios | `input`, `change`, `submit`, `focus`, `blur` | Al editar campos, confirmar un cambio, enviar un formulario o cambiar el foco. |
+| Documento y ventana | `DOMContentLoaded`, `load`, `resize`, `scroll` | Al interpretar el HTML, cargar recursos, cambiar el tamaño o desplazar la página. |
+| Portapapeles | `copy`, `cut`, `paste` | Al copiar, cortar o pegar contenido. |
+| Arrastrar y soltar | `dragstart`, `dragover`, `drop`, `dragend` | Durante una operación de arrastrar y soltar. |
+| Multimedia | `play`, `pause`, `ended`, `timeupdate` | Durante la reproducción de audio o vídeo. |
+| Red y recursos | `online`, `offline`, `error`, `load` | Al cambiar la conexión o al cargar/fallar un recurso. |
+
+Hay diferencias importantes entre eventos de formularios:
+
+- `input` se produce con cada cambio del valor mientras la persona escribe.
+- `change` se produce cuando el valor se confirma; en campos de texto suele ocurrir al perder el
+  foco, y en listas desplegables al seleccionar otra opción.
+- `submit` se produce al enviar el formulario, también si se pulsa Enter desde un campo.
+- `focus` y `blur` indican que un control recibe o pierde el foco.
+
+Para comportamientos esenciales de una interfaz, no dependas solo de eventos de ratón: utiliza
+controles HTML apropiados, como `<button>` y `<form>`, que ya admiten teclado y tecnologías de
+asistencia.
+
+### 9.2.4 Buenas prácticas al gestionar eventos
+
+- Registra los manejadores con `addEventListener()` y evita duplicarlos cada vez que se actualiza la
+  interfaz.
+- Para listas de elementos creados dinámicamente, considera la delegación de eventos.
+- Evita detener la propagación del evento salvo que sea necesario, ya que puede interferir con
+  otros manejadores.
+- Para comportamientos esenciales, utiliza controles HTML semánticos que también funcionen con
+  teclado y tecnologías de asistencia.
+
+## 9.3 PRÁCTICA 9: Pokédex interactiva con DOM y eventos
+
+En esta práctica crearás una Pokédex sencilla formada por dos páginas. `index.html` permitirá
+buscar un Pokémon por nombre y mostrará debajo una lista de 20 Pokémon. Desde la búsqueda o desde
+cualquiera de las tarjetas se podrá abrir `ficha.html` para consultar la información completa.
+
+Practicarás el DOM, los eventos de formulario y de botón, `fetch`, las promesas, el paso de datos
+entre páginas mediante la URL y la creación segura de elementos HTML.
+
+La [solución completa](solución/index.html) está disponible en la carpeta `solución` del proyecto.
+
+### Funcionamiento esperado
+
+- Al abrir `index.html`, se carga y se muestra un listado de 20 Pokémon.
+- En la parte superior hay un campo de búsqueda y un botón **Buscar**.
+- Si el Pokémon existe, se abre `ficha.html` y se presenta su ficha.
+- Si no existe o hay un error de red, el usuario permanece en el índice y ve un mensaje.
+- Cada Pokémon del listado aparece en una tarjeta con un botón **Ficha completa**. Al pulsarlo se
+  abre `ficha.html` con la información de ese Pokémon.
+- En `ficha.html` hay un enlace para volver al índice.
+
+### API que vas a utilizar
+
+| Recurso | URL | Datos que necesitas |
+| --- | --- | --- |
+| Listado | `https://pokeapi.co/api/v2/pokemon?limit=20` | `results`, array con `name` y `url`. |
+| Detalle | `https://pokeapi.co/api/v2/pokemon/{nombre}` | `id`, `name`, `types`, `height`, `weight`, `abilities`, `stats` y `sprites`. |
+
+La API es pública y no requiere una clave. En la ficha se pueden mostrar los datos disponibles que
+te parezcan más útiles; como mínimo incluye nombre, número, imagen, tipos, altura, peso y
+habilidades.
+
+### Preparación de los archivos
+
+1. Crea una carpeta con estos archivos:
+   - `index.html`: buscador y listado.
+   - `ficha.html`: detalle del Pokémon.
+   - `index.js`: carga del listado y búsqueda.
+   - `ficha.js`: lectura del Pokémon solicitado y renderizado de su ficha.
+   - `pokemon.css`: estilos compartidos por las dos páginas.
+2. Abre `index.html` mediante Live Server. No abras los archivos con `file://`, porque la práctica
+   realiza peticiones con `fetch`.
+3. Deja abierta la consola del navegador para revisar errores y resultados.
+
+### Paso 1. Crear la página de inicio
+
+Crea `index.html` con esta estructura. Conserva los `id`, que se usarán para seleccionar los
+elementos desde JavaScript:
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pokédex</title>
+  <link rel="stylesheet" href="pokemon.css">
+  <script src="index.js" defer></script>
+</head>
+<body>
+  <main>
+    <h1>Pokédex</h1>
+    <form id="formulario-busqueda">
+      <label for="nombre-pokemon">Buscar por nombre o número</label>
+      <input id="nombre-pokemon" name="pokemon" type="search" required>
+      <button type="submit">Buscar</button>
+    </form>
+    <p id="estado-busqueda" role="status" aria-live="polite"></p>
+    <section aria-labelledby="titulo-listado">
+      <h2 id="titulo-listado">Pokémon</h2>
+      <div id="listado-pokemon"></div>
+    </section>
+  </main>
+</body>
+</html>
+```
+
+El botón es `type="submit"` porque forma parte de un formulario: se podrá iniciar la búsqueda
+pulsándolo o presionando Enter en el campo.
+
+### Paso 2. Obtener los datos de la API
+
+1. En `index.js`, selecciona el formulario, el campo de búsqueda, el mensaje de estado y el
+   contenedor del listado con `document.querySelector()`. Comprueba que los elementos necesarios
+   existen.
+2. Crea `obtenerDatos(url)`. Debe realizar `fetch(url)`, comprobar `respuesta.ok`, lanzar un error
+   si la respuesta HTTP no es correcta y devolver `respuesta.json()`.
+3. Usa esta función tanto para pedir el listado como para consultar un Pokémon. Así evitas repetir
+   la comprobación de errores HTTP.
+4. Muestra «Cargando Pokémon…» mientras se obtiene el listado. Si falla la petición, deja un
+   mensaje en la página y registra el detalle del error en la consola.
+
+### Paso 3. Construir el listado en el DOM
+
+1. Crea `cargarListado()`, que solicite
+   `https://pokeapi.co/api/v2/pokemon?limit=20`.
+2. Recorre `datos.results`. Por cada resultado crea una tarjeta con `document.createElement()`.
+   Cada tarjeta debe incluir el nombre, una imagen y un botón **Ficha completa**.
+3. Cada resultado contiene una URL de detalle. Extrae de ella el número final del Pokémon y úsalo
+   para formar la URL de su ilustración oficial:
+   `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{numero}.png`.
+   Crea un elemento `<img>`, configura `src`, `alt` y `loading = "lazy"`, y añádelo a la tarjeta.
+   Si la imagen oficial no carga, puedes probar como alternativa
+   `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{numero}.png`.
+4. El botón debe tener `type="button"` para no enviar accidentalmente el formulario de búsqueda.
+   Guarda el nombre del Pokémon en un atributo `data-nombre` del botón.
+5. Asigna nombres y textos con `textContent`, configura la imagen mediante sus propiedades y añade
+   los nodos al contenedor con `append()`. No construyas el listado concatenando datos de la API
+   dentro de `innerHTML`.
+6. Limpia el contenedor con `replaceChildren()` antes de añadir los resultados, para que la lista
+   no se duplique al volver a cargarla.
+7. Llama a `cargarListado()` al iniciar `index.js` y comunica cuándo ha terminado la carga.
+
+### Paso 4. Programar los botones «Ficha completa»
+
+1. Registra un único manejador `click` en el contenedor `#listado-pokemon`. De este modo, los
+   botones creados dinámicamente también se atenderán: es **delegación de eventos**.
+2. Dentro del manejador, comprueba que `evento.target` es un elemento y localiza el botón con
+   `closest("button[data-nombre]")`.
+3. Si se ha pulsado uno de esos botones, lee su atributo `data-nombre` y navega a la página de
+   ficha pasando el nombre en la URL:
+
+   ```js
+   window.location.href =
+     `ficha.html?pokemon=${encodeURIComponent(nombre)}`;
+   ```
+
+4. Comprueba que los botones de varias tarjetas abren la ficha del Pokémon correcto.
+
+### Paso 5. Implementar la búsqueda
+
+1. Registra un manejador `submit` en el formulario mediante `addEventListener()`. Dentro del
+   manejador, llama a `evento.preventDefault()` para evitar que el navegador recargue el índice.
+2. Lee el nombre desde el campo de búsqueda, elimina espacios sobrantes con `trim()` y conviértelo
+   a minúsculas. Si el campo queda vacío, muestra una indicación y no hagas la petición.
+3. Muestra «Buscando…» y consulta
+   `https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(nombre)}` mediante `obtenerDatos()`.
+4. Si la API devuelve un Pokémon, navega a `ficha.html` usando el nombre recibido en los datos
+   (`pokemon.name`) como parámetro. Así se confirma que el Pokémon existe antes de cambiar de
+   página.
+5. Si la respuesta es `404`, muestra «No se ha encontrado ese Pokémon» en `#estado-busqueda`. Si
+   falla la conexión u ocurre otro error, muestra un mensaje comprensible y registra el error.
+6. Prueba la búsqueda con `pikachu`, con un número válido, con un nombre inexistente y con el campo
+   vacío.
+
+### Paso 6. Crear la página de ficha
+
+Crea `ficha.html`. Esta página recibe el nombre mediante un parámetro de búsqueda de la URL, por
+ejemplo `ficha.html?pokemon=pikachu`.
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ficha Pokémon | Pokédex</title>
+  <link rel="stylesheet" href="pokemon.css">
+  <script src="ficha.js" defer></script>
+</head>
+<body>
+  <main>
+    <a href="index.html">Volver a la Pokédex</a>
+    <h1>Ficha del Pokémon</h1>
+    <p id="estado-ficha" role="status" aria-live="polite"></p>
+    <article id="ficha-pokemon" aria-live="polite"></article>
+  </main>
+</body>
+</html>
+```
+
+### Paso 7. Leer la URL y mostrar la ficha completa
+
+1. En `ficha.js`, lee el parámetro `pokemon` mediante `URLSearchParams`:
+
+   ```js
+   const parametros = new URLSearchParams(window.location.search);
+   const nombre = parametros.get("pokemon");
+   ```
+
+2. Comprueba que el parámetro existe y no está vacío. Si falta, muestra un mensaje y ofrece volver
+   al índice.
+3. Consulta el detalle en PokeAPI con `obtenerDatos()` o una función equivalente. Muestra un estado
+   de carga mientras llega la respuesta.
+4. Crea `mostrarFicha(pokemon)`. Construye los elementos con `document.createElement()` y muestra:
+   nombre, número, imagen con texto alternativo, tipos, altura, peso y habilidades. Puedes añadir
+   las estadísticas (`stats`) como ampliación.
+5. Asigna el texto con `textContent`, configura la imagen con sus propiedades y añade los nodos al
+   artículo `#ficha-pokemon`. No insertes en `innerHTML` datos recibidos de la API.
+6. Si no existe el Pokémon, si no se ha pasado un parámetro válido o si falla la red, muestra el
+   error en `#estado-ficha` y conserva el enlace para volver.
+
+### Paso 8. Aplicar estilos y probar el recorrido completo
+
+1. Define en `pokemon.css` los estilos comunes, las tarjetas del listado y la ficha. Usa clases CSS
+   para los estados visuales y mantén la presentación separada de JavaScript.
+2. Recorre el flujo completo:
+   - Abrir `index.html` y comprobar que aparecen 20 Pokémon.
+   - Buscar un Pokémon existente y verificar que abre su ficha.
+   - Pulsar **Ficha completa** en varias tarjetas y confirmar que cada una abre el Pokémon
+     correspondiente.
+   - Volver al índice con el enlace de la ficha.
+   - Probar un nombre inexistente, una URL de ficha sin parámetro y un error de red.
+3. Comprueba que las páginas no generan recargas inesperadas, que no hay tarjetas duplicadas y que
+   no aparecen errores no gestionados en la consola.
+
+### Ejemplo de resultado
+
+Ejemplo de posible índice:
+
+![index](./assets/img/index.png)
+
+Ejemplo de ficha Pokémon:
+
+![ficha](./assets/img/ficha.png)
