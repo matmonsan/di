@@ -5187,7 +5187,6 @@ const parrafos = document.getElementsByTagName("p");
 | `document.getElementById("titulo")` | El elemento cuyo `id` coincide, o `null` si no existe. |
 | `document.querySelector("selector")` | El primer elemento que coincide con un selector CSS, o `null`. |
 | `document.querySelectorAll("selector")` | Una colección estática (`NodeList`) de todos los elementos coincidentes; puede estar vacía. |
-| `element.closest("selector")` | El elemento más cercano (incluido el propio elemento) que coincide con el selector, o `null`. |
 
 `querySelector()` y `querySelectorAll()` admiten selectores CSS como `#id`, `.clase`,
 `button`, `main p` o `form > input`. Hay que comprobar que un resultado puede ser `null` antes de
@@ -5394,18 +5393,62 @@ El operador `?.` evita acceder a una propiedad si el valor de la izquierda es `n
 `undefined`. Es útil cuando la ausencia del elemento es aceptable; si el elemento es obligatorio,
 conviene comprobarlo y mostrar un error explícito.
 
-### 9.1.7 Buenas prácticas al trabajar con el DOM
+### 9.1.7 Ejemplo práctico: crear una página con el DOM
 
-- Selecciona cada elemento una vez y guarda la referencia cuando vayas a reutilizarla.
-- Comprueba los resultados de selección y comunica los errores cuando falte un elemento obligatorio.
-- Usa `textContent` para insertar texto dinámico y `createElement()` para construir nodos.
-- Separa presentación y comportamiento: las clases CSS definen el aspecto; JavaScript añade o quita
-  clases según el estado.
-- Usa etiquetas, botones y formularios semánticos; añade texto alternativo a imágenes y mensajes de
-  estado accesibles, por ejemplo `aria-live="polite"`.
-- No confundas `window` con `document`: `window` representa la ventana y ofrece APIs del navegador;
-  `document` representa el documento HTML. El DOM se manipula a través de `document` y de los
-  elementos que contiene.
+Aunque el archivo HTML puede tener el `body` vacío, JavaScript puede crear y añadir todos los
+elementos de la página. Usa etiquetas semánticas y `textContent` para que el texto se trate como
+texto, no como código HTML.
+
+Guarda estos dos archivos en la misma carpeta. El `body` de `index.html` no contiene elementos:
+JavaScript construirá la página y también aplicará sus estilos.
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recetas caseras</title>
+  <script src="app.js" defer></script>
+</head>
+<body></body>
+</html>
+```
+
+En `app.js`, crea una página sencilla con un título y una lista de recetas. Añade algunos estilos
+directamente desde JavaScript:
+
+```js
+document.body.style.cssText =
+  "margin:0;padding:30px;font-family:Arial,sans-serif;background:#f3f5ee;color:#243b2b";
+
+const pagina = document.createElement("main");
+pagina.style.cssText =
+  "max-width:600px;margin:auto;padding:24px;background:white;border-radius:12px";
+
+const titulo = document.createElement("h1");
+titulo.textContent = "Mi recetario";
+titulo.style.color = "#327044";
+
+const texto = document.createElement("p");
+texto.textContent = "Ideas sencillas para cocinar en casa:";
+
+const lista = document.createElement("ul");
+for (const receta of ["Tortilla de patatas", "Ensalada fresca", "Sopa de verduras"]) {
+  const elemento = document.createElement("li");
+  elemento.textContent = receta;
+  elemento.style.padding = "8px";
+  lista.append(elemento);
+}
+
+pagina.append(titulo, texto, lista);
+document.body.append(pagina);
+```
+
+`createElement()` crea cada etiqueta, `append()` la incorpora a su elemento contenedor y
+`textContent` establece su texto. El bucle `for...of` crea un elemento `<li>` por cada receta.
+Las propiedades `style` aplican los estilos desde JavaScript. Como el script se carga con `defer`,
+el navegador ya ha leído el documento cuando se ejecuta.
 
 ## 9.2 Eventos
 
@@ -5630,15 +5673,193 @@ Para una regla que HTML no puede expresar, usa `setCustomValidity()` y borra el 
 valor vuelva a ser válido. Si se deja un mensaje personalizado activo, el campo seguirá siendo
 inválido aunque su valor cumpla las reglas HTML.
 
-### 9.2.5 Buenas prácticas al gestionar eventos
+### 9.2.5 Ejemplos de uso de eventos
 
-- Registra los manejadores con `addEventListener()` y evita duplicarlos cada vez que se actualiza la
-  interfaz.
-- Para listas de elementos creados dinámicamente, considera la delegación de eventos.
-- Evita detener la propagación del evento salvo que sea necesario, ya que puede interferir con
-  otros manejadores.
-- Para comportamientos esenciales, utiliza controles HTML semánticos que también funcionen con
-  teclado y tecnologías de asistencia.
+Los siguientes ejemplos muestran cómo responder a distintos eventos habituales. Cada fragmento
+supone que el HTML contiene los elementos con los identificadores indicados.
+
+#### Ejemplo 1. Actualizar un saludo mientras se escribe
+
+El evento `input` se dispara cada vez que cambia el valor del campo:
+
+```html
+<label for="nombre">Tu nombre</label>
+<input id="nombre" type="text">
+<p id="saludo" aria-live="polite"></p>
+```
+
+```js
+const campoNombre = document.querySelector("#nombre");
+const saludo = document.querySelector("#saludo");
+
+if (campoNombre !== null && saludo !== null) {
+  campoNombre.addEventListener("input", () => {
+    // trim() elimina los espacios al principio y al final.
+    const nombre = campoNombre.value.trim();
+    if (nombre === "") {
+      saludo.textContent = "Escribe tu nombre.";
+    } else {
+      saludo.textContent = `Hola, ${nombre}.`;
+    }
+  });
+}
+```
+
+#### Ejemplo 2. Validar un formulario antes de procesarlo
+
+El formulario tiene cinco campos distintos. `novalidate` permite que el evento `submit` se ejecute
+aunque haya valores incorrectos, para que JavaScript pueda comprobar cada campo y mostrar los
+mensajes juntos debajo del formulario.
+
+```html
+<form id="formulario-registro" novalidate>
+  <label for="nombre-registro">Nombre</label>
+  <input id="nombre-registro" name="nombre" type="text" minlength="2" required>
+
+  <label for="correo-registro">Correo electrónico</label>
+  <input id="correo-registro" name="correo" type="email" required>
+
+  <label for="clave-registro">Contraseña</label>
+  <input id="clave-registro" name="clave" type="password" minlength="8" required>
+
+  <label for="edad-registro">Edad</label>
+  <input id="edad-registro" name="edad" type="number" min="18" max="120" required>
+
+  <label for="fecha-registro">Fecha de nacimiento</label>
+  <input id="fecha-registro" name="fecha" type="date" required>
+
+  <button type="submit">Enviar</button>
+</form>
+<p id="errores-registro" role="alert"></p>
+```
+
+```js
+const formulario = document.querySelector("#formulario-registro");
+const nombre = document.querySelector("#nombre-registro");
+const correo = document.querySelector("#correo-registro");
+const clave = document.querySelector("#clave-registro");
+const edad = document.querySelector("#edad-registro");
+const fecha = document.querySelector("#fecha-registro");
+const erroresRegistro = document.querySelector("#errores-registro");
+
+if (
+  formulario !== null &&
+  nombre !== null &&
+  correo !== null &&
+  clave !== null &&
+  edad !== null &&
+  fecha !== null &&
+  erroresRegistro !== null
+) {
+  formulario.addEventListener("submit", evento => {
+    evento.preventDefault();
+
+    const errores = [];
+
+    if (nombre.value.trim().length < 2) {
+      errores.push("El nombre debe tener al menos 2 caracteres.");
+    }
+
+    if (!correo.validity.valid) {
+      errores.push("Escribe un correo electrónico válido.");
+    }
+
+    if (clave.value.length < 8) {
+      errores.push("La contraseña debe tener al menos 8 caracteres.");
+    }
+
+    const numeroEdad = Number(edad.value);
+    if (!Number.isInteger(numeroEdad) || numeroEdad < 18 || numeroEdad > 120) {
+      errores.push("La edad debe ser un número entero entre 18 y 120.");
+    }
+
+    if (!fecha.validity.valid) {
+      errores.push("Selecciona una fecha de nacimiento.");
+    }
+
+    // Muestra todos los errores en el párrafo situado bajo el formulario.
+    erroresRegistro.textContent = errores.join(" ");
+
+    if (errores.length === 0) {
+      erroresRegistro.textContent = "Formulario válido. Ya se puede procesar.";
+    }
+  });
+}
+```
+
+`novalidate` desactiva los avisos automáticos al enviar, pero las reglas HTML siguen disponibles
+para comprobarse desde JavaScript. Para una validación más sencilla, puedes quitar `novalidate` y
+dejar que el navegador impida el envío cuando un campo no sea válido.
+
+#### Ejemplo 3. Cambiar la apariencia con un clic
+
+El evento `click` puede alternar una clase CSS para mostrar un estado visual. El botón sigue siendo
+un control semántico y se puede activar también con el teclado.
+
+```html
+<button id="boton-favorito" type="button">Marcar como favorito</button>
+```
+
+```css
+.favorito {
+  background-color: gold;
+}
+```
+
+```js
+const boton = document.querySelector("#boton-favorito");
+
+if (boton !== null) {
+  boton.addEventListener("click", () => {
+    // toggle() añade la clase si falta y la quita si ya estaba.
+    boton.classList.toggle("favorito");
+  });
+}
+```
+
+#### Ejemplo 4. Responder a una tecla
+
+El evento `keydown` permite reaccionar a una tecla concreta. Comprueba `event.key` en vez del
+código numérico de la tecla:
+
+```html
+<p id="aviso-tecla">Pulsa Escape para cerrar este aviso.</p>
+```
+
+```js
+const aviso = document.querySelector("#aviso-tecla");
+
+if (aviso !== null) {
+  document.addEventListener("keydown", evento => {
+    if (evento.key === "Escape") {
+      aviso.hidden = true;
+    }
+  });
+}
+```
+
+#### Ejemplo 5. Cambiar el color de fondo al elegir una opción
+
+El evento `change` se produce cuando se confirma una nueva opción de una lista desplegable.
+
+```html
+<label for="color-fondo">Elige un color de fondo:</label>
+<select id="color-fondo">
+  <option value="white">Blanco</option>
+  <option value="lightblue">Azul claro</option>
+  <option value="lightgreen">Verde claro</option>
+</select>
+```
+
+```js
+const selectorColor = document.querySelector("#color-fondo");
+
+if (selectorColor !== null) {
+  selectorColor.addEventListener("change", () => {
+    document.body.style.backgroundColor = selectorColor.value;
+  });
+}
+```
 
 ## 9.3 PRÁCTICA GUIADA: Café interactivo con DOM y eventos
 
@@ -5856,6 +6077,23 @@ cualquiera de las tarjetas se podrá abrir `ficha.html` para consultar la inform
 
 Practicarás el DOM, los eventos de formulario y de botón, `fetch`, las promesas, el paso de datos
 entre páginas mediante la URL y la creación segura de elementos HTML.
+
+> **Nota sobre los conocimientos necesarios**
+>
+> Antes de empezar, repasa:
+>
+> - **DOM (apartado 9.1):** seleccionar y crear elementos, usar `textContent`, `append()` y
+>   `replaceChildren()`.
+> - **Eventos (apartado 9.2):** eventos `submit` y `click`, objeto del evento y delegación.
+> - **Promesas (práctica guiada 8.11):** `fetch`, `async`/`await` y tratamiento de errores.
+>
+> Además, necesitarás estos conocimientos que no se explican paso a paso en la unidad:
+>
+> - `encodeURIComponent(texto)` para preparar valores que se incluyen en una URL.
+> - `URLSearchParams` para leer el parámetro `pokemon` de la dirección.
+> - **CSS básico** para `pokemon.css`: selectores, clases, rejillas con `display: grid` y diseño
+>   adaptable. La unidad muestra cómo enlazar una hoja CSS y añadir clases desde JavaScript, pero
+>   no desarrolla esos fundamentos.
 
 ### Funcionamiento esperado
 
