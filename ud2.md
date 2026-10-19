@@ -26,7 +26,8 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 9. [DOM y eventos](#9-dom-y-eventos)
     - [DOM](#91-dom)
     - [Eventos](#92-eventos)
-    - [Proyecto final](#93-práctica-9-pokédex-interactiva-con-dom-y-eventos)
+    - [Práctica guiada](#93-práctica-guiada-café-interactivo-con-dom-y-eventos)
+    - [Proyecto final](#94-proyecto-final-pokédex-interactiva)
 
 ---
 
@@ -5557,7 +5558,79 @@ Para comportamientos esenciales de una interfaz, no dependas solo de eventos de 
 controles HTML apropiados, como `<button>` y `<form>`, que ya admiten teclado y tecnologías de
 asistencia.
 
-### 9.2.4 Buenas prácticas al gestionar eventos
+### 9.2.4 Validación de formularios
+
+La validación comprueba que los datos cumplen las condiciones necesarias antes de procesar un
+formulario. Conviene declarar primero las reglas sencillas en HTML: el navegador puede validarlas
+automáticamente y comunicar los problemas al usuario.
+
+Algunos atributos de validación habituales son:
+
+- `required`: el campo no puede quedar vacío.
+- `type="email"` y `type="url"`: el valor debe tener el formato correspondiente.
+- `min`, `max` y `step`: limitan los valores numéricos o las fechas.
+- `minlength`, `maxlength` y `pattern`: limitan la longitud o el formato del texto.
+
+```html
+<form id="formulario-cafe">
+  <label for="id-cafe">Número del café</label>
+  <input id="id-cafe" name="id" type="number" min="1" step="1" required>
+  <button type="submit">Buscar café</button>
+</form>
+```
+
+Al enviar este formulario, el navegador comprueba que el campo contiene un número entero mayor que
+cero. Si el valor no es válido, muestra el aviso correspondiente y no dispara el evento `submit`.
+Así se evita procesar datos incorrectos sin tener que escribir desde cero las comprobaciones más
+comunes.
+
+La API de validación de restricciones permite consultar o mostrar esos errores desde JavaScript:
+
+- `campo.validity.valid` indica si un campo cumple las restricciones.
+- `formulario.checkValidity()` comprueba los campos y devuelve `true` o `false`.
+- `formulario.reportValidity()` comprueba los campos y pide al navegador que muestre los mensajes
+  de validación.
+- `campo.setCustomValidity("mensaje")` establece un error personalizado. Para quitarlo, vuelve a
+  llamar al método con una cadena vacía: `campo.setCustomValidity("")`.
+
+Por ejemplo, si se quiere controlar el envío desde JavaScript, se puede añadir `novalidate` al
+formulario y realizar la comprobación en el manejador `submit`:
+
+```html
+<form id="formulario-cafe" novalidate>
+  <label for="id-cafe">Número del café</label>
+  <input id="id-cafe" name="id" type="number" min="1" step="1" required>
+  <button type="submit">Buscar café</button>
+</form>
+```
+
+```js
+const formulario = document.querySelector("#formulario-cafe");
+
+if (formulario !== null) {
+  formulario.addEventListener("submit", evento => {
+    evento.preventDefault();
+
+    if (!formulario.checkValidity()) {
+      formulario.reportValidity();
+      return;
+    }
+
+    console.log("Formulario válido: ya se puede procesar");
+  });
+}
+```
+
+`novalidate` desactiva la validación automática al enviar, pero no elimina las reglas declaradas
+con atributos HTML: `checkValidity()` y `reportValidity()` todavía pueden consultarlas. Úsalo solo
+si necesitas controlar explícitamente el momento de la validación. Si basta con el comportamiento
+del navegador, omite `novalidate` y deja que el navegador valide antes de emitir `submit`.
+
+Para una regla que HTML no puede expresar, usa `setCustomValidity()` y borra el mensaje cuando el
+valor vuelva a ser válido. Si se deja un mensaje personalizado activo, el campo seguirá siendo
+inválido aunque su valor cumpla las reglas HTML.
+
+### 9.2.5 Buenas prácticas al gestionar eventos
 
 - Registra los manejadores con `addEventListener()` y evita duplicarlos cada vez que se actualiza la
   interfaz.
@@ -5567,7 +5640,215 @@ asistencia.
 - Para comportamientos esenciales, utiliza controles HTML semánticos que también funcionen con
   teclado y tecnologías de asistencia.
 
-## 9.3 PRÁCTICA 9: Pokédex interactiva con DOM y eventos
+## 9.3 PRÁCTICA GUIADA: Café interactivo con DOM y eventos
+
+En las prácticas 7 y 8 trabajaste con el café caliente número 2: primero convertiste JSON en un
+objeto y después lo recibiste desde la API con `fetch` y promesas. Ahora combinarás esas ideas con
+el DOM y los eventos para crear una página en la que se pueda consultar un café por su número.
+Construirás la ficha creando elementos HTML desde JavaScript y reaccionarás al envío de un
+formulario y al clic de un botón.
+
+### Preparación
+
+1. Crea una carpeta con dos archivos: `index.html` y `cafe.js`.
+2. En `index.html`, escribe esta estructura. El atributo `defer` permite que el navegador termine
+   de interpretar el HTML antes de ejecutar el JavaScript:
+
+   ```html
+   <!doctype html>
+   <html lang="es">
+   <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>Catálogo de cafés</title>
+     <script src="cafe.js" defer></script>
+   </head>
+   <body>
+     <main>
+       <h1>Catálogo de cafés</h1>
+       <form id="formulario-cafe">
+         <label for="id-cafe">Número del café</label>
+         <input id="id-cafe" name="id" type="number" min="1" step="1" value="2" required>
+         <button type="submit">Buscar café</button>
+       </form>
+       <button id="cargar-ejemplo" type="button">Cargar el café de las prácticas 7 y 8</button>
+       <p id="estado" role="status" aria-live="polite"></p>
+       <section id="ficha-cafe" aria-live="polite"></section>
+     </main>
+   </body>
+   </html>
+   ```
+
+3. Abre `index.html` con Live Server y deja abierta la consola del navegador.
+
+### Paso 1. Seleccionar los elementos del DOM
+
+En `cafe.js`, selecciona los controles que vas a utilizar. Comprueba que existen: si el HTML no
+contiene alguno de esos elementos, es mejor informar del problema de forma explícita.
+
+```js
+const formulario = document.querySelector("#formulario-cafe");
+const campoId = document.querySelector("#id-cafe");
+const botonEjemplo = document.querySelector("#cargar-ejemplo");
+const estado = document.querySelector("#estado");
+const ficha = document.querySelector("#ficha-cafe");
+
+if (
+  formulario === null ||
+  campoId === null ||
+  botonEjemplo === null ||
+  estado === null ||
+  ficha === null
+) {
+  throw new Error("Falta un elemento necesario en index.html");
+}
+```
+
+### Paso 2. Crear la ficha con elementos HTML
+
+Crea una función `mostrarCafe(cafe)`. En vez de concatenar datos de la API dentro de `innerHTML`,
+crea los elementos con `document.createElement()` y asigna los datos de texto con `textContent`.
+Así el contenido recibido se muestra como texto y no se interpreta como HTML.
+
+```js
+function mostrarCafe(cafe) {
+  const articulo = document.createElement("article");
+  const titulo = document.createElement("h2");
+  titulo.textContent = cafe.title;
+
+  const descripcion = document.createElement("p");
+  descripcion.textContent = cafe.description;
+
+  const imagen = document.createElement("img");
+  imagen.src = cafe.image;
+  imagen.alt = cafe.title;
+  imagen.height = 300;
+
+  const tituloIngredientes = document.createElement("h3");
+  tituloIngredientes.textContent = "Ingredientes";
+
+  const listaIngredientes = document.createElement("ul");
+  for (const ingrediente of cafe.ingredients) {
+    const elemento = document.createElement("li");
+    elemento.textContent = ingrediente;
+    listaIngredientes.append(elemento);
+  }
+
+  const fichaCafe = {
+    id: cafe.id,
+    nombre: cafe.title,
+    ingredientes: cafe.ingredients
+  };
+  const textoJson = JSON.stringify(fichaCafe, null, 2);
+  const tituloJson = document.createElement("h3");
+  tituloJson.textContent = "Ficha en formato JSON";
+  const preJson = document.createElement("pre");
+  preJson.textContent = textoJson;
+
+  console.log("Ficha como texto JSON:", textoJson);
+  console.log("Objeto reconstruido:", JSON.parse(textoJson));
+
+  articulo.append(
+    titulo,
+    imagen,
+    descripcion,
+    tituloIngredientes,
+    listaIngredientes,
+    tituloJson,
+    preJson
+  );
+  ficha.replaceChildren(articulo);
+}
+```
+
+Al llamar a `replaceChildren()` antes de mostrar la ficha, el contenido anterior se sustituye y no
+se acumulan cafés en la página. También has recuperado el ejercicio de la práctica 7: filtras las
+propiedades del objeto, lo conviertes en texto JSON y lo vuelves a convertir en objeto. El `<pre>`
+conserva la sangría y `textContent` evita interpretar ese texto como HTML.
+
+### Paso 3. Solicitar el café a la API
+
+La dirección conserva el recurso utilizado en las prácticas anteriores; el número del final se
+recibe como argumento. `fetch()` devuelve una promesa y `respuesta.json()` también debe esperarse.
+Comprueba `respuesta.ok`, porque una respuesta HTTP de error no rechaza por sí sola la promesa de
+`fetch`.
+
+```js
+const URL_CAFE = "https://api.sampleapis.com/coffee/hot";
+
+async function cargarCafe(id) {
+  estado.textContent = "Cargando...";
+  ficha.replaceChildren();
+
+  try {
+    const respuesta = await fetch(`${URL_CAFE}/${id}`);
+
+    if (!respuesta.ok) {
+      throw new Error(`Error HTTP: ${respuesta.status}`);
+    }
+
+    const cafe = await respuesta.json();
+    console.log("Café recibido:", cafe);
+    mostrarCafe(cafe);
+    estado.textContent = `Café cargado: ${cafe.title}`;
+  } catch (error) {
+    console.error("No se pudo obtener el café:", error);
+    const mensaje = error instanceof Error ? error.message : "Error desconocido";
+    estado.textContent = `No se pudo cargar el café. ${mensaje}`;
+  }
+}
+```
+
+### Paso 4. Reaccionar al envío del formulario
+
+Registra el evento `submit` con `addEventListener()`. `preventDefault()` evita que el navegador
+recargue la página. Lee el valor actual del campo con `value` y comprueba que sea un entero
+positivo antes de hacer la petición.
+
+```js
+formulario.addEventListener("submit", evento => {
+  evento.preventDefault();
+
+  const id = Number(campoId.value);
+  if (!Number.isInteger(id) || id < 1) {
+    estado.textContent = "Escribe un número de café entero y mayor que cero.";
+    return;
+  }
+
+  cargarCafe(id);
+});
+```
+
+### Paso 5. Reaccionar al clic y cargar el café inicial
+
+El botón del ejemplo recupera el café número 2 de las prácticas 7 y 8. Su tipo es `button` para
+que no envíe el formulario. Al final, carga ese mismo café al abrir la página.
+
+```js
+botonEjemplo.addEventListener("click", () => {
+  campoId.value = "2";
+  cargarCafe(2);
+});
+
+cargarCafe(2);
+```
+
+### Paso 6. Probar la práctica
+
+1. Al abrir la página, comprueba que aparece la ficha del café número 2.
+2. Pulsa **Cargar el café de las prácticas 7 y 8** y observa que la ficha vuelve a mostrarse sin
+   duplicarse. Comprueba que la ficha JSON aparece también en la página.
+3. Escribe otro número válido y pulsa **Buscar café**. Comprueba que cambia el contenido de la
+   ficha y el objeto reconstruido aparece en la consola.
+4. Prueba un número que no exista y observa el mensaje de error en la página y el detalle en la
+   consola.
+5. Envía el formulario pulsando Enter y luego usando el botón. Ambos deben iniciar la búsqueda.
+
+Con esta práctica guiada has unido el JSON y las promesas de las prácticas 7 y 8 con la creación de
+elementos del DOM y la gestión de eventos. La práctica que debes entregar a continuación es la
+Pokédex.
+
+## 9.4 PROYECTO FINAL: Pokédex interactiva
 
 En esta práctica crearás una Pokédex sencilla formada por dos páginas. `index.html` permitirá
 buscar un Pokémon por nombre y mostrará debajo una lista de 20 Pokémon. Desde la búsqueda o desde
@@ -5575,8 +5856,6 @@ cualquiera de las tarjetas se podrá abrir `ficha.html` para consultar la inform
 
 Practicarás el DOM, los eventos de formulario y de botón, `fetch`, las promesas, el paso de datos
 entre páginas mediante la URL y la creación segura de elementos HTML.
-
-La [solución completa](solución/index.html) está disponible en la carpeta `solución` del proyecto.
 
 ### Funcionamiento esperado
 
@@ -5613,44 +5892,25 @@ habilidades.
 
 ### Paso 1. Crear la página de inicio
 
-Crea `index.html` con esta estructura. Conserva los `id`, que se usarán para seleccionar los
-elementos desde JavaScript:
+Diseña y escribe `index.html`. La página debe tener una estructura semántica y contener:
 
-```html
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pokédex</title>
-  <link rel="stylesheet" href="pokemon.css">
-  <script src="index.js" defer></script>
-</head>
-<body>
-  <main>
-    <h1>Pokédex</h1>
-    <form id="formulario-busqueda">
-      <label for="nombre-pokemon">Buscar por nombre o número</label>
-      <input id="nombre-pokemon" name="pokemon" type="search" required>
-      <button type="submit">Buscar</button>
-    </form>
-    <p id="estado-busqueda" role="status" aria-live="polite"></p>
-    <section aria-labelledby="titulo-listado">
-      <h2 id="titulo-listado">Pokémon</h2>
-      <div id="listado-pokemon"></div>
-    </section>
-  </main>
-</body>
-</html>
-```
+- Un formulario con `id="formulario-busqueda"`.
+- Una etiqueta asociada a un campo de búsqueda con `id="nombre-pokemon"` y `name="pokemon"`.
+  El campo debe ser obligatorio.
+- Un botón **Buscar** de tipo `submit` dentro del formulario. Así se podrá iniciar la búsqueda
+  tanto con el botón como pulsando Enter.
+- Un elemento para los mensajes de estado con `id="estado-busqueda"`.
+- Una sección para el listado con un encabezado y un contenedor con
+  `id="listado-pokemon"`.
 
-El botón es `type="submit"` porque forma parte de un formulario: se podrá iniciar la búsqueda
-pulsándolo o presionando Enter en el campo.
+Incluye también el enlace a `pokemon.css` y carga `index.js` con `defer`. Conserva exactamente los
+identificadores indicados, porque el JavaScript los utilizará para localizar los elementos.
 
 ### Paso 2. Obtener los datos de la API
 
 1. En `index.js`, selecciona el formulario, el campo de búsqueda, el mensaje de estado y el
-   contenedor del listado con `document.querySelector()`. Comprueba que los elementos necesarios
+   contenedor del listado (`#formulario-busqueda`, `#nombre-pokemon`, `#estado-busqueda` y
+   `#listado-pokemon`) con `document.querySelector()`. Comprueba que los elementos necesarios
    existen.
 2. Crea `obtenerDatos(url)`. Debe realizar `fetch(url)`, comprobar `respuesta.ok`, lanzar un error
    si la respuesta HTTP no es correcta y devolver `respuesta.json()`.
@@ -5701,7 +5961,9 @@ pulsándolo o presionando Enter en el campo.
 1. Registra un manejador `submit` en el formulario mediante `addEventListener()`. Dentro del
    manejador, llama a `evento.preventDefault()` para evitar que el navegador recargue el índice.
 2. Lee el nombre desde el campo de búsqueda, elimina espacios sobrantes con `trim()` y conviértelo
-   a minúsculas. Si el campo queda vacío, muestra una indicación y no hagas la petición.
+   a minúsculas. Si queda vacío, muestra una indicación y no hagas la petición. Como el campo HTML
+   es obligatorio, si se envía vacío el navegador bloqueará el envío antes de disparar `submit`;
+   la comprobación de JavaScript también cubre el caso de que solo se hayan escrito espacios.
 3. Muestra «Buscando…» y consulta
    `https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(nombre)}` mediante `obtenerDatos()`.
 4. Si la API devuelve un Pokémon, navega a `ficha.html` usando el nombre recibido en los datos
@@ -5709,34 +5971,23 @@ pulsándolo o presionando Enter en el campo.
    página.
 5. Si la respuesta es `404`, muestra «No se ha encontrado ese Pokémon» en `#estado-busqueda`. Si
    falla la conexión u ocurre otro error, muestra un mensaje comprensible y registra el error.
-6. Prueba la búsqueda con `pikachu`, con un número válido, con un nombre inexistente y con el campo
-   vacío.
+6. Prueba la búsqueda con `pikachu`, con un número válido, con un nombre inexistente, con el campo
+   vacío (debe actuar la validación nativa del navegador) y con solo espacios (debe mostrarse la
+   indicación del manejador).
 
 ### Paso 6. Crear la página de ficha
 
-Crea `ficha.html`. Esta página recibe el nombre mediante un parámetro de búsqueda de la URL, por
-ejemplo `ficha.html?pokemon=pikachu`.
+Diseña y escribe `ficha.html`. Debe incluir:
 
-```html
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ficha Pokémon | Pokédex</title>
-  <link rel="stylesheet" href="pokemon.css">
-  <script src="ficha.js" defer></script>
-</head>
-<body>
-  <main>
-    <a href="index.html">Volver a la Pokédex</a>
-    <h1>Ficha del Pokémon</h1>
-    <p id="estado-ficha" role="status" aria-live="polite"></p>
-    <article id="ficha-pokemon" aria-live="polite"></article>
-  </main>
-</body>
-</html>
-```
+- Un enlace para volver a `index.html`.
+- Un encabezado para la ficha.
+- Un elemento con `id="estado-ficha"` para comunicar la carga y los posibles errores.
+- Un artículo o contenedor con `id="ficha-pokemon"` donde JavaScript construirá los datos.
+- El enlace a `pokemon.css` y la carga de `ficha.js` con `defer`.
+
+Conserva exactamente esos identificadores. Esta página recibe el nombre mediante un parámetro de
+búsqueda de la URL, por ejemplo `ficha.html?pokemon=pikachu`; el enlace «Ficha completa» y la
+búsqueda del índice deben construir esa dirección.
 
 ### Paso 7. Leer la URL y mostrar la ficha completa
 
@@ -5754,8 +6005,9 @@ ejemplo `ficha.html?pokemon=pikachu`.
 4. Crea `mostrarFicha(pokemon)`. Construye los elementos con `document.createElement()` y muestra:
    nombre, número, imagen con texto alternativo, tipos, altura, peso y habilidades. Puedes añadir
    las estadísticas (`stats`) como ampliación.
-5. Asigna el texto con `textContent`, configura la imagen con sus propiedades y añade los nodos al
-   artículo `#ficha-pokemon`. No insertes en `innerHTML` datos recibidos de la API.
+5. Selecciona `#estado-ficha` y `#ficha-pokemon` con `document.querySelector()` y comprueba que
+   existen. Asigna el texto con `textContent`, configura la imagen con sus propiedades y añade los
+   nodos al artículo `#ficha-pokemon`. No insertes en `innerHTML` datos recibidos de la API.
 6. Si no existe el Pokémon, si no se ha pasado un parámetro válido o si falla la red, muestra el
    error en `#estado-ficha` y conserva el enlace para volver.
 
