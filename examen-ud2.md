@@ -31,7 +31,7 @@ Escribe el JavaScript que permita gestionar un pedido.
 
 2. Crea una clase `Pedido` que guarde sus líneas. Cada línea debe tener un producto y una cantidad. Al añadir un producto, comprueba que esté disponible y que la cantidad sea un entero positivo. Si ya estaba en el pedido, suma la cantidad; si no, crea una línea nueva.
 
-   Añade métodos para calcular el subtotal y el total. Si el subtotal llega a 20 €, aplica un descuento del 10 % y redondea el total a dos decimales. Escribe también una función que reciba el ID y la cantidad como cadenas, busque el producto y lo añada al pedido. Si algo no es válido o el producto no existe, maneja el error con `try`/`catch` e informa de lo ocurrido.
+   Añade métodos para calcular el subtotal y el total. Si el subtotal llega a 20 €, aplica un descuento del 10 % y redondea el total a dos decimales. Escribe también una función que reciba el ID y la cantidad como cadenas, busque el producto y lo añada al pedido. Si algo no es válido o el producto no existe, maneja el error e informa de lo ocurrido.
 
 3. Crea una función para buscar productos disponibles por nombre. La búsqueda debe funcionar aunque se escriba en mayúsculas o minúsculas. Prepara un resumen del pedido con el nombre, el precio y la cantidad de cada producto. Usa un método de arrays para sumar los importes.
 
