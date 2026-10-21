@@ -10,7 +10,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 - Resuelve los dos ejercicios. Cada uno vale **5 puntos** y se recomienda dedicarle **60 minutos**.
 - Escribe código legible, utiliza nombres descriptivos y separa las responsabilidades en funciones y métodos.
 - Controla los datos no válidos y los errores, no dejes que un fallo interrumpa la aplicación sin informar al usuario.
-- **IMPORTANTE:** Ten en cuenta que esto es un simulacro y, por lo tanto, es más guiado de lo que será el examen real.
+- **IMPORTANTE:** Ten en cuenta que esto es un simulacro y, por lo tanto, es más guiado de lo que será el examen real. Y que la tipología de ejercicios no tendrá por qué coincidir, pudiendo ser distintos en el examen real.
 
 ---
 
