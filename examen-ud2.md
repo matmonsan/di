@@ -5,6 +5,8 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 
 [⌂ Volver al inicio](index.md)
 
+{% comment %}
+
 ## Instrucciones
 
 - Resuelve los dos ejercicios. Cada uno vale **5 puntos** y se recomienda dedicarle **60 minutos**.
@@ -40,7 +42,7 @@ Escribe el JavaScript que permita gestionar un pedido.
 Se valorará que el pedido funcione, que las comprobaciones y los errores estén bien resueltos y que el código sea claro.
 
 ---
-{% comment %}
+
 ## Ejercicio 2. Manejo de APIs
 
 Ahora vas a crear una página sencilla para consultar publicaciones de Internet y buscar por título.
