@@ -1,5 +1,5 @@
 ---
-title: UD 2. Simulacro de examen UD2: Fundamentos de programación para frontend con JavaScript
+title: Simulacro de examen UD2. Fundamentos de programación para frontend con JavaScript
 description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Profesor:</strong> Matías Montávez Sánchez"
 ---
 
