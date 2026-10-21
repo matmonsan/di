@@ -40,7 +40,6 @@ Escribe el JavaScript que permita gestionar un pedido.
 Se valorará que el pedido funcione, que las comprobaciones y los errores estén bien resueltos y que el código sea claro.
 
 ---
-{% comment %}
 
 ## Ejercicio 2. Manejo de APIs
 
@@ -86,4 +85,3 @@ Completa `app.js` para que la página haga lo siguiente:
 5. Organiza la carga, la búsqueda y la actualización de la lista en funciones con nombres claros. Evita repetir el mismo código.
 
 Se valorará que la página responda correctamente, que los errores se comuniquen y que uses bien los elementos necesarios.
-{% endcomment %}
