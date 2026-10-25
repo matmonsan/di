@@ -5,7 +5,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 
 [⌂ Volver al inicio](index.md)
 
-# Índice de contenidos
+# Índice
 
 - [1. Introducción a las interfaces naturales de usuario](#1-introducción-a-las-interfaces-naturales-de-usuario)
 - [2. Tecnologías para desarrollar interfaces naturales](#2-tecnologías-para-desarrollar-interfaces-naturales)
