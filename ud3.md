@@ -46,7 +46,7 @@ Para implementar NUI en el navegador moderno sin necesidad de plugins externos, 
 
 ### 3. Reconocimiento de voz con Web Speech API
 
-![Web Speech API](./assets/img/audio.png)
+![Web Speech API](./assets/img/audio.png){: width="300"}
 
 La **Web Speech API** es una interfaz del navegador para incorporar voz a una aplicación web. Se compone de dos partes:
 
