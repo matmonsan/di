@@ -43,6 +43,8 @@ Para implementar NUI en el navegador moderno sin necesidad de plugins externos, 
 
 ### 3. Reconocimiento de voz con Web Speech API
 
+![Web Speech API](./assets/img/audio.png)
+
 La **Web Speech API** es una interfaz del navegador para incorporar voz a una aplicación web. Se compone de dos partes:
 
 - **SpeechRecognition:** convierte el habla en texto. La aplicación puede analizar ese texto y utilizarlo para ejecutar acciones, como cambiar el contenido o el aspecto de la página.
@@ -57,6 +59,60 @@ El reconocimiento de voz sigue un flujo parecido al de otros eventos del navegad
 3. Tras una acción del usuario (por ejemplo, pulsar un botón), se llama a `start()` y el navegador comienza a escuchar.
 4. El servicio de reconocimiento procesa el audio y emite eventos. Si reconoce palabras, las comunica mediante `result`; si ocurre un problema, lo hace mediante `error`.
 5. La aplicación interpreta el texto y actualiza la interfaz. Al detenerse el reconocimiento, se produce `end`.
+
+**Ejemplo.** Imaginemos una página con un botón «Hablar» y un párrafo donde se muestra lo que el usuario dice:
+
+```js
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+// 1. Se crea el objeto
+const reconocimiento = new SpeechRecognition();
+
+// 2. Se configura el idioma y el tipo de resultados
+reconocimiento.lang = "es-ES";
+reconocimiento.interimResults = false; // solo resultados finales
+reconocimiento.maxAlternatives = 1;
+
+// 3. Una acción del usuario inicia la escucha
+document.querySelector("#hablar").addEventListener("click", () => {
+  reconocimiento.start();
+});
+
+// 4. El servicio emite eventos
+reconocimiento.addEventListener("result", (e) => {
+  // 5. La aplicación interpreta el texto y actualiza la interfaz
+  const texto = e.results[0][0].transcript.toLowerCase();
+  document.querySelector("#salida").textContent = `Has dicho: ${texto}`;
+  if (texto.includes("azul")) document.body.style.background = "blue";
+});
+
+reconocimiento.addEventListener("error", (e) => {
+  document.querySelector("#salida").textContent = `Error: ${e.error}`;
+});
+
+reconocimiento.addEventListener("end", () => {
+  console.log("El reconocimiento ha terminado");
+});
+```
+
+Secuencia: el usuario pulsa «Hablar» (se ejecuta `start()` y el navegador pide permiso de micrófono) y dice «pon la página en azul». El servicio procesa el audio y lanza `result` con la transcripción «pon la página en azul». La aplicación busca la palabra «azul» y cambia el fondo. Como `continuous` es `false` por defecto, el reconocimiento se detiene solo tras la frase y se dispara `end`. Si el usuario deniega el micrófono o no se oye nada, se lanza `error` (por ejemplo, `not-allowed` o `no-speech`) en lugar de `result`.
+
+**¿Qué es `maxAlternatives`?** Indica cuántas transcripciones posibles devuelve el reconocedor para cada frase. El audio puede ser ambiguo y el motor puede proponer varias interpretaciones, ordenadas de más a menos probable (por ejemplo, «bola» y «bota»). Con `1` solo se recibe la mejor, que es el valor por defecto, por lo que esa línea es opcional.
+
+**¿Por qué `results[0][0]` tiene dos índices?** Porque `e.results` es una lista de resultados y cada resultado es, a su vez, una lista de alternativas:
+
+- Primer índice (`results[i]`): cada fragmento de habla reconocido. Con `continuous = false` suele haber uno solo; con `continuous = true`, uno por frase o pausa.
+- Segundo índice (`results[i][j]`): cada alternativa de ese fragmento. La posición `0` es la más probable y llegan tantas como indique `maxAlternatives`.
+
+Cada alternativa es un objeto con `transcript` (el texto) y `confidence` (valor entre 0 y 1). Con `maxAlternatives = 3`:
+
+```js
+e.results[0][0].transcript  // "pon la página en azul"  (confidence 0.92)
+e.results[0][1].transcript  // "pon la pagina en azul"  (confidence 0.05)
+e.results[0][2].transcript  // "pon la página en as ul" (confidence 0.01)
+```
+
+Así, `results[0][0]` significa «la mejor alternativa del primer resultado».
 
 El objeto de reconocimiento no es el micrófono ni un traductor de intenciones: entrega una o más transcripciones posibles del audio. Es la aplicación la que debe decidir qué significa una frase y qué acciones permite ejecutar. Por ejemplo, «pon la página en azul» podría analizarse para identificar la intención «cambiar color» y el valor «azul». El ejemplo de esta unidad utiliza una lógica más sencilla: busca palabras concretas dentro de la transcripción.
 
@@ -133,7 +189,9 @@ Para probar el ejemplo, abre la página desde `localhost` o una conexión segura
 
 #### 3.5. Ejemplo: control de interfaz mediante voz
 
-En el siguiente ejemplo, el usuario activa el reconocimiento con un botón. La aplicación muestra el texto detectado y cambia el color de fondo cuando reconoce los comandos «rojo», «verde», «azul» o «restablecer». Observa cómo se configuran las opciones, cómo se responde a los eventos y cómo se relaciona la transcripción con una acción de la interfaz.
+En el siguiente ejemplo, el usuario activa el reconocimiento con un botón. La aplicación muestra el texto detectado y cambia el color de fondo cuando reconoce los comandos «rojo», «verde», «azul» o «restablecer». Observa cómo se configuran las opciones, cómo se responde a los eventos y cómo se relaciona la transcripción con una acción de la interfaz. El código se separa en dos archivos: `index.html` (estructura y estilos) y `app.js` (lógica).
+
+Archivo `index.html`:
 
 ```html
 <!DOCTYPE html>
@@ -176,74 +234,111 @@ En el siguiente ejemplo, el usuario activa el reconocimiento con un botón. La a
     <p>Último comando detectado: <span id="commandText">-</span></p>
   </div>
 
-  <script>
-    // Comprobación de compatibilidad con prefijos de navegador
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      alert("Tu navegador no soporta la Web Speech API. Prueba con Google Chrome u Edge.");
-    } else {
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'es-ES';
-      recognition.continuous = true;
-      recognition.interimResults = false;
-
-      const btnStart = document.getElementById('btnStart');
-      const statusText = document.getElementById('statusText');
-      const commandText = document.getElementById('commandText');
-
-      let isListening = false;
-
-      btnStart.addEventListener('click', () => {
-        if (!isListening) {
-          recognition.start();
-        } else {
-          recognition.stop();
-        }
-      });
-
-      recognition.onstart = () => {
-        isListening = true;
-        statusText.textContent = "Estado: Escuchando...";
-        btnStart.textContent = "Detener Micrófono";
-      };
-
-      recognition.onend = () => {
-        isListening = false;
-        statusText.textContent = "Estado: Inactivo";
-        btnStart.textContent = "Activar Micrófono";
-      };
-
-      recognition.onresult = (event) => {
-        const lastIndex = event.results.length - 1;
-        const transcript = event.results[lastIndex][0].transcript.trim().toLowerCase();
-        commandText.textContent = transcript;
-
-        // Lógica de procesamiento de comandos simples
-        if (transcript.includes('rojo')) {
-          document.body.style.backgroundColor = '#f8d7da';
-        } else if (transcript.includes('verde')) {
-          document.body.style.backgroundColor = '#d4edda';
-        } else if (transcript.includes('azul')) {
-          document.body.style.backgroundColor = '#cce5ff';
-        } else if (transcript.includes('restablecer') || transcript.includes('blanco')) {
-          document.body.style.backgroundColor = '#ffffff';
-        }
-      };
-
-      recognition.onerror = (event) => {
-        console.error("Error en el reconocimiento de voz:", event.error);
-        statusText.textContent = "Error: " + event.error;
-      };
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
+```
+
+Archivo `app.js` (debe estar en la misma carpeta que `index.html`):
+
+```js
+// Chrome y Edge exponen la API con el prefijo "webkit"; otros navegadores,
+// sin prefijo. Se usa la que exista. Si ninguna existe, el valor es undefined.
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+// Si el navegador no soporta la API, se avisa y no se ejecuta el resto.
+if (!SpeechRecognition) {
+  alert("Tu navegador no soporta la Web Speech API. Prueba con Google Chrome u Edge.");
+} else {
+  // Se crea el objeto que se encargará de escuchar y transcribir.
+  const recognition = new SpeechRecognition();
+
+  // Idioma esperado del habla: español de España.
+  recognition.lang = 'es-ES';
+  // true: sigue escuchando tras cada frase, hasta que se llame a stop().
+  // false (por defecto) pararía solo después de la primera frase.
+  recognition.continuous = true;
+  // false: solo se reciben resultados finales, no las transcripciones parciales.
+  recognition.interimResults = false;
+
+  // Se guardan referencias a los elementos del HTML con los que se va a trabajar.
+  const btnStart = document.getElementById('btnStart');
+  const statusText = document.getElementById('statusText');
+  const commandText = document.getElementById('commandText');
+
+  // Variable de control para saber si el micrófono está activo ahora mismo.
+  let isListening = false;
+
+  // El botón alterna entre iniciar y detener la escucha.
+  // start() debe llamarse tras una acción del usuario: así el navegador
+  // puede pedir el permiso del micrófono.
+  btnStart.addEventListener('click', () => {
+    if (!isListening) {
+      recognition.start();
+    } else {
+      recognition.stop();
+    }
+  });
+
+  // Se dispara cuando el navegador empieza a escuchar de verdad.
+  // Aquí se actualiza la interfaz para reflejar el nuevo estado.
+  recognition.onstart = () => {
+    isListening = true;
+    statusText.textContent = "Estado: Escuchando...";
+    btnStart.textContent = "Detener Micrófono";
+  };
+
+  // Se dispara siempre que la escucha termina: por stop(), por un error
+  // o porque el navegador la cierra. Se restaura la interfaz al estado inicial.
+  recognition.onend = () => {
+    isListening = false;
+    statusText.textContent = "Estado: Inactivo";
+    btnStart.textContent = "Activar Micrófono";
+  };
+
+  // Se dispara cada vez que el servicio reconoce una frase.
+  recognition.onresult = (event) => {
+    // Con continuous = true, event.results acumula todas las frases de la sesión.
+    // La que acaba de llegar es la última de la lista.
+    const lastIndex = event.results.length - 1;
+
+    // [lastIndex] es el resultado y [0] su mejor alternativa (la más probable).
+    // trim() quita espacios sobrantes y toLowerCase() pasa a minúsculas
+    // para que "Rojo" y "rojo" se traten igual.
+    const transcript = event.results[lastIndex][0].transcript.trim().toLowerCase();
+
+    // Se muestra en pantalla lo que se ha entendido.
+    commandText.textContent = transcript;
+
+    // Se busca una palabra clave dentro de la frase y se aplica la acción.
+    // includes() permite que funcione con frases como "pon el fondo en rojo".
+    // Si no coincide ningún comando, no se cambia nada.
+    if (transcript.includes('rojo')) {
+      document.body.style.backgroundColor = '#f8d7da';
+    } else if (transcript.includes('verde')) {
+      document.body.style.backgroundColor = '#d4edda';
+    } else if (transcript.includes('azul')) {
+      document.body.style.backgroundColor = '#cce5ff';
+    } else if (transcript.includes('restablecer') || transcript.includes('blanco')) {
+      document.body.style.backgroundColor = '#ffffff';
+    }
+  };
+
+  // Se dispara si algo falla (permiso denegado, sin micrófono, sin red...).
+  // event.error contiene el código, por ejemplo "not-allowed" o "no-speech".
+  // Después del error, el navegador lanza también "end".
+  recognition.onerror = (event) => {
+    console.error("Error en el reconocimiento de voz:", event.error);
+    statusText.textContent = "Error: " + event.error;
+  };
+}
 ```
 
 #### 3.6. Ejemplo: síntesis de voz para leer un texto
 
 Este ejemplo utiliza `SpeechSynthesis` para que el navegador lea en voz alta el texto escrito por el usuario. Se puede seleccionar el idioma, iniciar la lectura y detenerla. La voz concreta depende de las voces que tenga disponibles el dispositivo.
+
+Archivo `index.html`:
 
 ```html
 <!DOCTYPE html>
@@ -270,57 +365,84 @@ Este ejemplo utiliza `SpeechSynthesis` para que el navegador lea en voz alta el 
   <button id="detener" type="button">Detener</button>
   <p id="estado" role="status" aria-live="polite">Preparado.</p>
 
-  <script>
-    const texto = document.getElementById("texto");
-    const idioma = document.getElementById("idioma");
-    const estado = document.getElementById("estado");
-    const hablar = document.getElementById("hablar");
-    const detener = document.getElementById("detener");
-
-    if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
-      estado.textContent = "Este navegador no admite la síntesis de voz.";
-      hablar.disabled = true;
-      detener.disabled = true;
-    } else {
-      hablar.addEventListener("click", () => {
-        const mensaje = texto.value.trim();
-
-        if (!mensaje) {
-          estado.textContent = "Escribe un texto antes de iniciar la lectura.";
-          return;
-        }
-
-        // Cancela una lectura anterior para evitar que se acumulen mensajes.
-        window.speechSynthesis.cancel();
-
-        const utterance = new SpeechSynthesisUtterance(mensaje);
-        utterance.lang = idioma.value;
-        utterance.onstart = () => {
-          estado.textContent = "Leyendo el texto...";
-        };
-        utterance.onend = () => {
-          estado.textContent = "Lectura finalizada.";
-        };
-        utterance.onerror = (event) => {
-          estado.textContent = "No se pudo completar la lectura: " + event.error;
-        };
-
-        window.speechSynthesis.speak(utterance);
-      });
-
-      detener.addEventListener("click", () => {
-        window.speechSynthesis.cancel();
-        estado.textContent = "Lectura detenida.";
-      });
-    }
-  </script>
+  <script src="lectura.js"></script>
 </body>
 </html>
 ```
 
+Archivo `lectura.js` (en la misma carpeta que `index.html`):
+
+```js
+// Referencias a los elementos del HTML que se van a leer o modificar.
+const texto = document.getElementById("texto");
+const idioma = document.getElementById("idioma");
+const estado = document.getElementById("estado");
+const hablar = document.getElementById("hablar");
+const detener = document.getElementById("detener");
+
+// Se comprueba que el navegador dispone de las dos piezas necesarias:
+// speechSynthesis (el sintetizador que reproduce) y
+// SpeechSynthesisUtterance (el "mensaje" que se le entrega para leer).
+if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+  // Si falta alguna, se informa y se desactivan los botones para que
+  // el usuario no pulse algo que no va a funcionar.
+  estado.textContent = "Este navegador no admite la síntesis de voz.";
+  hablar.disabled = true;
+  detener.disabled = true;
+} else {
+  // Botón "Leer texto".
+  hablar.addEventListener("click", () => {
+    // Se toma el contenido del textarea sin espacios al principio ni al final.
+    const mensaje = texto.value.trim();
+
+    // Si está vacío no hay nada que leer: se avisa y se sale de la función.
+    if (!mensaje) {
+      estado.textContent = "Escribe un texto antes de iniciar la lectura.";
+      return;
+    }
+
+    // Cancela una lectura anterior para evitar que se acumulen mensajes.
+    // Sin esto, pulsar varias veces el botón encolaría las lecturas una tras otra.
+    window.speechSynthesis.cancel();
+
+    // Se crea el mensaje que se va a pronunciar, con el texto escrito.
+    const utterance = new SpeechSynthesisUtterance(mensaje);
+
+    // Se indica el idioma elegido en el desplegable; el navegador usará
+    // una voz instalada que coincida con ese idioma.
+    utterance.lang = idioma.value;
+
+    // Eventos del mensaje: permiten reflejar en la interfaz cada fase de la lectura.
+    // Cuando empieza a sonar la voz:
+    utterance.onstart = () => {
+      estado.textContent = "Leyendo el texto...";
+    };
+    // Cuando termina de leer todo el texto:
+    utterance.onend = () => {
+      estado.textContent = "Lectura finalizada.";
+    };
+    // Si algo falla durante la lectura (por ejemplo, no hay voz disponible):
+    utterance.onerror = (event) => {
+      estado.textContent = "No se pudo completar la lectura: " + event.error;
+    };
+
+    // Se entrega el mensaje al sintetizador, que empieza a leerlo.
+    window.speechSynthesis.speak(utterance);
+  });
+
+  // Botón "Detener": cancela la lectura en curso y vacía la cola de mensajes.
+  // Se actualiza el estado a mano porque, al cancelar, onend puede no
+  // dispararse de forma fiable en todos los navegadores.
+  detener.addEventListener("click", () => {
+    window.speechSynthesis.cancel();
+    estado.textContent = "Lectura detenida.";
+  });
+}
+```
+
 Prueba a cambiar el texto y el idioma, inicia la lectura y deténla antes de que termine. Si no se escucha una voz, revisa el volumen del dispositivo y las voces disponibles en la configuración del sistema o del navegador.
 
-#### 3.7. Casos de uso y ejercicio: asistente de voz para una página web
+#### 3.7. Casos de uso de la voz en interfaces
 
 El reconocimiento y la síntesis de voz pueden utilizarse, por ejemplo, para:
 
@@ -329,7 +451,9 @@ El reconocimiento y la síntesis de voz pueden utilizarse, por ejemplo, para:
 - **Asistentes y experiencias educativas:** formular comandos, recibir confirmaciones habladas o practicar pronunciación e idiomas.
 - **Interfaces en contextos compartidos:** consultar información en un kiosco o dispositivo público; en estos casos hay que considerar ruido, privacidad y disponibilidad de una alternativa táctil.
 
-**Ejercicio: asistente de voz para una página web.** Amplía el ejemplo para convertirlo en un pequeño asistente de voz:
+#### 3.8. Actividades
+
+**Actividad 1: asistente de voz para una página web.** Amplía el ejemplo para convertirlo en un pequeño asistente de voz:
 
 1. Añade los comandos «más grande» y «más pequeño» para cambiar el tamaño del texto principal.
 2. Añade los comandos «modo oscuro» y «modo claro» para cambiar el aspecto de la página.
@@ -337,7 +461,19 @@ El reconocimiento y la síntesis de voz pueden utilizarse, por ejemplo, para:
 4. Añade una respuesta escrita cuando se reconozca un comando. Como ampliación, utiliza `SpeechSynthesis` para leerla. Si se reconoce una frase que no corresponde a ningún comando, muestra un mensaje sin cambiar la página.
 5. Comprueba qué ocurre si el usuario deniega el permiso del micrófono, no se detecta habla o el navegador no admite el reconocimiento. La página debe informar de la situación y mantener los controles alternativos.
 
-**Entrega:** el código actualizado y una breve explicación de los comandos implementados y de las pruebas realizadas. Prueba cada comando al menos una vez y verifica también el caso de una frase desconocida.
+**Entrega:** el código actualizado y una breve explicación de los comandos implementados (mediante comentarios en el código) y de las pruebas realizadas. Prueba cada comando al menos una vez y verifica también el caso de una frase desconocida.
+
+**Actividad 2: lista de la compra por voz.** Crea una aplicación web que permita gestionar una lista de la compra usando la voz. Tú decides la estructura, los archivos, el diseño y cómo interpretar las frases.
+
+Requisitos mínimos:
+
+- El usuario puede añadir un producto diciendo una frase como «añade leche», eliminar uno («quita leche») y vaciar la lista completa.
+- La lista se muestra en pantalla y se conserva al recargar la página.
+- La aplicación responde hablando para confirmar cada acción (por ejemplo, «He añadido leche»).
+- Debe gestionar los casos límite: navegador no compatible, permiso de micrófono denegado, silencio, frase no entendida y producto que no está en la lista.
+- Debe ofrecer una alternativa sin voz (por ejemplo, un campo de texto y botones) para poder usarse sin micrófono.
+
+**Entrega:** los archivos del proyecto y una breve explicación (comentada en el código) de cómo interpretas las frases, qué decisiones de diseño has tomado y qué pruebas has realizado (incluidos los casos límite).
 
 ### 4. Detección de manos y rostro
 Utilizaremos **MediaPipe Tasks Vision** mediante CDNs en JavaScript para detectar los puntos de referencia de la mano (21 landmarks) e interactuar con botones dinámicos en pantalla.
