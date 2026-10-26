@@ -479,134 +479,231 @@ Requisitos mínimos:
 **Entrega:** los archivos del proyecto y una breve explicación (comentada en el código) de cómo interpretas las frases, qué decisiones de diseño has tomado y qué pruebas has realizado (incluidos los casos límite).
 
 ### 4. Detección de manos y rostro
-Utilizaremos **MediaPipe Tasks Vision** mediante CDNs en JavaScript para detectar los puntos de referencia de la mano (21 landmarks) e interactuar con botones dinámicos en pantalla.
+La cámara capta imágenes y **MediaPipe Tasks Vision** las analiza en el navegador con un modelo ya entrenado. La biblioteca devuelve puntos de referencia (*landmarks*) que podemos usar para crear interacciones.
 
 #### 4.1. Detección de manos (Hand Landmarker)
-Cada mano devuelve 21 coordenadas tri-dimensionales $(x, y, z)$. El punto `0` es la muñeca, el `4` es la punta del pulgar y el `8` la punta del índice.
+El modelo localiza hasta 21 puntos por mano. Cada punto tiene coordenadas `x`, `y` y `z`: `x` e `y` indican su posición en la imagen (entre `0` y `1`), y `z` representa la profundidad aproximada. Por ejemplo, el punto `0` es la muñeca, el `4` es la punta del pulgar y el `8` la punta del índice.
+
+En este ejemplo, la página muestra la posición de la punta del índice en un campo, dibuja un botón en la posición que indiquemos y reacciona cuando el índice entra en él: el botón cambia de color y aparece el mensaje «Botón pulsado». Las coordenadas X e Y se expresan como porcentajes de la imagen: (0 %, 0 %) es la esquina superior izquierda y (100 %, 100 %) la esquina inferior derecha. Crea tres archivos en la misma carpeta, `index.html`, `styles.css` y `app.js`, y copia cada bloque en el archivo correspondiente. Abre `index.html` desde un servidor local (por ejemplo, Live Server en VS Code) o una página HTTPS. La cámara no suele estar disponible al abrir el archivo directamente con `file://`. Acepta el permiso de cámara y comprueba que el navegador tenga acceso a ella.
 
 ```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Interacción con Manos - MediaPipe</title>
-  <style>
-    body { margin: 0; overflow: hidden; background: #1a1a1a; color: white; font-family: sans-serif; }
-    #container { position: relative; width: 640px; height: 480px; margin: 20px auto; }
-    video, canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: scaleX(-1); }
-    .interactive-btn {
-      position: absolute;
-      top: 50px;
-      left: 220px;
-      width: 200px;
-      height: 60px;
-      background: rgba(255, 0, 100, 0.8);
-      border: 3px solid white;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-      z-index: 10;
-      pointer-events: none;
-    }
-    .active { background: rgba(0, 255, 100, 0.9) !important; }
-  </style>
-  <script type="module">
-    import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
-
-    const video = document.getElementById("webcam");
-    const canvas = document.getElementById("output_canvas");
-    const ctx = canvas.getContext("2d");
-    const virtualBtn = document.getElementById("virtualBtn");
-
-    let handLandmarker;
-    let lastVideoTime = -1;
-
-    async function initializeHandLandmarker() {
-      const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
-      );
-      handLandmarker = await HandLandmarker.createFromOptions(vision, {
-        baseOptions: {
-          modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-          delegate: "GPU"
-        },
-        runningMode: "VIDEO",
-        numHands: 1
-      });
-      startWebcam();
-    }
-
-    function startWebcam() {
-      navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } }).then((stream) => {
-        video.srcObject = stream;
-        video.addEventListener("loadeddata", predictWebcam);
-      });
-    }
-
-    async function predictWebcam() {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
-      if (lastVideoTime !== video.currentTime && handLandmarker) {
-        lastVideoTime = video.currentTime;
-        const results = handLandmarker.detectForVideo(video, performance.now());
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (results.landmarks && results.landmarks.length > 0) {
-          const landmarks = results.landmarks[0];
-          // Punta del índice (Landmark 8)
-          const indexTip = landmarks[8];
-
-          // Invertir X para coincidir con la vista espejada
-          const cursorX = (1 - indexTip.x) * canvas.width;
-          const cursorY = indexTip.y * canvas.height;
-
-          // Dibujar puntero virtual
-          ctx.beginPath();
-          ctx.arc(cursorX, cursorY, 15, 0, 2 * Math.PI);
-          ctx.fillStyle = "yellow";
-          ctx.fill();
-
-          // Comprobar colisión con el botón
-          const btnRect = virtualBtn.getBoundingClientRect();
-          const containerRect = document.getElementById("container").getBoundingClientRect();
-
-          const normalizedX = cursorX + containerRect.left;
-          const normalizedY = cursorY + containerRect.top;
-
-          if (
-            normalizedX >= btnRect.left &&
-            normalizedX <= btnRect.right &&
-            normalizedY >= btnRect.top &&
-            normalizedY <= btnRect.bottom
-          ) {
-            virtualBtn.classList.add("active");
-            virtualBtn.textContent = "¡Tocado!";
-          } else {
-            virtualBtn.classList.remove("active");
-            virtualBtn.textContent = "Tócame con el índice";
-          }
-        }
-      }
-      requestAnimationFrame(predictWebcam);
-    }
-
-    initializeHandLandmarker();
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detección de manos - MediaPipe</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="container">
-    <video id="webcam" autoplay playsinline></video>
-    <canvas id="output_canvas"></canvas>
-    <div id="virtualBtn" class="interactive-btn">Tócame con el índice</div>
+  <h1>Detección de manos</h1>
+  <button id="botonInicio">Iniciar cámara</button>
+  <p id="estado" role="status">Pulsa el botón y permite el acceso a la cámara.</p>
+  <p>Posición del índice: <output id="posicionIndice">Sin detectar</output></p>
+  <p id="mensaje" role="status"></p>
+  <div id="contenedorVideo">
+    <video id="videoCamara" autoplay muted playsinline></video>
   </div>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
 ```
+
+El archivo `styles.css` contiene los estilos y la posición de los elementos:
+
+```css
+body {
+  margin: 0;
+  padding: 1rem;
+  background: #1a1a1a;
+  color: white;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+button {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#estado { min-height: 1.5em; }
+
+#mensaje { min-height: 1.5em; font-weight: bold; }
+
+video {
+  width: 100%;
+  height: 100%;
+  background: #333;
+}
+
+#contenedorVideo {
+  position: relative;
+  width: min(640px, 100%);
+  aspect-ratio: 4 / 3;
+  margin: 1rem auto;
+  background: #333;
+}
+
+#botonDibujado {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 0.6rem 1rem;
+  border: 2px solid white;
+  border-radius: 6px;
+  background: #087f5b;
+  color: white;
+}
+
+#botonDibujado.pulsado { background: #c92a2a; }
+```
+
+El archivo `app.js` contiene la lógica de la detección:
+
+```javascript
+import { FilesetResolver, HandLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+
+const videoCamara = document.getElementById("videoCamara");
+const campoPosicion = document.getElementById("posicionIndice");
+const botonInicio = document.getElementById("botonInicio");
+const estado = document.getElementById("estado");
+const mensaje = document.getElementById("mensaje");
+const contenedorVideo = document.getElementById("contenedorVideo");
+let detectorManos;
+let ultimoTiempoVideo = -1;
+let flujoCamara;
+
+// Solicita la cámara, carga el modelo de manos e inicia la detección.
+async function iniciarDeteccion() {
+  botonInicio.disabled = true;
+  estado.textContent = "Solicitando acceso a la cámara...";
+
+  try {
+    flujoCamara = await navigator.mediaDevices.getUserMedia({
+      video: { width: 640, height: 480 }
+    });
+    videoCamara.srcObject = flujoCamara;
+    await videoCamara.play();
+
+    estado.textContent = "Cargando el detector...";
+    const archivosVision = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+    );
+    detectorManos = await HandLandmarker.createFromOptions(archivosVision, {
+      baseOptions: {
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
+      },
+      runningMode: "VIDEO",
+      numHands: 1
+    });
+
+    estado.textContent = "Cámara activa: muestra la punta del índice.";
+    dibujarBoton(50, 50);
+    requestAnimationFrame(detectarManoEnVideo);
+  } catch (errorInicio) {
+    console.error(errorInicio);
+    flujoCamara?.getTracks().forEach((pista) => pista.stop());
+    flujoCamara = undefined;
+    videoCamara.srcObject = null;
+    detectorManos?.close();
+    detectorManos = undefined;
+    botonInicio.disabled = false;
+    estado.textContent = "No se pudo iniciar. Comprueba el permiso de cámara, la conexión a Internet y que uses HTTPS o localhost.";
+  }
+}
+
+// Crea un botón en el vídeo usando porcentajes desde su esquina superior izquierda.
+function dibujarBoton(posicionX, posicionY) {
+  let boton = document.getElementById("botonDibujado");
+
+  if (!boton) {
+    boton = document.createElement("button");
+    boton.id = "botonDibujado";
+    boton.textContent = "Botón";
+    boton.type = "button";
+
+    contenedorVideo.appendChild(boton);
+  }
+
+  boton.style.left = `${posicionX}%`;
+  boton.style.top = `${posicionY}%`;
+}
+
+// Indica si un punto (en porcentajes del vídeo) está dentro del botón.
+function estaDentroDelBoton(posicionX, posicionY) {
+  const rectBoton = document.getElementById("botonDibujado").getBoundingClientRect();
+  const rectContenedor = contenedorVideo.getBoundingClientRect();
+  const izquierda = (rectBoton.left - rectContenedor.left) / rectContenedor.width * 100;
+  const derecha = (rectBoton.right - rectContenedor.left) / rectContenedor.width * 100;
+  const arriba = (rectBoton.top - rectContenedor.top) / rectContenedor.height * 100;
+  const abajo = (rectBoton.bottom - rectContenedor.top) / rectContenedor.height * 100;
+
+  return posicionX >= izquierda && posicionX <= derecha &&
+         posicionY >= arriba && posicionY <= abajo;
+}
+
+// Cambia el aspecto del botón y el mensaje según si el índice está dentro.
+function actualizarBoton(dentro) {
+  const boton = document.getElementById("botonDibujado");
+
+  if (dentro) {
+    boton.classList.add("pulsado");
+    mensaje.textContent = "Botón pulsado";
+  } else {
+    boton.classList.remove("pulsado");
+    mensaje.textContent = "";
+  }
+}
+
+/**
+ * Analiza el fotograma actual, muestra la posición de la punta del índice
+ * y cambia el botón según el índice esté dentro o fuera.
+ * Se vuelve a ejecutar en el siguiente fotograma mientras la cámara está activa.
+ */
+function detectarManoEnVideo() {
+  // Solo analiza una imagen cuando el vídeo ha avanzado y el detector está listo.
+  if (videoCamara.currentTime !== ultimoTiempoVideo && detectorManos) {
+    ultimoTiempoVideo = videoCamara.currentTime;
+    const resultados = detectorManos.detectForVideo(videoCamara, performance.now());
+
+    // Si hay una mano, el punto 8 corresponde a la punta del dedo índice.
+    if (resultados.landmarks && resultados.landmarks.length > 0) {
+      const puntaIndice = resultados.landmarks[0][8];
+      // MediaPipe entrega coordenadas entre 0 y 1; las convertimos a porcentajes.
+      const posicionX = puntaIndice.x * 100;
+      const posicionY = puntaIndice.y * 100;
+      campoPosicion.textContent = `X: ${posicionX.toFixed(1)} %, Y: ${posicionY.toFixed(1)} %`;
+      actualizarBoton(estaDentroDelBoton(posicionX, posicionY));
+    } else {
+      campoPosicion.textContent = "No se detecta ninguna mano";
+      actualizarBoton(false);
+    }
+  }
+
+  // Solicita analizar el siguiente fotograma de la cámara.
+  requestAnimationFrame(detectarManoEnVideo);
+}
+
+botonInicio.addEventListener("click", iniciarDeteccion);
+```
+
+**Explicación paso a paso del JavaScript:**
+
+1. **Importar MediaPipe.** La primera línea descarga la biblioteca que contiene el detector. `FilesetResolver` prepara los archivos necesarios para ejecutarlo en el navegador y `HandLandmarker` es el detector de manos.
+2. **Conectar JavaScript con el HTML.** Las llamadas a `getElementById` guardan referencias al vídeo, al campo de posición, al botón de inicio, al texto de estado y al contenedor del vídeo. `mensaje` es el texto donde aparece «Botón pulsado». `detectorManos`, `ultimoTiempoVideo` y `flujoCamara` guardan, respectivamente, el detector, el instante de la última imagen procesada y la conexión con la cámara.
+3. **Esperar a que el usuario inicie.** La última línea indica que `iniciarDeteccion` se ejecuta al pulsar «Iniciar cámara». La función desactiva el botón temporalmente y actualiza el mensaje.
+4. **Solicitar la cámara.** `getUserMedia` pide permiso para recibir vídeo. Cuando se concede, se conecta la cámara al elemento `<video>` y `videoCamara.play()` inicia la reproducción.
+5. **Preparar el detector.** `forVisionTasks` carga los archivos de MediaPipe. Después, `createFromOptions` carga el modelo de manos, indica que se analizará vídeo (`VIDEO`) y limita la detección a una mano (`numHands: 1`).
+6. **Dibujar un botón.** `dibujarBoton(50, 50)` crea un botón en el centro del contenedor del vídeo. La función recibe la posición horizontal y vertical como porcentajes; por ejemplo, `dibujarBoton(20, 30)` lo coloca a un 20 % desde la izquierda y un 30 % desde arriba. Si se vuelve a llamar, mueve el botón existente en vez de crear otro.
+7. **Cambiar el botón.** `actualizarBoton` recibe `true` o `false`. Si el índice está dentro, añade la clase CSS `pulsado` (cambia el fondo) y escribe «Botón pulsado»; si está fuera, quita la clase y borra el mensaje.
+8. **Comprobar si el índice está dentro.** `estaDentroDelBoton` calcula, en porcentajes del vídeo, los bordes del botón y comprueba si la posición del índice queda entre ellos.
+9. **Cómo funciona `detectarManoEnVideo`.** La función se ejecuta una vez por fotograma mediante `requestAnimationFrame`. Comprueba si el vídeo ha avanzado y analiza la imagen con `detectForVideo`. Si encuentra una mano, obtiene el punto `8` (punta del índice), convierte sus coordenadas `x` e `y` a porcentajes, las escribe en el campo de posición y avisa al botón con `actualizarBoton`. Si no hay mano, muestra un mensaje y considera que el índice está fuera. Al final solicita el siguiente fotograma.
+10. **Mostrar errores.** Si no se puede acceder a la cámara o cargar el modelo, `catch` escribe el error en la consola, libera los recursos y muestra un mensaje para revisar el permiso, la conexión y el servidor HTTPS o `localhost`.
+
+#### 4.2. Detección del rostro (Face Landmarker)
+El detector de rostro funciona de forma parecida: analiza la imagen de la cámara y devuelve puntos situados en zonas como los ojos, la nariz y la boca. Si se activa una opción adicional, también devuelve indicadores de expresiones faciales. Esto permite, por ejemplo, mover un elemento siguiendo la cabeza o reaccionar a una sonrisa.
+
+Detectar puntos del rostro **no significa identificar a la persona**. Para empezar, basta con entender el mismo proceso del ejemplo: capturar una imagen, analizarla y utilizar los puntos devueltos. MediaPipe ofrece el modelo **Face Landmarker** para este tipo de detección.
 
 ### 5. Detección de pose corporal y control por movimiento
 La detección de postura (Pose Detection) nos permite capturar el movimiento global del usuario (cabeza, hombros, codos, rodillas) para reaccionar ante acciones físicas, como levantar los brazos o posicionarse a los lados de la pantalla.
