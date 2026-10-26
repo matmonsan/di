@@ -17,6 +17,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 - [8. Criterios y rúbrica de evaluación](#8-criterios-y-rúbrica-de-evaluación)
 
 ### 1. Introducción a las interfaces naturales de usuario
+
+![Interfaces de usuario naturales](./assets/img/naturales.png)
+
 Las **Interfaces Naturales de Usuario (NUI - Natural User Interfaces)** representan un paradigma de interacción persona-ordenador donde los medios tradicionales (teclado y ratón) son sustituidos o complementados por habilidades humanas innatas: la voz, la gestualidad corporal, la expresión facial y la percepción espacial mediante Realidad Aumentada (RA).
 
 En esta unidad se abordará el desarrollo de INUs web utilizando estándares modernos de JavaScript (Web APIs nativas como Web Speech API y WebRTC) junto con modelos de Machine Learning preentrenados en el cliente (MediaPipe / TensorFlow.js) y frameworks de Realidad Aumentada Web (MindAR / A-Frame).
