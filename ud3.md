@@ -548,7 +548,8 @@ video {
 #botonDibujado {
   position: absolute;
   transform: translate(-50%, -50%);
-  padding: 0.6rem 1rem;
+  width: 20%;
+  height: 12%;
   border: 2px solid white;
   border-radius: 6px;
   background: #087f5b;
@@ -572,7 +573,8 @@ const contenedorVideo = document.getElementById("contenedorVideo");
 let detectorManos;
 let ultimoTiempoVideo = -1;
 let flujoCamara;
-
+let botonX = 50;
+let botonY = 50;
 // Solicita la cámara, carga el modelo de manos e inicia la detección.
 async function iniciarDeteccion() {
   botonInicio.disabled = true;
@@ -612,7 +614,7 @@ async function iniciarDeteccion() {
   }
 }
 
-// Crea un botón en el vídeo usando porcentajes desde su esquina superior izquierda.
+// Crea un botón en el vídeo. La posición (X, Y) es su centro, en porcentajes.
 function dibujarBoton(posicionX, posicionY) {
   let boton = document.getElementById("botonDibujado");
 
@@ -627,19 +629,16 @@ function dibujarBoton(posicionX, posicionY) {
 
   boton.style.left = `${posicionX}%`;
   boton.style.top = `${posicionY}%`;
+  botonX = posicionX;
+  botonY = posicionY;
 }
 
 // Indica si un punto (en porcentajes del vídeo) está dentro del botón.
+// El botón mide 20 % de ancho y 12 % de alto (ver CSS) y (botonX, botonY) es su centro,
+// así que llega 10 % a cada lado en horizontal y 6 % en vertical.
 function estaDentroDelBoton(posicionX, posicionY) {
-  const rectBoton = document.getElementById("botonDibujado").getBoundingClientRect();
-  const rectContenedor = contenedorVideo.getBoundingClientRect();
-  const izquierda = (rectBoton.left - rectContenedor.left) / rectContenedor.width * 100;
-  const derecha = (rectBoton.right - rectContenedor.left) / rectContenedor.width * 100;
-  const arriba = (rectBoton.top - rectContenedor.top) / rectContenedor.height * 100;
-  const abajo = (rectBoton.bottom - rectContenedor.top) / rectContenedor.height * 100;
-
-  return posicionX >= izquierda && posicionX <= derecha &&
-         posicionY >= arriba && posicionY <= abajo;
+  return Math.abs(posicionX - botonX) <= 10 &&
+         Math.abs(posicionY - botonY) <= 6;
 }
 
 // Cambia el aspecto del botón y el mensaje según si el índice está dentro.
@@ -696,7 +695,7 @@ botonInicio.addEventListener("click", iniciarDeteccion);
 5. **Preparar el detector.** `forVisionTasks` carga los archivos de MediaPipe. Después, `createFromOptions` carga el modelo de manos, indica que se analizará vídeo (`VIDEO`) y limita la detección a una mano (`numHands: 1`).
 6. **Dibujar un botón.** `dibujarBoton(50, 50)` crea un botón en el centro del contenedor del vídeo. La función recibe la posición horizontal y vertical como porcentajes; por ejemplo, `dibujarBoton(20, 30)` lo coloca a un 20 % desde la izquierda y un 30 % desde arriba. Si se vuelve a llamar, mueve el botón existente en vez de crear otro.
 7. **Cambiar el botón.** `actualizarBoton` recibe `true` o `false`. Si el índice está dentro, añade la clase CSS `pulsado` (cambia el fondo) y escribe «Botón pulsado»; si está fuera, quita la clase y borra el mensaje.
-8. **Comprobar si el índice está dentro.** `estaDentroDelBoton` calcula, en porcentajes del vídeo, los bordes del botón y comprueba si la posición del índice queda entre ellos.
+8. **Comprobar si el índice está dentro.** El botón mide un 20 % de ancho y un 12 % de alto del vídeo (en el CSS), y `botonX` y `botonY` guardan su centro. `estaDentroDelBoton` mira si el índice está a menos de 10 % del centro en horizontal y a menos de 6 % en vertical (la mitad del ancho y del alto). Si ambas cosas se cumplen, el índice está dentro.
 9. **Cómo funciona `detectarManoEnVideo`.** La función se ejecuta una vez por fotograma mediante `requestAnimationFrame`. Comprueba si el vídeo ha avanzado y analiza la imagen con `detectForVideo`. Si encuentra una mano, obtiene el punto `8` (punta del índice), convierte sus coordenadas `x` e `y` a porcentajes, las escribe en el campo de posición y avisa al botón con `actualizarBoton`. Si no hay mano, muestra un mensaje y considera que el índice está fuera. Al final solicita el siguiente fotograma.
 10. **Mostrar errores.** Si no se puede acceder a la cámara o cargar el modelo, `catch` escribe el error en la consola, libera los recursos y muestra un mensaje para revisar el permiso, la conexión y el servidor HTTPS o `localhost`.
 
