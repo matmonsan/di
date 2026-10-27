@@ -479,6 +479,34 @@ Requisitos mínimos:
 **Entrega:** los archivos del proyecto y una breve explicación (comentada en el código) de cómo interpretas las frases, qué decisiones de diseño has tomado y qué pruebas has realizado (incluidos los casos límite).
 
 ### 4. Detección de manos y rostro
+#### Interacción natural: manos como entrada
+Una **interfaz natural de usuario (NUI)** permite relacionarse con un sistema mediante acciones que ya forman parte de la interacción cotidiana, como señalar, mover una mano, hablar o cambiar la postura. «Natural» no quiere decir que todas las personas hagan el mismo gesto ni que la interacción se entienda sin aprenderla: el diseño debe explicar qué acciones reconoce y qué respuesta produce.
+
+La mano puede cumplir varios papeles:
+
+- **Señalar o apuntar:** indicar una zona u objeto de la pantalla.
+- **Seleccionar:** confirmar un elemento, por ejemplo, con un gesto breve.
+- **Manipular:** mover, girar o cambiar el tamaño de un objeto virtual.
+- **Comunicar una señal:** usar una forma de la mano con un significado acordado, como mostrar la palma para detener una acción.
+
+Conviene distinguir una **postura** (la forma de la mano en un instante, como la palma abierta) de un **gesto dinámico** (un movimiento a lo largo del tiempo, como saludar o deslizar la mano). Un sistema puede usar la mano como un puntero continuo, o reconocer un gesto concreto para activar una acción. En ambos casos, debe existir una relación clara entre lo que hace la persona y el resultado en pantalla.
+
+```text
+intención de la persona
+        ↓
+movimiento de la mano → interpretación → acción en la interfaz
+        ↑                                      ↓
+        └──────────── respuesta visual ────────┘
+```
+
+La respuesta visual ayuda a entender si el sistema está siguiendo la mano, si ha reconocido el gesto y qué elemento va a cambiar. El gesto debe ser cómodo, fácil de recordar y tolerante a pequeñas variaciones; mantener el brazo levantado mucho tiempo puede cansar. También hay diferencias culturales y personales en el significado o la comodidad de ciertos gestos. Es importante ofrecer controles alternativos, especialmente para acciones importantes. La [guía de WCAG sobre gestos de puntero](https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html) explica por qué las acciones basadas en gestos complejos necesitan una alternativa sencilla. Las [pautas de interacción táctil de Microsoft](https://learn.microsoft.com/en-us/windows/apps/develop/input/touch-interactions) ofrecen ejemplos del valor de dar respuesta visual inmediata; el principio también resulta útil al diseñar una interfaz gestual.
+
+La ilustración de abajo muestra un gesto definido por su trayectoria. En una interfaz controlada por cámara, el sistema interpreta el movimiento de la mano; la idea de distinguir la trayectoria de la acción resultante sigue siendo útil:
+
+![Esquema de un gesto basado en una trayectoria](https://www.w3.org/WAI/WCAG22/Understanding/img/2.5.1-path-based-gesture.png)
+
+Para observar ejemplos fotográficos de gestos en conversaciones, consulta la [galería de gestos de manos en Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:Hand_gestures_in_conversation). Cada imagen tiene su propia licencia y condiciones de atribución.
+
 La cámara capta imágenes y **MediaPipe Tasks Vision** las analiza en el navegador con un modelo ya entrenado. La biblioteca devuelve puntos de referencia (*landmarks*) que podemos usar para crear interacciones.
 
 #### 4.1. Detección de manos (Hand Landmarker)
@@ -724,6 +752,26 @@ botonInicio.addEventListener("click", iniciarDeteccion);
 **Entrega:** los archivos modificados y una breve explicación de cómo se relacionan el movimiento de la mano y el valor mostrado. Comprueba el funcionamiento en distintos puntos de la imagen y anota cualquier limitación observada.
 
 ### 5. Detección del rostro y de la pose corporal
+Antes de estudiar los detectores, conviene entender qué información puede aportar el rostro y el movimiento del cuerpo a una NUI. Son señales no verbales: acompañan a la acción de la persona, pero no tienen un significado universal ni permiten deducir con certeza lo que piensa o siente.
+
+**Rostro y expresión.** La posición de la cabeza puede servir para orientar una interacción, por ejemplo, desplazar un cursor o mantener un elemento alineado con la cara. Los cambios visibles en ojos y boca pueden usarse como señales de una acción (por ejemplo, detectar que la boca se abre), pero una expresión no equivale automáticamente a una emoción. El contexto, las diferencias entre personas, la iluminación y la oclusión influyen. Por ello, es preferible usar estas señales para interacciones concretas y evitar tratar una estimación como una conclusión sobre el estado de ánimo.
+
+**Postura y movimiento corporal.** La postura describe cómo están colocadas las partes del cuerpo en un momento; el movimiento describe cómo cambian esas posiciones con el tiempo. Una pose puede representar una posición (brazo levantado), mientras que una secuencia puede representar una acción (levantar el brazo, saludar o desplazarse). Una interfaz puede responder a un gesto puntual o seguir continuamente el movimiento para controlar una posición en pantalla.
+
+```text
+postura en un instante:      brazo levantado
+secuencia de posturas:       brazo abajo → sube → arriba
+posible interpretación:      posición mantenida / acción de levantar
+```
+
+Para que estas interacciones sean comprensibles, la persona necesita saber qué movimiento se espera y recibir una respuesta visible cuando se reconoce. Las acciones deben funcionar dentro de un espacio cómodo, sin exigir movimientos repetidos o agotadores. Hay que prever que el cuerpo pueda quedar parcialmente fuera de cámara, que distintas personas se muevan de forma diferente y que un movimiento accidental no active una acción importante. Los controles convencionales deben seguir disponibles como alternativa.
+
+![Esquema de esqueleto humano, referencia visual para ubicar articulaciones](https://upload.wikimedia.org/wikipedia/commons/c/ca/Human_skeleton_front_en.svg)
+
+*Imagen: [esquema del esqueleto humano en Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Human_skeleton_front_en.svg) (nombres de las partes en inglés).*
+
+Para ver fotografías de posturas y lenguaje corporal, consulta la [galería de Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:Body_language); para expresiones faciales, consulta la [galería de expresiones faciales](https://commons.wikimedia.org/wiki/Category:Facial_expressions). Revisa la licencia y atribución de cada archivo antes de reutilizarlo. Como referencia de accesibilidad, la [guía de WCAG sobre gestos de puntero](https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html) recomienda alternativas para operaciones que dependen de gestos complejos.
+
 #### 5.1. Detección del rostro (Face Landmarker)
 **Face Landmarker** es una tarea de **MediaPipe Tasks Vision**: una biblioteca que permite ejecutar en el navegador modelos de visión artificial ya entrenados. Este modelo localiza puntos de referencia (*landmarks*) en el rostro, por ejemplo, alrededor de los ojos, la nariz, la boca y el contorno. No identifica a la persona; estima dónde están esas partes en cada imagen.
 
