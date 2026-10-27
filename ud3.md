@@ -699,44 +699,132 @@ botonInicio.addEventListener("click", iniciarDeteccion);
 9. **Cómo funciona `detectarManoEnVideo`.** La función se ejecuta una vez por fotograma mediante `requestAnimationFrame`. Comprueba si el vídeo ha avanzado y analiza la imagen con `detectForVideo`. Si encuentra una mano, obtiene el punto `8` (punta del índice), convierte sus coordenadas `x` e `y` a porcentajes, las escribe en el campo de posición y avisa al botón con `actualizarBoton`. Si no hay mano, muestra un mensaje y considera que el índice está fuera. Al final solicita el siguiente fotograma.
 10. **Mostrar errores.** Si no se puede acceder a la cámara o cargar el modelo, `catch` escribe el error en la consola, libera los recursos y muestra un mensaje para revisar el permiso, la conexión y el servidor HTTPS o `localhost`.
 
-#### 4.2. Detección del rostro (Face Landmarker)
-El detector de rostro funciona de forma parecida: analiza la imagen de la cámara y devuelve puntos situados en zonas como los ojos, la nariz y la boca. Si se activa una opción adicional, también devuelve indicadores de expresiones faciales. Esto permite, por ejemplo, mover un elemento siguiendo la cabeza o reaccionar a una sonrisa.
+**Actividad 3: deslizador controlado con la mano.** Amplía el ejemplo para que el movimiento horizontal de la punta del índice controle un deslizador y se vea su valor en la página. La interacción debe funcionar mientras la cámara detecta la mano, sin necesidad de pulsar el deslizador con el ratón.
 
-Detectar puntos del rostro **no significa identificar a la persona**. Para empezar, basta con entender el mismo proceso del ejemplo: capturar una imagen, analizarla y utilizar los puntos devueltos. MediaPipe ofrece el modelo **Face Landmarker** para este tipo de detección.
+**Pistas para orientarte:**
 
-### 5. Detección de pose corporal y control por movimiento
-La detección de postura (Pose Detection) nos permite capturar el movimiento global del usuario (cabeza, hombros, codos, rodillas) para reaccionar ante acciones físicas, como levantar los brazos o posicionarse a los lados de la pantalla.
+- El ejemplo ya convierte la coordenada horizontal de la punta del índice a un porcentaje (`posicionX`). Puedes usar un control `range` con el mismo intervalo:
 
-#### 5.1. Algoritmo de control por movimiento corporal
+  ```html
+  <input id="deslizador" type="range" min="0" max="100" value="50">
+  <output id="valorDeslizador">50 %</output>
+  ```
+
+- Cuando se detecte la mano, convierte la posición a un número entero y actualiza el deslizador y el texto. Adapta los nombres de las variables y los identificadores a tu código:
+
+  ```javascript
+  const valor = Math.round(posicionX);
+  deslizador.value = valor;
+  valorDeslizador.textContent = `${valor} %`;
+  ```
+
+- Revisa qué debería mostrar la página cuando no se detecta ninguna mano.
+- Prueba con la mano en los extremos y en el centro de la imagen. ¿El valor cambia de forma coherente? ¿Qué sucede si la cámara no detecta la mano durante un instante?
+
+**Entrega:** los archivos modificados y una breve explicación de cómo se relacionan el movimiento de la mano y el valor mostrado. Comprueba el funcionamiento en distintos puntos de la imagen y anota cualquier limitación observada.
+
+### 5. Detección del rostro y de la pose corporal
+#### 5.1. Detección del rostro (Face Landmarker)
+**Face Landmarker** es una tarea de **MediaPipe Tasks Vision**: una biblioteca que permite ejecutar en el navegador modelos de visión artificial ya entrenados. Este modelo localiza puntos de referencia (*landmarks*) en el rostro, por ejemplo, alrededor de los ojos, la nariz, la boca y el contorno. No identifica a la persona; estima dónde están esas partes en cada imagen.
+
+La aplicación obtiene imágenes de la cámara y las entrega al modelo. El resultado contiene una lista de rostros detectados y sus puntos. Si se activa la opción correspondiente, también incluye valores que describen movimientos faciales (por ejemplo, abrir la boca) y que pueden servir para animar una interfaz. Estos valores no determinan con certeza cómo se siente una persona.
+
+El siguiente `app.js` es un ejemplo completo para detectar si hay un rostro. Reutiliza del ejemplo anterior los elementos HTML con los identificadores `botonInicio`, `estado` y `videoCamara`; el vídeo debe tener los atributos `autoplay`, `muted` y `playsinline`. Cárgalo como módulo con `<script type="module" src="app.js"></script>` y ejecuta la página desde `localhost` o HTTPS. La biblioteca y el modelo se descargan desde Internet.
 
 ```javascript
-// Fragmento conceptual de integración con Pose Landmarker de MediaPipe
-function checkPoseAction(poseLandmarks) {
-  // Puntos clave de referencia:
-  // 15: Muñeca izquierda, 16: Muñeca derecha
-  // 0: Nariz, 11: Hombro izquierdo, 12: Hombro derecho
+import {
+  FaceLandmarker,
+  FilesetResolver
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
 
-  const leftWrist = poseLandmarks[15];
-  const rightWrist = poseLandmarks[16];
-  const nose = poseLandmarks[0];
+const videoCamara = document.getElementById("videoCamara");
+const botonInicio = document.getElementById("botonInicio");
+const estado = document.getElementById("estado");
 
-  // Regla 1: Ambos brazos levantados por encima de la cabeza
-  if (leftWrist.y < nose.y && rightWrist.y < nose.y) {
-    triggerAction("BRAZOS_ARRIBA");
-  } 
-  // Regla 2: Inclinación lateral o desplazamiento a la derecha
-  else if (nose.x < 0.3) {
-    triggerAction("MOVER_IZQUIERDA"); // Espejado
-  } else if (nose.x > 0.7) {
-    triggerAction("MOVER_DERECHA");
+let detectorRostro;
+let flujoCamara;
+let ultimoTiempoVideo = -1;
+
+async function iniciarDeteccion() {
+  botonInicio.disabled = true;
+  estado.textContent = "Solicitando acceso a la cámara...";
+
+  try {
+    flujoCamara = await navigator.mediaDevices.getUserMedia({
+      video: { width: 640, height: 480 }
+    });
+    videoCamara.srcObject = flujoCamara;
+    await videoCamara.play();
+
+    estado.textContent = "Cargando el detector de rostro...";
+    const archivosVision = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+    );
+    detectorRostro = await FaceLandmarker.createFromOptions(archivosVision, {
+      baseOptions: {
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"
+      },
+      runningMode: "VIDEO",
+      numFaces: 1
+    });
+
+    estado.textContent = "Cámara activa: buscando un rostro.";
+    requestAnimationFrame(detectarRostroEnVideo);
+  } catch (errorInicio) {
+    console.error(errorInicio);
+    flujoCamara?.getTracks().forEach((pista) => pista.stop());
+    flujoCamara = undefined;
+    videoCamara.srcObject = null;
+    detectorRostro?.close();
+    detectorRostro = undefined;
+    botonInicio.disabled = false;
+    estado.textContent = "No se pudo iniciar. Comprueba el permiso de cámara, la conexión a Internet y que uses HTTPS o localhost.";
   }
 }
 
-function triggerAction(actionName) {
-  console.log("Acción NUI detectada:", actionName);
-  // Lógica para modificar la UI según la acción
+function detectarRostroEnVideo() {
+  if (videoCamara.currentTime !== ultimoTiempoVideo && detectorRostro) {
+    ultimoTiempoVideo = videoCamara.currentTime;
+    const resultado = detectorRostro.detectForVideo(
+      videoCamara,
+      performance.now()
+    );
+    const hayRostro = resultado.faceLandmarks.length > 0;
+    estado.textContent = hayRostro
+      ? "Rostro detectado"
+      : "No se detecta un rostro";
+  }
+
+  requestAnimationFrame(detectarRostroEnVideo);
+}
+
+botonInicio.addEventListener("click", iniciarDeteccion);
+```
+
+`detectorRostro` es la variable donde se guarda el modelo después de cargarlo; `resultado` se crea en cada fotograma con el análisis del vídeo. `faceLandmarks` es la lista de rostros encontrados: si contiene al menos uno, se muestra «Rostro detectado». `requestAnimationFrame` vuelve a llamar a la función para analizar el siguiente fotograma. Si falla el permiso o la carga, el bloque `catch` informa del problema y libera la cámara.
+
+#### 5.2. Detección de pose corporal y control por movimiento
+Para analizar el cuerpo se usa **Pose Landmarker**, otra tarea de MediaPipe Tasks Vision. En vez de centrarse en la mano o el rostro, estima puntos como hombros, codos, muñecas, caderas, rodillas y tobillos. La salida es una lista de puntos (*landmarks*); cada uno tiene coordenadas normalizadas respecto a la imagen. `x` representa la posición horizontal y `y` la vertical, desde `0` (arriba) hasta `1` (abajo).
+
+Comparar las coordenadas permite construir reglas sencillas de interacción. Por ejemplo, como `y` aumenta hacia abajo, la muñeca tiene una coordenada menor que la nariz si está más arriba en la imagen. El ejemplo analiza un fotograma y muestra un mensaje si detecta una pose con la muñeca por encima de la nariz:
+
+```javascript
+const resultado = detectorPose.detectForVideo(videoCamara, performance.now());
+const poses = resultado.landmarks;
+
+if (poses.length > 0) {
+  const puntos = poses[0];
+  const muñeca = puntos[15];
+  const nariz = puntos[0];
+  estado.textContent = muñeca.y < nariz.y
+    ? "Brazo levantado"
+    : "Brazo abajo";
+} else {
+  estado.textContent = "No se detecta ninguna pose";
 }
 ```
+
+En la lista de Pose Landmarker, el punto `0` es la nariz y el `15` corresponde a la muñeca izquierda. El código consulta primero si hay alguna pose para evitar leer puntos inexistentes. Para convertir esta regla en un control, el texto podría sustituirse por otra acción de la página, como cambiar de diapositiva. La detección puede variar si la persona sale del encuadre o hay poca luz; si el vídeo se refleja, también puede cambiar la izquierda y la derecha percibidas.
 
 ### 6. Realidad aumentada en el navegador (WebAR)
 La **Realidad Aumentada (RA)** en la web permite superponer elementos digitales 3D sobre imágenes omarcadores detectados por la cámara del usuario en tiempo real sin instalar aplicaciones nativas.
