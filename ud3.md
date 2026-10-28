@@ -11,10 +11,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 - [2. Tecnologías para desarrollar interfaces naturales](#2-tecnologías-para-desarrollar-interfaces-naturales)
 - [3. Reconocimiento de voz con Web Speech API](#3-reconocimiento-de-voz-con-web-speech-api)
 - [4. Detección de manos y rostro](#4-detección-de-manos-y-rostro)
-- [5. Detección de pose corporal y control por movimiento](#5-detección-de-pose-corporal-y-control-por-movimiento)
+- [5. Detección del rostro y de la pose corporal](#5-detección-del-rostro-y-de-la-pose-corporal)
 - [6. Realidad aumentada en el navegador (WebAR)](#6-realidad-aumentada-en-el-navegador-webar)
-- [7. Caso práctico integrador: kiosco multimodal e interactivo NUI](#7-caso-práctico-integrador-kiosco-multimodal-e-interactivo-nui)
-- [8. Criterios y rúbrica de evaluación](#8-criterios-y-rúbrica-de-evaluación)
+- [7. Proyecto final: experimentación con interfaces naturales](#7-proyecto-final-experimentación-con-interfaces-naturales)
 
 ### 1. Introducción a las interfaces naturales de usuario
 
