@@ -1070,7 +1070,7 @@ Para probarlo, utiliza la imagen de ejemplo correspondiente al archivo `.mind`: 
 
 ### 7. Proyecto final: experimentación con interfaces naturales
 
-El proyecto se realizará **en parejas** y permitirá aplicar los contenidos de los apartados **4, 5 y 6**: interacción mediante manos, detección de pose o rostro y realidad aumentada en el navegador (WebAR). El propósito es comprender y explicar los ejemplos del tema y realizar modificaciones pequeñas, funcionales y asequibles a partir del código proporcionado. No se espera desarrollar las aplicaciones desde cero ni hacer una investigación extensa, pero sí entender qué hace el código y poder explicar los cambios realizados.
+El proyecto se realizará en parejas y permitirá aplicar los contenidos de los apartados 4, 5 y 6: interacción mediante manos, detección de pose o rostro y realidad aumentada en el navegador (WebAR). El propósito es comprender y explicar los ejemplos del tema y realizar modificaciones pequeñas, funcionales y asequibles a partir del código proporcionado. No se espera desarrollar las aplicaciones desde cero ni hacer una investigación extensa, pero sí entender qué hace el código y poder explicar los cambios realizados.
 
 #### 7.1. Parte 1: explicación, investigación y pruebas
 
@@ -1092,9 +1092,9 @@ Cada grupo elegirá qué modificación realizar en cada ejemplo. Las propuestas 
 
 #### 7.3. Organización y sesiones
 
-El proyecto se realizará durante las sesiones de los días **28/10 y 29/10**. La asistencia a estas sesiones es obligatoria para quienes realicen el proyecto. El trabajo y la entrega deben mostrar la participación de **ambos miembros** de la pareja: los dos integrantes deben conocer y poder explicar los ejemplos y las modificaciones.
+El proyecto se realizará durante las sesiones de los días 28/10 y 29/10. La asistencia a estas sesiones es obligatoria para quienes realicen el proyecto. El trabajo y la entrega deben mostrar la participación de ambos miembros de la pareja: los dos integrantes deben conocer y poder explicar los ejemplos y las modificaciones.
 
-Quien no asista a clase, tanto por motivos justificados como injustificados, podrá superar este tema mediante un **examen tipo test**, en lugar de realizar el proyecto en clase.
+Quien no asista a clase, tanto por motivos justificados como injustificados, podrá superar este tema mediante un examen tipo test, en lugar de realizar el proyecto en clase.
 
 #### 7.4. Entrega
 
@@ -1102,8 +1102,8 @@ Cada pareja entregará:
 
 1. **Un documento en PDF**, elaborado siguiendo la plantilla de trabajos disponible. Debe incluir la explicación de los apartados 4, 5 y 6, una descripción de las pruebas, las modificaciones realizadas y cómo funciona cada una.
 2. **El código fuente** de los tres ejercicios modificados, organizado e identificado para que se pueda ejecutar y revisar.
-3. **Un vídeo demostrativo por cada programa** (tres vídeos en total). Cada vídeo debe durar **entre 2 y 3 minutos, sin superar los 3 minutos**. Debe mostrar el programa funcionando y explicar brevemente su funcionamiento y la modificación realizada. En los vídeos debe poder identificarse la participación de ambos miembros de la pareja.
+3. **Un vídeo demostrativo por cada programa** (tres vídeos en total). Cada vídeo debe durar entre 2 y 3 minutos, sin superar los 3 minutos. Debe mostrar el programa funcionando y explicar brevemente su funcionamiento y la modificación realizada. En los vídeos debe poder identificarse la participación de ambos miembros de la pareja.
 
-Antes de entregar, verificad que los archivos abren correctamente, que los vídeos se reproducen y que los ejemplos se han probado en las condiciones necesarias, especialmente el acceso a la cámara y el uso de HTTPS o `localhost` cuando corresponda.
+Antes de entregar, verificad que los archivos abren correctamente, que los vídeos se reproducen y que los ejemplos se han probado en las condiciones necesarias.
 
 ---
