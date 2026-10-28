@@ -192,7 +192,7 @@ Para probar el ejemplo, abre la página desde `localhost` o una conexión segura
 
 #### 3.5. Ejemplo: control de interfaz mediante voz
 
-En el siguiente ejemplo, el usuario activa el reconocimiento con un botón. La aplicación muestra el texto detectado y cambia el color de fondo cuando reconoce los comandos «rojo», «verde», «azul» o «restablecer». Observa cómo se configuran las opciones, cómo se responde a los eventos y cómo se relaciona la transcripción con una acción de la interfaz. El código se separa en dos archivos: `index.html` (estructura y estilos) y `app.js` (lógica).
+En el siguiente ejemplo, el usuario activa el reconocimiento con un botón. La aplicación muestra el texto detectado y cambia el color de fondo cuando reconoce los comandos «rojo», «verde», «azul» o «restablecer». Observa cómo se configuran las opciones, cómo se responde a los eventos y cómo se relaciona la transcripción con una acción de la interfaz. El código se separa en tres archivos: `index.html` (estructura), `styles.css` (estilos) y `app.js` (lógica).
 
 Archivo `index.html`:
 
@@ -202,30 +202,7 @@ Archivo `index.html`:
 <head>
   <meta charset="UTF-8">
   <title>Control por Voz - NUI</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      transition: background-color 0.5s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .card {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .status {
-      font-weight: bold;
-      color: #007bff;
-      margin-top: 1rem;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -240,6 +217,35 @@ Archivo `index.html`:
   <script src="app.js"></script>
 </body>
 </html>
+```
+
+Archivo `styles.css` (en la misma carpeta que `index.html`):
+
+```css
+body {
+  font-family: Arial, sans-serif;
+  transition: background-color 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.status {
+  font-weight: bold;
+  color: #007bff;
+  margin-top: 1rem;
+}
 ```
 
 Archivo `app.js` (debe estar en la misma carpeta que `index.html`):
@@ -479,6 +485,7 @@ Requisitos mínimos:
 **Entrega:** los archivos del proyecto y una breve explicación (comentada en el código) de cómo interpretas las frases, qué decisiones de diseño has tomado y qué pruebas has realizado (incluidos los casos límite).
 
 ### 4. Detección de manos y rostro
+
 #### Interacción natural: manos como entrada
 Una **interfaz natural de usuario (NUI)** permite relacionarse con un sistema mediante acciones que ya forman parte de la interacción cotidiana, como señalar, mover una mano, hablar o cambiar la postura. «Natural» no quiere decir que todas las personas hagan el mismo gesto ni que la interacción se entienda sin aprenderla: el diseño debe explicar qué acciones reconoce y qué respuesta produce.
 
@@ -505,11 +512,12 @@ La ilustración de abajo muestra un gesto definido por su trayectoria. En una in
 
 ![Esquema de un gesto basado en una trayectoria](https://www.w3.org/WAI/WCAG22/Understanding/img/2.5.1-path-based-gesture.png)
 
-Para observar ejemplos fotográficos de gestos en conversaciones, consulta la [galería de gestos de manos en Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:Hand_gestures_in_conversation). Cada imagen tiene su propia licencia y condiciones de atribución.
-
 La cámara capta imágenes y **MediaPipe Tasks Vision** las analiza en el navegador con un modelo ya entrenado. La biblioteca devuelve puntos de referencia (*landmarks*) que podemos usar para crear interacciones.
 
 #### 4.1. Detección de manos (Hand Landmarker)
+
+![Modelo de mano](./assets/img/mano.png)
+
 El modelo localiza hasta 21 puntos por mano. Cada punto tiene coordenadas `x`, `y` y `z`: `x` e `y` indican su posición en la imagen (entre `0` y `1`), y `z` representa la profundidad aproximada. Por ejemplo, el punto `0` es la muñeca, el `4` es la punta del pulgar y el `8` la punta del índice.
 
 En este ejemplo, la página muestra la posición de la punta del índice en un campo, dibuja un botón en la posición que indiquemos y reacciona cuando el índice entra en él: el botón cambia de color y aparece el mensaje «Botón pulsado». Las coordenadas X e Y se expresan como porcentajes de la imagen: (0 %, 0 %) es la esquina superior izquierda y (100 %, 100 %) la esquina inferior derecha. Crea tres archivos en la misma carpeta, `index.html`, `styles.css` y `app.js`, y copia cada bloque en el archivo correspondiente. Abre `index.html` desde un servidor local (por ejemplo, Live Server en VS Code) o una página HTTPS. La cámara no suele estar disponible al abrir el archivo directamente con `file://`. Acepta el permiso de cámara y comprueba que el navegador tenga acceso a ella.
@@ -727,30 +735,6 @@ botonInicio.addEventListener("click", iniciarDeteccion);
 9. **Cómo funciona `detectarManoEnVideo`.** La función se ejecuta una vez por fotograma mediante `requestAnimationFrame`. Comprueba si el vídeo ha avanzado y analiza la imagen con `detectForVideo`. Si encuentra una mano, obtiene el punto `8` (punta del índice), convierte sus coordenadas `x` e `y` a porcentajes, las escribe en el campo de posición y avisa al botón con `actualizarBoton`. Si no hay mano, muestra un mensaje y considera que el índice está fuera. Al final solicita el siguiente fotograma.
 10. **Mostrar errores.** Si no se puede acceder a la cámara o cargar el modelo, `catch` escribe el error en la consola, libera los recursos y muestra un mensaje para revisar el permiso, la conexión y el servidor HTTPS o `localhost`.
 
-**Actividad 3: deslizador controlado con la mano.** Amplía el ejemplo para que el movimiento horizontal de la punta del índice controle un deslizador y se vea su valor en la página. La interacción debe funcionar mientras la cámara detecta la mano, sin necesidad de pulsar el deslizador con el ratón.
-
-**Pistas para orientarte:**
-
-- El ejemplo ya convierte la coordenada horizontal de la punta del índice a un porcentaje (`posicionX`). Puedes usar un control `range` con el mismo intervalo:
-
-  ```html
-  <input id="deslizador" type="range" min="0" max="100" value="50">
-  <output id="valorDeslizador">50 %</output>
-  ```
-
-- Cuando se detecte la mano, convierte la posición a un número entero y actualiza el deslizador y el texto. Adapta los nombres de las variables y los identificadores a tu código:
-
-  ```javascript
-  const valor = Math.round(posicionX);
-  deslizador.value = valor;
-  valorDeslizador.textContent = `${valor} %`;
-  ```
-
-- Revisa qué debería mostrar la página cuando no se detecta ninguna mano.
-- Prueba con la mano en los extremos y en el centro de la imagen. ¿El valor cambia de forma coherente? ¿Qué sucede si la cámara no detecta la mano durante un instante?
-
-**Entrega:** los archivos modificados y una breve explicación de cómo se relacionan el movimiento de la mano y el valor mostrado. Comprueba el funcionamiento en distintos puntos de la imagen y anota cualquier limitación observada.
-
 ### 5. Detección del rostro y de la pose corporal
 Antes de estudiar los detectores, conviene entender qué información puede aportar el rostro y el movimiento del cuerpo a una NUI. Son señales no verbales: acompañan a la acción de la persona, pero no tienen un significado universal ni permiten deducir con certeza lo que piensa o siente.
 
@@ -766,13 +750,10 @@ posible interpretación:      posición mantenida / acción de levantar
 
 Para que estas interacciones sean comprensibles, la persona necesita saber qué movimiento se espera y recibir una respuesta visible cuando se reconoce. Las acciones deben funcionar dentro de un espacio cómodo, sin exigir movimientos repetidos o agotadores. Hay que prever que el cuerpo pueda quedar parcialmente fuera de cámara, que distintas personas se muevan de forma diferente y que un movimiento accidental no active una acción importante. Los controles convencionales deben seguir disponibles como alternativa.
 
-![Esquema de esqueleto humano, referencia visual para ubicar articulaciones](https://upload.wikimedia.org/wikipedia/commons/c/ca/Human_skeleton_front_en.svg)
-
-*Imagen: [esquema del esqueleto humano en Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Human_skeleton_front_en.svg) (nombres de las partes en inglés).*
-
-Para ver fotografías de posturas y lenguaje corporal, consulta la [galería de Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:Body_language); para expresiones faciales, consulta la [galería de expresiones faciales](https://commons.wikimedia.org/wiki/Category:Facial_expressions). Revisa la licencia y atribución de cada archivo antes de reutilizarlo. Como referencia de accesibilidad, la [guía de WCAG sobre gestos de puntero](https://www.w3.org/WAI/WCAG22/Understanding/pointer-gestures.html) recomienda alternativas para operaciones que dependen de gestos complejos.
-
 #### 5.1. Detección del rostro (Face Landmarker)
+
+![Cara](./assets/img/cara.png)
+
 **Face Landmarker** es una tarea de **MediaPipe Tasks Vision**: una biblioteca que permite ejecutar en el navegador modelos de visión artificial ya entrenados. Este modelo localiza puntos de referencia (*landmarks*) en el rostro, por ejemplo, alrededor de los ojos, la nariz, la boca y el contorno. No identifica a la persona; estima dónde están esas partes en cada imagen.
 
 La aplicación obtiene imágenes de la cámara y las entrega al modelo. El resultado contiene una lista de rostros detectados y sus puntos. Si se activa la opción correspondiente, también incluye valores que describen movimientos faciales (por ejemplo, abrir la boca) y que pueden servir para animar una interfaz. Estos valores no determinan con certeza cómo se siente una persona.
@@ -852,6 +833,9 @@ botonInicio.addEventListener("click", iniciarDeteccion);
 `detectorRostro` es la variable donde se guarda el modelo después de cargarlo; `resultado` se crea en cada fotograma con el análisis del vídeo. `faceLandmarks` es la lista de rostros encontrados: si contiene al menos uno, se muestra «Rostro detectado». `requestAnimationFrame` vuelve a llamar a la función para analizar el siguiente fotograma. Si falla el permiso o la carga, el bloque `catch` informa del problema y libera la cámara.
 
 #### 5.2. Detección de pose corporal y control por movimiento
+
+![Pose](./assets/img/Pose.png)
+
 Para analizar el cuerpo se usa **Pose Landmarker**, otra tarea de MediaPipe Tasks Vision. En vez de centrarse en la mano o el rostro, estima puntos como hombros, codos, muñecas, caderas, rodillas y tobillos. La salida es una lista de puntos (*landmarks*); cada uno tiene coordenadas normalizadas respecto a la imagen. `x` representa la posición horizontal y `y` la vertical, desde `0` (arriba) hasta `1` (abajo).
 
 Comparar las coordenadas permite construir reglas sencillas de interacción. Por ejemplo, como `y` aumenta hacia abajo, la muñeca tiene una coordenada menor que la nariz si está más arriba en la imagen. El ejemplo analiza un fotograma y muestra un mensaje si detecta una pose con la muñeca por encima de la nariz:
@@ -875,13 +859,24 @@ if (poses.length > 0) {
 En la lista de Pose Landmarker, el punto `0` es la nariz y el `15` corresponde a la muñeca izquierda. El código consulta primero si hay alguna pose para evitar leer puntos inexistentes. Para convertir esta regla en un control, el texto podría sustituirse por otra acción de la página, como cambiar de diapositiva. La detección puede variar si la persona sale del encuadre o hay poca luz; si el vídeo se refleja, también puede cambiar la izquierda y la derecha percibidas.
 
 ### 6. Realidad aumentada en el navegador (WebAR)
-La **Realidad Aumentada (RA)** en la web permite superponer elementos digitales 3D sobre imágenes omarcadores detectados por la cámara del usuario en tiempo real sin instalar aplicaciones nativas.
 
-#### 6.1. Stack tecnológico
-- **A-Frame:** Motor 3D declarativo basado en la especificación WebGL.
-- **MindAR:** Librería de visión computacional para seguimiento de marcadores o imágenes objetivo.
+La **realidad aumentada (RA)** combina la imagen del entorno real con contenido digital. **WebAR** permite hacerlo desde el navegador, normalmente sin instalar una aplicación: la página solicita acceso a la cámara, analiza los fotogramas y dibuja objetos virtuales alineados con lo que ve.
 
-#### 6.2. Código WebAR con seguimiento de marcador
+Una forma accesible de probar WebAR es el **seguimiento de imágenes** (*image tracking*). Se prepara una imagen objetivo y una herramienta la convierte en un archivo de datos de seguimiento. Cuando la cámara reconoce esa imagen, la biblioteca calcula su posición y orientación; la escena 3D puede entonces colocar contenido sobre ella. A diferencia de un código QR, el objetivo no tiene que ser un patrón cuadriculado, aunque las imágenes con detalles y contraste suelen funcionar mejor.
+
+El ejemplo usa:
+
+- **A-Frame**, para describir y representar la escena 3D mediante elementos HTML.
+- **MindAR**, para localizar una imagen objetivo en el vídeo de la cámara y mantener el contenido alineado con ella.
+- **WebGL**, que el navegador utiliza para dibujar la escena.
+
+La cámara requiere permiso del usuario y, por seguridad, normalmente solo está disponible en un **contexto seguro**: `https://` o `http://localhost`. No abras el archivo HTML directamente como `file://`. El rendimiento depende del dispositivo, la iluminación y la calidad de la imagen; el seguimiento puede perderse si el objetivo sale del encuadre o queda tapado.
+
+#### 6.1. Ejemplo: cubo sobre una imagen
+
+Crea tres archivos en la misma carpeta, `index.html` (estructura de la escena), `styles.css` (estilos) y `app.js` (lógica), y copia cada bloque en el archivo correspondiente. Sirve la carpeta desde un servidor local (por ejemplo, con la extensión Live Server de VS Code) y abre la página en un teléfono o en un ordenador con cámara. El ejemplo utiliza una imagen de demostración incluida en MindAR: muestra esa imagen en otra pantalla o imprímela y apunta la cámara hacia ella.
+
+Archivo `index.html`:
 
 ```html
 <!DOCTYPE html>
@@ -889,93 +884,227 @@ La **Realidad Aumentada (RA)** en la web permite superponer elementos digitales 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interfaces Naturales - Realidad Aumentada Web</title>
-  <!-- Importación de A-Frame y MindAR -->
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-  <style>
-    body { margin: 0; overflow: hidden; }
-    .ar-ui {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-    }
-    button {
-      padding: 12px 24px;
-      font-size: 16px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-  </style>
+  <title>Demostración de WebAR</title>
+
+  <!-- A-Frame crea y representa la escena 3D. -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <!-- MindAR añade a A-Frame el seguimiento de imágenes. -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <p id="estado" role="status">Preparando la escena…</p>
 
-  <div class="ar-ui">
-    <button id="colorBtn">Cambiar Color del Objeto RA</button>
+  <div class="controles">
+    <button id="iniciar" type="button" disabled>Iniciar cámara</button>
+    <button id="cambiar-color" type="button" disabled>Cambiar color</button>
   </div>
 
-  <!-- Escena A-Frame configurada con MindAR para seguimiento de imagen -->
-  <a-scene 
-    mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.2/examples/image-tracking/assets/card-example/card.mind;" 
-    color-space="sRGB" 
-    renderer="colorManagement: true, physicallyCorrectLights" 
-    vr-mode-ui="enabled: false" 
+  <!--
+    autoStart:false evita solicitar la cámara al cargar la página.
+    La cámara se inicia después de que la persona pulse el botón.
+  -->
+  <a-scene
+    id="escena"
+    mindar-image="
+      imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.mind;
+      autoStart: false"
+    color-space="sRGB"
+    renderer="colorManagement: true"
+    vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
-    
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <!-- Entidad vinculada al objetivo de imagen (Target 0) -->
-    <a-entity mindar-image-target="targetIndex: 0">
-      <!-- Objeto 3D (Cubo) superpuesto en el plano real -->
-      <a-box id="raBox" position="0 0.25 0" rotation="0 45 0" color="#4CC3D9" scale="0.5 0.5 0.5"
-             animation="property: rotation; to: 0 405 0; loop: true; dur: 5000; startEvents: click">
+    <!-- MindAR alinea esta entidad con el objetivo número 0 del archivo .mind. -->
+    <a-entity id="objetivo" mindar-image-target="targetIndex: 0">
+      <!-- El cubo pertenece al objetivo: aparece al reconocer la imagen y la sigue. -->
+      <a-box
+        id="cubo"
+        position="0 0.2 0"
+        rotation="0 0 0"
+        scale="0.35 0.35 0.35"
+        material="color: #20a4f3">
       </a-box>
-      <a-text value="Interfaz RA Interactiva" position="-0.8 0.8 0" color="#FFFFFF" width="3"></a-text>
+
+      <!-- El texto también se dibuja en el plano del objetivo. -->
+      <a-text
+        value="¡WebAR funciona!"
+        position="-0.8 0.65 0"
+        color="#ffffff"
+        align="center"
+        width="2">
+      </a-text>
     </a-entity>
 
+    <!-- MindAR necesita una cámara de A-Frame para representar la escena. -->
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
   </a-scene>
 
-  <script>
-    const raBox = document.getElementById('raBox');
-    const colorBtn = document.getElementById('colorBtn');
-    const colors = ['#4CC3D9', '#FFC65D', '#7BC8A4', '#EF2D5E', '#9B59B6'];
-    let colorIndex = 0;
-
-    colorBtn.addEventListener('click', () => {
-      colorIndex = (colorIndex + 1) % colors.length;
-      raBox.setAttribute('material', 'color', colors[colorIndex]);
-    });
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
 ```
 
-### 7. Caso práctico integrador: kiosco multimodal e interactivo NUI
+Archivo `styles.css`:
 
-Los alumnos desarrollarán una aplicación web unificada de tipo catálogo digital que responda a dos vías de entrada natural de forma simultánea:
-1. **Comandos de voz:** "Siguiente", "Anterior", "Seleccionar".
-2. **Gestos manuales:** Mover la mano a la derecha/izquierda para navegar entre productos y realizar el gesto de puño cerrado o toque con dedo índice para seleccionar.
+```css
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.controles {
+  position: fixed;
+  z-index: 10;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+button {
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: #1457a6;
+  color: white;
+  font-size: 1rem;
+}
+
+button:disabled {
+  opacity: 0.55;
+}
+
+#estado {
+  position: fixed;
+  z-index: 10;
+  top: 1rem;
+  left: 1rem;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+```
+
+Archivo `app.js`:
+
+```javascript
+const escena = document.querySelector("#escena");
+const objetivo = document.querySelector("#objetivo");
+const cubo = document.querySelector("#cubo");
+const estado = document.querySelector("#estado");
+const botonIniciar = document.querySelector("#iniciar");
+const botonColor = document.querySelector("#cambiar-color");
+
+const colores = ["#20a4f3", "#f4a261", "#70c1b3", "#e76f51"];
+let indiceColor = 0;
+
+// Espera a que A-Frame y MindAR creen sus componentes y sistemas.
+const prepararEscena = () => {
+  botonIniciar.disabled = false;
+  estado.textContent = "Pulsa «Iniciar cámara» y permite el acceso.";
+};
+
+if (escena.hasLoaded) {
+  prepararEscena();
+} else {
+  escena.addEventListener("loaded", prepararEscena, { once: true });
+}
+
+// La cámara solo se solicita como respuesta a una acción del usuario.
+botonIniciar.addEventListener("click", async () => {
+  const sistemaAR = escena.systems["mindar-image-system"];
+  botonIniciar.disabled = true;
+  estado.textContent = "Iniciando cámara…";
+
+  try {
+    await sistemaAR.start();
+  } catch (error) {
+    console.error("No se pudo iniciar WebAR:", error);
+    estado.textContent =
+      "No se pudo iniciar la cámara. Comprueba el permiso y usa HTTPS o localhost.";
+    botonIniciar.disabled = false;
+  }
+});
+
+// MindAR avisa cuando termina de inicializar o si no puede iniciar la cámara.
+escena.addEventListener("arReady", () => {
+  estado.textContent = "Cámara activa. Busca la imagen objetivo.";
+  botonColor.disabled = false;
+});
+
+escena.addEventListener("arError", (event) => {
+  console.error("MindAR no pudo iniciar WebAR:", event.detail);
+  estado.textContent =
+    "No se pudo iniciar la cámara. Comprueba el permiso y usa HTTPS o localhost.";
+  botonIniciar.disabled = false;
+});
+
+// Estos eventos informan de si MindAR encuentra o pierde la imagen.
+objetivo.addEventListener("targetFound", () => {
+  estado.textContent = "Imagen detectada: el cubo está sobre ella.";
+});
+
+objetivo.addEventListener("targetLost", () => {
+  estado.textContent = "Imagen no visible. Vuelve a encuadrar el objetivo.";
+});
+
+// Cambia el material del cubo sin alterar el seguimiento de la imagen.
+botonColor.addEventListener("click", () => {
+  indiceColor = (indiceColor + 1) % colores.length;
+  cubo.setAttribute("material", "color", colores[indiceColor]);
+});
+```
+
+#### 6.2. Cómo funciona el ejemplo
+
+1. Al cargar la página, `loaded` confirma que A-Frame ha inicializado la escena. El botón de inicio se habilita, pero la cámara aún no se ha solicitado.
+2. Al pulsar **Iniciar cámara**, el sistema `mindar-image-system` solicita el permiso y comienza el análisis del vídeo. El navegador puede rechazarlo si se deniega el permiso o la página no se sirve desde un contexto seguro.
+3. `imageTargetSrc` apunta a un archivo `.mind`, que contiene los datos de seguimiento. `targetIndex: 0` enlaza la entidad con el primer objetivo de ese archivo.
+4. El cubo y el texto son hijos de la entidad objetivo, por lo que MindAR los muestra alineados con la imagen detectada. `targetFound` y `targetLost` permiten actualizar el mensaje según se encuentre o se pierda el objetivo.
+5. El segundo botón cambia el color del cubo mediante `setAttribute`. Es un control HTML normal, independiente del seguimiento de cámara.
+
+Para probarlo, utiliza la imagen de ejemplo correspondiente al archivo `.mind`: [imagen objetivo de MindAR](https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png). Si la cámara no inicia, comprueba los permisos del navegador y que la página se sirve con HTTPS o desde `localhost`; si la cámara inicia pero no aparece el cubo, verifica que se está mostrando esa imagen con suficiente luz y dentro del encuadre.
+
+### 7. Proyecto final: experimentación con interfaces naturales
+
+El proyecto se realizará **en parejas** y permitirá aplicar los contenidos de los apartados **4, 5 y 6**: interacción mediante manos, detección de pose o rostro y realidad aumentada en el navegador (WebAR). El propósito es comprender y explicar los ejemplos del tema y realizar modificaciones pequeñas, funcionales y asequibles a partir del código proporcionado. No se espera desarrollar las aplicaciones desde cero ni hacer una investigación extensa, pero sí entender qué hace el código y poder explicar los cambios realizados.
+
+#### 7.1. Parte 1: explicación, investigación y pruebas
+
+En grupo, revisad los apartados 4, 5 y 6 y:
+
+1. Explicad brevemente qué problema resuelve cada tecnología y qué bibliotecas o herramientas se utilizan.
+2. Ejecutad y probad los ejemplos de código proporcionados en el tema. Comprobad qué ocurre en el funcionamiento normal y, cuando sea posible, qué sucede si se pierde la detección o no se concede el permiso de cámara.
+3. Explicad las partes principales de cada ejemplo: cómo se inicia, qué datos detecta, cómo se actualiza la interfaz y qué limitaciones tiene.
+
+#### 7.2. Parte 2: modificaciones funcionales
+
+Realizad **una modificación sencilla y funcional para cada tipo de interacción**, partiendo del ejemplo correspondiente del tema:
+
+- **Manos:** modificad el ejemplo del apartado 4 para que una acción o posición detectada de la mano produzca un resultado visible en la página. Por ejemplo, mover un elemento de la interfaz según la posición de la punta del índice.
+- **Pose o rostro:** modificad uno de los ejemplos del apartado 5 para que una pose o un punto facial detectado active un cambio visible. Por ejemplo, mostrar un mensaje al levantar el brazo o al detectar un rostro.
+- **Realidad aumentada:** modificad el ejemplo WebAR del apartado 6 para cambiar algún aspecto del contenido 3D o su interacción. Por ejemplo, cambiar el color, el tamaño o el texto del objeto superpuesto.
+
+Cada grupo elegirá qué modificación realizar en cada ejemplo. Las propuestas deben ser originales, sencillas de implementar a partir del código proporcionado y no requerir una investigación adicional extensa. Antes de empezar, comprobad que podéis explicar la idea y cómo adaptarla con los conocimientos trabajados en clase. En el documento, indicad qué modificasteis, qué parte del código interviene y cómo comprobasteis que funciona. Si una limitación del dispositivo, del navegador o de la cámara impide una prueba, describidla y aportad la evidencia disponible.
+
+#### 7.3. Organización y sesiones
+
+El proyecto se realizará durante las sesiones de los días **28/10 y 29/10**. La asistencia a estas sesiones es obligatoria para quienes realicen el proyecto. El trabajo y la entrega deben mostrar la participación de **ambos miembros** de la pareja: los dos integrantes deben conocer y poder explicar los ejemplos y las modificaciones.
+
+Quien no asista a clase, tanto por motivos justificados como injustificados, podrá superar este tema mediante un **examen tipo test**, en lugar de realizar el proyecto en clase.
+
+#### 7.4. Entrega
+
+Cada pareja entregará:
+
+1. **Un documento en PDF**, elaborado siguiendo la plantilla de trabajos disponible. Debe incluir la explicación de los apartados 4, 5 y 6, una descripción de las pruebas, las modificaciones realizadas y cómo funciona cada una.
+2. **El código fuente** de los tres ejercicios modificados, organizado e identificado para que se pueda ejecutar y revisar.
+3. **Un vídeo demostrativo por cada programa** (tres vídeos en total). Cada vídeo debe durar **entre 2 y 3 minutos, sin superar los 3 minutos**. Debe mostrar el programa funcionando y explicar brevemente su funcionamiento y la modificación realizada. En los vídeos debe poder identificarse la participación de ambos miembros de la pareja.
+
+Antes de entregar, verificad que los archivos abren correctamente, que los vídeos se reproducen y que los ejemplos se han probado en las condiciones necesarias, especialmente el acceso a la cámara y el uso de HTTPS o `localhost` cuando corresponda.
 
 ---
-
-### 8. Criterios y rúbrica de evaluación
-
-#### 8.1. Criterios de evaluación (asociados al RA2)
-- **CE2.a:** Se han identificado las herramientas y librerías clave para el desarrollo de interfaces naturales en entornos web.
-- **CE2.b:** Se ha implementado el procesamiento de voz mediante Web Speech API para accionar elementos de interfaz.
-- **CE2.c:** Se ha integrado la captura de video y tracking de partes del cuerpo (manos, postura o rostro) con frameworks de ML en JavaScript.
-- **CE2.d:** Se han integrado elementos 3D / RA superpuestos en la emision de la camara mediante librerías de WebAR.
-
-#### 8.2. Rúbrica de evaluación
-
-| Criterio | Excelente (9-10) | Notable / Aprobado (5-8) | Insuficiente (1-4) |
-| :--- | :--- | :--- | :--- |
-| **Reconocimiento de Voz** | Integra comandos continuos, gestiona errores de audio y proporciona feedback visual instantáneo. | Implementa reconocimiento de voz funcional básico con errores puntuales de contexto. | No logra capturar o procesar eventos de voz desde la API nativa. |
-| **Detección Gestual (ML)** | Mapea con precisión puntos de referencia (*landmarks*) y activa elementos del DOM fluidamente. | Detecta manos o postura pero la interacción con la UI presenta retrasos o imprecisiones. | No integra librerías de visión por ordenador o no procesa las coordenadas. |
-| **Realidad Aumentada (WebAR)** | Despliega escenas RA estables, con seguimiento de marcadores y respuesta a eventos táctiles/UI. | Renderiza elementos 3D sobre la cámara pero la interacción es limitada o inestable. | No consigue inicializar la cámara o cargar la biblioteca de RA. |
-| **Calidad de Código y Estructura** | Código modular en ES6+, asíncrono, limpio y documentado siguiendo buenas prácticas. | Código funcional en un único bloque con poca estructuración o falta de documentación. | Código con errores de sintaxis o fallos de ejecución no resueltos. |
