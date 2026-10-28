@@ -1079,6 +1079,7 @@ En grupo, revisad los apartados 4, 5 y 6 y:
 1. Explicad brevemente qué problema resuelve cada tecnología y qué bibliotecas o herramientas se utilizan.
 2. Ejecutad y probad los ejemplos de código proporcionados en el tema. Comprobad qué ocurre en el funcionamiento normal y, cuando sea posible, qué sucede si se pierde la detección o no se concede el permiso de cámara.
 3. Explicad las partes principales de cada ejemplo: cómo se inicia, qué datos detecta, cómo se actualiza la interfaz y qué limitaciones tiene.
+4. Se deberán de indicar todas las fuentes bibliográficas consultadas.
 
 #### 7.2. Parte 2: modificaciones funcionales
 
@@ -1092,9 +1093,9 @@ Cada grupo elegirá qué modificación realizar en cada ejemplo. Las propuestas 
 
 #### 7.3. Organización y sesiones
 
-El proyecto se realizará durante las sesiones de los días 28/10 y 29/10. La asistencia a estas sesiones es obligatoria para quienes realicen el proyecto. El trabajo y la entrega deben mostrar la participación de ambos miembros de la pareja: los dos integrantes deben conocer y poder explicar los ejemplos y las modificaciones.
+El proyecto se realizará durante las sesiones de los días 28/10 y 29/10. La asistencia a estas sesiones es obligatoria para quienes realicen el proyecto. El trabajo y la entrega deben mostrar la participación de ambos miembros de la pareja: los dos integrantes deben conocer y poder explicar los ejemplos y las modificaciones, para ello el docente podrá solicitar una defensa de la práctica a uno o ambos miembros de la pareja si lo considera oportuno.
 
-Quien no asista a clase, tanto por motivos justificados como injustificados, podrá superar este tema mediante un examen tipo test, en lugar de realizar el proyecto en clase.
+Quien no asista a clase, tanto por motivos justificados (sin justificante oficial) como injustificados, podrá superar este tema mediante un examen tipo test, en lugar de realizar el proyecto en clase.
 
 #### 7.4. Entrega
 
@@ -1102,7 +1103,7 @@ Cada pareja entregará:
 
 1. **Un documento en PDF**, elaborado siguiendo la plantilla de trabajos disponible. Debe incluir la explicación de los apartados 4, 5 y 6, una descripción de las pruebas, las modificaciones realizadas y cómo funciona cada una.
 2. **El código fuente** de los tres ejercicios modificados, organizado e identificado para que se pueda ejecutar y revisar.
-3. **Un vídeo demostrativo por cada programa** (tres vídeos en total). Cada vídeo debe durar entre 2 y 3 minutos, sin superar los 3 minutos. Debe mostrar el programa funcionando y explicar brevemente su funcionamiento y la modificación realizada. En los vídeos debe poder identificarse la participación de ambos miembros de la pareja.
+3. **Un vídeo demostrativo por cada programa** (tres vídeos en total). Cada vídeo debe durar entre 2 y 3 minutos, sin superar los 3 minutos. Debe mostrar el programa funcionando y explicar brevemente su funcionamiento y la modificación realizada. En los vídeos debe poder identificarse la participación de ambos miembros de la pareja. El video se podrá entregar mediante un enlace de drive, youtube (oculto) o como considere el alumno, no se deberán enviar videos directamente a la tarea.
 
 Antes de entregar, verificad que los archivos abren correctamente, que los vídeos se reproducen y que los ejemplos se han probado en las condiciones necesarias.
 
