@@ -837,25 +837,238 @@ botonInicio.addEventListener("click", iniciarDeteccion);
 
 Para analizar el cuerpo se usa **Pose Landmarker**, otra tarea de MediaPipe Tasks Vision. En vez de centrarse en la mano o el rostro, estima puntos como hombros, codos, muñecas, caderas, rodillas y tobillos. La salida es una lista de puntos (*landmarks*); cada uno tiene coordenadas normalizadas respecto a la imagen. `x` representa la posición horizontal y `y` la vertical, desde `0` (arriba) hasta `1` (abajo).
 
-Comparar las coordenadas permite construir reglas sencillas de interacción. Por ejemplo, como `y` aumenta hacia abajo, la muñeca tiene una coordenada menor que la nariz si está más arriba en la imagen. El ejemplo analiza un fotograma y muestra un mensaje si detecta una pose con la muñeca por encima de la nariz:
+Comparar las coordenadas permite construir reglas sencillas de interacción. Por ejemplo, como `y` aumenta hacia abajo, la muñeca tiene una coordenada menor que la nariz si está más arriba en la imagen. En este ejemplo, al levantar la muñeca izquierda por encima de la nariz, el indicador de la página cambia y muestra que se ha detectado el movimiento.
 
-```javascript
-const resultado = detectorPose.detectForVideo(videoCamara, performance.now());
-const poses = resultado.landmarks;
+Crea tres archivos en la misma carpeta, `index.html`, `styles.css` y `app.js`, y copia cada bloque en el archivo correspondiente. Abre `index.html` desde un servidor local (por ejemplo, Live Server en VS Code) o una página HTTPS; la cámara no suele estar disponible al abrir el archivo directamente con `file://`. Pulsa «Iniciar cámara» y permite el acceso. Mantén la parte superior del cuerpo dentro del encuadre y levanta la mano izquierda por encima de la cabeza.
 
-if (poses.length > 0) {
-  const puntos = poses[0];
-  const muñeca = puntos[15];
-  const nariz = puntos[0];
-  estado.textContent = muñeca.y < nariz.y
-    ? "Brazo levantado"
-    : "Brazo abajo";
-} else {
-  estado.textContent = "No se detecta ninguna pose";
+Archivo `index.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detección de pose corporal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>Detección de pose corporal</h1>
+    <p>Levanta la muñeca izquierda por encima de la nariz para activar el indicador.</p>
+
+    <div class="controles">
+      <button id="botonInicio" type="button">Iniciar cámara</button>
+      <button id="botonDetener" type="button" disabled>Detener cámara</button>
+    </div>
+
+    <p id="estado" role="status" aria-live="polite">La cámara está apagada.</p>
+    <p id="indicadorMovimiento" aria-live="polite">Movimiento no detectado</p>
+
+    <div id="contenedorVideo">
+      <video id="videoCamara" autoplay muted playsinline></video>
+    </div>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+```
+
+Archivo `styles.css`:
+
+```css
+body {
+  margin: 0;
+  padding: 1rem;
+  background: #1a1a1a;
+  color: white;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.controles {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#estado {
+  min-height: 1.5em;
+}
+
+#indicadorMovimiento {
+  margin: 1rem auto;
+  padding: 1rem;
+  border: 2px solid #868e96;
+  border-radius: 8px;
+  background: #343a40;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+#indicadorMovimiento.activo {
+  border-color: #69db7c;
+  background: #087f5b;
+}
+
+#contenedorVideo {
+  width: min(640px, 100%);
+  aspect-ratio: 4 / 3;
+  margin: 1rem auto;
+  background: #333;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 ```
 
-En la lista de Pose Landmarker, el punto `0` es la nariz y el `15` corresponde a la muñeca izquierda. El código consulta primero si hay alguna pose para evitar leer puntos inexistentes. Para convertir esta regla en un control, el texto podría sustituirse por otra acción de la página, como cambiar de diapositiva. La detección puede variar si la persona sale del encuadre o hay poca luz; si el vídeo se refleja, también puede cambiar la izquierda y la derecha percibidas.
+Archivo `app.js`:
+
+```javascript
+import {
+  FilesetResolver,
+  PoseLandmarker
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+
+const videoCamara = document.getElementById("videoCamara");
+const botonInicio = document.getElementById("botonInicio");
+const botonDetener = document.getElementById("botonDetener");
+const estado = document.getElementById("estado");
+const indicadorMovimiento = document.getElementById("indicadorMovimiento");
+
+let detectorPose;
+let flujoCamara;
+let ultimoTiempoVideo = -1;
+let fotogramaSolicitado;
+
+async function iniciarDeteccion() {
+  botonInicio.disabled = true;
+  estado.textContent = "Solicitando acceso a la cámara...";
+
+  try {
+    flujoCamara = await navigator.mediaDevices.getUserMedia({
+      video: { width: 640, height: 480 }
+    });
+    videoCamara.srcObject = flujoCamara;
+    await videoCamara.play();
+
+    estado.textContent = "Cargando el detector de pose...";
+    const archivosVision = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+    );
+    detectorPose = await PoseLandmarker.createFromOptions(archivosVision, {
+      baseOptions: {
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task"
+      },
+      runningMode: "VIDEO",
+      numPoses: 1
+    });
+
+    estado.textContent = "Cámara activa: levanta la muñeca izquierda.";
+    botonDetener.disabled = false;
+    fotogramaSolicitado = requestAnimationFrame(detectarPoseEnVideo);
+  } catch (errorInicio) {
+    console.error(errorInicio);
+    liberarRecursos();
+    botonInicio.disabled = false;
+    estado.textContent = "No se pudo iniciar. Comprueba el permiso de cámara, la conexión a Internet y que uses HTTPS o localhost.";
+  }
+}
+
+function detectarPoseEnVideo() {
+  if (
+    detectorPose &&
+    videoCamara.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA &&
+    videoCamara.currentTime !== ultimoTiempoVideo
+  ) {
+    ultimoTiempoVideo = videoCamara.currentTime;
+    const resultado = detectorPose.detectForVideo(
+      videoCamara,
+      performance.now()
+    );
+    const poses = resultado.landmarks;
+
+    if (poses.length > 0) {
+      const puntos = poses[0];
+      const muñecaIzquierda = puntos[15];
+      const nariz = puntos[0];
+      const muñecaVisible = (muñecaIzquierda.visibility ?? 1) >= 0.5;
+      const narizVisible = (nariz.visibility ?? 1) >= 0.5;
+
+      if (muñecaVisible && narizVisible) {
+        actualizarIndicador(muñecaIzquierda.y < nariz.y);
+      } else {
+        indicadorMovimiento.textContent = "No se ven con claridad la muñeca y la nariz";
+        indicadorMovimiento.classList.remove("activo");
+      }
+    } else {
+      indicadorMovimiento.textContent = "No se detecta ninguna pose";
+      indicadorMovimiento.classList.remove("activo");
+    }
+  }
+
+  if (detectorPose) {
+    fotogramaSolicitado = requestAnimationFrame(detectarPoseEnVideo);
+  }
+}
+
+function actualizarIndicador(brazoLevantado) {
+  indicadorMovimiento.textContent = brazoLevantado
+    ? "¡Brazo levantado! Movimiento detectado"
+    : "Movimiento no detectado";
+  indicadorMovimiento.classList.toggle("activo", brazoLevantado);
+}
+
+function liberarRecursos() {
+  if (fotogramaSolicitado !== undefined) {
+    cancelAnimationFrame(fotogramaSolicitado);
+    fotogramaSolicitado = undefined;
+  }
+
+  flujoCamara?.getTracks().forEach((pista) => pista.stop());
+  flujoCamara = undefined;
+  videoCamara.srcObject = null;
+  detectorPose?.close();
+  detectorPose = undefined;
+  ultimoTiempoVideo = -1;
+}
+
+function detenerDeteccion() {
+  liberarRecursos();
+  botonInicio.disabled = false;
+  botonDetener.disabled = true;
+  estado.textContent = "La cámara está apagada.";
+  indicadorMovimiento.textContent = "Movimiento no detectado";
+  indicadorMovimiento.classList.remove("activo");
+}
+
+botonInicio.addEventListener("click", iniciarDeteccion);
+botonDetener.addEventListener("click", detenerDeteccion);
+```
+
+En la lista de Pose Landmarker, el punto `0` es la nariz y el `15` corresponde a la muñeca izquierda. Como las coordenadas `y` aumentan hacia abajo, `muñecaIzquierda.y < nariz.y` significa que la muñeca está por encima de la nariz. El ejemplo comprueba también que esos puntos sean visibles antes de comparar sus posiciones; si no detecta una pose, lo indica en la página. El botón «Detener cámara» apaga la cámara y libera los recursos.
+
+La regla puede adaptarse para activar otra acción, como cambiar de diapositiva. La detección puede variar si la persona sale del encuadre o hay poca luz; si se refleja el vídeo, también puede cambiar la izquierda y la derecha percibidas.
 
 ### 6. Realidad aumentada en el navegador (WebAR)
 
