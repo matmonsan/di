@@ -73,6 +73,10 @@ Este es el problema que resuelven bibliotecas como **React**:
 
 ## 1.2 ¿Qué es React?
 
+![Logotipo de React: un átomo azul](https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg){: width="180"}
+
+*Figura: logotipo de React. Fuente: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:React-icon.svg).*
+
 **React** es una **biblioteca de JavaScript para construir interfaces de usuario**. Fue desarrollada por Facebook (hoy Meta) y publicada como código abierto en 2013. Hoy la usan empresas como Meta, Netflix, Airbnb o Microsoft, y es la tecnología de frontend más utilizada del mundo: en la encuesta de Stack Overflow de 2024 la usaba el 41,6 % de los desarrolladores profesionales, por delante de Node.js, jQuery o Angular (19,4 %).
 
 > *«Creo que React será uno de los proyectos más importantes en los que trabajaré en mi vida.»*
@@ -216,18 +220,32 @@ Observa cualquier web que uses a diario. Por ejemplo, una plataforma de vídeos:
 
 ```text
 ┌──────────────────────────────────────────────────────────────┐
-│ [Logo]   [ Buscador.......................... ]   [Avatar]  │  ← Cabecera
+│ [Logo]   [ Buscador.......................... ]   [Avatar]   │  <- Cabecera
 ├────────────┬─────────────────────────────────────────────────┤
 │ Inicio     │ ┌─────────┐  ┌─────────┐  ┌─────────┐           │
-│ Tendencias │ │ ▶ vídeo │  │ ▶ vídeo │  │ ▶ vídeo │           │  ← TarjetaVideo
-│ Suscripc.  │ │ Título  │  │ Título  │  │ Título  │           │    (la misma pieza,
-│            │ │ Canal   │  │ Canal   │  │ Canal   │           │     repetida con
-│ ← Menú     │ └─────────┘  └─────────┘  └─────────┘           │     datos distintos)
-│   lateral  │                                ← ListaVideos    │
+│ Tendencias │ │ > vídeo │  │ > vídeo │  │ > vídeo │           │  <- TarjetaVideo
+│ Suscripc.  │ │ Título  │  │ Título  │  │ Título  │           │     (la misma pieza,
+│            │ │ Canal   │  │ Canal   │  │ Canal   │           │      repetida con
+│ (Menú      │ └─────────┘  └─────────┘  └─────────┘           │      datos distintos)
+│  lateral)  │                       (ListaVideos)             │
 └────────────┴─────────────────────────────────────────────────┘
 ```
 
 Todas las tarjetas de vídeo tienen la misma estructura y solo cambian los datos (miniatura, título, canal). En React se programa **un único** componente `TarjetaVideo` y se usa tantas veces como vídeos haya, pasándole datos distintos cada vez.
+
+La documentación oficial de React muestra la misma idea con una tabla de productos. Cada recuadro de color es un componente:
+
+![Interfaz de una tabla de productos dividida en cinco componentes de colores](https://react.dev/images/docs/s_thinking-in-react_ui_outline.png){: width="550"}
+
+*Figura: una interfaz dividida en componentes. Fuente: [react.dev, «Pensar en React»](https://es.react.dev/learn/thinking-in-react).*
+
+1. `FilterableProductTable` (gris) contiene toda la aplicación.
+2. `SearchBar` (azul) recibe lo que escribe el usuario.
+3. `ProductTable` (morado) muestra la lista de productos.
+4. `ProductCategoryRow` (verde) muestra el encabezado de cada categoría.
+5. `ProductRow` (amarillo) muestra una fila por producto. Es **un solo componente** que se repite seis veces con datos distintos.
+
+Fíjate en que unos componentes están **dentro** de otros: `ProductTable` contiene filas de categoría y filas de producto. Esa relación padre-hijo es la que se explica en el apartado 1.5.3.
 
 ### 1.5.2 Un componente es una función
 
@@ -401,6 +419,13 @@ Estas palabras aparecerán constantemente. Vuelve a esta tabla siempre que lo ne
 
 # 2. Creación de proyectos en React
 
+>
+> **Vídeo recomendado** 
+>
+> [![Introducción a React para principiantes – Fundamentos (Yoelvis Mulen)](https://img.youtube.com/vi/OEnSQcN5Nz4/hqdefault.jpg)](https://www.youtube.com/watch?v=OEnSQcN5Nz4)
+>
+> [Introducción a React para principiantes – Fundamentos (Yoelvis Mulen, YouTube)](https://www.youtube.com/watch?v=OEnSQcN5Nz4)
+
 ## 2.1 Software necesario
 
 ### 2.1.1 ¿Por qué no basta con un HTML y un `<script>`?
@@ -424,6 +449,10 @@ Por eso, en lugar de abrir el HTML directamente, usaremos una **herramienta de c
 ```
 
 ### 2.1.2 Qué necesitamos instalar
+
+![Logotipo de Node.js](https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg){: width="200"}
+
+*Figura: logotipo de Node.js. Lo reconocerás en la web de descarga. Fuente: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Node.js_logo.svg).*
 
 1. **Node.js:** permite ejecutar JavaScript **fuera del navegador**, en nuestro ordenador. No lo usaremos para programar la aplicación, sino porque **las herramientas de desarrollo** (Vite, el traductor de JSX, ESLint...) están escritas en JavaScript y necesitan Node.js para funcionar. Se descarga de [nodejs.org](https://nodejs.org) (versión **LTS**, la de soporte prolongado).
 2. **npm (*Node Package Manager*):** se instala automáticamente con Node.js. Es el **gestor de paquetes**: el programa que descarga e instala bibliotecas (como React) desde el repositorio público [npmjs.com](https://www.npmjs.com) y lleva la cuenta de cuáles usa el proyecto. Alternativas: **yarn** y **pnpm**.
@@ -670,6 +699,10 @@ Pasos para crear un proyecto con CRA:
 > **create-react-app está obsoleta.** En febrero de 2025 el equipo de React anunció que **deja de recomendar y mantener** create-react-app, que además era lenta y tenía problemas de compatibilidad con React 19. Conviene conocerla porque muchos proyectos y tutoriales la usan (los reconocerás por `react-scripts`, `src/index.js` y `public/index.html`), pero **para proyectos nuevos se usa Vite** o un framework como Next.js o React Router.
 
 ## 2.5 Creación de proyectos con Vite
+
+![Logotipo de Vite: un rayo amarillo sobre un triángulo morado](https://upload.wikimedia.org/wikipedia/commons/f/f1/Vitejs-logo.svg){: width="160"}
+
+*Figura: logotipo de Vite. Fuente: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Vitejs-logo.svg).*
 
 **Vite** (se pronuncia «vit», «rápido» en francés) es una herramienta que **crea el esqueleto de un proyecto** ya configurado y ofrece un **servidor de desarrollo** casi instantáneo. Ya la conociste en la UD2 (apartado 1.1.8). Es la alternativa moderna a create-react-app y **la que usaremos en todos los proyectos del curso**.
 
@@ -1071,6 +1104,11 @@ Compara este proyecto con el manual del apartado 2.2: Vite ha creado por ti la e
 ## 2.6 Herramientas de desarrollo
 
 - **React Developer Tools:** extensión para Chrome, Firefox y Edge. Añade a las herramientas de desarrollo del navegador las pestañas *Components* (permite ver el árbol de componentes, sus props y su estado) y *Profiler* (mide el rendimiento). Es imprescindible para depurar: instálala desde el primer día.
+
+  ![Pestaña Components de React Developer Tools mostrando el árbol App, List y ListItem, y las props del elemento seleccionado](https://react.dev/images/docs/react-devtools-extension.png){: width="550"}
+
+  *Figura: pestaña* Components *de React Developer Tools. A la izquierda, el árbol de componentes (`App` → `List` → `ListItem`); a la derecha, las props y los hooks del componente seleccionado. Fuente: [react.dev](https://es.react.dev/learn/react-developer-tools).*
+
 - **Extensiones de VS Code:** *ES7+ React/Redux/React-Native snippets* (fragmentos como `rafce` + Tab, que escribe el esqueleto de un componente), *ESLint* (marca errores mientras escribes) y *Prettier* (formatea el código automáticamente).
 - **ESLint:** la plantilla de Vite incluye reglas para React, como `eslint-plugin-react-hooks`, que avisa cuando los hooks se usan de forma incorrecta. Si VS Code subraya algo en amarillo o rojo, pasa el ratón por encima y lee el aviso.
 
