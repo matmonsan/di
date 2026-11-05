@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 550" role="img" aria-labelledby="title desc">
+  <title id="title">Árbol de componentes React</title>
+  <desc id="desc">App contiene Header, Main y Footer. Header contiene NavBar, Logo y SearchBar. Main contiene Sidebar y Content. Footer contiene FooterLinks y SocialMediaIcons. Content contiene NavigationLinks, Profile y PostList; PostList contiene PostItem, que se divide en PostHeader, PostBody y PostFooter.</desc>
+  <defs>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #20344d; font-size: 15px; }
+      .root { fill: #dcecff; stroke: #4a86c5; }
+      .node { fill: #fff; stroke: #9eafc2; }
+      .leaf { fill: #f3f6fa; stroke: #c7d2df; }
+    </style>
+  </defs>
+  <rect width="1000" height="550" rx="18" fill="#f5f8fc"/>
+  <g stroke="#91a4b9" stroke-width="2" fill="none">
+    <!-- App → Header, Main, Footer -->
+    <path d="M500 66v27M145 93h680M145 93v27M470 93v27M825 93v27"/>
+    <!-- Header → NavBar, Logo, SearchBar -->
+    <path d="M145 156v27M60 183h170M60 183v27M140 183v27M230 183v27"/>
+    <!-- Main → Sidebar, Content -->
+    <path d="M470 156v27M390 183h160M390 183v27M550 183v27"/>
+    <!-- Footer → FooterLinks, SocialMediaIcons -->
+    <path d="M825 156v27M750 183h150M750 183v27M900 183v27"/>
+    <!-- Content → NavigationLinks, Profile, PostList -->
+    <path d="M550 246v27M470 273h255M470 273v27M605 273v27M725 273v27"/>
+    <!-- PostList → PostItem -->
+    <path d="M725 336v54"/>
+    <!-- PostItem → PostHeader, PostBody, PostFooter -->
+    <path d="M725 426v27M602 453h245M602 453v27M725 453v27M847 453v27"/>
+  </g>
+  <g stroke-width="2">
+    <rect class="root" x="445" y="30" width="110" height="36" rx="10"/>
+    <rect class="node" x="95" y="120" width="100" height="36" rx="9"/>
+    <rect class="node" x="420" y="120" width="100" height="36" rx="9"/>
+    <rect class="node" x="775" y="120" width="100" height="36" rx="9"/>
+    <rect class="leaf" x="20" y="210" width="80" height="36" rx="9"/>
+    <rect class="leaf" x="108" y="210" width="64" height="36" rx="9"/>
+    <rect class="leaf" x="180" y="210" width="100" height="36" rx="9"/>
+    <rect class="leaf" x="340" y="210" width="100" height="36" rx="9"/>
+    <rect class="node" x="500" y="210" width="100" height="36" rx="9"/>
+    <rect class="leaf" x="690" y="210" width="120" height="36" rx="9"/>
+    <rect class="leaf" x="820" y="210" width="160" height="36" rx="9"/>
+    <rect class="leaf" x="400" y="300" width="140" height="36" rx="9"/>
+    <rect class="leaf" x="555" y="300" width="100" height="36" rx="9"/>
+    <rect class="node" x="670" y="300" width="110" height="36" rx="9"/>
+    <rect class="node" x="665" y="390" width="120" height="36" rx="9"/>
+    <rect class="leaf" x="545" y="480" width="115" height="36" rx="9"/>
+    <rect class="leaf" x="672" y="480" width="106" height="36" rx="9"/>
+    <rect class="leaf" x="790" y="480" width="115" height="36" rx="9"/>
+  </g>
+  <g text-anchor="middle">
+    <text x="500" y="53">App</text>
+    <text x="145" y="143">Header</text>
+    <text x="470" y="143">Main</text>
+    <text x="825" y="143">Footer</text>
+    <text x="60" y="233">NavBar</text>
+    <text x="140" y="233">Logo</text>
+    <text x="230" y="233">SearchBar</text>
+    <text x="390" y="233">Sidebar</text>
+    <text x="550" y="233">Content</text>
+    <text x="750" y="233">FooterLinks</text>
+    <text x="900" y="233">SocialMediaIcons</text>
+    <text x="470" y="323">NavigationLinks</text>
+    <text x="605" y="323">Profile</text>
+    <text x="725" y="323">PostList</text>
+    <text x="725" y="413">PostItem</text>
+    <text x="602" y="503">PostHeader</text>
+    <text x="725" y="503">PostBody</text>
+    <text x="847" y="503">PostFooter</text>
+  </g>
+</svg>

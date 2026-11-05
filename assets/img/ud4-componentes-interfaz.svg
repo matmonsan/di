@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" role="img" aria-labelledby="title desc">
+  <title id="title">Interfaz de vídeo compuesta por componentes</title>
+  <desc id="desc">Una aplicación de vídeos tiene una cabecera y un menú lateral. La lista contiene varias tarjetas de vídeo reutilizadas con datos distintos.</desc>
+  <defs>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #20344d; }
+      .label { font-size: 17px; font-weight: 700; }
+      .small { font-size: 14px; fill: #52657a; }
+    </style>
+  </defs>
+  <rect width="1000" height="430" rx="18" fill="#f5f8fc"/>
+  <rect x="42" y="35" width="916" height="360" rx="16" fill="#fff" stroke="#9eafc2" stroke-width="2"/>
+  <path d="M42 111V51a16 16 0 0 1 16-16h884a16 16 0 0 1 16 16v60z" fill="#eaf2fc" stroke="#8bb4e8" stroke-width="2"/>
+  <text x="74" y="82" class="label">Logo</text>
+  <rect x="200" y="53" width="440" height="40" rx="10" fill="#fff" stroke="#c7d2df"/>
+  <text x="222" y="79" class="small">Buscador</text>
+  <circle cx="887" cy="73" r="22" fill="#b9c9dc"/>
+  <text x="845" y="79" text-anchor="end" class="small">Cabecera</text>
+  <path d="M43 112h189v282H58a15 15 0 0 1-15-15z" fill="#f3f6fa" stroke="#d3dce6"/>
+  <text x="70" y="156" class="label">Inicio</text>
+  <text x="70" y="194" class="label">Tendencias</text>
+  <text x="70" y="232" class="label">Suscripciones</text>
+  <text x="72" y="365" class="small">Menú lateral</text>
+  <text x="598" y="145" text-anchor="middle" class="label">ListaVideos</text>
+  <g transform="translate(270 167)">
+    <rect width="200" height="185" rx="12" fill="#fff" stroke="#8bb4e8" stroke-width="2"/>
+    <rect x="12" y="12" width="176" height="92" rx="8" fill="#dbeafe"/>
+    <path d="m88 39 34 19-34 19z" fill="#3b82f6"/>
+    <text x="100" y="132" text-anchor="middle" class="label">Título</text>
+    <text x="100" y="158" text-anchor="middle" class="small">Canal</text>
+  </g>
+  <g transform="translate(493 167)">
+    <rect width="200" height="185" rx="12" fill="#fff" stroke="#8bb4e8" stroke-width="2"/>
+    <rect x="12" y="12" width="176" height="92" rx="8" fill="#dcfce7"/>
+    <path d="m88 39 34 19-34 19z" fill="#22a06b"/>
+    <text x="100" y="132" text-anchor="middle" class="label">Título</text>
+    <text x="100" y="158" text-anchor="middle" class="small">Canal</text>
+  </g>
+  <g transform="translate(716 167)">
+    <rect width="200" height="185" rx="12" fill="#fff" stroke="#8bb4e8" stroke-width="2"/>
+    <rect x="12" y="12" width="176" height="92" rx="8" fill="#fef3c7"/>
+    <path d="m88 39 34 19-34 19z" fill="#d97706"/>
+    <text x="100" y="132" text-anchor="middle" class="label">Título</text>
+    <text x="100" y="158" text-anchor="middle" class="small">Canal</text>
+  </g>
+  <text x="593" y="382" text-anchor="middle" class="small">TarjetaVideo · el mismo componente, con datos distintos</text>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" role="img" aria-labelledby="title desc">
+  <title id="title">Comparación del DOM virtual</title>
+  <desc id="desc">Antes, el primer elemento de la lista tiene la clase selected. Después, solo se elimina esa clase. React actualiza únicamente ese atributo en el DOM real y conserva los demás nodos.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#52708f"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #20344d; font-size: 17px; }
+      .head { font-size: 20px; font-weight: 700; }
+      .code { font-family: ui-monospace, monospace; font-size: 16px; }
+      .small { font-size: 15px; fill: #52657a; }
+    </style>
+  </defs>
+  <rect width="1000" height="300" rx="18" fill="#f5f8fc"/>
+  <text x="170" y="47" text-anchor="middle" class="head">Antes</text>
+  <text x="475" y="47" text-anchor="middle" class="head">Después</text>
+  <text x="800" y="47" text-anchor="middle" class="head">DOM real</text>
+  <rect x="25" y="68" width="290" height="195" rx="14" fill="#fff" stroke="#c7d2df" stroke-width="2"/>
+  <rect x="330" y="68" width="290" height="195" rx="14" fill="#fff" stroke="#8bb4e8" stroke-width="2"/>
+  <rect x="665" y="68" width="310" height="195" rx="14" fill="#eef7f1" stroke="#abd2b7" stroke-width="2"/>
+  <text x="50" y="105" class="code">ul</text>
+  <rect x="48" y="119" width="235" height="36" rx="7" fill="#fff3cd"/>
+  <text x="60" y="143" class="code">li class="selected"</text>
+  <text x="72" y="177" class="code">a href="/pets"</text>
+  <text x="50" y="216" class="code">li → a href="/owners"</text>
+  <text x="355" y="105" class="code">ul</text>
+  <rect x="353" y="119" width="235" height="36" rx="7" fill="#e4f0ff"/>
+  <text x="365" y="143" class="code">li (sin clase)</text>
+  <text x="377" y="177" class="code">a href="/pets"</text>
+  <text x="355" y="216" class="code">li → a href="/owners"</text>
+  <path d="M300 165h45" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M605 165h45" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="820" y="129" text-anchor="middle" class="head">Solo cambia</text>
+  <text x="820" y="161" text-anchor="middle" class="code">class="selected"</text>
+  <text x="820" y="196" text-anchor="middle" class="small">El resto del árbol</text>
+  <text x="820" y="220" text-anchor="middle" class="small">se conserva</text>
+</svg>
