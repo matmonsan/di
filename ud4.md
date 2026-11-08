@@ -11,8 +11,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 1. [Introducción a React](#1-introducción-a-react)
 2. [Creación de proyectos en React](#2-creación-de-proyectos-en-react)
     - [Práctica: introducción a React](#27-práctica-introducción-a-react)
-{% endraw %}{% comment %}{% raw %}
 3. [JSX](#3-jsx)
+    - [Práctica: JSX](#39-práctica-jsx)
+{% endraw %}{% comment %}{% raw %}
 4. [Componentes y props](#4-componentes-y-props)
     - [Práctica guiada: aplicación de notas](#46-práctica-guiada-aplicación-de-notas)
 5. [Renderizado condicional y listas](#5-renderizado-condicional-y-listas)
@@ -1099,8 +1100,6 @@ Sube el proyecto (sin `node_modules`) y añade una captura de pantalla del resul
 
 ---
 
-{% endraw %}{% comment %}{% raw %}
-
 # 3. JSX
 
 ## 3.0 ¿Qué es JSX y por qué lo usamos?
@@ -1729,7 +1728,96 @@ React.createElement(
 
 > La sintaxis corta `<></>` no admite atributos. Si necesitas una `key` (por ejemplo, al generar fragmentos en una lista), usa `<Fragment key={id}>`.
 
+## 3.9 PRÁCTICA: JSX
+
+En esta práctica vas a trabajar las reglas de JSX: convertir HTML a JSX, encontrar y corregir errores, insertar expresiones de JavaScript con llaves y agrupar elementos con fragmentos. Todo lo necesario está en los apartados 3.4 a 3.8.
+
+Crea con Vite un proyecto llamado `practica-jsx`, límpialo como en el apartado 2.5.5 y crea la carpeta `src/components/`. Cada componente irá en su propio archivo.
+
+### Tareas
+
+**1. De HTML a JSX**
+
+Este fragmento de HTML funciona en una página normal, pero no es JSX válido:
+
+```html
+<!-- Formulario de suscripción -->
+<form class="suscripcion">
+  <h2 class="suscripcion-titulo">Suscríbete al boletín</h2>
+  <label for="email">Correo electrónico</label>
+  <input type="email" id="email" tabindex="1" placeholder="tu@correo.com">
+  <br>
+  <label for="nombre">Nombre</label>
+  <input type="text" id="nombre" value="Anónimo">
+  <label><input type="checkbox" checked> Acepto la política de privacidad</label>
+  <img src="https://placehold.co/120x40?text=Logo" alt="Logo del boletín">
+  <button type="button" onclick="avisar()" style="background-color: #282c34; color: white; padding: 8px 16px">Enviar</button>
+</form>
+```
+
+- **a.** Crea el componente `FormularioSuscripcion` que muestre exactamente este formulario, convirtiendo el HTML a JSX a mano (sin conversores automáticos).
+- **b.** El botón debe mostrar un `alert` con el texto «¡Gracias por suscribirte!» al pulsarlo. Define la función dentro del componente, antes del `return`.
+- **c.** Comprueba que en la consola del navegador no aparece ningún aviso.
+
+**2. Encuentra los errores**
+
+El siguiente componente tiene al menos 8 errores de JSX:
+
+```jsx
+function tarjeta() {
+  const usuario = { nombre: "Lucía", edad: 17, web: "https://www.mozilla.org" };
+
+  return (
+    <h2>Perfil de usuario</h2>
+    <div class="tarjeta">
+      <!-- datos del usuario -->
+      <p>Datos: {usuario}</p>
+      <p>Edad dentro de 5 años: {usuario.edad + "5"}</p>
+      <a href="{usuario.web}">Mi web</a>
+      <img src="https://placehold.co/80" alt="Avatar">
+      {if (usuario.edad >= 18) { "Mayor de edad" } else { "Menor de edad" }}
+    </div>
+  );
+}
+
+export default tarjeta;
+```
+
+- **a.** Copia el componente en `src/components/` y úsalo en `App.jsx`.
+- **b.** Corrígelo poco a poco: arregla un error, guarda y lee el siguiente mensaje que muestra Vite o la consola.
+- **c.** Al lado de cada corrección, añade un comentario JSX que explique qué regla se incumplía.
+- **d.** El párrafo «Datos» debe mostrar el nombre y la edad del usuario, y la edad dentro de 5 años debe ser 22.
+
+**3. Expresiones: ficha de película**
+
+Crea un componente `FichaPelicula` que reciba por props un objeto `pelicula` con estas propiedades: `titulo`, `director`, `anio`, `duracion` (en minutos), `precio` (sin IVA), `stock`, `valoracion` (de 1 a 5) y `cartel` (URL de una imagen). La ficha debe mostrar, usando solo expresiones entre llaves:
+
+- **a.** El título en mayúsculas.
+- **b.** Cuántos años han pasado desde el estreno, calculados a partir del año actual.
+- **c.** La duración en horas y minutos, por ejemplo «2 h 15 min».
+- **d.** El precio con un 21 % de IVA, con dos decimales y el símbolo «€».
+- **e.** La valoración en forma de estrellas (por ejemplo, ★★★☆☆ para un 3), generadas en una función auxiliar definida antes del `return`.
+- **f.** El texto «Disponible» o «Agotado» según el stock, con color verde o rojo mediante un estilo en línea.
+- **g.** El cartel, con un `alt` construido con una *template literal* a partir del título.
+
+**4. JSX como expresión y fragmentos**
+
+- **a.** Crea un componente `DatosTecnicos` que devuelva varios `<li>` (director, año y duración) sin ningún contenedor extra, y úsalo dentro de un `<ul>` de `FichaPelicula`.
+- **b.** En `FichaPelicula`, guarda en una variable un fragmento de JSX con la cabecera de la ficha (título y valoración) y muéstralo en el `return`.
+- **c.** Define un array de elementos JSX con al menos tres géneros de la película, cada uno con su `key`, y muéstralo en la ficha.
+
+**5. Página final**
+
+- **a.** `App.jsx` debe mostrar el formulario, la tarjeta ya corregida y al menos dos fichas de película con datos distintos. Una de ellas debe estar agotada.
+- **b.** Comprueba en la pestaña *Elements* que entre el `<ul>` y los `<li>` de `DatosTecnicos` no hay ningún `<div>`.
+
+**6. Entrega**
+
+Sube el proyecto (sin `node_modules`). En el `README.md`, añade una captura del resultado y la lista de errores que encontraste en el apartado 2, con la regla que incumplía cada uno.
+
 ---
+
+{% endraw %}{% comment %}{% raw %}
 
 # 4. Componentes y props
 
