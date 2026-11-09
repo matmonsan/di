@@ -1102,6 +1102,25 @@ Sube el proyecto (sin `node_modules`) y añade una captura de pantalla del resul
 
 # 3. JSX
 
+>
+> **Vídeo recomendado**
+>
+> [![Curso React: 3. Sintaxis JSX (jonmircha)](https://img.youtube.com/vi/EH4L-EYt63Y/hqdefault.jpg)](https://www.youtube.com/watch?v=EH4L-EYt63Y)
+>
+> [Curso React: 3. Sintaxis JSX (jonmircha, YouTube)](https://www.youtube.com/watch?v=EH4L-EYt63Y)
+>
+
+> **Complemento React Developer Tools para Firefox**
+>
+> Instala el complemento oficial [React Developer Tools](https://addons.mozilla.org/es-ES/firefox/addon/react-devtools/) desde la web de complementos de Mozilla (pulsa «Añadir a Firefox»). Si usas Chrome o Edge, está disponible en sus tiendas de extensiones con el mismo nombre.
+>
+> Una vez instalado, abre tu aplicación con `npm run dev`, pulsa F12 y verás dos pestañas nuevas en las herramientas de desarrollo:
+>
+> - *⚛️ Components*: muestra el árbol de componentes (`App`, `Header`, `Tarjeta`...) en lugar del HTML final. Al seleccionar un componente, a la derecha aparecen sus props y su estado, que puedes incluso modificar para probar.
+> - *⚛️ Profiler*: mide cuánto tarda en renderizarse cada componente. Lo usaremos más adelante.
+>
+> El icono del complemento en la barra de Firefox se colorea cuando la página usa React. Úsalo durante todo este apartado para comprobar cómo se traduce tu JSX: en la pestaña *Inspector* verás el HTML que llega al navegador y en *Components*, los componentes que lo generan.
+
 ## 3.0 ¿Qué es JSX y por qué lo usamos?
 
 **JSX** (*JavaScript XML*) es una extensión de la sintaxis de JavaScript que permite escribir algo que parece HTML dentro del código JavaScript. Es la forma en que los componentes describen lo que se tiene que ver.
@@ -1156,7 +1175,7 @@ Las tres producen lo mismo, pero la tercera se lee como el HTML que vamos a obte
 
 Los navegadores no entienden JSX. Antes de ejecutarse, una herramienta (Babel, SWC o esbuild, integradas en Vite) lo traduce (transpila) a llamadas a funciones de JavaScript normal. Veamos cómo.
 
-## 3.1 De JSX a `React.createElement`
+## 3.1 De JSX a JavaScript
 
 En la UD2 creábamos elementos con `document.createElement`:
 
@@ -1167,28 +1186,28 @@ element.style.color = "red";
 document.body.appendChild(element);
 ```
 
-React utiliza una función parecida, `React.createElement`, pero con una diferencia clave:
-
-- `document.createElement` devuelve un nodo del DOM real, que se ve en la página en cuanto se añade.
-- `React.createElement` devuelve un objeto JavaScript normal que solo *describe* el elemento: «quiero un `h1` con esta clase y este texto». Es un nodo del DOM virtual. Todavía no está en la página.
-
-Cuando escribimos:
+El navegador no entiende JSX, así que la herramienta de construcción (Vite, Babel...) lo traduce a llamadas a funciones de React. Cuando escribimos:
 
 ```jsx
 const element = <h1 className="greeting">Hello, world!</h1>;
 ```
 
-la herramienta de construcción lo traduce a:
+se traduce a:
 
 ```js
-const element = React.createElement(
-  "h1",                       // type: qué etiqueta
-  { className: "greeting" },  // props: sus atributos
-  "Hello, world!"             // children: su contenido
-);
+import { jsx as _jsx } from "react/jsx-runtime";
+
+const element = _jsx("h1", {
+  className: "greeting",
+  children: "Hello, world!"
+});
 ```
 
-y esa llamada produce un objeto similar a:
+- `_jsx` es una función de React que crea un elemento. El `import` lo añade automáticamente la herramienta de construcción; por eso nosotros no tenemos que importar nada para usar JSX.
+- El primer argumento es el tipo: una etiqueta HTML (`"h1"`, `"div"`) o un componente (`Titulo`).
+- El segundo argumento son las props: los atributos y, dentro de la propiedad `children`, el contenido.
+
+La llamada no crea nada en la página. Produce un objeto JavaScript normal que solo *describe* el elemento («quiero un `h1` con esta clase y este texto»):
 
 ```js
 {
@@ -1200,27 +1219,16 @@ y esa llamada produce un objeto similar a:
 }
 ```
 
+Esa es la diferencia con la UD2:
+
+- `document.createElement` devuelve un nodo del DOM real, que se ve en la página en cuanto se añade.
+- `_jsx` devuelve un objeto que describe el elemento. Es un nodo del DOM virtual: todavía no está en la página.
+
 Puedes comprobarlo tú: en un componente escribe `console.log(<h1 className="greeting">Hola</h1>);` y mira la consola del navegador. Verás un objeto con `type` y `props`.
 
-Un elemento de React es la pieza más pequeña de la interfaz: un objeto ligero que describe lo que se quiere ver en pantalla. Por ejemplo, un párrafo con el texto «Hola» (`<p>Hola</p>`). Este objeto es lo que React usa internamente para construir el DOM virtual.
+Un elemento de React es la pieza más pequeña de la interfaz: un objeto ligero que describe lo que se quiere ver en pantalla. Este objeto es lo que React usa internamente para construir el DOM virtual.
 
-`React.createElement` recibe tres tipos de argumentos:
-
-```js
-React.createElement(
-  type,       // Etiqueta HTML ("h1", "div") o componente (Titulo)
-  props,      // Objeto con los atributos, o null si no hay
-  ...children // Contenido: textos u otros elementos
-);
-```
-
-Por ejemplo, un `h1` con clase, estilo y texto:
-
-```js
-React.createElement("h1", { className: "center", style: { color: "red" } }, "Hola Mundo");
-```
-
-Y un elemento con hijos anidados, que es lo que genera el JSX de un `div` con dos párrafos:
+Cuando un elemento tiene varios hijos, se usa la variante `_jsxs` y `children` pasa a ser un array:
 
 ```jsx
 const element = (
@@ -1229,9 +1237,41 @@ const element = (
     <p>Segundo párrafo</p>
   </div>
 );
+```
 
+```js
 // se traduce a:
-const element = React.createElement(
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+
+const element = _jsxs("div", {
+  className: "caja",
+  children: [
+    _jsx("p", { children: "Primer párrafo" }),
+    _jsx("p", { children: "Segundo párrafo" })
+  ]
+});
+```
+
+Escribir interfaces así es posible, pero muy poco legible. Por eso usamos JSX, que se convierte en estas llamadas automáticamente. Nunca tendrás que escribirlas a mano; las vemos para entender qué es realmente el JSX.
+
+### 3.1.1 La forma clásica: `React.createElement`
+
+Hasta React 17 (2020), el JSX se traducía a `React.createElement`. Te la encontrarás en tutoriales, libros y código antiguo, y sigue existiendo en React:
+
+```js
+React.createElement(
+  type,       // Etiqueta HTML ("h1", "div") o componente (Titulo)
+  props,      // Objeto con los atributos, o null si no hay
+  ...children // Contenido: textos u otros elementos, como argumentos extra
+);
+```
+
+Los mismos ejemplos de antes, en la forma clásica:
+
+```js
+const element = React.createElement("h1", { className: "greeting" }, "Hello, world!");
+
+const caja = React.createElement(
   "div",
   { className: "caja" },
   React.createElement("p", null, "Primer párrafo"),
@@ -1239,9 +1279,18 @@ const element = React.createElement(
 );
 ```
 
-Escribir interfaces con `createElement` es posible, pero muy poco legible. Por eso usamos JSX, que se convierte en estas llamadas automáticamente. Nunca tendrás que escribir `createElement` a mano; lo vemos para entender qué es realmente el JSX.
+Comparación de las dos formas:
 
-> Con el nuevo transformador de JSX de React 17+, el código JSX se transforma en llamadas a las funciones internas `jsx` y `jsxs` (del módulo `react/jsx-runtime`), que sustituyen a `React.createElement`. Por este motivo ya no es necesario importar `React` para usar JSX. El concepto es el mismo.
+| | Forma clásica | Forma actual (React 17+) |
+| --- | --- | --- |
+| Función | `React.createElement` | `_jsx` y `_jsxs` (de `react/jsx-runtime`) |
+| Contenido | Argumentos a partir del tercero | Dentro de las props, en `children` |
+| Importar React | Obligatorio en cada archivo con JSX: `import React from "react"` | No hace falta: el `import` lo añade la herramienta |
+| Resultado | Un objeto con `type` y `props` | El mismo objeto |
+
+El resultado es el mismo: un objeto que describe el elemento. Solo cambia la forma de escribir la llamada. Por eso, si en código antiguo ves `import React from "react"` al principio de cada archivo, ahora sabes por qué estaba ahí.
+
+> **Pruébalo en Babel.** Abre el [REPL de Babel](https://babeljs.io/repl), activa el preset *react* y escribe JSX en el panel izquierdo: a la derecha verás la traducción con `_jsx`. Si en las opciones del preset cambias *runtime* de *automatic* a *classic*, verás la misma traducción con `React.createElement`. Mientras desarrollas con `npm run dev`, Vite usa una variante para depuración (`_jsxDEV`) que añade información extra para mostrar mejores mensajes de error; la idea es la misma.
 
 ## 3.2 Renderizar en el DOM: `ReactDOM.render` y `createRoot`
 
@@ -1285,7 +1334,7 @@ La nueva API con `createRoot` permite las funciones modernas de React (renderiza
 2. **Traducir JSX:** Babel, SWC o esbuild (dentro de Vite) convierten el JSX en llamadas a funciones. Esto ocurre en tu ordenador, antes de que el código llegue al navegador.
 
    ```js
-   const element = React.createElement("h1", { className: "greeting" }, "Hello, world!");
+   const element = _jsx("h1", { className: "greeting", children: "Hello, world!" });
    ```
 
 3. **Crear el elemento de React:** al ejecutarse en el navegador, la llamada devuelve un objeto que describe el elemento y forma parte del DOM virtual.
