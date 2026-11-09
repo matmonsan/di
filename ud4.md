@@ -1334,7 +1334,7 @@ Dentro de las llaves solo se pueden escribir expresiones. Una expresión es cual
 
 ```jsx
 function Saludo() {
-  const user = { firstName: "Luis", lastName: "Molina" };
+  const user = { firstName: "Matías", lastName: "Montávez" };
 
   function formatName(user) {
     return user.firstName + " " + user.lastName;
@@ -1369,7 +1369,7 @@ Como JSX se traduce a una llamada a función (que devuelve un objeto), JSX tambi
 
 ```jsx
 const ComponenteTitulo = () => {
-  const nombre = "Luis";
+  const nombre = "Matías";
   const titulo = <h1>Hola {nombre}</h1>; // JSX asignado a una variable
 
   const calcular = (a, b) => <p>El resultado de {a} + {b} es {a + b}</p>; // JSX en una arrow
@@ -1406,8 +1406,8 @@ const Saludo = ({ user }) => {
   return <h1>Hello, Stranger.</h1>;
 };
 
-<Saludo user={{ firstName: "Luis", lastName: "Molina" }} />  // Hello, Luis Molina!
-<Saludo />                                                    // Hello, Stranger.
+<Saludo user={{ firstName: "Matías", lastName: "Montávez" }} />  // Hello, Matías Montávez!
+<Saludo />                                                       // Hello, Stranger.
 ```
 
 ### 3.4.4 Qué se muestra según el tipo de valor
