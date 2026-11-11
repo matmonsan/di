@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" role="img" aria-labelledby="title desc">
+  <title id="title">Herramienta de construcción de React</title>
+  <desc id="desc">Los archivos de la aplicación pasan por una herramienta que traduce JSX, resuelve imports y sirve o empaqueta los recursos para producir una página que funciona en el navegador.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#52708f"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #20344d; }
+      .head { font-size: 21px; font-weight: 700; }
+      .body { font-size: 16px; }
+      .small { font-size: 14px; fill: #52657a; }
+    </style>
+  </defs>
+  <rect width="1000" height="320" rx="18" fill="#f5f8fc"/>
+  <rect x="35" y="76" width="230" height="175" rx="14" fill="#fff" stroke="#c7d2df" stroke-width="2"/>
+  <rect x="330" y="48" width="390" height="230" rx="14" fill="#eaf2fc" stroke="#8bb4e8" stroke-width="2"/>
+  <rect x="785" y="76" width="180" height="175" rx="14" fill="#fff" stroke="#abd2b7" stroke-width="2"/>
+  <text x="150" y="58" text-anchor="middle" class="head">Tu código</text>
+  <text x="525" y="31" text-anchor="middle" class="head">Herramienta de construcción</text>
+  <text x="875" y="58" text-anchor="middle" class="head">Navegador</text>
+  <text x="65" y="122" class="body">App.jsx</text>
+  <text x="65" y="157" class="body">Header.jsx</text>
+  <text x="65" y="192" class="body">App.css</text>
+  <text x="65" y="227" class="body">y otros archivos</text>
+  <text x="365" y="101" class="body">1. Traduce JSX a JavaScript</text>
+  <text x="365" y="145" class="body">2. Resuelve los imports</text>
+  <text x="389" y="170" class="small">(React y archivos del proyecto)</text>
+  <text x="365" y="215" class="body">3. Sirve y empaqueta recursos</text>
+  <rect x="815" y="118" width="120" height="86" rx="12" fill="#eef7f1"/>
+  <text x="875" y="153" text-anchor="middle" class="body">Página</text>
+  <text x="875" y="180" text-anchor="middle" class="body">funcionando</text>
+  <path d="M270 160h52" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M725 160h52" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+</svg>

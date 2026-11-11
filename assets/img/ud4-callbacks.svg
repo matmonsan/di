@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 340" role="img" aria-labelledby="title desc">
+  <title id="title">Comunicación con callbacks en React</title>
+  <desc id="desc">App pasa tareas y onEliminar hacia ListaTareas y TareaItem. Al pulsar eliminar, TareaItem llama al callback; la función eliminar se ejecuta en App.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#3b82b7"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#24845a"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #20344d; }
+      .head { font-size: 19px; font-weight: 700; }
+      .body { font-size: 16px; }
+      .small { font-size: 14px; fill: #52657a; }
+    </style>
+  </defs>
+  <rect width="1000" height="340" rx="18" fill="#f5f8fc"/>
+  <rect x="365" y="25" width="270" height="72" rx="14" fill="#eaf2fc" stroke="#8bb4e8" stroke-width="2"/>
+  <text x="500" y="54" text-anchor="middle" class="head">App</text>
+  <text x="500" y="78" text-anchor="middle" class="small">datos + función eliminar</text>
+  <rect x="365" y="140" width="270" height="66" rx="14" fill="#fff" stroke="#c7d2df" stroke-width="2"/>
+  <text x="500" y="168" text-anchor="middle" class="head">ListaTareas</text>
+  <text x="500" y="190" text-anchor="middle" class="small">recibe tarea y onEliminar</text>
+  <rect x="365" y="250" width="270" height="66" rx="14" fill="#fff" stroke="#abd2b7" stroke-width="2"/>
+  <text x="500" y="278" text-anchor="middle" class="head">TareaItem</text>
+  <text x="500" y="300" text-anchor="middle" class="small">avisa al pulsar «Eliminar»</text>
+  <path d="M500 99v37" stroke="#3b82b7" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="512" y="123" class="small">props</text>
+  <path d="M500 208v38" stroke="#3b82b7" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="512" y="233" class="small">props</text>
+  <path d="M637 283h203V61H639" stroke="#24845a" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="845" y="174" class="small">onEliminar(id)</text>
+  <text x="845" y="195" class="small">se ejecuta en App</text>
+</svg>

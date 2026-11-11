@@ -10,9 +10,10 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 
 1. [Introducción a React](#1-introducción-a-react)
 2. [Creación de proyectos en React](#2-creación-de-proyectos-en-react)
-    - [Proyecto desde cero](#22-creación-de-un-proyecto-en-react-desde-cero)
-    - [Vite](#25-creación-de-proyectos-con-vite)
+    - [Práctica: introducción a React](#27-práctica-introducción-a-react)
 3. [JSX](#3-jsx)
+    - [Práctica: JSX](#311-práctica-jsx)
+{% endraw %}{% comment %}{% raw %}
 4. [Componentes y props](#4-componentes-y-props)
     - [Práctica: aplicación de notas](#46-práctica-aplicación-de-notas)
 5. [Ejemplos de condicionales y listas](#5-ejemplos-de-condicionales-y-listas)
@@ -26,6 +27,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 9. [Formularios](#9-formularios)
     - [Práctica 5](#96-práctica-5-formulario-de-registro-validado)
 10. [Proyecto final: gestor de tareas en React](#10-proyecto-final-gestor-de-tareas-en-react)
+{% endraw %}{% endcomment %}{% raw %}
 
 ---
 
@@ -35,11 +37,11 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 
 Hasta ahora has construido páginas web con tres tecnologías:
 
-- **HTML** describe la **estructura** y el contenido (títulos, párrafos, botones, formularios...).
-- **CSS** describe el **aspecto** (colores, tamaños, disposición).
-- **JavaScript** añade el **comportamiento**: en la UD2 aprendiste a seleccionar elementos del DOM con `querySelector`, a modificar su texto con `textContent`, a crear elementos con `createElement` y a reaccionar a eventos con `addEventListener`.
+- **HTML** describe la estructura y el contenido (títulos, párrafos, botones, formularios...).
+- **CSS** describe el aspecto (colores, tamaños, disposición).
+- **JavaScript** añade el comportamiento: en la UD2 aprendiste a seleccionar elementos del DOM con `querySelector`, a modificar su texto con `textContent`, a crear elementos con `createElement` y a reaccionar a eventos con `addEventListener`.
 
-Recuerda que el **DOM** (*Document Object Model*) es la representación que el navegador hace de la página en memoria: un árbol de objetos (nodos) en el que cada etiqueta HTML es un nodo. Cuando JavaScript modifica el DOM, el navegador vuelve a dibujar la página.
+Recuerda que el DOM (*Document Object Model*) es la representación que el navegador hace de la página en memoria: un árbol de objetos (nodos) en el que cada etiqueta HTML es un nodo. Cuando JavaScript modifica el DOM, el navegador vuelve a dibujar la página.
 
 Con esas herramientas se puede hacer cualquier cosa, pero cuando la página crece aparece un problema. Imagina una tienda online sencilla con un catálogo de productos y un carrito. Al pulsar «Añadir al carrito» hay que:
 
@@ -50,26 +52,16 @@ Con esas herramientas se puede hacer cualquier cosa, pero cuando la página crec
 5. Cambiar el texto del botón a «Añadido» y desactivarlo.
 6. Ocultar el mensaje «Tu carrito está vacío».
 
-Con el DOM, **cada uno de esos cambios hay que programarlo a mano**, y hay que acordarse de hacerlo también al eliminar un producto, al cambiar una cantidad, al vaciar el carrito... Si se olvida uno solo, la página muestra datos incoherentes (por ejemplo, el contador dice 3 pero la lista tiene 2 productos). Además, el código que crea elementos con `createElement` y `append` se vuelve largo y difícil de leer, y es complicado reutilizar partes de la página (¿cómo reutilizo la «tarjeta de producto» en otra página?).
+Con el DOM, cada uno de esos cambios hay que programarlo a mano, y hay que acordarse de hacerlo también al eliminar un producto, al cambiar una cantidad, al vaciar el carrito... Si se olvida uno solo, la página muestra datos incoherentes (por ejemplo, el contador dice 3 pero la lista tiene 2 productos). Además, el código que crea elementos con `createElement` y `append` se vuelve largo y difícil de leer, y es complicado reutilizar partes de la página (¿cómo reutilizo la «tarjeta de producto» en otra página?).
 
-Este es el problema que resuelven bibliotecas como **React**:
+Este es el problema que resuelven bibliotecas como React:
 
-- Divides la página en **piezas reutilizables** (componentes): `TarjetaProducto`, `Carrito`, `Cabecera`...
-- Guardas los datos importantes en un único lugar (el **estado**), por ejemplo el array del carrito.
+- Divides la página en piezas reutilizables (componentes): `TarjetaProducto`, `Carrito`, `Cabecera`...
+- Guardas los datos importantes en un único lugar (el estado), por ejemplo el array del carrito.
 - **Describes** cómo debe verse cada pieza según esos datos.
-- Cuando los datos cambian, **React actualiza automáticamente** todas las partes de la página que dependen de ellos. Ya no tienes que acordarte de actualizar cada sitio a mano.
+- Cuando los datos cambian, React actualiza automáticamente todas las partes de la página que dependen de ellos. Ya no tienes que acordarte de actualizar cada sitio a mano.
 
-```text
-       Sin React (UD2)                              Con React
-  ┌──────────────────────────┐              ┌──────────────────────────┐
-  │ Datos  ──► tú actualizas │              │ Datos (estado)           │
-  │            cada parte    │              │    │                     │
-  │            del DOM a     │              │    ▼                     │
-  │            mano, una a   │              │ React calcula qué ha     │
-  │            una           │              │ cambiado y actualiza el  │
-  │ (fácil olvidarse de una) │              │ DOM por ti               │
-  └──────────────────────────┘              └──────────────────────────┘
-```
+![Comparación entre actualizar el DOM a mano y dejar que React actualice la interfaz a partir del estado](./assets/img/ud4-react-vs-dom.svg)
 
 ## 1.2 ¿Qué es React?
 
@@ -77,7 +69,7 @@ Este es el problema que resuelven bibliotecas como **React**:
 
 *Figura: logotipo de React. Fuente: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:React-icon.svg).*
 
-**React** es una **biblioteca de JavaScript para construir interfaces de usuario**. Fue desarrollada por Facebook (hoy Meta) y publicada como código abierto en 2013. Hoy la usan empresas como Meta, Netflix, Airbnb o Microsoft, y es la tecnología de frontend más utilizada del mundo: en la encuesta de Stack Overflow de 2024 la usaba el 41,6 % de los desarrolladores profesionales, por delante de Node.js, jQuery o Angular (19,4 %).
+**React** es una biblioteca de JavaScript para construir interfaces de usuario. Fue desarrollada por Facebook (hoy Meta) y publicada como código abierto en 2013. Hoy la usan empresas como Meta, Netflix, Airbnb o Microsoft, y es la tecnología de frontend más utilizada del mundo: en la encuesta de Stack Overflow de 2024 la usaba el 41,6 % de los desarrolladores profesionales, por delante de Node.js, jQuery o Angular (19,4 %).
 
 > *«Creo que React será uno de los proyectos más importantes en los que trabajaré en mi vida.»*
 > — Jordan Walke, creador de React en Facebook.
@@ -86,26 +78,26 @@ Este es el problema que resuelven bibliotecas como **React**:
 
 Vas a oír mucho estas palabras, así que conviene aclararlas:
 
-- Una **biblioteca** (*library*, a menudo mal traducido como «librería») es **código escrito por otras personas que incorporamos a nuestro proyecto** para no tener que programarlo nosotros. Nosotros decidimos cuándo y cómo la usamos: **nuestro código llama a la biblioteca**. Ejemplos: React, la biblioteca `Math` de JavaScript a gran escala, jQuery, Chart.js para gráficos...
-- Un **framework** (marco de trabajo) es una estructura completa que **impone cómo organizar la aplicación**: dónde va cada archivo, cómo se hacen las rutas, cómo se piden los datos... Aquí es **el framework el que llama a nuestro código** en los momentos que él decide. Ejemplos: Angular, Vue (con su ecosistema), Next.js, Laravel, Spring.
+- Una biblioteca (*library*, a menudo mal traducido como «librería») es código escrito por otras personas que incorporamos a nuestro proyecto para no tener que programarlo nosotros. Nosotros decidimos cuándo y cómo la usamos: nuestro código llama a la biblioteca. Ejemplos: React, la biblioteca `Math` de JavaScript a gran escala, jQuery, Chart.js para gráficos...
+- Un framework (marco de trabajo) es una estructura completa que impone cómo organizar la aplicación: dónde va cada archivo, cómo se hacen las rutas, cómo se piden los datos... Aquí es el framework el que llama a nuestro código en los momentos que él decide. Ejemplos: Angular, Vue (con su ecosistema), Next.js, Laravel, Spring.
 
-Una analogía: una biblioteca es una **caja de herramientas** (tú decides qué herramienta usar y cuándo); un framework es una **casa prefabricada** en la que tú pones los muebles, pero las paredes ya están donde están.
+Una analogía: una biblioteca es una caja de herramientas (tú decides qué herramienta usar y cuándo); un framework es una casa prefabricada en la que tú pones los muebles, pero las paredes ya están donde están.
 
-React se centra **solo en la interfaz**: en mostrar los datos en pantalla y reaccionar a lo que hace el usuario. Para otras necesidades (navegar entre páginas, guardar datos en un servidor, etc.) se combina con otras bibliotecas que elige el desarrollador. Por eso se dice que React es una *biblioteca* y no un *framework*, aunque en la práctica, junto a sus herramientas, se use de forma muy parecida.
+React se centra solo en la interfaz: en mostrar los datos en pantalla y reaccionar a lo que hace el usuario. Para otras necesidades (navegar entre páginas, guardar datos en un servidor, etc.) se combina con otras bibliotecas que elige el desarrollador. Por eso se dice que React es una *biblioteca* y no un *framework*, aunque en la práctica, junto a sus herramientas, se use de forma muy parecida.
 
 ### 1.2.2 Las ideas clave de React
 
 No te preocupes si ahora no entiendes del todo cada idea: todas se explican con detalle a lo largo de la unidad.
 
 - **Componentes.** La interfaz se construye con piezas independientes y reutilizables, como bloques de Lego. Cada pieza agrupa su HTML, su CSS y su JavaScript. Una pieza puede ser tan pequeña como un botón o tan grande como una página completa.
-- **JSX.** Es una forma de escribir algo muy parecido a HTML **dentro** de JavaScript. Hace que el código de los componentes sea fácil de leer.
-- **Enfoque declarativo.** En lugar de dar instrucciones paso a paso («busca este nodo, cámbiale el texto, añádele una clase»), **describimos el resultado** que queremos ver para unos datos concretos, y React se encarga de conseguirlo.
+- **JSX.** Es una forma de escribir algo muy parecido a HTML dentro de JavaScript. Hace que el código de los componentes sea fácil de leer.
+- **Enfoque declarativo.** En lugar de dar instrucciones paso a paso («busca este nodo, cámbiale el texto, añádele una clase»), describimos el resultado que queremos ver para unos datos concretos, y React se encarga de conseguirlo.
 - **DOM virtual.** React guarda en memoria una copia ligera de la interfaz, compara la versión anterior con la nueva y solo modifica en la página real lo que ha cambiado. Así es rápido aunque «redibujemos» todo cada vez.
 - **Flujo de datos unidireccional.** Los datos viajan siempre en un sentido: de las piezas «padre» a las piezas «hijo». Esto hace que sea fácil saber de dónde viene cada dato.
 
 ### 1.2.3 Imperativo frente a declarativo: un ejemplo
 
-Vamos a programar el mismo contador de dos formas. Primero, como en la UD2 (**imperativo**: le decimos al navegador **cómo** hacerlo, paso a paso):
+Vamos a programar el mismo contador de dos formas. Primero, como en la UD2 (imperativo: le decimos al navegador cómo hacerlo, paso a paso):
 
 ```html
 <button id="sumar">Sumar</button>
@@ -122,7 +114,7 @@ boton.addEventListener("click", () => {              // 4. Escucho el clic
 });
 ```
 
-Ahora con React (**declarativo**: describimos **qué** queremos ver):
+Ahora con React (declarativo: describimos qué queremos ver):
 
 ```jsx
 import { useState } from "react";
@@ -139,7 +131,7 @@ function Contador() {
 }
 ```
 
-Fíjate en lo que **no** aparece en la versión de React: no hay `querySelector`, no hay `addEventListener` y, sobre todo, no hay `textContent`. Solo decimos: «el párrafo muestra `Has pulsado {contador} veces`». Cuando `contador` cambia, React vuelve a ejecutar la función `Contador` y actualiza el párrafo él solo. Si mañana mostramos el contador en tres sitios distintos, no hay que tocar nada más: los tres se actualizan.
+Fíjate en lo que no aparece en la versión de React: no hay `querySelector`, no hay `addEventListener` y, sobre todo, no hay `textContent`. Solo decimos: «el párrafo muestra `Has pulsado {contador} veces`». Cuando `contador` cambia, React vuelve a ejecutar la función `Contador` y actualiza el párrafo él solo. Si mañana mostramos el contador en tres sitios distintos, no hay que tocar nada más: los tres se actualizan.
 
 Aún no tienes que entender `useState` ni la sintaxis `<>...</>`: lo veremos más adelante. Quédate con la idea.
 
@@ -149,11 +141,11 @@ Alrededor de React existe un gran número de herramientas. Algunas que oirás no
 
 - **Vite:** herramienta para crear y ejecutar proyectos de React (y otros). Es la que usaremos.
 - **Next.js:** framework basado en React para aplicaciones web con renderizado en el servidor (SSR) y generación de sitios estáticos (SSG).
-- **React Router:** biblioteca para navegar entre «páginas» (la veremos en la UD5). En su modo *framework* sustituye a **Remix**.
-- **React Native:** permite crear aplicaciones móviles nativas para iOS y Android con React. **Expo** simplifica su uso.
+- **React Router:** biblioteca para navegar entre «páginas» (la veremos en la UD5). En su modo *framework* sustituye a Remix.
+- **React Native:** permite crear aplicaciones móviles nativas para iOS y Android con React. Expo simplifica su uso.
 - **Electron:** permite crear aplicaciones de escritorio con tecnologías web; combinado con React se obtienen aplicaciones de escritorio modernas (Visual Studio Code está hecho con Electron).
 - **Gatsby / Astro:** generadores de sitios estáticos que permiten usar componentes React.
-- **React 360 / React VR:** permitía desarrollar experiencias de realidad virtual en el navegador con React. Está discontinuado; hoy se usan alternativas como **React Three Fiber** (gráficos 3D con Three.js) o la propia WebXR (relacionada con la realidad aumentada de la UD3).
+- **React 360 / React VR:** permitía desarrollar experiencias de realidad virtual en el navegador con React. Está discontinuado; hoy se usan alternativas como React Three Fiber (gráficos 3D con Three.js) o la propia WebXR (relacionada con la realidad aumentada de la UD3).
 - **Material UI, Chakra UI, shadcn/ui:** bibliotecas de componentes visuales ya hechos (Material UI se trabaja en la UD5).
 
 ## 1.3 SPA: aplicaciones de una sola página
@@ -162,38 +154,30 @@ Alrededor de React existe un gran número de herramientas. Algunas que oirás no
 
 Cuando visitas una web «de toda la vida» y pulsas un enlace, ocurre lo siguiente:
 
-1. El navegador envía una **petición** al servidor pidiendo la nueva página (por ejemplo, `/productos.html`).
-2. El servidor responde con un **documento HTML completo**.
-3. El navegador **borra la página actual** y dibuja la nueva desde cero, volviendo a descargar CSS, imágenes y scripts.
+1. El navegador envía una petición al servidor pidiendo la nueva página (por ejemplo, `/productos.html`).
+2. El servidor responde con un documento HTML completo.
+3. El navegador borra la página actual y dibuja la nueva desde cero, volviendo a descargar CSS, imágenes y scripts.
 
-Durante un instante la pantalla se queda en blanco y se pierde todo lo que hubiera en la página anterior (por ejemplo, lo que habías escrito en un formulario). Este modelo se llama **MPA** (*Multi-Page Application*, aplicación de varias páginas): hay un archivo HTML por cada página y el servidor hace la mayor parte del trabajo.
+Durante un instante la pantalla se queda en blanco y se pierde todo lo que hubiera en la página anterior (por ejemplo, lo que habías escrito en un formulario). Este modelo se llama MPA (*Multi-Page Application*, aplicación de varias páginas): hay un archivo HTML por cada página y el servidor hace la mayor parte del trabajo.
 
 ### 1.3.2 Cómo funciona una SPA
 
-Una **Single Page Application (SPA)**, o aplicación de una sola página, funciona de otra forma:
+Una Single Page Application (SPA), o aplicación de una sola página, funciona de otra forma:
 
-1. La primera vez, el servidor envía **un único HTML** casi vacío y todo el JavaScript de la aplicación.
-2. A partir de ahí, **JavaScript construye y cambia la página** dentro del navegador. Al «navegar», no se pide una página nueva: JavaScript quita unas piezas y pone otras.
-3. Cuando se necesitan datos (la lista de productos, el detalle de un producto...), JavaScript los pide al servidor con `fetch` (lo viste en la UD2 con las promesas). El servidor responde solo con **datos**, normalmente en **JSON**, no con HTML.
+1. La primera vez, el servidor envía un único HTML casi vacío y todo el JavaScript de la aplicación.
+2. A partir de ahí, JavaScript construye y cambia la página dentro del navegador. Al «navegar», no se pide una página nueva: JavaScript quita unas piezas y pone otras.
+3. Cuando se necesitan datos (la lista de productos, el detalle de un producto...), JavaScript los pide al servidor con `fetch` (lo viste en la UD2 con las promesas). El servidor responde solo con datos, normalmente en JSON, no con HTML.
 
-El resultado se parece al uso de una aplicación de escritorio o de móvil: no hay pantallazos en blanco y la navegación es instantánea. Gmail, Google Maps, Spotify Web o Trello son SPA. **React se usa sobre todo para construir SPA.**
+El resultado se parece al uso de una aplicación de escritorio o de móvil: no hay pantallazos en blanco y la navegación es instantánea. Gmail, Google Maps, Spotify Web o Trello son SPA. React se usa sobre todo para construir SPA.
 
-```text
- MPA (aplicación multipágina)              SPA (aplicación de una sola página)
- ─────────────────────────────             ───────────────────────────────────
- Navegador ── GET /productos ──► Servidor  Navegador ── GET / ──► Servidor
-           ◄── HTML completo ───                     ◄── index.html + JS ──
- Navegador ── GET /producto/3 ─► Servidor  (el usuario navega: JS cambia la vista)
-           ◄── HTML completo ───           Navegador ── GET /api/productos/3 ─►
-                                                     ◄── JSON { id: 3, ... } ──
-```
+![Comparación del flujo de navegación en una aplicación multipágina y una SPA](./assets/img/ud4-mpa-vs-spa.svg)
 
 | | Ventajas | Desventajas |
 | --- | --- | --- |
 | **SPA** | Navegación casi instantánea; experiencia más interactiva, parecida a una aplicación; menor carga del servidor (solo envía datos). | Peor posicionamiento en buscadores (SEO) si el contenido se genera en el navegador; la primera carga es más pesada; el dispositivo del usuario tiene que trabajar más. |
 | **MPA** | Buen SEO de forma natural; primera carga ligera. | Recarga completa en cada navegación; experiencia menos fluida. |
 
-El problema del SEO de las SPA se resuelve con técnicas como el **pre-renderizado** (generar HTML estático al construir la aplicación) o el **Server Side Rendering (SSR)**, que construye el HTML en el servidor y lo envía ya hecho. Frameworks como Next.js combinan SPA y SSR.
+El problema del SEO de las SPA se resuelve con técnicas como el pre-renderizado (generar HTML estático al construir la aplicación) o el Server Side Rendering (SSR), que construye el HTML en el servidor y lo envía ya hecho. Frameworks como Next.js combinan SPA y SSR.
 
 ## 1.4 Ventajas de usar React
 
@@ -208,30 +192,19 @@ El problema del SEO de las SPA se resuelve con técnicas como el **pre-renderiza
 
 ### 1.5.1 ¿Qué es un componente?
 
-Un **componente** es una **pieza reutilizable de la interfaz** que agrupa:
+Un componente es una pieza reutilizable de la interfaz que agrupa:
 
-- su **vista** (qué se ve: el HTML, escrito en JSX),
-- su **formato** (cómo se ve: el CSS),
-- y su **comportamiento** (qué hace: el JavaScript).
+- su vista (qué se ve: el HTML, escrito en JSX),
+- su formato (cómo se ve: el CSS),
+- y su comportamiento (qué hace: el JavaScript).
 
-Crear un componente es como **inventar una etiqueta HTML nueva**. HTML trae `<button>`, `<p>` o `<img>`; con React podemos crear `<TarjetaProducto>`, `<Cabecera>` o `<BotonMeGusta>` y usarlas como si fueran etiquetas normales.
+Crear un componente es como inventar una etiqueta HTML nueva. HTML trae `<button>`, `<p>` o `<img>`; con React podemos crear `<TarjetaProducto>`, `<Cabecera>` o `<BotonMeGusta>` y usarlas como si fueran etiquetas normales.
 
 Observa cualquier web que uses a diario. Por ejemplo, una plataforma de vídeos:
 
-```text
-┌──────────────────────────────────────────────────────────────┐
-│ [Logo]   [ Buscador.......................... ]   [Avatar]   │  <- Cabecera
-├────────────┬─────────────────────────────────────────────────┤
-│ Inicio     │ ┌─────────┐  ┌─────────┐  ┌─────────┐           │
-│ Tendencias │ │ > vídeo │  │ > vídeo │  │ > vídeo │           │  <- TarjetaVideo
-│ Suscripc.  │ │ Título  │  │ Título  │  │ Título  │           │     (la misma pieza,
-│            │ │ Canal   │  │ Canal   │  │ Canal   │           │      repetida con
-│ (Menú      │ └─────────┘  └─────────┘  └─────────┘           │      datos distintos)
-│  lateral)  │                       (ListaVideos)             │
-└────────────┴─────────────────────────────────────────────────┘
-```
+![Ejemplo de una interfaz de vídeos separada en cabecera, menú lateral, lista y tarjetas reutilizables](./assets/img/ud4-componentes-interfaz.svg)
 
-Todas las tarjetas de vídeo tienen la misma estructura y solo cambian los datos (miniatura, título, canal). En React se programa **un único** componente `TarjetaVideo` y se usa tantas veces como vídeos haya, pasándole datos distintos cada vez.
+Todas las tarjetas de vídeo tienen la misma estructura y solo cambian los datos (miniatura, título, canal). En React se programa un único componente `TarjetaVideo` y se usa tantas veces como vídeos haya, pasándole datos distintos cada vez.
 
 La documentación oficial de React muestra la misma idea con una tabla de productos. Cada recuadro de color es un componente:
 
@@ -243,13 +216,13 @@ La documentación oficial de React muestra la misma idea con una tabla de produc
 2. `SearchBar` (azul) recibe lo que escribe el usuario.
 3. `ProductTable` (morado) muestra la lista de productos.
 4. `ProductCategoryRow` (verde) muestra el encabezado de cada categoría.
-5. `ProductRow` (amarillo) muestra una fila por producto. Es **un solo componente** que se repite seis veces con datos distintos.
+5. `ProductRow` (amarillo) muestra una fila por producto. Es un solo componente que se repite seis veces con datos distintos.
 
-Fíjate en que unos componentes están **dentro** de otros: `ProductTable` contiene filas de categoría y filas de producto. Esa relación padre-hijo es la que se explica en el apartado 1.5.3.
+Fíjate en que unos componentes están dentro de otros: `ProductTable` contiene filas de categoría y filas de producto. Esa relación padre-hijo es la que se explica en el apartado 1.5.3.
 
 ### 1.5.2 Un componente es una función
 
-En React moderno, **un componente es simplemente una función de JavaScript que devuelve lo que se tiene que ver**:
+En React moderno, un componente es simplemente una función de JavaScript que devuelve lo que se tiene que ver:
 
 ```jsx
 function Header() {
@@ -279,7 +252,7 @@ Las bibliotecas de componentes como Material UI ofrecen cientos de componentes y
 
 ### 1.5.3 Componente raíz y jerarquía de componentes
 
-Los componentes se pueden meter **unos dentro de otros**. Siempre hay un **componente raíz**, normalmente llamado `App`, que es el punto de entrada de la aplicación y que contiene (directa o indirectamente) a todos los demás. Construir interfaces complejas combinando componentes sencillos se llama **composición**.
+Los componentes se pueden meter unos dentro de otros. Siempre hay un componente raíz, normalmente llamado `App`, que es el punto de entrada de la aplicación y que contiene (directa o indirectamente) a todos los demás. Construir interfaces complejas combinando componentes sencillos se llama composición.
 
 ```jsx
 const Header = () => <h1>Mi cabecera en React</h1>;
@@ -304,51 +277,32 @@ Al mostrar `App` en pantalla, React sustituye `<Header />` por lo que devuelve l
 </div>
 ```
 
-Así, la interfaz forma una **jerarquía (árbol) de componentes**, igual que el DOM es un árbol de etiquetas. Se habla de componente **padre** (el que contiene) e **hijo** (el contenido):
+Así, la interfaz forma una jerarquía (árbol) de componentes, igual que el DOM es un árbol de etiquetas. Se habla de componente padre (el que contiene) e hijo (el contenido):
 
-```text
-                           App
-           ┌────────────────┼────────────────┐
-         Header            Main             Footer
-     ┌─────┼──────┐     ┌───┴────┐       ┌───┴──────────┐
-  NavBar  Logo SearchBar Sidebar Content FooterLinks SocialMediaIcons
-                      ┌───┴───┐     │
-           NavigationLinks Profile PostList
-                                    │
-                                 PostItem
-                          ┌─────────┼─────────┐
-                     PostHeader  PostBody  PostFooter
-```
+![Árbol de componentes de una aplicación React con relaciones padre e hijo](./assets/img/ud4-arbol-componentes.svg)
 
-Para diseñar una aplicación React, el primer paso es **dibujar este árbol** a partir de un boceto de la interfaz: cada caja con una responsabilidad clara suele ser un componente.
+Para diseñar una aplicación React, el primer paso es dibujar este árbol a partir de un boceto de la interfaz: cada caja con una responsabilidad clara suele ser un componente.
 
 ## 1.6 El DOM virtual
 
 ### 1.6.1 ¿Por qué hace falta?
 
-Modificar el DOM es una operación **costosa**: cada cambio puede obligar al navegador a recalcular la posición y el tamaño de los elementos y a volver a dibujar la página. Si en cada cambio de datos se reconstruyera toda la página, la aplicación iría lenta.
+Modificar el DOM es una operación costosa: cada cambio puede obligar al navegador a recalcular la posición y el tamaño de los elementos y a volver a dibujar la página. Si en cada cambio de datos se reconstruyera toda la página, la aplicación iría lenta.
 
-En el ejemplo del contador, al pulsar el botón React vuelve a ejecutar el componente entero. ¿Significa eso que vuelve a crear el botón y el párrafo en el DOM? No, gracias al **DOM virtual**.
+En el ejemplo del contador, al pulsar el botón React vuelve a ejecutar el componente entero. ¿Significa eso que vuelve a crear el botón y el párrafo en el DOM? No, gracias al DOM virtual.
 
 ### 1.6.2 Cómo funciona
 
-El **DOM virtual** (*Virtual DOM*) es una **copia ligera de la interfaz guardada en memoria**, formada por objetos de JavaScript normales (que son muy rápidos de crear y comparar). El proceso es:
+El DOM virtual (*Virtual DOM*) es una copia ligera de la interfaz guardada en memoria, formada por objetos de JavaScript normales (que son muy rápidos de crear y comparar). El proceso es:
 
 1. **Representación en memoria:** cada vez que un componente se ejecuta, React obtiene una descripción de lo que debe verse (un árbol de objetos JavaScript).
-2. **Comparación (*diffing*) y reconciliación:** cuando cambian los datos, React genera la descripción nueva y la **compara con la anterior** para encontrar exactamente qué ha cambiado. Es como el juego de «encuentra las diferencias» entre dos dibujos.
-3. **Actualización eficiente:** React aplica en el DOM real **solo esas diferencias**. En el contador, solo cambia el texto del párrafo; el botón ni se toca.
+2. **Comparación (*diffing*) y reconciliación:** cuando cambian los datos, React genera la descripción nueva y la compara con la anterior para encontrar exactamente qué ha cambiado. Es como el juego de «encuentra las diferencias» entre dos dibujos.
+3. **Actualización eficiente:** React aplica en el DOM real solo esas diferencias. En el contador, solo cambia el texto del párrafo; el botón ni se toca.
 4. **Agrupación (*batching*):** si en el mismo momento cambian varios datos, React agrupa todos los cambios y actualiza el DOM una sola vez.
 
 Por ejemplo, si en una lista solo cambia la clase de un `<li>`, React no vuelve a crear la lista: compara ambas versiones y cambia únicamente el atributo `class` de ese elemento.
 
-```text
-Antes:                         Después:                       DOM real modificado:
-ul                             ul
-├─ li className="selected"     ├─ li (sin clase)    ──►  solo se elimina la clase
-│  └─ a href="/pets"           │  └─ a href="/pets"      de ese <li>
-└─ li                          └─ li                     (el resto no se toca)
-   └─ a href="/owners"            └─ a href="/owners"
-```
+![Comparación de dos árboles virtuales: React detecta que solo debe quitar la clase selected del primer elemento](./assets/img/ud4-diff-dom-virtual.svg)
 
 Gracias a esto podemos programar como si redibujáramos toda la interfaz cada vez (que es muy fácil de razonar), pero sin pagar el coste de hacerlo de verdad.
 
@@ -356,10 +310,10 @@ Gracias a esto podemos programar como si redibujáramos toda la interfaz cada ve
 
 React está dividido en dos paquetes (dos bibliotecas que se instalan por separado):
 
-- **`react` (el núcleo):** contiene lo necesario para definir componentes, gestionar sus datos y crear la descripción de la interfaz. **No sabe nada del navegador ni del DOM**.
+- **`react` (el núcleo):** contiene lo necesario para definir componentes, gestionar sus datos y crear la descripción de la interfaz. No sabe nada del navegador ni del DOM.
 - **`react-dom`:** es el «traductor» para la web. Coge la descripción que genera `react` y la convierte en nodos reales del DOM del navegador.
 
-¿Por qué separarlos? Porque así el núcleo de React se puede reutilizar en sitios donde **no existe el DOM**, cambiando solo el «traductor»:
+¿Por qué separarlos? Porque así el núcleo de React se puede reutilizar en sitios donde no existe el DOM, cambiando solo el «traductor»:
 
 - **React Native:** aplicaciones móviles (en lugar de etiquetas HTML, crea botones y vistas nativas de iOS y Android).
 - **Ink:** aplicaciones para la terminal.
@@ -373,7 +327,7 @@ React está dividido en dos paquetes (dos bibliotecas que se instalan por separa
 
 ### 1.6.4 Ejemplo de importación
 
-En el código de React verás al principio de los archivos líneas con `import`. Sirven para **traer** funciones de otras bibliotecas o de otros archivos (se explica en detalle en el apartado 2.5.4):
+En el código de React verás al principio de los archivos líneas con `import`. Sirven para traer funciones de otras bibliotecas o de otros archivos (se explica en detalle en el apartado 2.5.4):
 
 ```jsx
 import { useState } from "react";               // Del núcleo de React traigo la función useState
@@ -391,8 +345,8 @@ createRoot(document.getElementById("root")).render(<App />);
 
 > **Nota sobre versiones (para cuando leas código antiguo en Internet).**
 >
-> - En documentación y apuntes antiguos verás `import ReactDOM from "react-dom"` y `ReactDOM.render(<App />, document.getElementById("root"))`, así como `ReactDOM.unmountComponentAtNode` o `ReactDOM.findDOMNode`. Esas funciones quedaron obsoletas en React 18 y **se eliminaron en React 19**; hoy se usa `createRoot(...).render(...)` y `root.unmount()`.
-> - A partir de **React 17** ya no es necesario escribir `import React from "react"` en cada archivo JSX: el nuevo transformador de JSX (similar a un compilador) añade automáticamente las referencias que necesita. Solo se importa lo que se usa (`useState`, `Fragment`...).
+> - En documentación y apuntes antiguos verás `import ReactDOM from "react-dom"` y `ReactDOM.render(<App />, document.getElementById("root"))`, así como `ReactDOM.unmountComponentAtNode` o `ReactDOM.findDOMNode`. Esas funciones quedaron obsoletas en React 18 y se eliminaron en React 19; hoy se usa `createRoot(...).render(...)` y `root.unmount()`.
+> - A partir de React 17 ya no es necesario escribir `import React from "react"` en cada archivo JSX: el nuevo transformador de JSX (similar a un compilador) añade automáticamente las referencias que necesita. Solo se importa lo que se usa (`useState`, `Fragment`...).
 
 ## 1.7 Vocabulario básico
 
@@ -432,21 +386,13 @@ Estas palabras aparecerán constantemente. Vuelve a esta tabla siempre que lo ne
 
 En la UD2 bastaba con crear un `index.html`, enlazar un `.js` y abrirlo con Live Server. Con React no es tan directo, por tres motivos:
 
-1. **El navegador no entiende JSX.** Si escribes `const titulo = <h1>Hola</h1>;` en un archivo `.js` normal, el navegador da un error de sintaxis. Alguien tiene que **traducir** (transpilar) ese JSX a JavaScript normal antes.
+1. **El navegador no entiende JSX.** Si escribes `const titulo = <h1>Hola</h1>;` en un archivo `.js` normal, el navegador da un error de sintaxis. Alguien tiene que traducir (transpilar) ese JSX a JavaScript normal antes.
 2. **React se instala como paquete.** Escribimos `import { useState } from "react"`, pero el navegador no sabe dónde está «react». Hace falta una herramienta que localice ese paquete en nuestro proyecto y lo incluya.
-3. **Un proyecto real tiene muchos archivos** (un archivo por componente, sus CSS, imágenes...). Para publicarlo conviene **empaquetarlo**: juntarlo y optimizarlo en unos pocos archivos pequeños.
+3. **Un proyecto real tiene muchos archivos** (un archivo por componente, sus CSS, imágenes...). Para publicarlo conviene empaquetarlo: juntarlo y optimizarlo en unos pocos archivos pequeños.
 
-Por eso, en lugar de abrir el HTML directamente, usaremos una **herramienta de construcción** que hace todo eso por nosotros y además nos ofrece un servidor de desarrollo que recarga la página al guardar:
+Por eso, en lugar de abrir el HTML directamente, usaremos una herramienta de construcción que hace todo eso por nosotros y además nos ofrece un servidor de desarrollo que recarga la página al guardar:
 
-```text
-   Tu código                    Herramienta de construcción              Navegador
- ┌─────────────┐              ┌──────────────────────────────┐        ┌───────────┐
- │ App.jsx     │              │ 1. Traduce JSX a JavaScript  │        │           │
- │ Header.jsx  │  ─────────►  │ 2. Resuelve los import       │ ─────► │  Página   │
- │ App.css     │              │    (react, tus archivos...)  │        │ funcionando│
- │ ...         │              │ 3. Sirve / empaqueta         │        │           │
- └─────────────┘              └──────────────────────────────┘        └───────────┘
-```
+![Flujo desde los archivos fuente, pasando por la herramienta de construcción, hasta la página en el navegador](./assets/img/ud4-herramienta-construccion.svg)
 
 ### 2.1.2 Qué necesitamos instalar
 
@@ -454,12 +400,12 @@ Por eso, en lugar de abrir el HTML directamente, usaremos una **herramienta de c
 
 *Figura: logotipo de Node.js. Lo reconocerás en la web de descarga. Fuente: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Node.js_logo.svg).*
 
-1. **Node.js:** permite ejecutar JavaScript **fuera del navegador**, en nuestro ordenador. No lo usaremos para programar la aplicación, sino porque **las herramientas de desarrollo** (Vite, el traductor de JSX, ESLint...) están escritas en JavaScript y necesitan Node.js para funcionar. Se descarga de [nodejs.org](https://nodejs.org) (versión **LTS**, la de soporte prolongado).
-2. **npm (*Node Package Manager*):** se instala automáticamente con Node.js. Es el **gestor de paquetes**: el programa que descarga e instala bibliotecas (como React) desde el repositorio público [npmjs.com](https://www.npmjs.com) y lleva la cuenta de cuáles usa el proyecto. Alternativas: **yarn** y **pnpm**.
+1. **Node.js:** permite ejecutar JavaScript fuera del navegador, en nuestro ordenador. No lo usaremos para programar la aplicación, sino porque las herramientas de desarrollo (Vite, el traductor de JSX, ESLint...) están escritas en JavaScript y necesitan Node.js para funcionar. Se descarga de [nodejs.org](https://nodejs.org) (versión LTS, la de soporte prolongado).
+2. **npm (*Node Package Manager*):** se instala automáticamente con Node.js. Es el gestor de paquetes: el programa que descarga e instala bibliotecas (como React) desde el repositorio público [npmjs.com](https://www.npmjs.com) y lleva la cuenta de cuáles usa el proyecto. Alternativas: yarn y pnpm.
 3. **Biblioteca `react`:** el núcleo de React (componentes, estado...). No depende del DOM.
 4. **Biblioteca `react-dom`:** la parte que dibuja los componentes en el navegador.
-5. **Una herramienta de construcción:** traduce el JSX, empaqueta y sirve el proyecto. Existen varias: Parcel, Webpack, create-react-app (obsoleta) y **Vite**, que es la que usaremos.
-6. **Un editor:** Visual Studio Code, con su **terminal integrada** (menú *Terminal → Nueva terminal* o `Ctrl+ñ`).
+5. **Una herramienta de construcción:** traduce el JSX, empaqueta y sirve el proyecto. Existen varias: Parcel, Webpack, create-react-app (obsoleta) y Vite, que es la que usaremos.
+6. **Un editor:** Visual Studio Code, con su terminal integrada (menú *Terminal → Nueva terminal* o `Ctrl+ñ`).
 
 Para comprobar que Node.js y npm están instalados, abre una terminal y escribe:
 
@@ -474,10 +420,10 @@ Cada comando debe mostrar un número de versión (por ejemplo, `v22.11.0` y `10.
 
 Ya trabajaste con npm en la UD2 (apartado 1.1.5). Recordamos lo imprescindible:
 
-- **`package.json`:** el «carné de identidad» del proyecto. Es un archivo JSON con su nombre, sus **scripts** (comandos que se pueden ejecutar con `npm run nombre`) y la lista de **dependencias** que necesita.
+- **`package.json`:** el «carné de identidad» del proyecto. Es un archivo JSON con su nombre, sus scripts (comandos que se pueden ejecutar con `npm run nombre`) y la lista de dependencias que necesita.
 - **Dependencias** (`dependencies`): bibliotecas que forman parte de la aplicación y llegan al usuario final, como `react` y `react-dom`. Se instalan con `npm install nombre`.
 - **Dependencias de desarrollo** (`devDependencies`): herramientas que solo usamos mientras programamos, como `vite` o `eslint`. Se instalan con `npm install -D nombre`.
-- **`node_modules/`:** carpeta donde npm guarda el código de todas las dependencias. Puede ocupar cientos de megas. **No se toca, no se copia y no se sube a Git**: se regenera en cualquier momento con `npm install`, que lee `package.json` e instala lo que falte.
+- **`node_modules/`:** carpeta donde npm guarda el código de todas las dependencias. Puede ocupar cientos de megas. No se toca, no se copia y no se sube a Git: se regenera en cualquier momento con `npm install`, que lee `package.json` e instala lo que falte.
 - **`package-lock.json`:** registra las versiones exactas instaladas para que todo el equipo tenga lo mismo. Se sube a Git, pero no se edita a mano.
 - **`npx`:** ejecuta un paquete sin instalarlo de forma permanente.
 
@@ -485,7 +431,7 @@ Ya trabajaste con npm en la UD2 (apartado 1.1.5). Recordamos lo imprescindible:
 
 ### 2.1.4 Tres formas de crear un proyecto
 
-En los siguientes apartados vamos a ver tres formas de crear un proyecto de React. Las dos primeras se explican para que entiendas qué ocurre «por debajo» y para que las reconozcas en tutoriales y proyectos existentes, pero **en clase trabajaremos siempre con Vite** (apartado 2.5).
+En los siguientes apartados vamos a ver tres formas de crear un proyecto de React. Las dos primeras se explican para que entiendas qué ocurre «por debajo» y para que las reconozcas en tutoriales y proyectos existentes, pero en clase trabajaremos siempre con Vite (apartado 2.5).
 
 | Forma | Apartado | ¿Se practica? |
 | --- | --- | --- |
@@ -495,9 +441,9 @@ En los siguientes apartados vamos a ver tres formas de crear un proyecto de Reac
 
 ## 2.2 Creación de un proyecto en React desde cero
 
-> **Apartado de lectura.** Aquí se explica cómo montar un proyecto a mano para que entiendas qué piezas lo forman. **No hace falta que lo repitas**: el componente de ejemplo del apartado 2.3 lo practicaremos con Vite.
+> **Apartado de lectura.** Aquí se explica cómo montar un proyecto a mano para que entiendas qué piezas lo forman. No hace falta que lo repitas: el componente de ejemplo del apartado 2.3 lo practicaremos con Vite.
 
-Vamos a ver cómo crear un proyecto **manualmente**, pieza a pieza. Utilizaremos el empaquetador **Parcel**, que no necesita configuración.
+Vamos a ver cómo crear un proyecto manualmente, pieza a pieza. Utilizaremos el empaquetador Parcel, que no necesita configuración.
 
 ### 2.2.1 Paso 1. Crear la carpeta del proyecto
 
@@ -510,14 +456,14 @@ npm install -D parcel
 ```
 
 - `npm init -y` inicializa un nuevo proyecto Node.js con una configuración predeterminada: crea el archivo `package.json` (la `-y` responde «sí» a todas las preguntas).
-- `npm install react react-dom` descarga React y ReactDOM en `node_modules` y los apunta en `package.json` como **dependencias**.
-- `npm install -D parcel` instala Parcel como **dependencia de desarrollo** (`-D`): solo se necesita para desarrollar y construir, no forma parte de la aplicación final.
+- `npm install react react-dom` descarga React y ReactDOM en `node_modules` y los apunta en `package.json` como dependencias.
+- `npm install -D parcel` instala Parcel como dependencia de desarrollo (`-D`): solo se necesita para desarrollar y construir, no forma parte de la aplicación final.
 
 > **Nota sobre versiones.** En apuntes antiguos verás `npm install -D parcel-bundler`, que corresponde a Parcel 1 y ya no se mantiene. Hoy el paquete se llama `parcel`.
 
 ### 2.2.2 Paso 2. Configurar el script de inicio
 
-En `package.json` se **elimina la línea `"main": "index.js"`** (Parcel 2 la interpretaría como si estuvieras creando una biblioteca y daría un error) y se añade a la sección `scripts`:
+En `package.json` se elimina la línea `"main": "index.js"` (Parcel 2 la interpretaría como si estuvieras creando una biblioteca y daría un error) y se añade a la sección `scripts`:
 
 ```json
 "scripts": {
@@ -559,7 +505,7 @@ Se crea la siguiente estructura:
 </html>
 ```
 
-Este archivo HTML es el **punto de entrada** de la aplicación. Fíjate en que el `body` está **casi vacío**: solo tiene un `<div id="root"></div>` y el script. Ese `div` es el «hueco» donde React dibujará **toda** la aplicación. **En una aplicación React no habrá más archivos HTML**: si la aplicación tiene varias «páginas», React se encargará de quitar y poner contenido dentro de ese mismo `div` (lo veremos en la UD5).
+Este archivo HTML es el punto de entrada de la aplicación. Fíjate en que el `body` está casi vacío: solo tiene un `<div id="root"></div>` y el script. Ese `div` es el «hueco» donde React dibujará toda la aplicación. En una aplicación React no habrá más archivos HTML: si la aplicación tiene varias «páginas», React se encargará de quitar y poner contenido dentro de ese mismo `div` (lo veremos en la UD5).
 
 `src/index.jsx`:
 
@@ -573,7 +519,7 @@ root.render(<h1>Hola mundo</h1>);
 Línea a línea:
 
 1. `import { createRoot } from "react-dom/client";` trae de la biblioteca `react-dom` la función `createRoot`.
-2. `document.getElementById("root")` busca el `div` del HTML (exactamente igual que en la UD2). `createRoot(...)` lo convierte en la **raíz** de React: el lugar donde React dibujará.
+2. `document.getElementById("root")` busca el `div` del HTML (exactamente igual que en la UD2). `createRoot(...)` lo convierte en la raíz de React: el lugar donde React dibujará.
 3. `root.render(<h1>Hola mundo</h1>)` le dice a React qué dibujar dentro: un título.
 
 ### 2.2.4 Paso 4. Probar el proyecto
@@ -592,7 +538,7 @@ Fíjate en esta línea de `index.jsx`:
 root.render(<h1>Hola mundo</h1>);
 ```
 
-> **Estamos escribiendo HTML dentro de JavaScript sin comillas: no es una cadena de caracteres.** Si fuera texto, se escribiría `"<h1>Hola mundo</h1>"`, y React mostraría literalmente los símbolos `<h1>` en pantalla. Esto funciona porque es código **JSX**, una extensión de JavaScript diseñada por Facebook para escribir HTML de forma sencilla dentro del código. Sin Parcel (o Vite), el navegador daría un error de sintaxis: JSX se **traduce** a llamadas de JavaScript normales que crean elementos de React (apartado 3).
+> **Estamos escribiendo HTML dentro de JavaScript sin comillas: no es una cadena de caracteres.** Si fuera texto, se escribiría `"<h1>Hola mundo</h1>"`, y React mostraría literalmente los símbolos `<h1>` en pantalla. Esto funciona porque es código JSX, una extensión de JavaScript diseñada por Facebook para escribir HTML de forma sencilla dentro del código. Sin Parcel (o Vite), el navegador daría un error de sintaxis: JSX se traduce a llamadas de JavaScript normales que crean elementos de React (apartado 3).
 
 ## 2.3 Creación de un componente básico
 
@@ -618,13 +564,13 @@ root.render(<Titulo subTitle="Subtítulo" />);
 
 Vamos por partes:
 
-- La función `Titulo` es un **componente**: una función, con nombre en mayúscula, que devuelve JSX.
-- Al usarlo escribimos `<Titulo subTitle="Subtítulo" />`. El atributo `subTitle` es un dato que le pasamos al componente, igual que a una etiqueta `<img>` le pasamos `src`. Estos datos de entrada se llaman **props**.
-- React reúne todos los atributos en **un objeto** y se lo pasa a la función como primer parámetro: aquí, `{ subTitle: "Subtítulo" }`.
-- En los parámetros escribimos `({ subTitle })` en lugar de `(props)`: es **desestructuración** (UD2, apartado 2.10). Extrae la propiedad `subTitle` del objeto y la guarda en una variable con ese nombre. Sería equivalente escribir `(props)` y luego usar `props.subTitle`.
-- Dentro del JSX, `{subTitle}` (entre llaves) inserta el **valor** de la variable. Las llaves son la forma de «meter JavaScript» dentro del JSX.
+- La función `Titulo` es un componente: una función, con nombre en mayúscula, que devuelve JSX.
+- Al usarlo escribimos `<Titulo subTitle="Subtítulo" />`. El atributo `subTitle` es un dato que le pasamos al componente, igual que a una etiqueta `<img>` le pasamos `src`. Estos datos de entrada se llaman props.
+- React reúne todos los atributos en un objeto y se lo pasa a la función como primer parámetro: aquí, `{ subTitle: "Subtítulo" }`.
+- En los parámetros escribimos `({ subTitle })` en lugar de `(props)`: es desestructuración (UD2, apartado 2.10). Extrae la propiedad `subTitle` del objeto y la guarda en una variable con ese nombre. Sería equivalente escribir `(props)` y luego usar `props.subTitle`.
+- Dentro del JSX, `{subTitle}` (entre llaves) inserta el valor de la variable. Las llaves son la forma de «meter JavaScript» dentro del JSX.
 - Todo se renderiza en el elemento con `id="root"` de la página principal.
-- El componente es **reutilizable**: podemos usar `<Titulo>` tantas veces como queramos, con distintos subtítulos:
+- El componente es reutilizable: podemos usar `<Titulo>` tantas veces como queramos, con distintos subtítulos:
 
 ```jsx
 root.render(
@@ -639,7 +585,7 @@ Resultado en el navegador: dos veces el título «Esto es un título personaliza
 
 ### 2.3.1 Estilos en componentes
 
-Para dar estilo a un componente, se crea un archivo CSS normal y se **importa** desde el archivo del componente. Por ejemplo, `src/Titulo.css`:
+Para dar estilo a un componente, se crea un archivo CSS normal y se importa desde el archivo del componente. Por ejemplo, `src/Titulo.css`:
 
 ```css
 h1 {
@@ -670,13 +616,13 @@ const root = createRoot(document.getElementById("root"));
 root.render(<Titulo subTitle="Subtítulo" />);
 ```
 
-> **Importar CSS desde JavaScript.** Hasta ahora enlazabas el CSS desde el HTML con `<link rel="stylesheet">`. En React se hace con `import "./Titulo.css"` desde JavaScript. Esto **no es JavaScript estándar**: es una característica de las herramientas de construcción (Parcel, Vite...), que detectan ese `import` e inyectan las reglas CSS en la página. Esta forma de trabajar es propia del ecosistema React; en otros frameworks, como Angular o Vue, los estilos se asocian a los componentes de otra forma. Los distintos métodos de estilo se estudian en el apartado 6.
+> **Importar CSS desde JavaScript.** Hasta ahora enlazabas el CSS desde el HTML con `<link rel="stylesheet">`. En React se hace con `import "./Titulo.css"` desde JavaScript. Esto no es JavaScript estándar: es una característica de las herramientas de construcción (Parcel, Vite...), que detectan ese `import` e inyectan las reglas CSS en la página. Esta forma de trabajar es propia del ecosistema React; en otros frameworks, como Angular o Vue, los estilos se asocian a los componentes de otra forma. Los distintos métodos de estilo se estudian en el apartado 6.
 
 ## 2.4 Creación de proyectos con create-react-app
 
 > **Apartado de lectura.** No lo practicaremos, pero te lo encontrarás en muchos tutoriales.
 
-Para no tener que montar todo a mano, durante años se usó la herramienta **create-react-app (CRA)**, que genera un esqueleto de aplicación con todo configurado (Webpack, Babel, ESLint y un servidor de desarrollo, agrupados en el paquete `react-scripts`).
+Para no tener que montar todo a mano, durante años se usó la herramienta create-react-app (CRA), que genera un esqueleto de aplicación con todo configurado (Webpack, Babel, ESLint y un servidor de desarrollo, agrupados en el paquete `react-scripts`).
 
 Pasos para crear un proyecto con CRA:
 
@@ -696,7 +642,7 @@ Pasos para crear un proyecto con CRA:
    npm start
    ```
 
-> **create-react-app está obsoleta.** En febrero de 2025 el equipo de React anunció que **deja de recomendar y mantener** create-react-app, que además era lenta y tenía problemas de compatibilidad con React 19. Conviene conocerla porque muchos proyectos y tutoriales la usan (los reconocerás por `react-scripts`, `src/index.js` y `public/index.html`), pero **para proyectos nuevos se usa Vite** o un framework como Next.js o React Router.
+> **create-react-app está obsoleta.** En febrero de 2025 el equipo de React anunció que deja de recomendar y mantener create-react-app, que además era lenta y tenía problemas de compatibilidad con React 19. Conviene conocerla porque muchos proyectos y tutoriales la usan (los reconocerás por `react-scripts`, `src/index.js` y `public/index.html`), pero para proyectos nuevos se usa Vite o un framework como Next.js o React Router.
 
 ## 2.5 Creación de proyectos con Vite
 
@@ -704,9 +650,9 @@ Pasos para crear un proyecto con CRA:
 
 *Figura: logotipo de Vite. Fuente: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Vitejs-logo.svg).*
 
-**Vite** (se pronuncia «vit», «rápido» en francés) es una herramienta que **crea el esqueleto de un proyecto** ya configurado y ofrece un **servidor de desarrollo** casi instantáneo. Ya la conociste en la UD2 (apartado 1.1.8). Es la alternativa moderna a create-react-app y **la que usaremos en todos los proyectos del curso**.
+**Vite** (se pronuncia «vit», «rápido» en francés) es una herramienta que crea el esqueleto de un proyecto ya configurado y ofrece un servidor de desarrollo casi instantáneo. Ya la conociste en la UD2 (apartado 1.1.8). Es la alternativa moderna a create-react-app y la que usaremos en todos los proyectos del curso.
 
-> Vite también permite crear proyectos con otros frameworks como Vue, Svelte, Preact, Solid o Lit. Para React permite elegir entre **JavaScript**, **TypeScript**, **JavaScript + SWC** o **TypeScript + SWC**. **SWC** (*Speedy Web Compiler*) es un traductor de JavaScript escrito en Rust, muy rápido. Nosotros elegiremos siempre **JavaScript**.
+> Vite también permite crear proyectos con otros frameworks como Vue, Svelte, Preact, Solid o Lit. Para React permite elegir entre JavaScript, TypeScript, JavaScript + SWC o TypeScript + SWC. SWC (*Speedy Web Compiler*) es un traductor de JavaScript escrito en Rust, muy rápido. Nosotros elegiremos siempre JavaScript.
 
 ### 2.5.1 Pasos para crear un proyecto con Vite
 
@@ -719,13 +665,13 @@ Pasos para crear un proyecto con CRA:
    ```
 
    - La primera vez puede preguntar `Need to install the following packages: create-vite... Ok to proceed? (y)`: pulsa `y` y Enter.
-   - **Select a framework:** muévete con las flechas del teclado hasta **React** y pulsa Enter.
-   - **Select a variant:** elige **JavaScript** y pulsa Enter.
-   - Según la versión, puede preguntar algo más (por ejemplo, si quieres instalar y arrancar ahora): responde **No**, para seguir los pasos tú y entender cada uno.
+   - **Select a framework:** muévete con las flechas del teclado hasta React y pulsa Enter.
+   - **Select a variant:** elige JavaScript y pulsa Enter.
+   - Según la versión, puede preguntar algo más (por ejemplo, si quieres instalar y arrancar ahora): responde No, para seguir los pasos tú y entender cada uno.
 
    También puedes indicarlo todo de una vez y evitar las preguntas: `npm create vite@latest react-vite-app -- --template react`.
 
-   Vite crea la carpeta `react-vite-app` con los archivos del proyecto, pero **todavía sin `node_modules`**.
+   Vite crea la carpeta `react-vite-app` con los archivos del proyecto, pero todavía sin `node_modules`.
 
 3. **Entra en la carpeta del proyecto:**
 
@@ -733,7 +679,7 @@ Pasos para crear un proyecto con CRA:
    cd react-vite-app
    ```
 
-   `cd` (*change directory*) cambia la carpeta en la que trabaja la terminal. **Todos los comandos siguientes deben ejecutarse dentro de la carpeta del proyecto** (la que contiene `package.json`). Lo mejor es abrir directamente esa carpeta en VS Code (*Archivo → Abrir carpeta*) para que el explorador y la terminal estén en el sitio correcto.
+   `cd` (*change directory*) cambia la carpeta en la que trabaja la terminal. Todos los comandos siguientes deben ejecutarse dentro de la carpeta del proyecto (la que contiene `package.json`). Lo mejor es abrir directamente esa carpeta en VS Code (*Archivo → Abrir carpeta*) para que el explorador y la terminal estén en el sitio correcto.
 
 4. **Instala las dependencias:**
 
@@ -760,7 +706,7 @@ Pasos para crear un proyecto con CRA:
 
    Abre `http://localhost:5173` en el navegador (con `Ctrl+clic` sobre el enlace en la terminal de VS Code). Verás la página de bienvenida de Vite + React con un botón contador. Pulsa el botón: ¡ya es una aplicación React funcionando!
 
-6. **Mientras programas, deja la terminal abierta y el servidor funcionando.** Cada vez que guardes un archivo, la página se actualizará sola en el navegador, sin recargar (*Hot Module Replacement*, HMR). Para **detener** el servidor, pulsa `Ctrl+C` en la terminal. Para volver a arrancarlo otro día, abre la carpeta del proyecto y ejecuta de nuevo `npm run dev` (no hace falta repetir `npm install`).
+6. **Mientras programas, deja la terminal abierta y el servidor funcionando.** Cada vez que guardes un archivo, la página se actualizará sola en el navegador, sin recargar (*Hot Module Replacement*, HMR). Para detener el servidor, pulsa `Ctrl+C` en la terminal. Para volver a arrancarlo otro día, abre la carpeta del proyecto y ejecuta de nuevo `npm run dev` (no hace falta repetir `npm install`).
 
 > **No abras `index.html` con doble clic ni con Live Server.** La página aparecería en blanco, porque el navegador no entiende el JSX ni los `import` de paquetes. Un proyecto de Vite siempre se abre a través de `npm run dev`.
 
@@ -793,7 +739,7 @@ react-vite-app/
 └── vite.config.js       Configuración de Vite
 ```
 
-Casi todo tu trabajo estará dentro de **`src/`**. Los archivos de configuración de la raíz (`vite.config.js`, `eslint.config.js`) apenas se tocan.
+Casi todo tu trabajo estará dentro de `src/`. Los archivos de configuración de la raíz (`vite.config.js`, `eslint.config.js`) apenas se tocan.
 
 Equivalencias con un proyecto de create-react-app, por si las ves en tutoriales:
 
@@ -839,7 +785,7 @@ Contiene la configuración del proyecto: nombre, scripts y dependencias. Será p
 
 - **`react`:** núcleo de React; gestiona los componentes y su estado.
 - **`react-dom`:** se encarga de dibujar en el DOM.
-- **`vite`** y **`@vitejs/plugin-react`** (dependencias de desarrollo): traducen el JSX, empaquetan y ofrecen el servidor de desarrollo. Cumplen la función que `react-scripts` tenía en create-react-app.
+- **`vite`** y `@vitejs/plugin-react` (dependencias de desarrollo): traducen el JSX, empaquetan y ofrecen el servidor de desarrollo. Cumplen la función que `react-scripts` tenía en create-react-app.
 - `npm run dev` ejecuta, en realidad, el comando `vite` indicado en `scripts`.
 
 **2. `index.html`**
@@ -896,7 +842,7 @@ Línea a línea:
 | `createRoot(...)` | Lo convierte en la raíz de React. |
 | `.render(<StrictMode><App /></StrictMode>)` | Dibuja dentro el componente `App`. |
 
-`StrictMode` es un componente que envuelve a `App` y que, **solo mientras desarrollas**, activa comprobaciones adicionales para avisarte de errores en la consola (por ejemplo, ejecuta dos veces algunas partes del código para detectar fallos). No se ve en pantalla y no afecta a la versión final. Normalmente **no tendrás que modificar `main.jsx`**.
+`StrictMode` es un componente que envuelve a `App` y que, solo mientras desarrollas, activa comprobaciones adicionales para avisarte de errores en la consola (por ejemplo, ejecuta dos veces algunas partes del código para detectar fallos). No se ve en pantalla y no afecta a la versión final. Normalmente no tendrás que modificar `main.jsx`.
 
 **4. `src/App.jsx`**
 
@@ -922,33 +868,19 @@ export default App;
 - `function App() { ... }` define el componente: una función con nombre en mayúscula.
 - `return ( ... );` devuelve lo que se tiene que ver. Los paréntesis permiten escribir el JSX en varias líneas.
 - `className` se usa en lugar de `class` (se explica en el apartado 3.5).
-- `export default App;` **exporta** el componente para que otro archivo (`main.jsx`) pueda importarlo.
+- `export default App;` exporta el componente para que otro archivo (`main.jsx`) pueda importarlo.
 
 > **Extensión `.jsx`.** Vite exige que los archivos que contienen JSX tengan extensión `.jsx` (o `.tsx` con TypeScript). Los archivos de JavaScript puro, sin JSX, pueden ser `.js`.
 
 **Resumen del recorrido completo:**
 
-```text
-Navegador abre http://localhost:5173
-        │
-        ▼
-index.html ── tiene <div id="root"> vacío y carga ──► src/main.jsx
-                                                          │
-                       createRoot(#root).render(<App />)  │
-                                                          ▼
-                                                     src/App.jsx
-                                                 (devuelve el JSX que ves)
-                                                          │
-                                       importa otros componentes y sus CSS
-                                                          ▼
-                                          Header.jsx, Footer.jsx, ...
-```
+![Recorrido desde que el navegador abre la aplicación hasta que React monta App y sus componentes](./assets/img/ud4-arranque-aplicacion.svg)
 
 ### 2.5.4 Añadir componentes y estilos
 
 #### Organizar el código en varios archivos: `import` y `export`
 
-En una aplicación real no escribimos todo en `App.jsx`: cada componente va en su propio archivo. Para que un archivo pueda usar lo que hay en otro se usan los **módulos de JavaScript**:
+En una aplicación real no escribimos todo en `App.jsx`: cada componente va en su propio archivo. Para que un archivo pueda usar lo que hay en otro se usan los módulos de JavaScript:
 
 - **`export`** marca lo que un archivo «ofrece» a los demás.
 - **`import`** trae a un archivo lo que otro ofrece.
@@ -978,13 +910,13 @@ import { BotonAceptar, BotonCancelar } from "./botones";
 
 Sobre la ruta del `import`:
 
-- Si empieza por **`./`** o **`../`** es un **archivo tuyo**, relativo al archivo actual: `./` es «esta carpeta» y `../` es «la carpeta de arriba». Por ejemplo, desde `src/App.jsx`, el componente `src/components/Header.jsx` se importa con `"./components/Header"`.
-- Si **no** empieza por punto (`"react"`, `"react-dom/client"`) es un **paquete** instalado en `node_modules`.
+- Si empieza por `./` o `../` es un archivo tuyo, relativo al archivo actual: `./` es «esta carpeta» y `../` es «la carpeta de arriba». Por ejemplo, desde `src/App.jsx`, el componente `src/components/Header.jsx` se importa con `"./components/Header"`.
+- Si no empieza por punto (`"react"`, `"react-dom/client"`) es un paquete instalado en `node_modules`.
 - En los archivos `.js` y `.jsx` se puede omitir la extensión: `"./components/Header"` y `"./components/Header.jsx"` son equivalentes. En los CSS hay que escribirla: `"./Header.css"`.
 
 #### Crear un componente en su propio archivo
 
-Por convenio, los componentes se guardan en `src/components/`, **el nombre empieza por mayúscula** y el archivo se llama igual que el componente. Vamos a crear un componente `Header` con su archivo de estilos:
+Por convenio, los componentes se guardan en `src/components/`, el nombre empieza por mayúscula y el archivo se llama igual que el componente. Vamos a crear un componente `Header` con su archivo de estilos:
 
 1. En el explorador de VS Code, crea la carpeta `src/components`.
 2. Dentro, crea `Header.jsx`:
@@ -1033,7 +965,7 @@ Por convenio, los componentes se guardan en `src/components/`, **el nombre empie
 
 5. Guarda los archivos y observa el navegador: aparece la cabecera sin necesidad de recargar.
 
-Los tres pasos de siempre para usar un componente nuevo son: **crearlo**, **exportarlo** e **importarlo** donde se vaya a usar.
+Los tres pasos de siempre para usar un componente nuevo son: crearlo, exportarlo e importarlo donde se vaya a usar.
 
 ### 2.5.5 Tu primer proyecto paso a paso
 
@@ -1112,19 +1044,92 @@ Compara este proyecto con el manual del apartado 2.2: Vite ha creado por ti la e
 - **Extensiones de VS Code:** *ES7+ React/Redux/React-Native snippets* (fragmentos como `rafce` + Tab, que escribe el esqueleto de un componente), *ESLint* (marca errores mientras escribes) y *Prettier* (formatea el código automáticamente).
 - **ESLint:** la plantilla de Vite incluye reglas para React, como `eslint-plugin-react-hooks`, que avisa cuando los hooks se usan de forma incorrecta. Si VS Code subraya algo en amarillo o rojo, pasa el ratón por encima y lee el aviso.
 
+## 2.7 PRÁCTICA: Introducción a React
+
+En esta práctica vas a crear tu primer proyecto de React con Vite y a construir una pequeña tarjeta de presentación personal a partir de varios componentes sencillos. El objetivo es repasar lo visto en el vídeo recomendado y en este apartado: crear el proyecto, crear componentes, pasarles datos mediante props y darles algo de estilo.
+
+### Estilos en línea (lo mínimo que necesitas)
+
+Los estilos en línea se estudian con detalle en el apartado 6.1. Para esta práctica basta con saber que en JSX el atributo `style` recibe un objeto de JavaScript, no un texto como en HTML:
+
+```jsx
+<h1 style={{ color: "white", backgroundColor: "#282c34", padding: "10px" }}>
+  Hola
+</h1>
+```
+
+- Las llaves exteriores indican «aquí va JavaScript»; las interiores son las del objeto.
+- Las propiedades CSS se escriben en camelCase: `background-color` pasa a ser `backgroundColor`, `font-size` pasa a ser `fontSize`.
+- Los valores son cadenas (`"10px"`) o números (en ese caso React añade `px`: `padding: 10`).
+- Un valor puede venir de una prop: `style={{ color: color }}`, o abreviado, `style={{ color }}`.
+
+### Tareas
+
+**1. Crear el proyecto**
+
+- **a.** Crea con Vite un proyecto llamado `practica-introduccion-react` (plantilla React y variante JavaScript), instala las dependencias y arráncalo con `npm run dev`.
+- **b.** Limpia el proyecto como en el apartado 2.5.5: deja `App.jsx` con un `<h1>` sencillo y vacía `App.css` e `index.css`.
+- **c.** En `index.html`, cambia `lang="en"` por `lang="es"` y pon como `<title>` «Introducción a React».
+
+**2. Crear los componentes**
+
+Crea la carpeta `src/components/` y, dentro, un archivo por componente (con `export default`). Cada componente debe recibir al menos una prop y tener al menos un estilo en línea:
+
+- **a.** `Cabecera`: recibe `nombre` y `curso` y muestra un `<header>` con el nombre en un `<h1>` y el curso en un `<p>`. Dale un color de fondo, color de texto y relleno con `style`.
+- **b.** `Tarjeta`: recibe `titulo` y `texto` y muestra un bloque con borde, esquinas redondeadas (`borderRadius`) y margen. El título irá en un `<h2>` y el texto en un `<p>`.
+- **c.** `Etiqueta`: recibe `texto` y `color` y muestra un `<span>` con forma de «pastilla» (fondo de color, texto blanco, `borderRadius` grande y algo de `padding`). El color de fondo se toma de la prop `color`.
+- **d.** `Pie`: recibe `autor` y `anio` y muestra un `<footer>` centrado y con letra pequeña, por ejemplo: «© 2026 — Hecho por Ana con React».
+
+**3. Mostrar los componentes en la página**
+
+- **a.** Importa los cuatro componentes en `App.jsx` y úsalos para montar la página en este orden: `Cabecera`, varias `Tarjeta`, una fila de `Etiqueta` y `Pie`.
+- **b.** Usa `Tarjeta` al menos tres veces con datos distintos (por ejemplo: «Sobre mí», «Mis aficiones», «Qué espero aprender en el módulo»).
+- **c.** Usa `Etiqueta` al menos cuatro veces con textos y colores distintos (por ejemplo, las tecnologías que conoces: HTML, CSS, JavaScript, React).
+- **d.** Guarda y comprueba en el navegador que la página se actualiza sola.
+
+> **Pista:** la prop `anio` de `Pie` es un número. Recuerda que en JSX las cadenas se pasan entre comillas, pero los números (y cualquier otra expresión de JavaScript) se pasan entre llaves.
+
+**4. Comprobaciones**
+
+- **a.** Abre las herramientas de desarrollo (F12) y comprueba en la pestaña *Elements* que todo se dibuja dentro de `<div id="root">`. Si tienes instalado React Developer Tools, busca en la pestaña *Components* tus componentes y sus props.
+- **b.** Comprueba que la pestaña *Console* no muestra errores.
+
+**5. Entrega**
+
+Sube el proyecto (sin `node_modules`) y añade una captura de pantalla del resultado en el navegador.
+
 ---
 
 # 3. JSX
 
+>
+> **Vídeo recomendado**
+>
+> [![Curso React: 3. Sintaxis JSX (jonmircha)](https://img.youtube.com/vi/EH4L-EYt63Y/hqdefault.jpg)](https://www.youtube.com/watch?v=EH4L-EYt63Y)
+>
+> [Curso React: 3. Sintaxis JSX (jonmircha, YouTube)](https://www.youtube.com/watch?v=EH4L-EYt63Y)
+>
+
+> **Complemento React Developer Tools para Firefox**
+>
+> Instala el complemento oficial [React Developer Tools](https://addons.mozilla.org/es-ES/firefox/addon/react-devtools/) desde la web de complementos de Mozilla (pulsa «Añadir a Firefox»). Si usas Chrome o Edge, está disponible en sus tiendas de extensiones con el mismo nombre.
+>
+> Una vez instalado, abre tu aplicación con `npm run dev`, pulsa F12 y verás dos pestañas nuevas en las herramientas de desarrollo:
+>
+> - *⚛️ Components*: muestra el árbol de componentes (`App`, `Header`, `Tarjeta`...) en lugar del HTML final. Al seleccionar un componente, a la derecha aparecen sus props y su estado, que puedes incluso modificar para probar.
+> - *⚛️ Profiler*: mide cuánto tarda en renderizarse cada componente. Lo usaremos más adelante.
+>
+> El icono del complemento en la barra de Firefox se colorea cuando la página usa React. Úsalo durante todo este apartado para comprobar cómo se traduce tu JSX: en la pestaña *Inspector* verás el HTML que llega al navegador y en *Components*, los componentes que lo generan.
+
 ## 3.0 ¿Qué es JSX y por qué lo usamos?
 
-**JSX** (*JavaScript XML*) es una extensión de la sintaxis de JavaScript que permite escribir algo que **parece HTML** dentro del código JavaScript. Es la forma en que los componentes describen lo que se tiene que ver.
+**JSX** (*JavaScript XML*) es una extensión de la sintaxis de JavaScript que permite escribir algo que parece HTML dentro del código JavaScript. Es la forma en que los componentes describen lo que se tiene que ver.
 
 ```jsx
 const saludo = <h1 className="titulo">Hola, {nombre}</h1>;
 ```
 
-En otros frameworks como Angular, la vista (HTML) y la lógica (JavaScript/TypeScript) se separan en archivos distintos; en React se escriben **juntas en el mismo archivo**, porque forman parte de la misma pieza (el componente).
+En otros frameworks como Angular, la vista (HTML) y la lógica (JavaScript/TypeScript) se separan en archivos distintos; en React se escriben juntas en el mismo archivo, porque forman parte de la misma pieza (el componente).
 
 Para entender por qué existe JSX, veamos cómo crearíamos la misma tarjeta de tres formas:
 
@@ -1159,18 +1164,18 @@ const tarjeta = (
 );
 ```
 
-Las tres producen lo mismo, pero la tercera **se lee como el HTML que vamos a obtener**. Ese es el objetivo de JSX.
+Las tres producen lo mismo, pero la tercera se lee como el HTML que vamos a obtener. Ese es el objetivo de JSX.
 
 **JSX no es HTML**, aunque se le parezca mucho. Las diferencias principales, que veremos en este apartado, son:
 
-- Está **dentro de JavaScript**, así que se puede guardar en variables, devolver desde funciones, etc.
-- Entre **llaves `{}`** se puede escribir JavaScript.
+- Está dentro de JavaScript, así que se puede guardar en variables, devolver desde funciones, etc.
+- Entre llaves `{}` se puede escribir JavaScript.
 - Algunos atributos cambian de nombre (`className` en lugar de `class`) y se escriben en camelCase (`onClick`).
 - Es más estricto: todas las etiquetas deben cerrarse y debe haber un único elemento padre.
 
-Los navegadores **no entienden JSX**. Antes de ejecutarse, una herramienta (Babel, SWC o esbuild, integradas en Vite) lo **traduce** (transpila) a llamadas a funciones de JavaScript normal. Veamos cómo.
+Los navegadores no entienden JSX. Antes de ejecutarse, una herramienta (Babel, SWC o esbuild, integradas en Vite) lo traduce (transpila) a llamadas a funciones de JavaScript normal. Veamos cómo.
 
-## 3.1 De JSX a `React.createElement`
+## 3.1 De JSX a JavaScript
 
 En la UD2 creábamos elementos con `document.createElement`:
 
@@ -1181,28 +1186,28 @@ element.style.color = "red";
 document.body.appendChild(element);
 ```
 
-React utiliza una función parecida, `React.createElement`, pero con una diferencia clave:
-
-- `document.createElement` devuelve un **nodo del DOM real**, que se ve en la página en cuanto se añade.
-- `React.createElement` devuelve un **objeto JavaScript normal** que solo *describe* el elemento: «quiero un `h1` con esta clase y este texto». Es un nodo del DOM virtual. Todavía no está en la página.
-
-Cuando escribimos:
+El navegador no entiende JSX, así que la herramienta de construcción (Vite, Babel...) lo traduce a llamadas a funciones de React. Cuando escribimos:
 
 ```jsx
 const element = <h1 className="greeting">Hello, world!</h1>;
 ```
 
-la herramienta de construcción lo traduce a:
+se traduce a:
 
 ```js
-const element = React.createElement(
-  "h1",                       // type: qué etiqueta
-  { className: "greeting" },  // props: sus atributos
-  "Hello, world!"             // children: su contenido
-);
+import { jsx as _jsx } from "react/jsx-runtime";
+
+const element = _jsx("h1", {
+  className: "greeting",
+  children: "Hello, world!"
+});
 ```
 
-y esa llamada produce un objeto similar a:
+- `_jsx` es una función de React que crea un elemento. El `import` lo añade automáticamente la herramienta de construcción; por eso nosotros no tenemos que importar nada para usar JSX.
+- El primer argumento es el tipo: una etiqueta HTML (`"h1"`, `"div"`) o un componente (`Titulo`).
+- El segundo argumento son las props: los atributos y, dentro de la propiedad `children`, el contenido.
+
+La llamada no crea nada en la página. Produce un objeto JavaScript normal que solo *describe* el elemento («quiero un `h1` con esta clase y este texto»):
 
 ```js
 {
@@ -1214,27 +1219,16 @@ y esa llamada produce un objeto similar a:
 }
 ```
 
+Esa es la diferencia con la UD2:
+
+- `document.createElement` devuelve un nodo del DOM real, que se ve en la página en cuanto se añade.
+- `_jsx` devuelve un objeto que describe el elemento. Es un nodo del DOM virtual: todavía no está en la página.
+
 Puedes comprobarlo tú: en un componente escribe `console.log(<h1 className="greeting">Hola</h1>);` y mira la consola del navegador. Verás un objeto con `type` y `props`.
 
-Un **elemento** de React es la pieza más pequeña de la interfaz: un objeto ligero que describe lo que se quiere ver en pantalla. Por ejemplo, un párrafo con el texto «Hola» (`<p>Hola</p>`). Este objeto es lo que React usa internamente para construir el DOM virtual.
+Un elemento de React es la pieza más pequeña de la interfaz: un objeto ligero que describe lo que se quiere ver en pantalla. Este objeto es lo que React usa internamente para construir el DOM virtual.
 
-`React.createElement` recibe tres tipos de argumentos:
-
-```js
-React.createElement(
-  type,       // Etiqueta HTML ("h1", "div") o componente (Titulo)
-  props,      // Objeto con los atributos, o null si no hay
-  ...children // Contenido: textos u otros elementos
-);
-```
-
-Por ejemplo, un `h1` con clase, estilo y texto:
-
-```js
-React.createElement("h1", { className: "center", style: { color: "red" } }, "Hola Mundo");
-```
-
-Y un elemento con hijos anidados, que es lo que genera el JSX de un `div` con dos párrafos:
+Cuando un elemento tiene varios hijos, se usa la variante `_jsxs` y `children` pasa a ser un array:
 
 ```jsx
 const element = (
@@ -1243,9 +1237,41 @@ const element = (
     <p>Segundo párrafo</p>
   </div>
 );
+```
 
+```js
 // se traduce a:
-const element = React.createElement(
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+
+const element = _jsxs("div", {
+  className: "caja",
+  children: [
+    _jsx("p", { children: "Primer párrafo" }),
+    _jsx("p", { children: "Segundo párrafo" })
+  ]
+});
+```
+
+Escribir interfaces así es posible, pero muy poco legible. Por eso usamos JSX, que se convierte en estas llamadas automáticamente. Nunca tendrás que escribirlas a mano; las vemos para entender qué es realmente el JSX.
+
+### 3.1.1 La forma clásica: `React.createElement`
+
+Hasta React 17 (2020), el JSX se traducía a `React.createElement`. Te la encontrarás en tutoriales, libros y código antiguo, y sigue existiendo en React:
+
+```js
+React.createElement(
+  type,       // Etiqueta HTML ("h1", "div") o componente (Titulo)
+  props,      // Objeto con los atributos, o null si no hay
+  ...children // Contenido: textos u otros elementos, como argumentos extra
+);
+```
+
+Los mismos ejemplos de antes, en la forma clásica:
+
+```js
+const element = React.createElement("h1", { className: "greeting" }, "Hello, world!");
+
+const caja = React.createElement(
   "div",
   { className: "caja" },
   React.createElement("p", null, "Primer párrafo"),
@@ -1253,13 +1279,22 @@ const element = React.createElement(
 );
 ```
 
-Escribir interfaces con `createElement` es posible, pero muy poco legible. Por eso usamos JSX, que se convierte en estas llamadas automáticamente. **Nunca tendrás que escribir `createElement` a mano**; lo vemos para entender qué es realmente el JSX.
+Comparación de las dos formas:
 
-> Con el nuevo transformador de JSX de **React 17+**, el código JSX se transforma en llamadas a las funciones internas `jsx` y `jsxs` (del módulo `react/jsx-runtime`), que sustituyen a `React.createElement`. Por este motivo ya no es necesario importar `React` para usar JSX. El concepto es el mismo.
+| | Forma clásica | Forma actual (React 17+) |
+| --- | --- | --- |
+| Función | `React.createElement` | `_jsx` y `_jsxs` (de `react/jsx-runtime`) |
+| Contenido | Argumentos a partir del tercero | Dentro de las props, en `children` |
+| Importar React | Obligatorio en cada archivo con JSX: `import React from "react"` | No hace falta: el `import` lo añade la herramienta |
+| Resultado | Un objeto con `type` y `props` | El mismo objeto |
+
+El resultado es el mismo: un objeto que describe el elemento. Solo cambia la forma de escribir la llamada. Por eso, si en código antiguo ves `import React from "react"` al principio de cada archivo, ahora sabes por qué estaba ahí.
+
+> **Pruébalo en Babel.** Abre el [REPL de Babel](https://babeljs.io/repl), activa el preset *react* y escribe JSX en el panel izquierdo: a la derecha verás la traducción con `_jsx`. Si en las opciones del preset cambias *runtime* de *automatic* a *classic*, verás la misma traducción con `React.createElement`. Mientras desarrollas con `npm run dev`, Vite usa una variante para depuración (`_jsxDEV`) que añade información extra para mostrar mejores mensajes de error; la idea es la misma.
 
 ## 3.2 Renderizar en el DOM: `ReactDOM.render` y `createRoot`
 
-Una vez creado el elemento (el objeto que lo describe), hay que **montarlo en el DOM real** del navegador para que se vea. De eso se encarga ReactDOM. A este proceso de convertir la descripción en algo visible se le llama **renderizar**.
+Una vez creado el elemento (el objeto que lo describe), hay que montarlo en el DOM real del navegador para que se vea. De eso se encarga ReactDOM. A este proceso de convertir la descripción en algo visible se le llama renderizar.
 
 En versiones antiguas de React (hasta la 17) se usaba `ReactDOM.render`:
 
@@ -1272,7 +1307,7 @@ const element = <h1 className="greeting">Hello, world!</h1>;
 ReactDOM.render(element, document.getElementById("root"));
 ```
 
-Desde React 18 se crea primero una **raíz** con `createRoot` y después se renderiza en ella:
+Desde React 18 se crea primero una raíz con `createRoot` y después se renderiza en ella:
 
 ```jsx
 // React 18 y 19
@@ -1286,7 +1321,7 @@ root.render(element);
 
 En ambos casos, ReactDOM analiza el objeto `element`, crea un nodo DOM `h1`, le asigna la clase `greeting`, establece su texto en «Hello, world!» y lo inserta dentro del elemento con id `root`. Es decir, hace por nosotros los `createElement`, `className`, `textContent` y `append` de la UD2.
 
-La nueva API con `createRoot` permite las funciones modernas de React (renderizado concurrente, agrupación automática de actualizaciones...). Normalmente `render` se llama **una sola vez**, en `main.jsx`, con el componente `App` (ya lo viste en el apartado 2.5.3); a partir de ahí, React actualiza la interfaz por sí solo cuando cambian los datos.
+La nueva API con `createRoot` permite las funciones modernas de React (renderizado concurrente, agrupación automática de actualizaciones...). Normalmente `render` se llama una sola vez, en `main.jsx`, con el componente `App` (ya lo viste en el apartado 2.5.3); a partir de ahí, React actualiza la interfaz por sí solo cuando cambian los datos.
 
 ## 3.3 Paso a paso de JSX al DOM
 
@@ -1299,7 +1334,7 @@ La nueva API con `createRoot` permite las funciones modernas de React (renderiza
 2. **Traducir JSX:** Babel, SWC o esbuild (dentro de Vite) convierten el JSX en llamadas a funciones. Esto ocurre en tu ordenador, antes de que el código llegue al navegador.
 
    ```js
-   const element = React.createElement("h1", { className: "greeting" }, "Hello, world!");
+   const element = _jsx("h1", { className: "greeting", children: "Hello, world!" });
    ```
 
 3. **Crear el elemento de React:** al ejecutarse en el navegador, la llamada devuelve un objeto que describe el elemento y forma parte del DOM virtual.
@@ -1316,13 +1351,13 @@ La nueva API con `createRoot` permite las funciones modernas de React (renderiza
 
 4. **Renderizar en el DOM:** `root.render(element)` recorre el objeto, crea los nodos reales y los inserta en `#root`. En sucesivas actualizaciones, solo aplica las diferencias (apartado 1.6).
 
-Este proceso hace que escribir interfaces complejas sea más manejable y **declarativo**: pensamos en la interfaz en términos de componentes y de sus datos, en lugar de manipular directamente el DOM.
+Este proceso hace que escribir interfaces complejas sea más manejable y declarativo: pensamos en la interfaz en términos de componentes y de sus datos, en lugar de manipular directamente el DOM.
 
 ## 3.4 Expresiones en JSX
 
 ### 3.4.1 Las llaves: una ventana a JavaScript
 
-Dentro del JSX, todo lo que escribas se interpreta como texto o etiquetas... **salvo lo que pongas entre llaves `{}`**, que se evalúa como **JavaScript**. Las llaves son una «ventana» por la que meter valores de JavaScript en la interfaz:
+Dentro del JSX, todo lo que escribas se interpreta como texto o etiquetas... salvo lo que pongas entre llaves `{}`, que se evalúa como JavaScript. Las llaves son una «ventana» por la que meter valores de JavaScript en la interfaz:
 
 ```jsx
 const nombre = "Ana";
@@ -1331,7 +1366,7 @@ const nombre = "Ana";
 <p>Hola, {nombre}</p>  // Muestra: Hola, Ana      (valor de la variable)
 ```
 
-Dentro de las llaves solo se pueden escribir **expresiones**. Una **expresión** es cualquier fragmento de código que **produce un valor**. Una **sentencia** es una instrucción que **hace algo** pero no produce un valor. Si dudas, pregúntate: «¿podría escribir esto a la derecha de `const x = ...`?». Si la respuesta es sí, es una expresión.
+Dentro de las llaves solo se pueden escribir expresiones. Una expresión es cualquier fragmento de código que produce un valor. Una sentencia es una instrucción que hace algo pero no produce un valor. Si dudas, pregúntate: «¿podría escribir esto a la derecha de `const x = ...`?». Si la respuesta es sí, es una expresión.
 
 | ✓ Expresiones (válidas entre llaves) | ✗ Sentencias (no válidas entre llaves) |
 | --- | --- |
@@ -1348,7 +1383,7 @@ Dentro de las llaves solo se pueden escribir **expresiones**. Una **expresión**
 
 ```jsx
 function Saludo() {
-  const user = { firstName: "Luis", lastName: "Molina" };
+  const user = { firstName: "Matías", lastName: "Montávez" };
 
   function formatName(user) {
     return user.firstName + " " + user.lastName;
@@ -1365,7 +1400,7 @@ function Saludo() {
 }
 ```
 
-Fíjate en que el código «normal» de JavaScript (declarar variables, funciones...) se escribe **antes del `return`**, y el `return` devuelve el JSX. Esa es la estructura de casi todos los componentes:
+Fíjate en que el código «normal» de JavaScript (declarar variables, funciones...) se escribe antes del `return`, y el `return` devuelve el JSX. Esa es la estructura de casi todos los componentes:
 
 ```jsx
 function MiComponente() {
@@ -1379,11 +1414,11 @@ function MiComponente() {
 
 ### 3.4.3 JSX también es una expresión
 
-Como JSX se traduce a una llamada a función (que devuelve un objeto), **JSX también es una expresión**. Por eso puede asignarse a variables, devolverse desde funciones o pasarse como argumento:
+Como JSX se traduce a una llamada a función (que devuelve un objeto), JSX también es una expresión. Por eso puede asignarse a variables, devolverse desde funciones o pasarse como argumento:
 
 ```jsx
 const ComponenteTitulo = () => {
-  const nombre = "Luis";
+  const nombre = "Matías";
   const titulo = <h1>Hola {nombre}</h1>; // JSX asignado a una variable
 
   const calcular = (a, b) => <p>El resultado de {a} + {b} es {a + b}</p>; // JSX en una arrow
@@ -1404,9 +1439,9 @@ const ComponenteTitulo = () => {
 };
 ```
 
-Observa que el bucle `for` está **dentro de una función** que se ejecuta antes; dentro de las llaves solo se llama a esa función, lo cual sí es una expresión.
+Observa que el bucle `for` está dentro de una función que se ejecuta antes; dentro de las llaves solo se llama a esa función, lo cual sí es una expresión.
 
-Por la misma razón, JSX se puede usar dentro de estructuras de control **fuera** del `return`, por ejemplo para devolver un elemento u otro:
+Por la misma razón, JSX se puede usar dentro de estructuras de control fuera del `return`, por ejemplo para devolver un elemento u otro:
 
 ```jsx
 function formatName(user) {
@@ -1420,8 +1455,8 @@ const Saludo = ({ user }) => {
   return <h1>Hello, Stranger.</h1>;
 };
 
-<Saludo user={{ firstName: "Luis", lastName: "Molina" }} />  // Hello, Luis Molina!
-<Saludo />                                                    // Hello, Stranger.
+<Saludo user={{ firstName: "Matías", lastName: "Montávez" }} />  // Hello, Matías Montávez!
+<Saludo />                                                       // Hello, Stranger.
 ```
 
 ### 3.4.4 Qué se muestra según el tipo de valor
@@ -1434,13 +1469,13 @@ const Saludo = ({ user }) => {
 | `true`, `false`, `null`, `undefined` | **No se muestra nada.** Muy útil para mostrar u ocultar cosas (apartado 3.9). |
 | Objeto literal `{ a: 1 }` | **Error:** «Objects are not valid as a React child». Hay que mostrar sus propiedades: `{usuario.nombre}`. |
 
-> **Seguridad.** El texto que se inserta con `{}` se **escapa** automáticamente: si una variable contiene `"<script>..."`, React lo muestra como texto y no lo ejecuta. Es el equivalente a usar `textContent` en lugar de `innerHTML` (UD2). Existe `dangerouslySetInnerHTML` para insertar HTML, pero su nombre ya advierte del riesgo de ataques XSS.
+> **Seguridad.** El texto que se inserta con `{}` se escapa automáticamente: si una variable contiene `"<script>..."`, React lo muestra como texto y no lo ejecuta. Es el equivalente a usar `textContent` en lugar de `innerHTML` (UD2). Existe `dangerouslySetInnerHTML` para insertar HTML, pero su nombre ya advierte del riesgo de ataques XSS.
 
 ## 3.5 Atributos en JSX
 
-Los atributos en JSX son similares a los de HTML, pero con algunas diferencias. El motivo es que, como hemos visto, los atributos acaban siendo **propiedades de un objeto JavaScript** (las `props` del elemento), y deben seguir las reglas de JavaScript:
+Los atributos en JSX son similares a los de HTML, pero con algunas diferencias. El motivo es que, como hemos visto, los atributos acaban siendo propiedades de un objeto JavaScript (las `props` del elemento), y deben seguir las reglas de JavaScript:
 
-- Se escriben en **camelCase** (primera palabra en minúscula y las siguientes con mayúscula inicial): `onClick`, `tabIndex`, `maxLength`, `readOnly`.
+- Se escriben en camelCase (primera palabra en minúscula y las siguientes con mayúscula inicial): `onClick`, `tabIndex`, `maxLength`, `readOnly`.
 - **`className`** en lugar de `class`, porque `class` es una palabra reservada de JavaScript (sirve para crear clases).
 - **`htmlFor`** en lugar de `for` en las etiquetas `<label>`, porque `for` también es una palabra reservada (los bucles).
 - Los atributos `aria-*` y `data-*` se escriben igual que en HTML, con guiones.
@@ -1463,7 +1498,7 @@ Aquí `onClick={handleClick}` asocia la función al clic del botón: es el equiv
 
 ### 3.5.1 Comillas o llaves
 
-Los valores se asignan con **comillas** si son textos fijos y con **llaves** si son expresiones de JavaScript (en ese caso, sin comillas):
+Los valores se asignan con comillas si son textos fijos y con llaves si son expresiones de JavaScript (en ese caso, sin comillas):
 
 ```jsx
 const url = "https://www.iesvirgendelcarmen.com";
@@ -1474,9 +1509,9 @@ const imagen = "https://www.iesvirgendelcarmen.com/wp-content/uploads/cropped-cr
 const img = <img src={imagen} alt="Escudo del IES Virgen del Carmen" />;
 ```
 
-Observa que **no se ponen comillas** en `href` o `src` cuando el valor se asigna con llaves. Escribir `href="{url}"` asignaría literalmente el texto `{url}`.
+Observa que no se ponen comillas en `href` o `src` cuando el valor se asigna con llaves. Escribir `href="{url}"` asignaría literalmente el texto `{url}`.
 
-Los **números** se pasan con llaves; si se escriben entre comillas, el componente recibirá un texto:
+Los números se pasan con llaves; si se escriben entre comillas, el componente recibirá un texto:
 
 ```jsx
 function PerfilUsuario(props) {
@@ -1493,7 +1528,7 @@ function PerfilUsuario(props) {
 <PerfilUsuario nombre="Ana" edad="30" />    // Dentro de 10 años: 3010 (concatenación de strings)
 ```
 
-En JSX se pueden establecer **atributos booleanos** sin especificar `true`. En el siguiente ejemplo, `defaultChecked` es un atributo booleano y se considera `true`:
+En JSX se pueden establecer atributos booleanos sin especificar `true`. En el siguiente ejemplo, `defaultChecked` es un atributo booleano y se considera `true`:
 
 ```jsx
 function MiInput() {
@@ -1503,7 +1538,7 @@ function MiInput() {
 <button disabled={false}>Activo</button>
 ```
 
-Como un **array es una expresión**, se puede definir un array de elementos JSX y renderizarlo directamente dentro de las llaves. Cada elemento debe tener una propiedad **`key`** única, que ayuda a React a identificarlos de forma eficiente (se explica en el apartado 3.10.5):
+Como un array es una expresión, se puede definir un array de elementos JSX y renderizarlo directamente dentro de las llaves. Cada elemento debe tener una propiedad `key` única, que ayuda a React a identificarlos de forma eficiente (se explica en el apartado 3.10.5):
 
 ```jsx
 const MyComponent = () => {
@@ -1517,7 +1552,7 @@ const MyComponent = () => {
 };
 ```
 
-El atributo **`style`** recibe un **objeto** con propiedades en camelCase. Por eso aparecen dobles llaves: las de fuera indican «aquí va JavaScript» y las de dentro son las del objeto (se explica en el apartado 6.1):
+El atributo `style` recibe un objeto con propiedades en camelCase. Por eso aparecen dobles llaves: las de fuera indican «aquí va JavaScript» y las de dentro son las del objeto (se explica en el apartado 6.1):
 
 ```jsx
 <p style={{ color: "red", fontSize: "18px" }}>Texto rojo</p>
@@ -1567,7 +1602,7 @@ En JSX, los elementos que no tienen contenido se pueden cerrar directamente:
 const element = <img src={user.avatarUrl} alt="Avatar" />;
 ```
 
-Las etiquetas pueden contener otros elementos: HTML, componentes de React o expresiones de JavaScript. Esto permite crear **estructuras anidadas**. Si el JSX ocupa varias líneas, se envuelve entre **paréntesis**:
+Las etiquetas pueden contener otros elementos: HTML, componentes de React o expresiones de JavaScript. Esto permite crear estructuras anidadas. Si el JSX ocupa varias líneas, se envuelve entre paréntesis:
 
 ```jsx
 const element = (
@@ -1668,7 +1703,7 @@ El árbol de componentes es `App → Seccion → Articulo (×2)`, y el HTML fina
 </div>
 ```
 
-Los componentes **no aparecen** en el HTML final: solo aparece lo que devuelven. Son una forma de organizar el código, no etiquetas reales del navegador.
+Los componentes no aparecen en el HTML final: solo aparece lo que devuelven. Son una forma de organizar el código, no etiquetas reales del navegador.
 
 ## 3.8 Fragmentos
 
@@ -1683,7 +1718,7 @@ function App() {
 }
 ```
 
-Al ejecutarlo obtenemos el error *«JSX expressions must have one parent element»*. El motivo es que JSX se transpila a llamadas a función, y una función **solo puede devolver un valor**. Dos elementos hermanos serían dos valores sin un contenedor que los agrupe.
+Al ejecutarlo obtenemos el error *«JSX expressions must have one parent element»*. El motivo es que JSX se transpila a llamadas a función, y una función solo puede devolver un valor. Dos elementos hermanos serían dos valores sin un contenedor que los agrupe.
 
 La solución habitual es envolverlos en un contenedor semántico (`<div>`, `<section>`, `<article>`, `<nav>`, `<main>`...), que además permite aplicar CSS:
 
@@ -1698,7 +1733,7 @@ function App() {
 }
 ```
 
-Cuando no se necesita un contenedor extra, se usan **fragmentos**, que agrupan elementos **sin añadir nodos al DOM**. Se escriben con la sintaxis corta `<></>` o con `<Fragment>`:
+Cuando no se necesita un contenedor extra, se usan fragmentos, que agrupan elementos sin añadir nodos al DOM. Se escriben con la sintaxis corta `<></>` o con `<Fragment>`:
 
 ```jsx
 import { Fragment } from "react";
@@ -2028,13 +2063,102 @@ const Categorias = ({ categories }) => {
 
 La `key` no se recibe como prop dentro del componente: es de uso interno de React. Si el componente necesita el id, pásalo además en otra prop.
 
+## 3.11 PRÁCTICA: JSX
+
+En esta práctica vas a trabajar las reglas de JSX: convertir HTML a JSX, encontrar y corregir errores, insertar expresiones de JavaScript con llaves y agrupar elementos con fragmentos. Todo lo necesario está en los apartados 3.4 a 3.8.
+
+Crea con Vite un proyecto llamado `practica-jsx`, límpialo como en el apartado 2.5.5 y crea la carpeta `src/components/`. Cada componente irá en su propio archivo.
+
+### Tareas
+
+**1. De HTML a JSX**
+
+Este fragmento de HTML funciona en una página normal, pero no es JSX válido:
+
+```html
+<!-- Formulario de suscripción -->
+<form class="suscripcion">
+  <h2 class="suscripcion-titulo">Suscríbete al boletín</h2>
+  <label for="email">Correo electrónico</label>
+  <input type="email" id="email" tabindex="1" placeholder="tu@correo.com">
+  <br>
+  <label for="nombre">Nombre</label>
+  <input type="text" id="nombre" value="Anónimo">
+  <label><input type="checkbox" checked> Acepto la política de privacidad</label>
+  <img src="https://placehold.co/120x40?text=Logo" alt="Logo del boletín">
+  <button type="button" onclick="avisar()" style="background-color: #282c34; color: white; padding: 8px 16px">Enviar</button>
+</form>
+```
+
+- **a.** Crea el componente `FormularioSuscripcion` que muestre exactamente este formulario, convirtiendo el HTML a JSX a mano (sin conversores automáticos).
+- **b.** El botón debe mostrar un `alert` con el texto «¡Gracias por suscribirte!» al pulsarlo. Define la función dentro del componente, antes del `return`.
+- **c.** Comprueba que en la consola del navegador no aparece ningún aviso.
+
+**2. Encuentra los errores**
+
+El siguiente componente tiene al menos 8 errores de JSX:
+
+```jsx
+function tarjeta() {
+  const usuario = { nombre: "Lucía", edad: 17, web: "https://www.mozilla.org" };
+
+  return (
+    <h2>Perfil de usuario</h2>
+    <div class="tarjeta">
+      <!-- datos del usuario -->
+      <p>Datos: {usuario}</p>
+      <p>Edad dentro de 5 años: {usuario.edad + "5"}</p>
+      <a href="{usuario.web}">Mi web</a>
+      <img src="https://placehold.co/80" alt="Avatar">
+      {if (usuario.edad >= 18) { "Mayor de edad" } else { "Menor de edad" }}
+    </div>
+  );
+}
+
+export default tarjeta;
+```
+
+- **a.** Copia el componente en `src/components/` y úsalo en `App.jsx`.
+- **b.** Corrígelo poco a poco: arregla un error, guarda y lee el siguiente mensaje que muestra Vite o la consola.
+- **c.** Al lado de cada corrección, añade un comentario JSX que explique qué regla se incumplía.
+- **d.** El párrafo «Datos» debe mostrar el nombre y la edad del usuario, y la edad dentro de 5 años debe ser 22.
+
+**3. Expresiones: ficha de película**
+
+Crea un componente `FichaPelicula` que reciba por props un objeto `pelicula` con estas propiedades: `titulo`, `director`, `anio`, `duracion` (en minutos), `precio` (sin IVA), `stock`, `valoracion` (de 1 a 5) y `cartel` (URL de una imagen). La ficha debe mostrar, usando solo expresiones entre llaves:
+
+- **a.** El título en mayúsculas.
+- **b.** Cuántos años han pasado desde el estreno, calculados a partir del año actual.
+- **c.** La duración en horas y minutos, por ejemplo «2 h 15 min».
+- **d.** El precio con un 21 % de IVA, con dos decimales y el símbolo «€».
+- **e.** La valoración en forma de estrellas (por ejemplo, ★★★☆☆ para un 3), generadas en una función auxiliar definida antes del `return`.
+- **f.** El texto «Disponible» o «Agotado» según el stock, con color verde o rojo mediante un estilo en línea.
+- **g.** El cartel, con un `alt` construido con una *template literal* a partir del título.
+
+**4. JSX como expresión y fragmentos**
+
+- **a.** Crea un componente `DatosTecnicos` que devuelva varios `<li>` (director, año y duración) sin ningún contenedor extra, y úsalo dentro de un `<ul>` de `FichaPelicula`.
+- **b.** En `FichaPelicula`, guarda en una variable un fragmento de JSX con la cabecera de la ficha (título y valoración) y muéstralo en el `return`.
+- **c.** Define un array de elementos JSX con al menos tres géneros de la película, cada uno con su `key`, y muéstralo en la ficha.
+
+**5. Página final**
+
+- **a.** `App.jsx` debe mostrar el formulario, la tarjeta ya corregida y al menos dos fichas de película con datos distintos. Una de ellas debe estar agotada.
+- **b.** Comprueba en la pestaña *Elements* que entre el `<ul>` y los `<li>` de `DatosTecnicos` no hay ningún `<div>`.
+
+**6. Entrega**
+
+Sube el proyecto (sin `node_modules`). En el `README.md`, añade una captura del resultado y la lista de errores que encontraste en el apartado 2, con la regla que incumplía cada uno.
+
 ---
+
+{% endraw %}{% comment %}{% raw %}
 
 # 4. Componentes y props
 
 ## 4.1 Componentes funcionales y de clase
 
-Antes de la llegada de los **hooks** (React 16.8, 2019), los **componentes de clase** eran la única forma de gestionar el estado y el ciclo de vida. Extienden `Component` e implementan el método `render()`:
+Antes de la llegada de los hooks (React 16.8, 2019), los componentes de clase eran la única forma de gestionar el estado y el ciclo de vida. Extienden `Component` e implementan el método `render()`:
 
 ```jsx
 import { Component } from "react";
@@ -2048,7 +2172,7 @@ class Saludo extends Component {
 export default Saludo;
 ```
 
-Hoy se usan los **componentes funcionales**: funciones de JavaScript que reciben un objeto de propiedades (`props`) y devuelven JSX. Son más sencillos y son la forma recomendada por la documentación oficial. Los componentes de clase solo los verás en código antiguo.
+Hoy se usan los componentes funcionales: funciones de JavaScript que reciben un objeto de propiedades (`props`) y devuelven JSX. Son más sencillos y son la forma recomendada por la documentación oficial. Los componentes de clase solo los verás en código antiguo.
 
 ```jsx
 function Saludo(props) {
@@ -2063,7 +2187,7 @@ const Saludo = (props) => {
 export default Saludo;
 ```
 
-Un componente funcional es simplemente una función que **transforma datos de entrada (props) en una vista (JSX)**.
+Un componente funcional es simplemente una función que transforma datos de entrada (props) en una vista (JSX).
 
 ### 4.1.1 Exportar e importar componentes
 
@@ -2084,7 +2208,7 @@ import { Icono, Etiqueta } from "./elementos";
 
 ## 4.2 Props
 
-Las **props** (abreviatura de *properties*) son los parámetros que recibe un componente. Permiten que los componentes sean dinámicos y reutilizables. Se pasan como atributos en el JSX y llegan al componente agrupadas en un objeto:
+Las props (abreviatura de *properties*) son los parámetros que recibe un componente. Permiten que los componentes sean dinámicos y reutilizables. Se pasan como atributos en el JSX y llegan al componente agrupadas en un objeto:
 
 ```jsx
 function Welcome(props) {
@@ -2106,7 +2230,7 @@ Cada uso de `<Welcome>` llama a la función con un objeto distinto: `{ name: "Sa
 
 ### 4.2.1 Desestructuración de props
 
-La **desestructuración** (UD2, apartado 2.10) permite extraer las propiedades directamente en los parámetros. Es la forma más habitual de escribir componentes:
+La desestructuración (UD2, apartado 2.10) permite extraer las propiedades directamente en los parámetros. Es la forma más habitual de escribir componentes:
 
 ```jsx
 function Welcome({ name }) {
@@ -2123,7 +2247,7 @@ const ImagenConAtributos = ({ ruta, descripcion, ancho }) => (
 
 ### 4.2.2 Valores por defecto
 
-Para las props opcionales se usan los **parámetros por defecto** de JavaScript:
+Para las props opcionales se usan los parámetros por defecto de JavaScript:
 
 ```jsx
 function Greeting({ name = "Invitado", saludo = "Hola" }) {
@@ -2138,7 +2262,7 @@ function Greeting({ name = "Invitado", saludo = "Hola" }) {
 
 ### 4.2.3 Las props son de solo lectura
 
-Las props son **inmutables**: un componente nunca debe modificar las props que recibe. Si necesita datos que cambien con el tiempo, usará **estado** (apartado 8).
+Las props son inmutables: un componente nunca debe modificar las props que recibe. Si necesita datos que cambien con el tiempo, usará estado (apartado 8).
 
 ```jsx
 function Contador({ valor }) {
@@ -2147,7 +2271,7 @@ function Contador({ valor }) {
 }
 ```
 
-Los datos fluyen **de arriba abajo** (del padre al hijo). Es el **flujo de datos unidireccional** de React.
+Los datos fluyen de arriba abajo (del padre al hijo). Es el flujo de datos unidireccional de React.
 
 ### 4.2.4 Tipos de props
 
@@ -2167,7 +2291,7 @@ Las props pueden ser de cualquier tipo: textos, números, booleanos, arrays, obj
 
 ### 4.2.5 Spread de props
 
-El operador **spread** permite pasar todas las propiedades de un objeto como props:
+El operador spread permite pasar todas las propiedades de un objeto como props:
 
 ```jsx
 const usuario = { nombre: "Ana", edad: 30, ciudad: "Jaén" };
@@ -2180,7 +2304,7 @@ Es útil, pero con moderación: abusar de él hace difícil saber qué props rec
 
 ## 4.3 La prop `children`
 
-**`children`** es una prop especial que contiene todo lo que se escribe **entre la etiqueta de apertura y la de cierre** de un componente: texto, elementos HTML u otros componentes. Permite crear componentes **contenedores**:
+**`children`** es una prop especial que contiene todo lo que se escribe entre la etiqueta de apertura y la de cierre de un componente: texto, elementos HTML u otros componentes. Permite crear componentes contenedores:
 
 ```jsx
 const Card = ({ titulo, children }) => {
@@ -2216,7 +2340,7 @@ const Layout = ({ children }) => (
 
 ## 4.4 Composición y organización de la interfaz
 
-En React no se usa la herencia entre componentes para reutilizar código: se usa la **composición**, es decir, combinar componentes pequeños para formar otros mayores, pasándoles props y `children`.
+En React no se usa la herencia entre componentes para reutilizar código: se usa la composición, es decir, combinar componentes pequeños para formar otros mayores, pasándoles props y `children`.
 
 Pautas para decidir cómo dividir la interfaz:
 
@@ -2495,7 +2619,7 @@ Aquí usar el índice como `key` es correcto: la lista de estrellas es fija. El 
 
 ### Tareas
 
-Crea el proyecto `practica-1-componentes` con una **página de presentación del ciclo formativo** que muestre los módulos y el profesorado.
+Crea el proyecto `practica-1-componentes` con una página de presentación del ciclo formativo que muestre los módulos y el profesorado.
 
 **1. Estructura de componentes**
 
@@ -2529,25 +2653,25 @@ Sube el proyecto al repositorio. En el `README.md`, explica brevemente el árbol
 
 En React hay varias alternativas para aplicar estilos:
 
-- Estilos **en línea** con el atributo `style`.
-- Hojas de estilo **externas `.css`** (globales).
-- Metodología **BEM** para nombrar clases.
+- Estilos en línea con el atributo `style`.
+- Hojas de estilo externas `.css` (globales).
+- Metodología BEM para nombrar clases.
 - **Módulos CSS** (estilos locales a un componente).
-- Preprocesador **SCSS (Sass)**.
+- Preprocesador SCSS (Sass).
 - **CSS-in-JS** con bibliotecas como *styled-components* o *Emotion*.
-- Otras bibliotecas: frameworks de utilidades como **Tailwind CSS**, CSS-in-JS como **Emotion** o bibliotecas de componentes como **Material UI** (UD5).
+- Otras bibliotecas: frameworks de utilidades como Tailwind CSS, CSS-in-JS como Emotion o bibliotecas de componentes como Material UI (UD5).
 
 ## 6.1 Estilos en línea
 
-Se aplican directamente en el JSX mediante el atributo `style`, que recibe un **objeto JavaScript**:
+Se aplican directamente en el JSX mediante el atributo `style`, que recibe un objeto JavaScript:
 
 ```jsx
 const MyComponent = () => <div style={{ color: "red" }}>Hello, World!</div>;
 ```
 
-Observa las **dobles llaves**: las exteriores indican que el valor es una expresión de JavaScript y las interiores delimitan el objeto con las propiedades CSS.
+Observa las dobles llaves: las exteriores indican que el valor es una expresión de JavaScript y las interiores delimitan el objeto con las propiedades CSS.
 
-En JSX las propiedades CSS se escriben en **camelCase**: `background-color` → `backgroundColor`, `font-size` → `fontSize`. Los valores numéricos sin unidad se interpretan como píxeles en las propiedades de tamaño.
+En JSX las propiedades CSS se escriben en camelCase: `background-color` → `backgroundColor`, `font-size` → `fontSize`. Los valores numéricos sin unidad se interpretan como píxeles en las propiedades de tamaño.
 
 ```jsx
 const MyHeader = () => {
@@ -2585,11 +2709,11 @@ const Etiqueta = ({ color = "DodgerBlue", texto }) => {
 ```
 
 **Ventajas:** fáciles de aplicar, afectan solo al elemento y permiten valores dinámicos.
-**Inconvenientes:** se vuelven difíciles de mantener; **no admiten pseudoclases** (`:hover`, `:focus`), pseudoelementos ni *media queries*; mezclan presentación y lógica. Úsalos solo para valores realmente dinámicos (una posición, un porcentaje de una barra de progreso...).
+**Inconvenientes:** se vuelven difíciles de mantener; no admiten pseudoclases (`:hover`, `:focus`), pseudoelementos ni *media queries*; mezclan presentación y lógica. Úsalos solo para valores realmente dinámicos (una posición, un porcentaje de una barra de progreso...).
 
 ## 6.2 Hojas de estilo externas `.css`
 
-Se crea un fichero `.css` y se importa como si fuera un módulo. Las propiedades se escriben con la sintaxis CSS normal (sin camelCase). **Estos estilos son globales**: afectan a toda la aplicación, no solo al componente que los importa.
+Se crea un fichero `.css` y se importa como si fuera un módulo. Las propiedades se escriben con la sintaxis CSS normal (sin camelCase). Estos estilos son globales: afectan a toda la aplicación, no solo al componente que los importa.
 
 ```css
 /* styles.css */
@@ -2673,7 +2797,7 @@ import "./ComponentB.css";
 const ComponentB = () => <div className="text">Texto de ComponentB</div>;
 ```
 
-Ambos componentes se verán **rojos**, porque la regla de `ComponentB.css` se carga después y tiene la misma especificidad. En una aplicación grande estos conflictos son constantes. Las soluciones son: **BEM**, **módulos CSS**, **CSS-in-JS** o preprocesadores como **SCSS** con anidación.
+Ambos componentes se verán rojos, porque la regla de `ComponentB.css` se carga después y tiene la misma especificidad. En una aplicación grande estos conflictos son constantes. Las soluciones son: BEM, módulos CSS, CSS-in-JS o preprocesadores como SCSS con anidación.
 
 ## 6.3 BEM (Block, Element, Modifier)
 
@@ -2683,7 +2807,7 @@ Ambos componentes se verán **rojos**, porque la regla de `ComponentB.css` se ca
 - **Element (elemento):** parte de un bloque que no tiene sentido por sí sola. Se escribe `bloque__elemento` (dos guiones bajos): `card__title`.
 - **Modifier (modificador):** variación de apariencia o estado de un bloque o elemento. Se escribe `bloque--modificador` o `bloque__elemento--modificador` (dos guiones): `card--highlighted`, `nav-bar__item--active`.
 
-En React lo natural es que **cada componente sea un bloque BEM** con el mismo nombre.
+En React lo natural es que cada componente sea un bloque BEM con el mismo nombre.
 
 ```html
 <div class="card card--highlighted">
@@ -2716,7 +2840,7 @@ En React lo natural es que **cada componente sea un bloque BEM** con el mismo no
 }
 ```
 
-Observa que **un modificador siempre acompaña a la clase base**: `class="card card--highlighted"`, nunca `card--highlighted` sola.
+Observa que un modificador siempre acompaña a la clase base: `class="card card--highlighted"`, nunca `card--highlighted` sola.
 
 ### 6.3.1 Ejemplo: botón con BEM
 
@@ -2862,9 +2986,9 @@ export default NavBar;
 
 ## 6.4 Módulos CSS
 
-Los **módulos CSS** son archivos CSS cuyas clases tienen, por defecto, **alcance local** al componente que los importa. Durante la construcción, Vite transforma cada nombre de clase en un identificador único (por ejemplo, `.button` pasa a ser `._button_1a2b3_1`), por lo que es imposible que choquen con las de otro componente. Vite los admite sin configuración.
+Los módulos CSS son archivos CSS cuyas clases tienen, por defecto, alcance local al componente que los importa. Durante la construcción, Vite transforma cada nombre de clase en un identificador único (por ejemplo, `.button` pasa a ser `._button_1a2b3_1`), por lo que es imposible que choquen con las de otro componente. Vite los admite sin configuración.
 
-1. Crea un archivo con la extensión **`.module.css`**:
+1. Crea un archivo con la extensión `.module.css`:
 
    ```css
    /* Button.module.css */
@@ -2888,7 +3012,7 @@ Los **módulos CSS** son archivos CSS cuyas clases tienen, por defecto, **alcanc
    }
    ```
 
-2. Impórtalo como un **objeto** cuyas propiedades son los nombres de clase:
+2. Impórtalo como un objeto cuyas propiedades son los nombres de clase:
 
    ```jsx
    import styles from "./Button.module.css";
@@ -2906,13 +3030,13 @@ Los **módulos CSS** son archivos CSS cuyas clases tienen, por defecto, **alcanc
    export default Button;
    ```
 
-> **Clases con guiones en módulos CSS.** Si combinas módulos CSS con nombres BEM como `.button--primary`, **no puedes escribir `styles.button--primary`**: JavaScript lo interpreta como una resta (`styles.button - -primary`). Tienes dos opciones: acceder con corchetes, `styles["button--primary"]`, o usar nombres en camelCase (`.buttonPrimary` → `styles.buttonPrimary`). En los módulos CSS es habitual simplificar BEM a `.button` + `.primary`, porque el aislamiento ya lo garantiza el propio módulo.
+> **Clases con guiones en módulos CSS.** Si combinas módulos CSS con nombres BEM como `.button--primary`, no puedes escribir `styles.button--primary`: JavaScript lo interpreta como una resta (`styles.button - -primary`). Tienes dos opciones: acceder con corchetes, `styles["button--primary"]`, o usar nombres en camelCase (`.buttonPrimary` → `styles.buttonPrimary`). En los módulos CSS es habitual simplificar BEM a `.button` + `.primary`, porque el aislamiento ya lo garantiza el propio módulo.
 
 Consideraciones:
 
 - **Los selectores de etiqueta siguen siendo globales.** Si defines `h1 { ... }` en un módulo, afectará a todos los `h1`. Dentro de un módulo usa siempre clases.
 - Para declarar intencionadamente una clase global dentro de un módulo: `:global(.nombre) { ... }`.
-- Un módulo puede **componer** clases de otro con `composes: base from "./base.module.css";`.
+- Un módulo puede componer clases de otro con `composes: base from "./base.module.css";`.
 - Se pueden usar todas las características modernas de CSS: variables, `:hover`, *media queries*, anidación nativa (o la de un preprocesador como Sass con `.module.scss`)...
 - **Convenciones de nomenclatura:** combinar BEM con módulos CSS mantiene una estructura clara y coherente en los estilos, aunque en módulos se suele simplificar.
 - **Configuración:** Vite (y también create-react-app) admiten módulos CSS sin configurar nada: basta con la extensión `.module.css`. Si configuras Webpack manualmente, tendrás que activarlo en `css-loader`. En Vite se puede pedir que las clases con guiones se exporten también en camelCase:
@@ -2927,13 +3051,13 @@ Consideraciones:
 
 ## 6.5 SCSS (Sass)
 
-**Sass** es un preprocesador que amplía CSS con variables, anidación, *mixins*, funciones y particiones de archivos. Su sintaxis **SCSS** es un superconjunto de CSS: cualquier CSS válido es SCSS válido. Vite lo compila automáticamente; solo hay que instalar el compilador:
+**Sass** es un preprocesador que amplía CSS con variables, anidación, *mixins*, funciones y particiones de archivos. Su sintaxis SCSS es un superconjunto de CSS: cualquier CSS válido es SCSS válido. Vite lo compila automáticamente; solo hay que instalar el compilador:
 
 ```bash
 npm install -D sass
 ```
 
-A partir de ese momento se pueden importar archivos `.scss` y también **módulos SCSS** (`.module.scss`).
+A partir de ese momento se pueden importar archivos `.scss` y también módulos SCSS (`.module.scss`).
 
 ### 6.5.1 Características principales
 
@@ -3021,17 +3145,17 @@ La anidación con `&` encaja muy bien con BEM:
 }
 ```
 
-> **CSS nativo actual.** Hoy CSS ya incorpora **variables** (`--color: ...;` y `var(--color)`) y **anidación** en los navegadores modernos. Sass sigue siendo útil por sus mixins, funciones y organización en parciales, pero muchas de sus ventajas ya existen en CSS.
+> **CSS nativo actual.** Hoy CSS ya incorpora variables (`--color: ...;` y `var(--color)`) y anidación en los navegadores modernos. Sass sigue siendo útil por sus mixins, funciones y organización en parciales, pero muchas de sus ventajas ya existen en CSS.
 
 ## 6.6 Styled Components (CSS-in-JS)
 
-**Styled Components** es una biblioteca que permite escribir estilos CSS directamente en los componentes de JavaScript. Utiliza una técnica llamada **CSS-in-JS**, en la que los estilos se definen dentro del archivo JavaScript. Cada estilo crea un componente React con los estilos asociados, lo que facilita vincular los estilos a componentes concretos y ofrece características avanzadas como temas y anidación.
+**Styled Components** es una biblioteca que permite escribir estilos CSS directamente en los componentes de JavaScript. Utiliza una técnica llamada CSS-in-JS, en la que los estilos se definen dentro del archivo JavaScript. Cada estilo crea un componente React con los estilos asociados, lo que facilita vincular los estilos a componentes concretos y ofrece características avanzadas como temas y anidación.
 
 ### 6.6.1 Funciones de plantilla (*tagged templates*)
 
-Styled Components utiliza las **funciones de plantilla** de JavaScript ES6, que estudiamos en la UD2 junto a los *template literals*. Hacemos un breve repaso.
+Styled Components utiliza las funciones de plantilla de JavaScript ES6, que estudiamos en la UD2 junto a los *template literals*. Hacemos un breve repaso.
 
-Las funciones de plantilla son una característica avanzada de los *template literals*: permiten **procesar una cadena de texto antes de que se construya**, proporcionando más control sobre cómo se crean las cadenas. Se escriben poniendo el nombre de una función justo delante de la plantilla, sin paréntesis: ``miFuncion`texto ${valor}` ``. Esa función «tag» recibe dos argumentos principales:
+Las funciones de plantilla son una característica avanzada de los *template literals*: permiten procesar una cadena de texto antes de que se construya, proporcionando más control sobre cómo se crean las cadenas. Se escriben poniendo el nombre de una función justo delante de la plantilla, sin paréntesis: ``miFuncion`texto ${valor}` ``. Esa función «tag» recibe dos argumentos principales:
 
 - **`strings`:** un array con las partes estáticas de la cadena.
 - **`...values`:** la lista de valores interpolados (`${...}`).
@@ -3076,7 +3200,7 @@ const listHtml = generateList`<ul>${items}</ul>`;
 console.log(listHtml); // <ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>
 ```
 
-`styled.button` es una de estas funciones tag: recibe el CSS como plantilla (y las funciones interpoladas con `${...}`) y **devuelve un componente** de React que genera un `<button>` con una clase única que contiene esos estilos.
+`styled.button` es una de estas funciones tag: recibe el CSS como plantilla (y las funciones interpoladas con `${...}`) y devuelve un componente de React que genera un `<button>` con una clase única que contiene esos estilos.
 
 ### 6.6.2 Ventajas de Styled Components
 
@@ -3234,7 +3358,7 @@ const BotonPeligro = styled(Button)`
 
 ## 6.7 Theming sencillo con variables CSS
 
-Un **tema** es un conjunto coherente de colores, tipografías y espaciados. La forma más sencilla y eficiente de implementarlo, sin bibliotecas, es con **variables CSS** (*custom properties*) definidas en `index.css`:
+Un tema es un conjunto coherente de colores, tipografías y espaciados. La forma más sencilla y eficiente de implementarlo, sin bibliotecas, es con variables CSS (*custom properties*) definidas en `index.css`:
 
 ```css
 /* index.css */
@@ -3301,11 +3425,11 @@ Además, se puede respetar la preferencia del sistema operativo con una *media q
 | Módulos CSS / SCSS | Componente | Con clases | Sí | **Opción recomendada por defecto en este módulo.** |
 | Styled Components | Componente | Sí (props) | Sí | Temas complejos o estilos muy dependientes de props. |
 
-Una combinación habitual y sencilla es: **variables CSS globales para el tema** en `index.css` + **módulos CSS (o SCSS)** para cada componente.
+Una combinación habitual y sencilla es: variables CSS globales para el tema en `index.css` + módulos CSS (o SCSS) para cada componente.
 
 ## 6.9 PRÁCTICA 2: Estilos en componentes
 
-Crea el proyecto `practica-2-estilos` partiendo de la **práctica 1** (puedes copiarla).
+Crea el proyecto `practica-2-estilos` partiendo de la práctica 1 (puedes copiarla).
 
 **1. Tema global**
 
@@ -3343,7 +3467,7 @@ Sube el proyecto y añade al `README.md` una tabla indicando qué método de est
 
 ## 7.1 Manejo de eventos en React
 
-El manejo de eventos permite interactuar con el usuario: clics, movimientos del ratón, teclas pulsadas, envío de formularios... React utiliza un sistema de **eventos sintéticos**: envuelve los eventos nativos del navegador en un objeto `SyntheticEvent` con una interfaz consistente en todos los navegadores.
+El manejo de eventos permite interactuar con el usuario: clics, movimientos del ratón, teclas pulsadas, envío de formularios... React utiliza un sistema de eventos sintéticos: envuelve los eventos nativos del navegador en un objeto `SyntheticEvent` con una interfaz consistente en todos los navegadores.
 
 Diferencias respecto al DOM (UD2):
 
@@ -3351,7 +3475,7 @@ Diferencias respecto al DOM (UD2):
 | --- | --- |
 | `boton.addEventListener("click", fn)` | `<button onClick={fn}>` |
 | Atributos en minúsculas (`onclick`) | **camelCase** (`onClick`, `onChange`, `onSubmit`) |
-| `onclick="fn()"` (cadena) | `onClick={fn}` (**referencia** a la función) |
+| `onclick="fn()"` (cadena) | `onClick={fn}` (referencia a la función) |
 | Hay que eliminar los *listeners* manualmente | React los gestiona automáticamente |
 
 ```jsx
@@ -3375,7 +3499,7 @@ Por convenio, las funciones que manejan eventos se llaman `handleAlgo` (`handleC
 
 ### 7.1.1 Pasar parámetros a los manejadores
 
-Si el manejador necesita argumentos, se envuelve en una **función flecha**:
+Si el manejador necesita argumentos, se envuelve en una función flecha:
 
 ```jsx
 const App = () => {
@@ -3399,13 +3523,13 @@ Es especialmente útil en listas, para saber sobre qué elemento se ha actuado:
 
 ## 7.2 El objeto evento
 
-Cuando se maneja un evento, React pasa automáticamente al manejador, como **primer argumento**, un **objeto evento** con información sobre lo ocurrido. Este objeto es una instancia de **`SyntheticEvent`**: un envoltorio de React sobre el evento nativo del DOM que tiene las mismas propiedades y métodos, pero con una interfaz **consistente en todos los navegadores**. Si alguna vez necesitas el evento original del navegador, está en `event.nativeEvent`.
+Cuando se maneja un evento, React pasa automáticamente al manejador, como primer argumento, un objeto evento con información sobre lo ocurrido. Este objeto es una instancia de `SyntheticEvent`: un envoltorio de React sobre el evento nativo del DOM que tiene las mismas propiedades y métodos, pero con una interfaz consistente en todos los navegadores. Si alguna vez necesitas el evento original del navegador, está en `event.nativeEvent`.
 
 Algunas de sus propiedades y métodos más comunes:
 
 - `type`: tipo de evento (`click`, `change`...).
-- `target`: elemento que **originó** el evento.
-- `currentTarget`: elemento al que está **asociado** el manejador.
+- `target`: elemento que originó el evento.
+- `currentTarget`: elemento al que está asociado el manejador.
 - `preventDefault()`: evita el comportamiento predeterminado.
 - `stopPropagation()`: detiene la propagación hacia los elementos padres.
 - `clientX` y `clientY`: coordenadas del ratón en la ventana.
@@ -3491,9 +3615,9 @@ Si además de parámetros propios necesitas el evento, pásalo explícitamente:
 | Formulario | `onChange`, `onInput`, `onSubmit`, `onReset`, `onInvalid` |
 | Otros | `onScroll`, `onLoad` y `onError` (imágenes), `onCopy`, `onPaste`, `onDragStart`, `onDrop` |
 
-> **`onChange` en React** se dispara **con cada tecla** que modifica el campo, a diferencia del evento `change` nativo, que solo se lanza al perder el foco. Se comporta como el evento `input` del DOM.
+> **`onChange` en React** se dispara con cada tecla que modifica el campo, a diferencia del evento `change` nativo, que solo se lanza al perder el foco. Se comporta como el evento `input` del DOM.
 >
-> El evento `onKeyPress` (que aparece en apuntes antiguos) está **obsoleto**: usa `onKeyDown`.
+> El evento `onKeyPress` (que aparece en apuntes antiguos) está obsoleto: usa `onKeyDown`.
 
 ### 7.3.1 Ejemplo: eventos de ratón
 
@@ -3608,7 +3732,7 @@ En el desarrollo web hay situaciones en las que el comportamiento predeterminado
 
 ### 7.4.1 `preventDefault()`
 
-Evita que se produzca el comportamiento predeterminado de un evento. Es especialmente útil en **formularios** y **enlaces**, donde ese comportamiento puede interferir con la lógica de la aplicación. En React **no sirve devolver `false`** desde el manejador: hay que llamar a `preventDefault()` explícitamente.
+Evita que se produzca el comportamiento predeterminado de un evento. Es especialmente útil en formularios y enlaces, donde ese comportamiento puede interferir con la lógica de la aplicación. En React no sirve devolver `false` desde el manejador: hay que llamar a `preventDefault()` explícitamente.
 
 **Ejemplo con un formulario:**
 
@@ -3632,7 +3756,7 @@ function PreventDefaultExample() {
 }
 ```
 
-- `event.preventDefault()` se usa en el manejador de `onSubmit` para evitar que el formulario se envíe de la manera predeterminada, **lo que recargaría la página** y haría perder el estado de la aplicación.
+- `event.preventDefault()` se usa en el manejador de `onSubmit` para evitar que el formulario se envíe de la manera predeterminada, lo que recargaría la página y haría perder el estado de la aplicación.
 - Así se ejecuta la lógica personalizada (en este caso, mostrar el valor en la consola o enviarlo a una API con `fetch`).
 
 **Ejemplo con un enlace:**
@@ -3652,7 +3776,7 @@ function PreventLinkDefaultExample() {
 
 ### 7.4.2 `stopPropagation()`
 
-Los eventos se **propagan** desde el elemento que los origina hacia sus ancestros (*bubbling*). `stopPropagation()` evita que un evento de un hijo dispare los manejadores del padre:
+Los eventos se propagan desde el elemento que los origina hacia sus ancestros (*bubbling*). `stopPropagation()` evita que un evento de un hijo dispare los manejadores del padre:
 
 ```jsx
 function StopPropagationExample() {
@@ -3710,19 +3834,9 @@ Al pulsar el enlace, `preventDefault()` evita la navegación y `stopPropagation(
 
 ## 7.5 Comunicación entre componentes mediante callbacks
 
-Las props viajan **del padre al hijo**. Pero ¿cómo avisa un hijo a su padre de que ha ocurrido algo (por ejemplo, que se ha pulsado «Eliminar» en una tarjeta)? El padre le pasa una **función como prop** (un *callback*), y el hijo la llama cuando ocurre el evento.
+Las props viajan del padre al hijo. Pero ¿cómo avisa un hijo a su padre de que ha ocurrido algo (por ejemplo, que se ha pulsado «Eliminar» en una tarjeta)? El padre le pasa una función como prop (un *callback*), y el hijo la llama cuando ocurre el evento.
 
-```text
-           App (tiene los datos y la función eliminar)
-            │   props: tareas, onEliminar
-            ▼
-        ListaTareas
-            │   props: tarea, onEliminar
-            ▼
-        TareaItem ── al pulsar «Eliminar» llama a onEliminar(tarea.id) ──┐
-                                                                         │
-           App ◄──────────────── se ejecuta eliminar(id) ────────────────┘
-```
+![Las props descienden de App a TareaItem y el callback onEliminar comunica el evento de vuelta al padre](./assets/img/ud4-callbacks.svg)
 
 ```jsx
 // Hijo: no sabe CÓMO se elimina; solo avisa
@@ -3747,7 +3861,7 @@ Los datos bajan por props y los eventos suben por callbacks. Este patrón es la 
 
 ### 7.5.1 Elevar el estado (*lifting state up*)
 
-Cuando **dos componentes hermanos** necesitan compartir datos, esos datos se colocan (se «elevan») en su **ancestro común más cercano**, que los pasa a ambos por props junto con las funciones para modificarlos.
+Cuando dos componentes hermanos necesitan compartir datos, esos datos se colocan (se «elevan») en su ancestro común más cercano, que los pasa a ambos por props junto con las funciones para modificarlos.
 
 ```jsx
 import { useState } from "react";
@@ -3786,7 +3900,7 @@ export default function App() {
 }
 ```
 
-`Buscador` y `ListaFiltrada` no se comunican directamente: lo hacen a través de `App`. Cuando el árbol crece y hay que pasar datos a través de muchos niveles (*prop drilling*), se utiliza el **Context API**, que veremos en la UD5.
+`Buscador` y `ListaFiltrada` no se comunican directamente: lo hacen a través de `App`. Cuando el árbol crece y hay que pasar datos a través de muchos niveles (*prop drilling*), se utiliza el Context API, que veremos en la UD5.
 
 ---
 
@@ -3794,7 +3908,7 @@ export default function App() {
 
 ## 8.1 ¿Qué son los hooks?
 
-Los **hooks** son funciones que permiten a los componentes funcionales usar el estado y otras características de React. Se introdujeron en React 16.8 y su nombre siempre empieza por `use`. Los principales son:
+Los hooks son funciones que permiten a los componentes funcionales usar el estado y otras características de React. Se introdujeron en React 16.8 y su nombre siempre empieza por `use`. Los principales son:
 
 - **`useState`:** añade estado local a un componente.
 - **`useEffect`:** ejecuta efectos secundarios (peticiones a una API, temporizadores, suscripciones, sincronización con el DOM o `localStorage`).
@@ -3806,7 +3920,7 @@ Los **hooks** son funciones que permiten a los componentes funcionales usar el e
 
 ### 8.1.1 Reglas de los hooks
 
-1. **Llámalos solo en el nivel superior** del componente: nunca dentro de condiciones, bucles ni funciones anidadas. React identifica cada hook por el **orden** en que se llama, que debe ser el mismo en cada renderizado.
+1. **Llámalos solo en el nivel superior** del componente: nunca dentro de condiciones, bucles ni funciones anidadas. React identifica cada hook por el orden en que se llama, que debe ser el mismo en cada renderizado.
 2. **Llámalos solo desde componentes de React o desde hooks personalizados**, nunca desde funciones normales de JavaScript.
 
 ```jsx
@@ -3836,10 +3950,10 @@ function Contador() {
 
 La consola muestra 1, 2, 3..., pero la pantalla sigue en «0». Por dos motivos:
 
-1. Cambiar una variable local **no avisa a React** de que tiene que volver a renderizar.
+1. Cambiar una variable local no avisa a React de que tiene que volver a renderizar.
 2. Aunque se volviera a renderizar, la función del componente se ejecuta de nuevo desde el principio y `contador` volvería a valer `0`.
 
-El **estado** soluciona ambos problemas: React **guarda el valor entre renderizados** y **vuelve a renderizar** el componente cuando cambia.
+El estado soluciona ambos problemas: React guarda el valor entre renderizados y vuelve a renderizar el componente cuando cambia.
 
 ### 8.2.2 Sintaxis
 
@@ -3862,22 +3976,17 @@ function Contador() {
 }
 ```
 
-`useState` devuelve un array con dos elementos que desestructuramos: el **valor actual** y la **función de actualización** (por convenio, `setNombre`). Cada llamada a `setContador` programa un nuevo renderizado con el nuevo valor.
+`useState` devuelve un array con dos elementos que desestructuramos: el valor actual y la función de actualización (por convenio, `setNombre`). Cada llamada a `setContador` programa un nuevo renderizado con el nuevo valor.
 
 El ciclo es siempre el mismo:
 
-```text
- Renderizado ──► el usuario interactúa ──► manejador llama a setEstado(nuevo)
-      ▲                                                  │
-      └──────── React vuelve a ejecutar el componente ◄──┘
-                con el nuevo valor y actualiza el DOM
-```
+![Ciclo de estado en React: renderizado, interacción, actualización del estado y nuevo renderizado](./assets/img/ud4-ciclo-estado.svg)
 
-Cada componente tiene **su propio estado**: si renderizas dos `<Contador />`, cada uno cuenta por separado.
+Cada componente tiene su propio estado: si renderizas dos `<Contador />`, cada uno cuenta por separado.
 
 ### 8.2.3 El estado es una «foto» y la función actualizadora
 
-El valor del estado **no cambia inmediatamente** al llamar a `setContador`: se mantiene igual durante todo el renderizado actual.
+El valor del estado no cambia inmediatamente al llamar a `setContador`: se mantiene igual durante todo el renderizado actual.
 
 ```jsx
 function handleClick() {
@@ -3889,7 +3998,7 @@ function handleClick() {
 // Resultado: solo suma 1, porque las tres llamadas usan el mismo valor de `contador`
 ```
 
-Si el nuevo estado **depende del anterior**, usa la **función actualizadora**, que recibe el valor más reciente:
+Si el nuevo estado depende del anterior, usa la función actualizadora, que recibe el valor más reciente:
 
 ```jsx
 function handleClick() {
@@ -3904,7 +4013,7 @@ Recomendación: cuando calcules el nuevo estado a partir del anterior, usa la fo
 
 ### 8.2.4 Estado con objetos y arrays: inmutabilidad
 
-React detecta los cambios comparando la **referencia** del estado anterior con la del nuevo. Si modificas (mutas) un objeto o un array existente, la referencia es la misma y **React no vuelve a renderizar**. Siempre hay que crear un **objeto o array nuevo**, normalmente con el operador **spread**.
+React detecta los cambios comparando la referencia del estado anterior con la del nuevo. Si modificas (mutas) un objeto o un array existente, la referencia es la misma y React no vuelve a renderizar. Siempre hay que crear un objeto o array nuevo, normalmente con el operador spread.
 
 **Objetos:**
 
@@ -3986,7 +4095,7 @@ function ListaCompra() {
 
 ### 8.3.1 ¿Qué es un efecto?
 
-Un componente debe ser una función **pura**: dados unos props y un estado, devuelve siempre el mismo JSX, sin modificar nada externo. Sin embargo, las aplicaciones necesitan **efectos secundarios**: comunicarse con algo que está fuera de React.
+Un componente debe ser una función pura: dados unos props y un estado, devuelve siempre el mismo JSX, sin modificar nada externo. Sin embargo, las aplicaciones necesitan efectos secundarios: comunicarse con algo que está fuera de React.
 
 - Pedir datos a una API.
 - Crear temporizadores (`setInterval`, `setTimeout`).
@@ -3994,7 +4103,7 @@ Un componente debe ser una función **pura**: dados unos props y un estado, devu
 - Leer o escribir en `localStorage`.
 - Cambiar el título del documento o un atributo de `<html>`.
 
-`useEffect` ejecuta código **después** de que React haya actualizado el DOM.
+`useEffect` ejecuta código después de que React haya actualizado el DOM.
 
 ### 8.3.2 Sintaxis y array de dependencias
 
@@ -4007,13 +4116,13 @@ useEffect(() => {
 }, [dependencias]);
 ```
 
-El **array de dependencias** controla cuándo se vuelve a ejecutar:
+El array de dependencias controla cuándo se vuelve a ejecutar:
 
 | Segundo argumento | Cuándo se ejecuta el efecto |
 | --- | --- |
-| Sin array | Después de **cada** renderizado (rara vez es lo que se quiere). |
+| Sin array | Después de cada renderizado (rara vez es lo que se quiere). |
 | `[]` (vacío) | **Solo una vez**, cuando el componente se monta (aparece en pantalla). |
-| `[a, b]` | Al montarse y cada vez que **cambie** `a` o `b`. |
+| `[a, b]` | Al montarse y cada vez que cambie `a` o `b`. |
 
 ```jsx
 import { useState, useEffect } from "react";
@@ -4029,14 +4138,14 @@ function TituloContador() {
 }
 ```
 
-Regla: **todo valor del componente (props, estado, funciones) que se use dentro del efecto debe estar en el array de dependencias**. ESLint te avisará si falta alguno.
+Regla: todo valor del componente (props, estado, funciones) que se use dentro del efecto debe estar en el array de dependencias. ESLint te avisará si falta alguno.
 
 ### 8.3.3 Ciclo de vida y función de limpieza
 
-Un componente **se monta** (aparece), **se actualiza** (se vuelve a renderizar) y **se desmonta** (desaparece). Con `useEffect` se controla cada fase:
+Un componente se monta (aparece), se actualiza (se vuelve a renderizar) y se desmonta (desaparece). Con `useEffect` se controla cada fase:
 
 - El cuerpo del efecto se ejecuta tras el montaje y tras los cambios de sus dependencias.
-- La **función de limpieza** que devuelve el efecto se ejecuta **antes de volver a ejecutar el efecto** y **al desmontar el componente**. Sirve para deshacer lo que hizo el efecto: parar temporizadores, quitar *listeners*, cancelar peticiones.
+- La función de limpieza que devuelve el efecto se ejecuta antes de volver a ejecutar el efecto y al desmontar el componente. Sirve para deshacer lo que hizo el efecto: parar temporizadores, quitar *listeners*, cancelar peticiones.
 
 ```jsx
 function Reloj() {
@@ -4066,7 +4175,7 @@ function App() {
 }
 ```
 
-Sin `clearInterval`, al ocultar el reloj el temporizador seguiría funcionando en segundo plano (una **fuga de memoria**).
+Sin `clearInterval`, al ocultar el reloj el temporizador seguiría funcionando en segundo plano (una fuga de memoria).
 
 Ejemplo con un evento de `window`:
 
@@ -4112,11 +4221,11 @@ function BotonTema() {
 }
 ```
 
-`useTema` es un **hook personalizado**: una función cuyo nombre empieza por `use` y que utiliza otros hooks. Permite reutilizar la lógica en cualquier componente.
+`useTema` es un hook personalizado: una función cuyo nombre empieza por `use` y que utiliza otros hooks. Permite reutilizar la lógica en cualquier componente.
 
 ### 8.3.5 Obtener datos de una API
 
-En la UD2 usamos `fetch` con promesas y `async/await`. En React, las peticiones al cargar un componente se hacen en un efecto. Necesitamos tres estados: **datos**, **cargando** y **error**.
+En la UD2 usamos `fetch` con promesas y `async/await`. En React, las peticiones al cargar un componente se hacen en un efecto. Necesitamos tres estados: datos, cargando y error.
 
 ```jsx
 import { useState, useEffect } from "react";
@@ -4167,12 +4276,12 @@ function Cafe({ id }) {
 
 Puntos importantes:
 
-- La función del efecto **no puede ser `async`** (debe devolver nada o una función de limpieza, no una promesa). Por eso se declara una función `async` dentro y se llama.
+- La función del efecto no puede ser `async` (debe devolver nada o una función de limpieza, no una promesa). Por eso se declara una función `async` dentro y se llama.
 - **`ignorar`** evita una *condición de carrera*: si el usuario cambia rápidamente de `id`, una respuesta lenta anterior podría llegar después de la nueva y sobrescribirla.
 - El efecto depende de `id`: al cambiarlo, se vuelve a pedir.
 - Siempre se gestionan los tres casos: cargando, error y datos.
 
-> Alternativa a `ignorar`: un `AbortController` que **cancela** la petición en la función de limpieza (`fetch(url, { signal: controller.signal })` y `return () => controller.abort();`). Lo usaremos en la UD5.
+> Alternativa a `ignorar`: un `AbortController` que cancela la petición en la función de limpieza (`fetch(url, { signal: controller.signal })` y `return () => controller.abort();`). Lo usaremos en la UD5.
 
 ### 8.3.6 Cuándo NO usar `useEffect`
 
@@ -4191,11 +4300,11 @@ Un error común es usar efectos para cosas que no son efectos:
 
 - **Responder a un evento del usuario** (enviar un formulario, añadir al carrito): hazlo en el manejador del evento, no en un efecto.
 
-Usa `useEffect` solo para **sincronizar** el componente con sistemas externos.
+Usa `useEffect` solo para sincronizar el componente con sistemas externos.
 
 ## 8.4 `useRef`: referencias al DOM
 
-`useRef` crea un objeto `{ current: valor }` que **persiste entre renderizados** y cuya modificación **no provoca un renderizado**. Su uso más habitual es acceder directamente a un elemento del DOM, por ejemplo para darle el foco:
+`useRef` crea un objeto `{ current: valor }` que persiste entre renderizados y cuya modificación no provoca un renderizado. Su uso más habitual es acceder directamente a un elemento del DOM, por ejemplo para darle el foco:
 
 ```jsx
 import { useRef } from "react";
@@ -4270,7 +4379,7 @@ export default function UsuarioAleatorio() {
 
 ## 8.6 Hooks personalizados
 
-Cuando varios componentes repiten la misma lógica con hooks, se extrae a un **hook personalizado**. Ejemplo genérico para persistir cualquier estado en `localStorage`:
+Cuando varios componentes repiten la misma lógica con hooks, se extrae a un hook personalizado. Ejemplo genérico para persistir cualquier estado en `localStorage`:
 
 ```jsx
 // src/hooks/useLocalStorage.js
@@ -4304,7 +4413,7 @@ Se usa exactamente igual que `useState`:
 const [tareas, setTareas] = useLocalStorage("tareas", []);
 ```
 
-Cada componente que usa un hook personalizado tiene **su propio estado**: el hook comparte la lógica, no los datos.
+Cada componente que usa un hook personalizado tiene su propio estado: el hook comparte la lógica, no los datos.
 
 ## 8.7 Resumen
 
@@ -4342,7 +4451,7 @@ Crea una tienda con un catálogo fijo de al menos 6 productos (`id`, `nombre`, `
 - **a.** Componentes: `Catalogo`, `ProductoCard`, `Carrito` y `LineaCarrito`. El estado del carrito estará en `App` (elevado) y se comunicará con callbacks (`onAñadir`, `onCambiarCantidad`, `onEliminar`).
 - **b.** Al añadir un producto que ya está en el carrito, se incrementa su cantidad en lugar de duplicarlo.
 - **c.** Cada línea permite aumentar o disminuir la cantidad; si llega a 0, se elimina.
-- **d.** El total y el número de artículos se **calculan** durante el renderizado (no se guardan en estado).
+- **d.** El total y el número de artículos se calculan durante el renderizado (no se guardan en estado).
 - **e.** Si el carrito está vacío, muestra un mensaje.
 - **f.** Persiste el carrito con el hook `useLocalStorage`.
 - **g.** Ningún array ni objeto del estado debe mutarse. Revisa tu código buscando `push`, `splice` o asignaciones directas.
@@ -4393,7 +4502,7 @@ En la UD2 construiste una Pokédex con el DOM. Ahora la reconstruirás con compo
 
 **5. Favoritos**
 
-- **a.** Cada tarjeta tiene un botón de favorito (★/☆). Al pulsarlo **no** debe abrirse la ficha (`stopPropagation`).
+- **a.** Cada tarjeta tiene un botón de favorito (★/☆). Al pulsarlo no debe abrirse la ficha (`stopPropagation`).
 - **b.** Los favoritos se guardan con `useLocalStorage` y se puede filtrar el listado para ver solo los favoritos.
 
 **6. Estilos**
@@ -4407,17 +4516,13 @@ En la UD2 construiste una Pokédex con el DOM. Ahora la reconstruirás con compo
 
 # 9. Formularios
 
-Los formularios son la principal vía de entrada de datos del usuario. En React hay dos formas de gestionarlos: **controlados** y **no controlados**.
+Los formularios son la principal vía de entrada de datos del usuario. En React hay dos formas de gestionarlos: controlados y no controlados.
 
 ## 9.1 Formularios controlados
 
-En un **formulario controlado**, el valor de cada campo está **ligado al estado** de React. El campo muestra siempre lo que dice el estado (`value`) y cada cambio actualiza el estado (`onChange`). React es la **única fuente de verdad**.
+En un formulario controlado, el valor de cada campo está ligado al estado de React. El campo muestra siempre lo que dice el estado (`value`) y cada cambio actualiza el estado (`onChange`). React es la única fuente de verdad.
 
-```text
-  estado ──(value)──► <input> ──(el usuario escribe)──► onChange ──► setEstado
-    ▲                                                                   │
-    └───────────────────────────────────────────────────────────────────┘
-```
+![Flujo de un formulario controlado: el estado alimenta el input y onChange actualiza el estado](./assets/img/ud4-formulario-controlado.svg)
 
 ### 9.1.1 Un campo
 
@@ -4441,7 +4546,7 @@ function Nombre() {
 
 ### 9.1.2 Varios campos con un único estado
 
-Cuando hay varios campos, se agrupan en un objeto y se usa un **único manejador** que identifica el campo por su atributo `name` gracias a las **propiedades calculadas** (`[name]: value`):
+Cuando hay varios campos, se agrupan en un objeto y se usa un único manejador que identifica el campo por su atributo `name` gracias a las propiedades calculadas (`[name]: value`):
 
 ```jsx
 import { useState } from "react";
@@ -4589,7 +4694,7 @@ function FormularioCompleto() {
 
 ## 9.2 Formularios no controlados
 
-En los **formularios no controlados**, el DOM guarda los valores y React los lee solo cuando los necesita, normalmente al enviar. Se usan **referencias** (`useRef`) o el objeto **`FormData`**.
+En los formularios no controlados, el DOM guarda los valores y React los lee solo cuando los necesita, normalmente al enviar. Se usan referencias (`useRef`) o el objeto `FormData`.
 
 ¿Cuándo usarlos?
 
@@ -4600,7 +4705,7 @@ En los **formularios no controlados**, el DOM guarda los valores y React los lee
 
 ### 9.2.1 Con `useRef`
 
-React proporciona el hook **`useRef`** para crear referencias a elementos del DOM (apartado 8.4). Esas referencias permiten acceder a los valores de los campos sin necesidad de gestionar estado.
+React proporciona el hook `useRef` para crear referencias a elementos del DOM (apartado 8.4). Esas referencias permiten acceder a los valores de los campos sin necesidad de gestionar estado.
 
 **Ejemplo básico:**
 
@@ -4676,7 +4781,7 @@ Explicación del código:
 
 - **Referencias:** `useRef` crea una referencia por campo, que se asigna al `input` mediante el atributo `ref`. Después del montaje, `ref.current` contiene el nodo del DOM.
 - **`handleSubmit`:** se ejecuta al enviar el formulario. Evita el comportamiento predeterminado, lee los valores de los campos a través de `ref.current.value` y procesa los datos (por ejemplo, enviándolos al servidor).
-- Para dar un valor inicial a un campo no controlado se usa **`defaultValue`** (o `defaultChecked` en casillas), no `value`.
+- Para dar un valor inicial a un campo no controlado se usa `defaultValue` (o `defaultChecked` en casillas), no `value`.
 
 **Ventajas de los formularios no controlados:**
 
@@ -4727,7 +4832,7 @@ function FormularioContacto() {
 | Renderizados | Uno por pulsación | Ninguno al escribir |
 | Depuración | Valores visibles en React DevTools | Valores fuera del estado |
 
-**Recomendación:** usa formularios **controlados** por defecto, especialmente si necesitas validación, campos dependientes o mostrar los datos mientras se escriben.
+**Recomendación:** usa formularios controlados por defecto, especialmente si necesitas validación, campos dependientes o mostrar los datos mientras se escriben.
 
 ## 9.3 Validación
 
@@ -4735,7 +4840,7 @@ La validación comprueba que los datos son correctos antes de procesarlos. Hay v
 
 1. **Validación nativa de HTML:** `required`, `type="email"`, `minLength`, `maxLength`, `min`, `max`, `pattern`. Funciona sin JavaScript, pero sus mensajes son poco personalizables y su aspecto depende del navegador.
 2. **Validación con JavaScript en el cliente:** permite reglas a medida y mensajes claros. Mejora la experiencia de usuario.
-3. **Validación en el servidor:** **imprescindible siempre**. La validación del cliente se puede saltar fácilmente (desactivando JavaScript o enviando peticiones directamente a la API), así que nunca garantiza la integridad ni la seguridad de los datos.
+3. **Validación en el servidor:** imprescindible siempre. La validación del cliente se puede saltar fácilmente (desactivando JavaScript o enviando peticiones directamente a la API), así que nunca garantiza la integridad ni la seguridad de los datos.
 
 > Si validas con JavaScript y no quieres que aparezcan las burbujas nativas del navegador, añade `noValidate` al `<form>`; pero mantén atributos como `required` o `type="email"`, que ayudan a la accesibilidad y a los teclados móviles.
 
@@ -4807,7 +4912,7 @@ La expresión `/\S+@\S+\.\S+/` comprueba de forma sencilla que hay texto, una ar
 
 ### 9.3.2 Validación en tiempo real
 
-Comprueba cada campo **mientras se escribe** y ofrece retroalimentación inmediata. Necesita formularios controlados. La clave es separar la lógica en una función que valida **un campo** y reutilizarla para validar todo el formulario al enviar:
+Comprueba cada campo mientras se escribe y ofrece retroalimentación inmediata. Necesita formularios controlados. La clave es separar la lógica en una función que valida un campo y reutilizarla para validar todo el formulario al enviar:
 
 ```jsx
 import { useState } from "react";
@@ -4883,9 +4988,9 @@ const Form = () => {
 export default Form;
 ```
 
-**Cómo funciona.** El formulario utiliza un único estado `formData` para almacenar los valores de los campos (`name` y `email`). A medida que el usuario escribe, el manejador `handleChange` actualiza `formData` y **valida el campo en tiempo real** mediante `validateField`, que devuelve un mensaje de error si la validación falla (o una cadena vacía si es correcto). Esos errores se guardan en el estado `errors`. Al enviar, `handleSubmit` evita la recarga de la página, valida **todos** los campos con `validateForm` (que reutiliza `validateField` para cada clave de `formData`) y actualiza los errores y el mensaje de éxito. Si no hay errores, se muestra el mensaje de éxito y se reinicia el formulario; si los hay, se muestran junto a los campos correspondientes.
+**Cómo funciona.** El formulario utiliza un único estado `formData` para almacenar los valores de los campos (`name` y `email`). A medida que el usuario escribe, el manejador `handleChange` actualiza `formData` y valida el campo en tiempo real mediante `validateField`, que devuelve un mensaje de error si la validación falla (o una cadena vacía si es correcto). Esos errores se guardan en el estado `errors`. Al enviar, `handleSubmit` evita la recarga de la página, valida todos los campos con `validateForm` (que reutiliza `validateField` para cada clave de `formData`) y actualiza los errores y el mensaje de éxito. Si no hay errores, se muestra el mensaje de éxito y se reinicia el formulario; si los hay, se muestran junto a los campos correspondientes.
 
-Fíjate en que `validateField` está **fuera del componente**: no usa estado ni props, así que no hace falta recrearla en cada renderizado y es fácil de probar. Observa también que los dos `set` de `handleChange` usan la función actualizadora (`prev => ...`), para no trabajar con una versión antigua del estado.
+Fíjate en que `validateField` está fuera del componente: no usa estado ni props, así que no hace falta recrearla en cada renderizado y es fácil de probar. Observa también que los dos `set` de `handleChange` usan la función actualizadora (`prev => ...`), para no trabajar con una versión antigua del estado.
 
 **Ventajas de la validación en tiempo real:**
 
@@ -4908,7 +5013,7 @@ Fíjate en que `validateField` está **fuera del componente**: no usa estado ni 
 
 ### 9.3.3 Mostrar errores solo tras salir del campo (`touched`)
 
-Mostrar «El correo no es válido» cuando el usuario solo ha escrito la primera letra es frustrante. La solución habitual es guardar qué campos se han **visitado** (`touched`) y mostrar el error solo en ellos, validando al perder el foco (`onBlur`) y al enviar:
+Mostrar «El correo no es válido» cuando el usuario solo ha escrito la primera letra es frustrante. La solución habitual es guardar qué campos se han visitado (`touched`) y mostrar el error solo en ellos, validando al perder el foco (`onBlur`) y al enviar:
 
 ```jsx
 const [touched, setTouched] = useState({});
@@ -5052,7 +5157,7 @@ const handleSubmit = async (e) => {
 
 ## 9.6 PRÁCTICA 5: Formulario de registro validado
 
-Crea el proyecto `practica-5-formularios` con un **formulario de inscripción a una actividad extraescolar** del instituto.
+Crea el proyecto `practica-5-formularios` con un formulario de inscripción a una actividad extraescolar del instituto.
 
 **1. Campos**
 
@@ -5072,7 +5177,7 @@ Crea el proyecto `practica-5-formularios` con un **formulario de inscripción a 
 
 **2. Requisitos**
 
-- **a.** Formulario **controlado** con un único objeto de estado y un único manejador `handleChange` para todos los campos (excepto los días, que pueden tener el suyo).
+- **a.** Formulario controlado con un único objeto de estado y un único manejador `handleChange` para todos los campos (excepto los días, que pueden tener el suyo).
 - **b.** Las reglas de validación estarán en una función `validarCampo(nombre, valor, datos)` fuera del componente (el tercer parámetro permite comparar las contraseñas).
 - **c.** Valida en tiempo real, pero muestra los errores solo de los campos visitados (`touched`) y de todos al enviar.
 - **d.** Usa un componente reutilizable `Campo` para los campos de texto.
@@ -5091,14 +5196,14 @@ Incluye en el `README.md` una tabla con al menos 10 casos de prueba (datos intro
 
 # 10. Proyecto final: gestor de tareas en React
 
-El proyecto se realizará **de forma individual** y permitirá aplicar todos los contenidos de la unidad. Consiste en desarrollar **«TaskFlow»**, una aplicación de gestión de tareas personales tipo tablero.
+El proyecto se realizará de forma individual y permitirá aplicar todos los contenidos de la unidad. Consiste en desarrollar «TaskFlow», una aplicación de gestión de tareas personales tipo tablero.
 
 ## 10.1 Descripción funcional
 
 La aplicación permitirá:
 
 1. **Crear tareas** mediante un formulario con: título (obligatorio, entre 3 y 60 caracteres), descripción (opcional, máximo 300), prioridad (baja, media, alta), fecha límite (opcional, no anterior a hoy) y categoría (seleccionable de una lista).
-2. **Mostrar las tareas** agrupadas en tres columnas: «Pendiente», «En curso» y «Hecha». Cada tarea se muestra en una tarjeta con su prioridad (con un color y un texto), su categoría y su fecha límite. Si la fecha ha vencido y la tarea no está hecha, la tarjeta se marca como **vencida**.
+2. **Mostrar las tareas** agrupadas en tres columnas: «Pendiente», «En curso» y «Hecha». Cada tarea se muestra en una tarjeta con su prioridad (con un color y un texto), su categoría y su fecha límite. Si la fecha ha vencido y la tarea no está hecha, la tarjeta se marca como vencida.
 3. **Cambiar el estado** de una tarea con botones «← / →» para moverla entre columnas.
 4. **Editar** una tarea, reutilizando el mismo formulario precargado con sus datos.
 5. **Eliminar** una tarea pidiendo confirmación.
@@ -5111,20 +5216,20 @@ La aplicación permitirá:
 
 ## 10.2 Requisitos técnicos
 
-- Proyecto creado con **Vite**, organizado en `components/`, `hooks/`, `services/`, `utils/` y `styles/`.
+- Proyecto creado con Vite, organizado en `components/`, `hooks/`, `services/`, `utils/` y `styles/`.
 - **Mínimo 10 componentes** funcionales con responsabilidades claras y comunicación mediante props y callbacks. Al menos un componente contenedor que use `children` (por ejemplo, `Modal` o `Columna`).
 - **Estado** con `useState`, sin mutaciones, colocado en el lugar adecuado (elevado cuando lo compartan varios componentes). Los datos derivados (filtrados, estadísticas) se calculan durante el renderizado.
 - **Efectos** con `useEffect` correctamente declarados (dependencias completas y limpieza cuando proceda). Al menos dos hooks personalizados (por ejemplo, `useLocalStorage` y `useTema`).
 - **Formulario controlado** con validación en tiempo real, errores accesibles y control de envío.
 - **Listas** con claves estables (`crypto.randomUUID()` al crear cada tarea).
-- **Estilos:** variables CSS para el tema y **al menos dos métodos distintos** de los vistos (por ejemplo, módulos CSS y SCSS con BEM). La interfaz debe ser usable en móvil (columnas apiladas) y escritorio.
+- **Estilos:** variables CSS para el tema y al menos dos métodos distintos de los vistos (por ejemplo, módulos CSS y SCSS con BEM). La interfaz debe ser usable en móvil (columnas apiladas) y escritorio.
 - **Sin errores ni avisos** en la consola ni en `npm run lint`.
 
 ## 10.3 Organización y sesiones
 
 El proyecto se desarrollará en las sesiones de clase que indique el profesor. Se recomienda seguir este orden: (1) boceto de la interfaz y árbol de componentes; (2) componentes estáticos con datos de ejemplo; (3) estado y eventos; (4) formulario y validación; (5) filtros, ordenación y estadísticas; (6) persistencia, tema y API; (7) estilos y pruebas.
 
-El profesor podrá solicitar una **defensa** del proyecto en la que el alumno deberá explicar cualquier parte del código y realizar una pequeña modificación en directo.
+El profesor podrá solicitar una defensa del proyecto en la que el alumno deberá explicar cualquier parte del código y realizar una pequeña modificación en directo.
 
 ## 10.4 Entrega
 
@@ -5133,6 +5238,8 @@ El profesor podrá solicitar una **defensa** del proyecto en la que el alumno de
 3. **Un vídeo demostrativo** de entre 3 y 5 minutos que muestre todas las funcionalidades y explique brevemente la estructura del código. Se entregará mediante un enlace (Drive, YouTube oculto o similar).
 
 Antes de entregar, clona el repositorio en otra carpeta, ejecuta `npm install` y `npm run dev`, y comprueba que funciona.
+
+{% endraw %}{% endcomment %}{% raw %}
 
 ---
 

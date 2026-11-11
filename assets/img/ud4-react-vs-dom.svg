@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" role="img" aria-labelledby="title desc">
+  <title id="title">Actualizar el DOM a mano o con React</title>
+  <desc id="desc">Sin React, el programador actualiza cada parte del DOM. Con React, se cambia el estado y React actualiza las partes necesarias.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#52708f"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #20344d; }
+      .title { font-size: 22px; font-weight: 700; }
+      .body { font-size: 18px; }
+      .small { font-size: 15px; fill: #52657a; }
+    </style>
+  </defs>
+  <rect width="900" height="280" rx="18" fill="#f5f8fc"/>
+  <text x="225" y="46" text-anchor="middle" class="title">Sin React (UD2)</text>
+  <text x="675" y="46" text-anchor="middle" class="title">Con React</text>
+  <rect x="35" y="68" width="380" height="175" rx="14" fill="#fff" stroke="#c7d2df" stroke-width="2"/>
+  <rect x="485" y="68" width="380" height="175" rx="14" fill="#fff" stroke="#8bb4e8" stroke-width="2"/>
+  <rect x="60" y="91" width="112" height="42" rx="9" fill="#e9eff6"/>
+  <text x="116" y="118" text-anchor="middle" class="body">Datos</text>
+  <path d="M180 112h55" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="260" y="104" class="body">Actualizar cada</text>
+  <text x="260" y="130" class="body">parte del DOM</text>
+  <text x="225" y="188" text-anchor="middle" class="small">Fácil olvidarse de alguna actualización</text>
+  <rect x="510" y="91" width="135" height="42" rx="9" fill="#e4f0ff"/>
+  <text x="577" y="118" text-anchor="middle" class="body">Estado</text>
+  <path d="M652 112h42" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="710" y="88" width="125" height="90" rx="12" fill="#eef7f1" stroke="#abd2b7"/>
+  <text x="772" y="118" text-anchor="middle" class="body">React</text>
+  <text x="772" y="145" text-anchor="middle" class="small">actualiza el DOM</text>
+  <text x="675" y="211" text-anchor="middle" class="small">Solo cambian las partes necesarias</text>
+</svg>

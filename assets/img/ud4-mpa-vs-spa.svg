@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 380" role="img" aria-labelledby="title desc">
+  <title id="title">Flujo de navegación MPA y SPA</title>
+  <desc id="desc">Una MPA solicita HTML completo para cada página. Una SPA carga HTML y JavaScript una vez, cambia la vista en el navegador y solicita datos JSON cuando los necesita.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#52708f"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#3b82b7"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #20344d; }
+      .head { font-size: 22px; font-weight: 700; }
+      .label { font-size: 17px; font-weight: 600; }
+      .small { font-size: 15px; fill: #52657a; }
+      .note { font-size: 15px; font-weight: 600; fill: #20344d; }
+    </style>
+  </defs>
+  <rect width="1000" height="380" rx="18" fill="#f5f8fc"/>
+  <rect x="24" y="22" width="466" height="336" rx="16" fill="#fff" stroke="#c7d2df" stroke-width="2"/>
+  <rect x="510" y="22" width="466" height="336" rx="16" fill="#fff" stroke="#8bb4e8" stroke-width="2"/>
+  <text x="257" y="58" text-anchor="middle" class="head">MPA · aplicación multipágina</text>
+  <text x="743" y="58" text-anchor="middle" class="head">SPA · aplicación de una página</text>
+
+  <!-- Líneas de vida -->
+  <g stroke="#c7d2df" stroke-width="2" stroke-dasharray="5 5">
+    <path d="M125 128v212M387 128v212M610 128v212M872 128v212"/>
+  </g>
+
+  <!-- MPA -->
+  <rect x="55" y="80" width="140" height="48" rx="10" fill="#e9eff6"/>
+  <text x="125" y="110" text-anchor="middle" class="label">Navegador</text>
+  <rect x="317" y="80" width="140" height="48" rx="10" fill="#eef7f1"/>
+  <text x="387" y="110" text-anchor="middle" class="label">Servidor</text>
+  <path d="M127 168H385" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="256" y="159" text-anchor="middle" class="small">GET /productos</text>
+  <path d="M385 206H127" stroke="#3b82b7" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="256" y="197" text-anchor="middle" class="small">HTML completo</text>
+  <rect x="150" y="226" width="212" height="32" rx="8" fill="#fff4e0"/>
+  <text x="256" y="247" text-anchor="middle" class="note">Clic → recarga completa</text>
+  <path d="M127 298H385" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="256" y="289" text-anchor="middle" class="small">GET /producto/3</text>
+  <path d="M385 336H127" stroke="#3b82b7" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="256" y="327" text-anchor="middle" class="small">HTML completo</text>
+
+  <!-- SPA -->
+  <rect x="540" y="80" width="140" height="48" rx="10" fill="#e9eff6"/>
+  <text x="610" y="110" text-anchor="middle" class="label">Navegador</text>
+  <rect x="802" y="80" width="140" height="48" rx="10" fill="#eef7f1"/>
+  <text x="872" y="110" text-anchor="middle" class="label">Servidor</text>
+  <path d="M612 168H870" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="741" y="159" text-anchor="middle" class="small">GET /</text>
+  <path d="M870 206H612" stroke="#3b82b7" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="741" y="197" text-anchor="middle" class="small">index.html + JS (una sola vez)</text>
+  <rect x="595" y="226" width="292" height="32" rx="8" fill="#eaf4ff"/>
+  <text x="741" y="247" text-anchor="middle" class="note">Clic → JS cambia la vista sin recargar</text>
+  <path d="M612 298H870" stroke="#52708f" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="741" y="289" text-anchor="middle" class="small">GET /api/productos/3</text>
+  <path d="M870 336H612" stroke="#3b82b7" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="741" y="327" text-anchor="middle" class="small">JSON · solo datos</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 380" role="img" aria-labelledby="title desc">
+  <title id="title">Arranque de una aplicación React</title>
+  <desc id="desc">El navegador carga index.html, este carga main.jsx, main monta App en el elemento root y App representa sus componentes hijos.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#52708f"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #20344d; }
+      .head { font-size: 20px; font-weight: 700; }
+      .body { font-size: 17px; }
+    </style>
+  </defs>
+  <rect width="1000" height="380" rx="18" fill="#f5f8fc"/>
+  <rect x="45" y="30" width="910" height="56" rx="12" fill="#eaf2fc"/>
+  <text x="500" y="65" text-anchor="middle" class="head">El navegador abre http://localhost:5173</text>
+  <g stroke="#52708f" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <path d="M500 88v30"/>
+    <path d="M500 177v30"/>
+    <path d="M500 266v30"/>
+  </g>
+  <rect x="185" y="120" width="630" height="55" rx="12" fill="#fff" stroke="#c7d2df" stroke-width="2"/>
+  <text x="500" y="154" text-anchor="middle" class="body">index.html → contiene #root y carga src/main.jsx</text>
+  <rect x="185" y="209" width="630" height="55" rx="12" fill="#fff" stroke="#8bb4e8" stroke-width="2"/>
+  <text x="500" y="243" text-anchor="middle" class="body">main.jsx → createRoot(#root).render(&lt;App /&gt;)</text>
+  <rect x="185" y="298" width="630" height="55" rx="12" fill="#eef7f1" stroke="#abd2b7" stroke-width="2"/>
+  <text x="500" y="332" text-anchor="middle" class="body">App.jsx devuelve el JSX e importa componentes como Header y Footer</text>
+</svg>

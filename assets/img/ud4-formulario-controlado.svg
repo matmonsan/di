@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" role="img" aria-labelledby="title desc">
+  <title id="title">Flujo de un formulario controlado</title>
+  <desc id="desc">El estado proporciona el value del input. Cuando el usuario escribe, onChange llama a setEstado, que actualiza el estado y el valor mostrado.</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#3b82b7"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" refX="9" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#24845a"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, sans-serif; fill: #20344d; }
+      .head { font-size: 18px; font-weight: 700; }
+      .small { font-size: 14px; fill: #52657a; }
+    </style>
+  </defs>
+  <rect width="1000" height="300" rx="18" fill="#f5f8fc"/>
+  <rect x="35" y="110" width="145" height="68" rx="13" fill="#eaf2fc" stroke="#8bb4e8" stroke-width="2"/>
+  <text x="107" y="151" text-anchor="middle" class="head">Estado</text>
+  <rect x="240" y="110" width="145" height="68" rx="13" fill="#fff" stroke="#c7d2df" stroke-width="2"/>
+  <text x="312" y="151" text-anchor="middle" class="head">&lt;input&gt;</text>
+  <rect x="445" y="110" width="145" height="68" rx="13" fill="#fff" stroke="#c7d2df" stroke-width="2"/>
+  <text x="517" y="151" text-anchor="middle" class="head">Usuario</text>
+  <rect x="650" y="110" width="145" height="68" rx="13" fill="#fff" stroke="#c7d2df" stroke-width="2"/>
+  <text x="722" y="151" text-anchor="middle" class="head">onChange</text>
+  <rect x="855" y="110" width="120" height="68" rx="13" fill="#eef7f1" stroke="#abd2b7" stroke-width="2"/>
+  <text x="915" y="151" text-anchor="middle" class="head">setEstado</text>
+  <g stroke="#3b82b7" stroke-width="3" fill="none" marker-end="url(#arrow-blue)">
+    <path d="M185 144h48"/>
+    <path d="M390 144h48"/>
+    <path d="M595 144h48"/>
+    <path d="M800 144h48"/>
+  </g>
+  <text x="210" y="134" text-anchor="middle" class="small">value</text>
+  <text x="415" y="134" text-anchor="middle" class="small">escribe</text>
+  <text x="620" y="134" text-anchor="middle" class="small">evento</text>
+  <path d="M915 185v58H107v-58" stroke="#24845a" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="510" y="270" text-anchor="middle" class="small">El nuevo estado vuelve a mostrarse en el input</text>
+</svg>
