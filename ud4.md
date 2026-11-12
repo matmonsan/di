@@ -1096,7 +1096,7 @@ Crea la carpeta `src/components/` y, dentro, un archivo por componente (con `exp
 - **a.** `Cabecera`: recibe `nombre` y `curso` y muestra un `<header>` con el nombre en un `<h1>` y el curso en un `<p>`. Dale un color de fondo, color de texto y relleno con `style`.
 - **b.** `Tarjeta`: recibe `titulo` y `texto` y muestra un bloque con borde, esquinas redondeadas (`borderRadius`) y margen. El título irá en un `<h2>` y el texto en un `<p>`.
 - **c.** `Etiqueta`: recibe `texto` y `color` y muestra un `<span>` con forma de «pastilla» (fondo de color, texto blanco, `borderRadius` grande y algo de `padding`). El color de fondo se toma de la prop `color`.
-- **d.** `Pie`: recibe `autor` y `anio` y muestra un `<footer>` centrado y con letra pequeña, por ejemplo: «© 2026 — Hecho por Ana con React».
+- **d.** `Pie`: recibe `autor` y `anio` y muestra un `<footer>` centrado y con letra pequeña, por ejemplo: «2026 — Hecho por Ana con React».
 
 **3. Mostrar los componentes en la página**
 
@@ -2172,6 +2172,14 @@ Sube el proyecto a tu repositorio `React` (apartado 2.7), en la carpeta `practic
 
 # 4. Componentes y props
 
+>
+> **Vídeo recomendado**
+>
+> [![¡Personalizando atributos con props en React! (Picando Código)](https://img.youtube.com/vi/8BigrRrS8WE/hqdefault.jpg)](https://www.youtube.com/watch?v=8BigrRrS8WE)
+>
+> [¡Personalizando atributos con props en React! (Picando Código, YouTube)](https://www.youtube.com/watch?v=8BigrRrS8WE)
+>
+
 ## 4.1 Componentes funcionales y de clase
 
 Antes de la llegada de los hooks (React 16.8, 2019), los componentes de clase eran la única forma de gestionar el estado y el ciclo de vida. Extienden `Component` e implementan el método `render()`:
@@ -2446,9 +2454,15 @@ Vite tiene una plantilla preparada (`npm create vite@latest mi-app -- --template
 
 ## 4.6 PRÁCTICA: Aplicación de notas
 
-En esta práctica construirás, sin guía paso a paso, una aplicación que muestra un tablero de notas personales a partir de unos datos. Tendrás que decidir tú cómo dividir la interfaz en componentes y qué props necesita cada uno, aplicando todo lo visto hasta ahora: proyecto con Vite, JSX, expresiones, atributos, fragmentos, renderizado condicional, listas, componentes, props y `children`.
+En esta práctica construirás, una aplicación que muestra un tablero de notas personales a partir de unos datos. Tendrás que decidir tú cómo dividir la interfaz en componentes y qué props necesita cada uno, aplicando todo lo visto hasta ahora: proyecto con Vite, JSX, expresiones, atributos, fragmentos, renderizado condicional, listas, componentes, props y `children`.
 
 La aplicación todavía no es interactiva (no hay botones que cambien datos): eso llegará con los eventos y el estado en los apartados 7 y 8. Aquí el objetivo es mostrar correctamente los datos con una buena estructura de componentes.
+
+Así podría verse la aplicación terminada. Es solo una posible visualización: puedes organizar y decorar la página a tu manera siempre que cumplas los requisitos.
+
+![Ejemplo de la aplicación de notas: cabecera, resumen con los totales, notas agrupadas por categoría y ordenadas por fecha, y pie con el año](./assets/img/ud4-practica-notas.svg)
+
+*Figura: posible visualización de la práctica, vista el 12 de noviembre de 2026 (por eso la nota «Comprar material» aparece como vencida). Las notas completadas están atenuadas y tachadas, y el borde izquierdo indica la prioridad: rojo alta, naranja media y verde baja.*
 
 ### Datos de partida
 
@@ -2541,14 +2555,14 @@ Fíjate en que los datos no son perfectos a propósito: hay una nota con la desc
 
 **1. Estructura del proyecto**
 
-- **a.** Antes de programar, dibuja en papel o con una herramienta el árbol de componentes de la aplicación e inclúyelo como imagen en el `README.md`.
+- **a.** Antes de programar, dibuja en papel o con una herramienta el árbol de componentes de la aplicación.
 - **b.** Cada componente estará en su propio archivo dentro de `src/components/`, con nombre en mayúscula y exportación por defecto.
 - **c.** Como mínimo, la aplicación tendrá un componente para la cabecera, otro para el pie, otro para el resumen, otro para la lista, otro para cada nota y un componente contenedor `Card` que use `children`. Puedes crear todos los que consideres necesarios.
 
 **2. Cabecera y pie**
 
 - **a.** La cabecera mostrará un título y un subtítulo que recibirá por props. El subtítulo será opcional y, si no se pasa, se mostrará uno por defecto.
-- **b.** El pie mostrará `© <año actual> Aplicación de Notas`, calculando el año con una expresión de JavaScript (no lo escribas a mano).
+- **b.** El pie mostrará `<año actual> Aplicación de Notas`, calculando el año con una expresión de JavaScript (no lo escribas a mano).
 
 **3. Resumen**
 
@@ -2582,10 +2596,9 @@ Los estilos se trabajarán a fondo en el apartado 6, así que en esta práctica 
 
 Sube el proyecto a tu repositorio `React` (apartado 2.7), en la carpeta `practica-4-6-notas`. El `README.md` debe incluir:
 
-1. El árbol de componentes.
-2. Una tabla con cada componente y las props que recibe.
-3. Una captura de la aplicación funcionando.
-4. Una breve explicación de cómo has resuelto la agrupación por categorías y la ordenación.
+1. Una tabla con cada componente y las props que recibe.
+2. Una captura de la aplicación funcionando.
+3. Una breve explicación de cómo has resuelto la agrupación por categorías y la ordenación.
 
 ---
 
