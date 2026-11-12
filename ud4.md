@@ -13,9 +13,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica: introducción a React](#27-práctica-introducción-a-react)
 3. [JSX](#3-jsx)
     - [Práctica: JSX](#311-práctica-jsx)
-{% endraw %}{% comment %}{% raw %}
 4. [Componentes y props](#4-componentes-y-props)
     - [Práctica: aplicación de notas](#46-práctica-aplicación-de-notas)
+{% endraw %}{% comment %}{% raw %}
 5. [Ejemplos de condicionales y listas](#5-ejemplos-de-condicionales-y-listas)
     - [Práctica 1](#52-práctica-1-componentes-props-y-listas)
 6. [Estilos y CSS](#6-estilos-y-css)
@@ -2170,8 +2170,6 @@ Sube el proyecto a tu repositorio `React` (apartado 2.7), en la carpeta `practic
 
 ---
 
-{% endraw %}{% comment %}{% raw %}
-
 # 4. Componentes y props
 
 ## 4.1 Componentes funcionales y de clase
@@ -2590,6 +2588,8 @@ Sube el proyecto a tu repositorio `React` (apartado 2.7), en la carpeta `practic
 4. Una breve explicación de cómo has resuelto la agrupación por categorías y la ordenación.
 
 ---
+
+{% endraw %}{% comment %}{% raw %}
 
 # 5. Ejemplos de condicionales y listas
 
