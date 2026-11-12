@@ -2321,7 +2321,117 @@ Las props pueden ser de cualquier tipo: textos, números, booleanos, arrays, obj
 />
 ```
 
-### 4.2.5 Spread de props
+Las siguientes secciones explican con más detalle los tres casos menos evidentes: objetos, funciones y elementos JSX.
+
+### 4.2.5 Objetos como props
+
+Un objeto se pasa entre llaves, como cualquier otra expresión. Si el objeto está guardado en una variable, se escribe su nombre; si se escribe directamente en el JSX, aparecen dobles llaves (las de la expresión y las del objeto), igual que en el atributo `style`:
+
+```jsx
+function TarjetaUsuario({ usuario }) {
+  return (
+    <div className="tarjeta">
+      <h3>{usuario.nombre}</h3>
+      <p>{usuario.edad} años, vive en {usuario.ciudad}</p>
+    </div>
+  );
+}
+
+const ana = { nombre: "Ana", edad: 30, ciudad: "Jaén" };
+
+<TarjetaUsuario usuario={ana} />                                                // objeto en una variable
+<TarjetaUsuario usuario={{ nombre: "Pablo", edad: 25, ciudad: "Granada" }} />  // objeto escrito directamente
+```
+
+Dentro del componente se accede a las propiedades con el punto (`usuario.nombre`). Recuerda que un objeto no se puede mostrar directamente con `{usuario}`: React da el error «Objects are not valid as a React child» (apartado 3.4.4).
+
+También se puede desestructurar el objeto en los parámetros:
+
+```jsx
+function TarjetaUsuario({ usuario: { nombre, edad, ciudad } }) {
+  return <p>{nombre}, {edad} años, {ciudad}</p>;
+}
+```
+
+Pasar el objeto entero en una sola prop es cómodo cuando los datos vienen de un array o de una API (por ejemplo, cada nota de la práctica 4.6). Si prefieres que cada propiedad llegue como una prop independiente, usa el spread del apartado 4.2.8.
+
+### 4.2.6 Funciones como props
+
+Una función también es un valor, así que se puede pasar como prop. Se escribe su nombre entre llaves, sin paréntesis: `formatear={enEuros}` pasa la función, mientras que `formatear={enEuros()}` la ejecutaría en ese momento y pasaría su resultado.
+
+Un primer uso es dejar que el padre decida cómo se calcula o se muestra algo:
+
+```jsx
+function Precio({ cantidad, formatear }) {
+  return <p>Precio: {formatear(cantidad)}</p>;
+}
+
+const enEuros = (n) => `${n.toFixed(2)} €`;
+const enDolares = (n) => `$${n.toFixed(2)}`;
+
+<Precio cantidad={19.9} formatear={enEuros} />    // Precio: 19.90 €
+<Precio cantidad={19.9} formatear={enDolares} />  // Precio: $19.90
+```
+
+El uso más habitual es que el hijo avise al padre de que ha ocurrido algo, por ejemplo, que se ha pulsado un botón. El padre define la función y el hijo la ejecuta:
+
+```jsx
+function Boton({ texto, onPulsar }) {
+  return <button onClick={onPulsar}>{texto}</button>;
+}
+
+function App() {
+  const saludar = () => alert("¡Hola!");
+
+  return (
+    <>
+      <Boton texto="Saludar" onPulsar={saludar} />
+      <Boton texto="Despedirse" onPulsar={() => alert("¡Adiós!")} />
+    </>
+  );
+}
+```
+
+- Las dos formas son válidas: pasar una función definida antes (`saludar`) o escribir una función flecha directamente en la prop.
+- Por convenio, las props que reciben funciones para avisar de un suceso se llaman `on` + acción: `onPulsar`, `onEliminar`, `onCambiar`.
+- Las props siguen siendo de solo lectura: el hijo no cambia los datos del padre, solo llama a la función que este le ha dado. Esta forma de comunicación del hijo con el padre se estudia a fondo en el apartado 7.
+
+### 4.2.7 Elementos JSX como props
+
+Como el JSX es una expresión (apartado 3.4.3), un elemento se puede pasar en una prop y colocarlo después donde se quiera con llaves:
+
+```jsx
+function Aviso({ icono, titulo, children }) {
+  return (
+    <div className="aviso">
+      {icono}
+      <strong>{titulo}</strong>
+      <p>{children}</p>
+    </div>
+  );
+}
+
+<Aviso icono={<span>⚠️</span>} titulo="Atención">
+  Revisa los datos antes de enviar.
+</Aviso>
+
+<Aviso icono={<img src="ok.png" alt="" width={16} />} titulo="Guardado">
+  Los cambios se han guardado.
+</Aviso>
+```
+
+Es la misma idea que `children` (apartado 4.3), pero con nombre. `children` sirve para un único hueco (lo que va entre las etiquetas); cuando un componente necesita varios huecos (un icono, una cabecera, un pie...), se usan props con nombre que reciben elementos.
+
+Hay que distinguir entre pasar un elemento y pasar un componente:
+
+```jsx
+<Aviso icono={<IconoAlerta />} />  // elemento: ya creado, dentro se muestra con {icono}
+<Aviso icono={IconoAlerta} />      // componente: la función; dentro habría que usarlo como etiqueta
+```
+
+Lo habitual, y lo que usaremos, es pasar elementos. Si se pasa un componente, para usarlo como etiqueta su nombre tiene que empezar por mayúscula, por ejemplo desestructurando con otro nombre: `function Aviso({ icono: Icono }) { return <Icono />; }`.
+
+### 4.2.8 Spread de props
 
 El operador spread permite pasar todas las propiedades de un objeto como props:
 
