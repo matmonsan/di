@@ -2175,9 +2175,17 @@ Sube el proyecto a tu repositorio `React` (apartado 2.7), en la carpeta `practic
 >
 > **Vídeo recomendado**
 >
-> [![¡Personalizando atributos con props en React! (Picando Código)](https://img.youtube.com/vi/8BigrRrS8WE/hqdefault.jpg)](https://www.youtube.com/watch?v=8BigrRrS8WE)
+> [![Curso React.js: aprende desde cero (midudev)](https://img.youtube.com/vi/7iobxzd_2wY/hqdefault.jpg)](https://www.youtube.com/watch?v=7iobxzd_2wY&t=4169s)
 >
-> [¡Personalizando atributos con props en React! (Picando Código, YouTube)](https://www.youtube.com/watch?v=8BigrRrS8WE)
+> [Curso React.js: aprende desde cero (midudev, YouTube)](https://www.youtube.com/watch?v=7iobxzd_2wY&t=4169s), desde el minuto 1:09:29 hasta el 1:36:27. Es un curso largo; el enlace empieza directamente en la parte de props:
+>
+> - 1:09:29 Reutilización de componentes: props
+> - 1:15:50 Pasar booleanos como props
+> - 1:18:30 Pasar funciones como props
+> - 1:21:20 Elementos como props y diferencia entre elemento y componente
+> - 1:24:50 Las props son inmutables
+> - 1:26:50 La prop especial `children`
+> - 1:34:00 Pasar un objeto como props
 >
 
 ## 4.1 Componentes funcionales y de clase
