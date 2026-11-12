@@ -2712,7 +2712,8 @@ Los estilos se trabajarán a fondo en el apartado 6, así que en esta práctica 
 
 ### Entrega
 
-Sube el proyecto a tu repositorio `React` (apartado 2.7), en la carpeta `practica-4-6-notas`. El `README.md` debe incluir:
+Sube el proyecto a tu repositorio personal para mantenerlo guardado.
+Entrega el proyecto `practica-4-6-notas` sin la carpeta node_modules y crea un `README.md`  que debe incluir:
 
 1. Una tabla con cada componente y las props que recibe.
 2. Una captura de la aplicación funcionando.
