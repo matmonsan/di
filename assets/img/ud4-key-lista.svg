@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 370" role="img" aria-labelledby="title desc">
+  <title id="title">Cómo usa React la key al añadir un elemento al principio de una lista</title>
+  <desc id="desc">Una lista con Pedro y Lucía recibe a Ana al principio. Con el índice como key, React cree que han cambiado los dos primeros elementos y que el tercero es nuevo. Con un id como key, React reconoce a Pedro y a Lucía y solo añade a Ana.</desc>
+  <defs>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; fill: #222; }
+      .h { font-size: 17px; font-weight: bold; }
+      .l { font-size: 13px; fill: #555; }
+      .k { font-size: 12px; font-family: Consolas, monospace; fill: #555; }
+      .n { font-size: 14px; }
+      .r { font-size: 14px; }
+      .arrow { font-size: 26px; fill: #555; }
+    </style>
+  </defs>
+  <rect width="780" height="370" fill="#fff"/>
+  <text x="20" y="30" class="h">Con key={index}</text>
+<text x="20" y="56" class="l">Antes</text>
+<text x="220" y="56" class="l">Después</text>
+<rect x="20" y="66" width="120" height="30" fill="#ffffff" stroke="#555"/><text x="28" y="86" class="k">key=0</text><text x="132" y="86" text-anchor="end" class="n">Pedro</text>
+<rect x="20" y="102" width="120" height="30" fill="#ffffff" stroke="#555"/><text x="28" y="122" class="k">key=1</text><text x="132" y="122" text-anchor="end" class="n">Lucía</text>
+<text x="170" y="122" text-anchor="middle" class="arrow">→</text>
+<rect x="220" y="66" width="120" height="30" fill="#fde68a" stroke="#555"/><text x="228" y="86" class="k">key=0</text><text x="332" y="86" text-anchor="end" class="n">Ana</text>
+<rect x="220" y="102" width="120" height="30" fill="#fde68a" stroke="#555"/><text x="228" y="122" class="k">key=1</text><text x="332" y="122" text-anchor="end" class="n">Pedro</text>
+<rect x="220" y="138" width="120" height="30" fill="#bbf7d0" stroke="#555"/><text x="228" y="158" class="k">key=2</text><text x="332" y="158" text-anchor="end" class="n">Lucía</text>
+<text x="380" y="100" class="r">React compara por key: la 0 y la 1 han cambiado</text>
+<text x="380" y="122" class="r">de texto y la 2 es nueva. Modifica los 3 elementos.</text>
+<text x="20" y="215" class="h">Con key={alumno.id}</text>
+<text x="20" y="241" class="l">Antes</text>
+<text x="220" y="241" class="l">Después</text>
+<rect x="20" y="251" width="120" height="30" fill="#ffffff" stroke="#555"/><text x="28" y="271" class="k">key=7</text><text x="132" y="271" text-anchor="end" class="n">Pedro</text>
+<rect x="20" y="287" width="120" height="30" fill="#ffffff" stroke="#555"/><text x="28" y="307" class="k">key=3</text><text x="132" y="307" text-anchor="end" class="n">Lucía</text>
+<text x="170" y="307" text-anchor="middle" class="arrow">→</text>
+<rect x="220" y="251" width="120" height="30" fill="#bbf7d0" stroke="#555"/><text x="228" y="271" class="k">key=9</text><text x="332" y="271" text-anchor="end" class="n">Ana</text>
+<rect x="220" y="287" width="120" height="30" fill="#ffffff" stroke="#555"/><text x="228" y="307" class="k">key=7</text><text x="332" y="307" text-anchor="end" class="n">Pedro</text>
+<rect x="220" y="323" width="120" height="30" fill="#ffffff" stroke="#555"/><text x="228" y="343" class="k">key=3</text><text x="332" y="343" text-anchor="end" class="n">Lucía</text>
+<text x="380" y="285" class="r">React reconoce a Pedro (7) y a Lucía (3) y solo</text>
+<text x="380" y="307" class="r">añade a Ana (9). Los otros dos no se tocan.</text>
+<path d="M20 190H760" stroke="#ccc"/>
+<rect x="380" y="345" width="16" height="16" fill="#fde68a" stroke="#555"/>
+<text x="402" y="358" class="l">cambiado</text>
+<rect x="490" y="345" width="16" height="16" fill="#bbf7d0" stroke="#555"/>
+<text x="512" y="358" class="l">nuevo</text>
+</svg>

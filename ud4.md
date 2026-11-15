@@ -15,9 +15,9 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica: JSX](#311-práctica-jsx)
 4. [Componentes y props](#4-componentes-y-props)
     - [Práctica: aplicación de notas](#46-práctica-aplicación-de-notas)
-{% endraw %}{% comment %}{% raw %}
 5. [Ejemplos de condicionales y listas](#5-ejemplos-de-condicionales-y-listas)
-    - [Práctica 1](#52-práctica-1-componentes-props-y-listas)
+    - [Práctica: ampliación de la aplicación de notas](#59-práctica-ampliación-de-la-aplicación-de-notas)
+{% endraw %}{% comment %}{% raw %}
 6. [Estilos y CSS](#6-estilos-y-css)
     - [Práctica 2](#69-práctica-2-estilos-en-componentes)
 7. [Eventos y comunicación entre componentes](#7-eventos-y-comunicación-entre-componentes)
@@ -1050,9 +1050,9 @@ En esta práctica vas a crear tu primer proyecto de React con Vite y a construir
 
 ### Preparación del repositorio
 
-Todas las prácticas de esta unidad se entregarán en un mismo repositorio. Prepáralo una sola vez, antes de empezar esta práctica:
+Guarda todas las prácticas de esta unidad en un mismo repositorio personal, para tenerlas siempre a mano y no perderlas. Prepáralo una sola vez, antes de empezar esta práctica:
 
-1. Crea en tu equipo una carpeta llamada `React` y, desde tu cuenta de GitHub del centro, un repositorio privado con el mismo nombre. Compártelo con el profesor.
+1. Crea en tu equipo una carpeta llamada `React` y, desde tu cuenta de GitHub, un repositorio privado con el mismo nombre.
 2. Cada práctica será un proyecto de Vite independiente dentro de esa carpeta. Para ello, abre la terminal en la carpeta `React` y crea ahí cada proyecto con `npm create vite@latest`. El nombre del proyecto se indica en el enunciado de cada práctica:
 
    ```text
@@ -1114,7 +1114,9 @@ Crea la carpeta `src/components/` y, dentro, un archivo por componente (con `exp
 
 **5. Entrega**
 
-Sube el proyecto a tu repositorio `React`, en la carpeta `practica-introduccion-react` (sin `node_modules`), y añade una captura de pantalla del resultado en el navegador.
+Entrega el proyecto `practica-introduccion-react` sin la carpeta `node_modules`, junto con una captura de pantalla del resultado en el navegador.
+
+Sube también el proyecto a tu repositorio personal para mantenerlo guardado.
 
 ---
 
@@ -2166,7 +2168,9 @@ Crea un componente `FichaPelicula` que reciba por props un objeto `pelicula` con
 
 **6. Entrega**
 
-Sube el proyecto a tu repositorio `React` (apartado 2.7), en la carpeta `practica-jsx` (sin `node_modules`). En el `README.md`, añade una captura del resultado y la lista de errores que encontraste en el apartado 2, con la regla que incumplía cada uno.
+Entrega el proyecto `practica-jsx` sin la carpeta `node_modules`. En el `README.md`, añade una captura del resultado y la lista de errores que encontraste en el apartado 2, con la regla que incumplía cada uno.
+
+Sube también el proyecto a tu repositorio personal para mantenerlo guardado.
 
 ---
 
@@ -2712,32 +2716,102 @@ Los estilos se trabajarán a fondo en el apartado 6, así que en esta práctica 
 
 ### Entrega
 
-Sube el proyecto a tu repositorio personal para mantenerlo guardado.
-Entrega el proyecto `practica-4-6-notas` sin la carpeta node_modules y crea un `README.md`  que debe incluir:
+Entrega el proyecto `practica-4-6-notas` sin la carpeta `node_modules` y con un `README.md` que incluya:
 
 1. Una tabla con cada componente y las props que recibe.
 2. Una captura de la aplicación funcionando.
 3. Una breve explicación de cómo has resuelto la agrupación por categorías y la ordenación.
 
----
+Sube también el proyecto a tu repositorio personal para mantenerlo guardado.
 
-{% endraw %}{% comment %}{% raw %}
+---
 
 # 5. Ejemplos de condicionales y listas
 
-En este apartado se aplican las técnicas de renderizado condicional y de listas de los apartados 3.9 y 3.10 a componentes completos, combinadas con las props del apartado 4.
+En los apartados 3.9 y 3.10 viste, por separado, las herramientas para mostrar contenido según una condición (ternario, `&&`, `??`, `if` antes del `return`) y para mostrar listas (`map`, `filter`, `toSorted`, `reduce`, `key`). En el apartado 4 aprendiste a pasar datos a los componentes mediante props.
 
-## 5.1 Ejemplo: componente `Rating`
+En una aplicación real todo eso aparece mezclado en el mismo componente. Este apartado reúne varios ejemplos completos, explicados paso a paso, que combinan las tres cosas. Debajo de cada ejemplo tienes una captura de cómo se ve en el navegador. Las capturas no llevan ningún CSS, solo los estilos en línea del propio código, así que es exactamente lo que verás si copias el ejemplo en un proyecto de Vite vacío.
 
-Vamos a crear un componente que muestre una valoración con estrellas a partir de un número entre 0 y 5, admitiendo medios puntos (por ejemplo, `3.5`).
+## 5.1 Cómo abordar un componente que muestra datos
+
+Antes de escribir código, conviene hacerse estas preguntas en orden:
+
+1. **¿Qué datos recibe?** Decide qué props necesita el componente y de qué tipo son (un texto, un número, un objeto, un array...).
+2. **¿Qué hay que calcular?** Totales, medias, textos formateados, listas filtradas u ordenadas... Todo eso se calcula antes del `return`, en variables con nombres claros.
+3. **¿Qué casos especiales hay?** Una lista vacía, un dato que falta, un valor que cambia el aspecto (una nota suspensa, una tarea completada...). Cada caso se resuelve con una de las técnicas del apartado 3.9.
+4. **¿Qué se repite?** Cada elemento que se repite es una lista: se genera con `map` y lleva su `key`. Si cada elemento tiene varias partes, conviene sacarlo a su propio componente.
+
+El resultado suele tener siempre la misma forma:
+
+```jsx
+function MiComponente({ datos }) {
+  // 1. Casos especiales que impiden mostrar el contenido normal
+  if (datos.length === 0) return <p>No hay datos.</p>;
+
+  // 2. Cálculos a partir de las props
+  const total = datos.length;
+
+  // 3. JSX: condiciones pequeñas con ternario o && y listas con map
+  return (
+    <section>
+      <p>Total: {total}</p>
+      <ul>
+        {datos.map((d) => (
+          <li key={d.id}>{d.nombre}</li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+```
+
+Mantener los cálculos fuera del JSX hace que el `return` se lea casi como el HTML final.
+
+## 5.2 Qué es la `key` y por qué la necesita React
+
+Cada vez que cambian los datos, React vuelve a ejecutar el componente, obtiene la nueva descripción de la interfaz y la compara con la anterior para cambiar en la página solo lo necesario (apartado 1.6). Con un elemento suelto la comparación es fácil, pero con una lista surge un problema: si antes había dos elementos y ahora hay tres, ¿cuál es el nuevo? ¿Alguno ha cambiado de sitio?
+
+La `key` resuelve ese problema. Es una especie de DNI que se le pone a cada elemento de la lista para que React pueda reconocerlo de un renderizado al siguiente. React no compara los elementos por su posición, sino por su `key`: si una `key` ya existía, es el mismo elemento; si no existía, es nuevo; si ha desaparecido, el elemento se ha eliminado.
+
+Mira lo que ocurre cuando se añade a Ana al principio de una lista que tenía a Pedro y a Lucía:
+
+![Comparación entre usar el índice o un id como key al añadir un elemento al principio de una lista](./assets/img/ud4-key-lista.svg)
+
+- **Con el índice como `key`**, las claves dependen de la posición. Ana ocupa la posición 0, que antes era de Pedro, así que React cree que el elemento con `key` 0 ha cambiado de texto. Lo mismo pasa con la `key` 1, y la 2 le parece nueva. Acaba modificando los tres elementos, aunque en realidad solo se ha añadido uno.
+- **Con un id como `key`**, cada clave va unida a su dato. React ve que las claves 7 y 3 siguen ahí, así que deja a Pedro y a Lucía como estaban, y solo crea el elemento de Ana.
+
+En una lista de textos la diferencia solo se nota en el rendimiento. Pero cuando los elementos tienen algo propio, como un campo de texto en el que el usuario ha escrito o una casilla marcada, una `key` mal elegida hace que ese contenido se quede en la posición y acabe en el elemento equivocado. Lo comprobarás cuando trabajemos con el estado en el apartado 8.
+
+Reglas para usar la `key`:
+
+- Va en el elemento exterior que devuelve `map`. Si `map` devuelve un componente, se pone en el componente: `<TareaItem key={t.id} ... />`.
+- Tiene que ser única entre los hermanos de esa lista, pero puede repetirse en otra lista distinta.
+- Tiene que ser estable: el mismo dato debe tener siempre la misma `key`. Por eso nunca se usa `Math.random()`.
+- No llega al componente como prop. Si el componente necesita el id, hay que pasárselo además en otra prop.
+- Si se te olvida, la aplicación funciona, pero la consola muestra el aviso «Each child in a list should have a unique "key" prop».
+
+Qué usar como `key`, de mejor a peor:
+
+| Opción | Cuándo usarla |
+| --- | --- |
+| El id de los datos (`alumno.id`, un código de producto, un DNI...) | Siempre que exista. Es la opción normal. |
+| El propio valor (`key={h}` en una lista de textos) | Si los valores no se repiten nunca. |
+| El índice (`key={i}`) | Solo si la lista es fija: no se reordena, no se filtra y no se añaden ni se quitan elementos. |
+| `Math.random()` | Nunca: cambia en cada renderizado y React recrea todos los elementos. |
+
+En cada uno de los ejemplos siguientes se explica qué `key` se ha elegido y por qué.
+
+## 5.3 Ejemplo: valoración con estrellas
+
+Vamos a crear un componente `Rating` que muestre una valoración con estrellas a partir de un número, admitiendo medios puntos (por ejemplo, `3.5`).
 
 ```jsx
 const Rating = ({ valor, max = 5 }) => {
   const estrellas = [];
   for (let i = 1; i <= max; i++) {
-    if (valor >= i) estrellas.push("★");          // estrella completa
-    else if (valor >= i - 0.5) estrellas.push("◐"); // media estrella
-    else estrellas.push("☆");                      // estrella vacía
+    if (valor >= i) estrellas.push("★");              // estrella completa
+    else if (valor >= i - 0.5) estrellas.push("◐");   // media estrella
+    else estrellas.push("☆");                         // estrella vacía
   }
 
   return (
@@ -2750,44 +2824,377 @@ const Rating = ({ valor, max = 5 }) => {
 };
 
 // Uso
-<Rating valor={3.5} />
+<p>Película: <Rating valor={3.5} /></p>
+<p>Restaurante: <Rating valor={4} max={10} /></p>
 ```
 
-Aquí usar el índice como `key` es correcto: la lista de estrellas es fija. El atributo `aria-label` permite que un lector de pantalla anuncie «Valoración: 3.5 de 5» en lugar de leer símbolos (lo trataremos en la UD5).
+Así se ve en el navegador:
 
-## 5.2 PRÁCTICA 1: Componentes, props y listas
+![Resultado del componente Rating: tres estrellas y media sobre cinco, y cuatro estrellas sobre diez](./assets/img/ud4-ej-rating.png){: width="460"}
 
-### Tareas
+Paso a paso:
 
-Crea, dentro de tu repositorio `React` (apartado 2.7), el proyecto `practica-1-componentes` con una página de presentación del ciclo formativo que muestre los módulos y el profesorado.
+- **Props.** `valor` es obligatoria y `max` tiene un valor por defecto de 5 (apartado 4.2.2), así que el mismo componente sirve para valoraciones sobre 5 o sobre 10.
+- **Cálculo antes del `return`.** No hay un array de datos que recorrer, así que lo construimos con un bucle `for`. El `if` decide qué símbolo corresponde a cada posición: con `valor = 3.5`, las posiciones 1, 2 y 3 son estrellas completas, la 4 es media (porque `3.5 >= 3.5`) y la 5 es vacía.
+- **Lista y `key`.** `map` convierte cada símbolo en un `<span>`. Las estrellas no tienen id, y el texto no sirve porque se repite («★» aparece varias veces). Aquí el índice es correcto, porque la lista siempre tiene el mismo tamaño y nunca se reordena.
+- **Accesibilidad.** Un lector de pantalla leería los símbolos uno a uno. Con `aria-label` en el contenedor y `aria-hidden` en cada estrella, anuncia «Valoración: 3.5 de 5» (se trata en la UD5).
 
-**1. Estructura de componentes**
+## 5.4 Ejemplo: lista de tareas
 
-- **a.** Dibuja (en papel o en una herramienta) el árbol de componentes antes de programar e inclúyelo como imagen en el `README.md`.
-- **b.** Crea al menos los componentes `Header`, `Footer`, `Card`, `ModuloItem`, `ListaModulos` y `ProfesorCard`, cada uno en su propio archivo dentro de `src/components/`.
-- **c.** `Header` recibirá por props el nombre del ciclo y el curso.
+Este ejemplo combina una lista de objetos, un mensaje cuando la lista está vacía, un contador calculado y varios detalles condicionales en cada elemento.
 
-**2. Datos y listas**
+```jsx
+const tareas = [
+  { id: 1, texto: "Repasar JSX", hecha: true, urgente: false },
+  { id: 2, texto: "Terminar la práctica", hecha: false, urgente: true },
+  { id: 3, texto: "Leer el apartado 5", hecha: false, urgente: false },
+];
 
-- **a.** Crea `src/data/modulos.js` con un array de al menos 6 módulos. Cada módulo tendrá `id`, `nombre`, `horas`, `curso` (1 o 2) y `profesor`.
-- **b.** `ListaModulos` mostrará los módulos con `map` y las claves adecuadas.
-- **c.** Muestra los módulos agrupados en dos secciones, «Primer curso» y «Segundo curso», usando `filter`.
-- **d.** Ordena los módulos de cada curso por número de horas de mayor a menor, sin mutar el array original.
-- **e.** Muestra debajo de cada sección el total de horas del curso calculado con `reduce`.
+function TareaItem({ texto, hecha, urgente }) {
+  return (
+    <li style={{ textDecoration: hecha ? "line-through" : "none" }}>
+      {hecha ? "✔" : "○"} {texto}
+      {urgente && !hecha && <strong> (urgente)</strong>}
+    </li>
+  );
+}
 
-**3. Props, children y condicionales**
+function ListaTareas({ tareas }) {
+  if (tareas.length === 0) {
+    return <p>No tienes tareas. ¡Buen trabajo!</p>;
+  }
 
-- **a.** `Card` debe usar `children` y servir de contenedor tanto para módulos como para profesores.
-- **b.** Si un módulo tiene más de 150 horas, muestra una etiqueta «Módulo largo» usando `&&`.
-- **c.** `ProfesorCard` mostrará una foto si la recibe por props y, si no, un avatar con sus iniciales (usa el ternario).
-- **d.** Si el array de módulos está vacío, `ListaModulos` mostrará «No hay módulos que mostrar». Pruébalo.
-- **e.** Usa al menos un fragmento donde evite un nodo innecesario.
+  const pendientes = tareas.filter((t) => !t.hecha).length;
 
-**4. Entrega**
+  return (
+    <section>
+      <h2>Mis tareas</h2>
+      <p>
+        {pendientes === 0
+          ? "Lo tienes todo hecho."
+          : `Te quedan ${pendientes} ${pendientes === 1 ? "tarea" : "tareas"}.`}
+      </p>
+      <ul>
+        {tareas.map((t) => (
+          <TareaItem key={t.id} texto={t.texto} hecha={t.hecha} urgente={t.urgente} />
+        ))}
+      </ul>
+    </section>
+  );
+}
 
-Sube el proyecto a tu repositorio `React`. En el `README.md`, explica brevemente el árbol de componentes y qué props recibe cada componente.
+// Uso
+<ListaTareas tareas={tareas} />
+<ListaTareas tareas={[]} />
+```
+
+Así se ve en el navegador (arriba con las tres tareas y abajo con la lista vacía):
+
+![Resultado de ListaTareas: el contador de tareas pendientes, la primera tarea tachada, la segunda marcada como urgente y, debajo, el mensaje de lista vacía](./assets/img/ud4-ej-tareas.png){: width="460"}
+
+Paso a paso:
+
+- **Dos componentes.** `ListaTareas` se ocupa de la lista completa y `TareaItem` de cada tarea. Así cada uno es corto y `TareaItem` se puede reutilizar en otra lista.
+- **Lista vacía con *early return*.** Si no hay tareas, el componente devuelve el mensaje y no sigue. Se usa `if` porque cambia todo lo que se muestra, no solo un detalle.
+- **Contador calculado.** `pendientes` se obtiene con `filter` y `length` antes del `return`. No se guarda en los datos: siempre se calcula a partir de ellos, así nunca puede estar desincronizado.
+- **Ternarios anidados en el texto.** El primero elige entre «Lo tienes todo hecho» y el contador; el segundo, dentro de la *template literal*, elige entre singular y plural.
+- **Detalles de cada tarea.** El ternario elige el símbolo y el estilo tachado; `&&` muestra «(urgente)» solo si la tarea es urgente y no está hecha. Por eso «Terminar la práctica» lo muestra y «Repasar JSX» no.
+- **`key`.** Cada tarea tiene un `id`, así que se usa ese. Va en `<TareaItem>`, que es lo que devuelve `map`, y no en el `<li>` de dentro. `TareaItem` no recibe la `key` como prop; si la necesitara, habría que pasarle también `id={t.id}`.
+
+Como cada tarea es un objeto con los mismos nombres que las props, la línea del `map` se puede acortar con el spread del apartado 4.2.8: `<TareaItem key={t.id} {...t} />`.
+
+## 5.5 Ejemplo: tarjeta de perfil con datos opcionales
+
+Los datos reales casi nunca están completos: falta la foto, la ciudad está vacía, el usuario no tiene habilidades... Un buen componente muestra algo razonable en todos los casos.
+
+```jsx
+function Perfil({ usuario }) {
+  const { nombre, foto, ciudad, verificado = false, habilidades = [] } = usuario;
+
+  return (
+    <article className="perfil">
+      <img src={foto ?? "https://placehold.co/64?text=?"} alt={`Foto de ${nombre}`} width={64} />
+      <h3>
+        {nombre}
+        {verificado && <span title="Cuenta verificada"> ✔</span>}
+      </h3>
+      <p>{ciudad || "Ciudad no indicada"}</p>
+      {habilidades.length > 0 ? (
+        <ul>
+          {habilidades.map((h) => (
+            <li key={h}>{h}</li>
+          ))}
+        </ul>
+      ) : (
+        <p className="vacio">Todavía no ha añadido habilidades.</p>
+      )}
+    </article>
+  );
+}
+
+// Uso
+<Perfil
+  usuario={{
+    nombre: "Ana",
+    foto: "https://placehold.co/64?text=Ana",
+    ciudad: "Jaén",
+    verificado: true,
+    habilidades: ["React", "CSS"],
+  }}
+/>
+<Perfil usuario={{ nombre: "Pablo", ciudad: "" }} />
+```
+
+Así se ve en el navegador (arriba con todos los datos y abajo con los que faltan):
+
+![Resultado de Perfil: Ana con foto, marca de verificada, ciudad y habilidades; Pablo con la imagen por defecto, ciudad no indicada y sin habilidades](./assets/img/ud4-ej-perfil.png){: width="460"}
+
+Paso a paso:
+
+- **Desestructuración con valores por defecto.** Si el objeto no trae `verificado` o `habilidades`, toman `false` y `[]`. Gracias a eso, más abajo se puede escribir `habilidades.length` sin miedo a que `habilidades` sea `undefined`.
+- **`??` para la foto.** Pablo no tiene foto, así que se usa una imagen por defecto. `??` solo actúa cuando el valor es `null` o `undefined`.
+- **`||` para la ciudad.** Aquí interesa `||` y no `??`: la ciudad de Pablo es un texto vacío `""`, y con `??` se mostraría un párrafo vacío (apartado 3.9.3).
+- **`&&` para un detalle pequeño.** La marca de verificado solo aparece si `verificado` es `true`.
+- **Ternario para elegir entre dos bloques.** Si hay habilidades, una lista; si no, un mensaje.
+- **`key`.** Las habilidades son textos sueltos, sin id. Como una persona no repite la misma habilidad, el propio texto sirve como `key`.
+
+## 5.6 Ejemplo: tabla de calificaciones
+
+Este ejemplo prepara los datos con varias funciones de array antes de mostrarlos: filtra, ordena, calcula una media y traduce cada nota a un texto.
+
+```jsx
+const CALIFICACIONES = [
+  { min: 9, texto: "Sobresaliente" },
+  { min: 7, texto: "Notable" },
+  { min: 6, texto: "Bien" },
+  { min: 5, texto: "Suficiente" },
+  { min: 0, texto: "Insuficiente" },
+];
+
+const textoNota = (nota) => CALIFICACIONES.find((c) => nota >= c.min).texto;
+
+function TablaNotas({ alumnos, soloAprobados = false }) {
+  const filtrados = soloAprobados ? alumnos.filter((a) => a.nota >= 5) : alumnos;
+  const ordenados = filtrados.toSorted((a, b) => b.nota - a.nota);
+
+  if (ordenados.length === 0) {
+    return <p>No hay alumnos que mostrar.</p>;
+  }
+
+  const media = ordenados.reduce((suma, a) => suma + a.nota, 0) / ordenados.length;
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Alumno</th>
+          <th>Nota</th>
+          <th>Calificación</th>
+        </tr>
+      </thead>
+      <tbody>
+        {ordenados.map((a) => (
+          <tr key={a.id} style={{ color: a.nota < 5 ? "red" : "inherit" }}>
+            <td>{a.nombre}</td>
+            <td>{a.nota.toFixed(1)}</td>
+            <td>{textoNota(a.nota)}</td>
+          </tr>
+        ))}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Media</td>
+          <td colSpan={2}>{media.toFixed(2)}</td>
+        </tr>
+      </tfoot>
+    </table>
+  );
+}
+
+// Uso
+const alumnos = [
+  { id: 1, nombre: "Pedro", nota: 4.5 },
+  { id: 2, nombre: "Lucía", nota: 9.2 },
+  { id: 3, nombre: "Ana", nota: 6.8 },
+];
+
+<TablaNotas alumnos={alumnos} />
+<TablaNotas alumnos={alumnos} soloAprobados />
+```
+
+Así se ve en el navegador (arriba todos los alumnos y abajo solo los aprobados). Sin CSS, las tablas no tienen bordes:
+
+![Resultado de TablaNotas: alumnos ordenados de mayor a menor nota con su calificación, Pedro en rojo por estar suspenso y la media al final; debajo, la misma tabla solo con Lucía y Ana](./assets/img/ud4-ej-tabla.png){: width="460"}
+
+Paso a paso:
+
+- **Prop booleana.** `soloAprobados` cambia el comportamiento del componente. Al usarlo basta con escribir `soloAprobados` (apartado 3.5.1), y si no se pone vale `false`.
+- **Preparar los datos por pasos.** Primero se filtra (o no, según la prop) y después se ordena con `toSorted`, que no modifica el array recibido por props (apartado 3.10.2). Guardar cada paso en una variable con nombre hace el código fácil de seguir.
+- **Comprobar el caso vacío después de filtrar.** Si todos suspenden y se piden solo aprobados, la lista queda vacía aunque `alumnos` no lo esté. Además, así se evita dividir entre 0 al calcular la media.
+- **`reduce` para la media.** Suma todas las notas partiendo de 0 y divide entre el número de alumnos mostrados. Por eso la media cambia de una tabla a otra: 6.83 con los tres alumnos y 8.00 solo con los aprobados.
+- **Tabla de correspondencias con rangos.** Como las calificaciones dependen de un rango y no de un valor exacto, se usa un array ordenado y `find`, que devuelve el primer rango que cumple la nota. Es la misma idea que el objeto de correspondencias del apartado 3.9.5.
+- **Estilo condicional en cada fila.** El ternario dentro de `style` pinta en rojo los suspensos.
+- **Atributos en camelCase.** `colSpan` se escribe así en JSX, igual que `className` o `tabIndex` (apartado 3.5).
+- **`key`.** Esta lista se ordena y se filtra, así que el índice no sirve: Pedro está en la posición 2 en la primera tabla y no aparece en la segunda. Se usa el `id` de cada alumno, que no cambia aunque cambie su posición.
+
+## 5.7 Ejemplo: catálogo de productos
+
+Este ejemplo muestra varias condiciones independientes en cada elemento de la lista y reutiliza el mismo componente para mostrar el catálogo completo o solo las ofertas.
+
+```jsx
+const productos = [
+  { id: "T-01", nombre: "Teclado", precio: 25, descuento: 20, stock: 12 },
+  { id: "R-07", nombre: "Ratón", precio: 12, stock: 2 },
+  { id: "M-24", nombre: "Monitor", precio: 149, descuento: 10, stock: 0 },
+  { id: "A-03", nombre: "Auriculares", precio: 30, stock: 8 },
+];
+
+function Producto({ nombre, precio, descuento = 0, stock }) {
+  const agotado = stock === 0;
+  const precioFinal = precio * (1 - descuento / 100);
+
+  return (
+    <li style={{ opacity: agotado ? 0.5 : 1 }}>
+      <strong>{nombre}</strong>{" "}
+      {descuento > 0 ? (
+        <>
+          <s>{precio.toFixed(2)} €</s> {precioFinal.toFixed(2)} € (−{descuento} %)
+        </>
+      ) : (
+        <>{precio.toFixed(2)} €</>
+      )}
+      {agotado && <em> Agotado</em>}
+      {stock > 0 && stock <= 3 && <em> ¡Últimas {stock} unidades!</em>}
+    </li>
+  );
+}
+
+function Catalogo({ productos, soloOfertas = false }) {
+  const visibles = soloOfertas ? productos.filter((p) => p.descuento > 0) : productos;
+
+  return (
+    <section>
+      <h2>{soloOfertas ? "Ofertas" : "Catálogo"}</h2>
+      {visibles.length === 0 ? (
+        <p>No hay productos que mostrar.</p>
+      ) : (
+        <ul>
+          {visibles.map((p) => (
+            <Producto key={p.id} {...p} />
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+// Uso
+<Catalogo productos={productos} />
+<Catalogo productos={productos} soloOfertas />
+```
+
+Así se ve en el navegador:
+
+![Resultado de Catalogo: lista de productos con precios tachados en los que tienen descuento, el ratón con aviso de últimas unidades y el monitor atenuado y agotado; debajo, la sección de ofertas solo con el teclado y el monitor](./assets/img/ud4-ej-catalogo.png){: width="460"}
+
+Paso a paso:
+
+- **Datos incompletos.** Algunos productos no tienen `descuento`. En `Producto` toma el valor por defecto 0, y en el `filter` de `Catalogo`, `undefined > 0` es `false`, así que no se cuelan en las ofertas.
+- **Variables con nombre para las condiciones.** `agotado` y `precioFinal` se calculan antes del `return`. El JSX queda más legible con `{agotado && ...}` que con `{stock === 0 && ...}`.
+- **Ternario con fragmentos.** Si hay descuento se muestran dos precios (el original tachado con `<s>` y el final) y, si no, uno solo. Cada rama del ternario devuelve un fragmento (apartado 3.8) para agrupar varias cosas sin añadir etiquetas.
+- **Varias condiciones independientes.** «Agotado» y «¡Últimas unidades!» son dos `&&` separados. La segunda combina dos comparaciones para no mostrarse cuando el stock es 0.
+- **El espacio `{" "}`.** JSX elimina los saltos de línea entre etiquetas, así que sin él el nombre quedaría pegado al precio.
+- **El mismo componente para dos vistas.** La prop `soloOfertas` decide el título y si se filtra la lista. El mensaje de lista vacía se resuelve con un ternario porque el título debe verse siempre.
+- **`key` y spread.** Los productos tienen un código único (`"T-01"`, `"R-07"`...), que es un buen `key` aunque sea un texto. Como el objeto tiene los mismos nombres que las props, se pasa con `{...p}` (apartado 4.2.8); la `key` se escribe aparte porque no forma parte de las props.
+
+## 5.8 Ejemplo: horario semanal (listas anidadas)
+
+Cuando cada elemento de una lista contiene a su vez otra lista, se usa un `map` dentro de otro (apartado 3.10.4). Cada nivel necesita su propia `key`.
+
+```jsx
+const horario = [
+  {
+    dia: "Lunes",
+    clases: [
+      { id: 1, hora: "08:15", modulo: "Desarrollo de Interfaces" },
+      { id: 2, hora: "10:15", modulo: "Acceso a Datos" },
+    ],
+  },
+  { dia: "Martes", clases: [{ id: 1, hora: "08:15", modulo: "Programación Multimedia" }] },
+  { dia: "Miércoles", clases: [] },
+  {
+    dia: "Jueves",
+    clases: [
+      { id: 1, hora: "09:15", modulo: "Desarrollo de Interfaces" },
+      { id: 2, hora: "11:45", modulo: "Empresa e Iniciativa Emprendedora" },
+    ],
+  },
+];
+
+function Horario({ dias }) {
+  return (
+    <div>
+      {dias.map((d) => (
+        <section key={d.dia}>
+          <h3>{d.dia}</h3>
+          {d.clases.length === 0 ? (
+            <p>Sin clase</p>
+          ) : (
+            <ul>
+              {d.clases.map((c) => (
+                <li key={c.id}>
+                  {c.hora} · {c.modulo}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))}
+    </div>
+  );
+}
+
+// Uso
+<Horario dias={horario} />
+```
+
+Así se ve en el navegador:
+
+![Resultado de Horario: cada día con su lista de clases y el miércoles con el texto Sin clase](./assets/img/ud4-ej-horario.png){: width="460"}
+
+Paso a paso:
+
+- **Dos `map` anidados.** El exterior recorre los días y genera una `<section>` por cada uno; el interior recorre las clases de ese día y genera un `<li>` por clase.
+- **Condición dentro del `map` exterior.** Para cada día, un ternario elige entre la lista de clases y el texto «Sin clase». Así el miércoles aparece en el horario aunque no tenga clases.
+- **`key` en cada nivel.** Los días se identifican por su nombre, que no se repite. Las clases usan su `id`.
+- **Las `key` solo tienen que ser únicas entre hermanos.** Fíjate en que los `id` de las clases empiezan en 1 cada día: el lunes y el martes tienen una clase con `id: 1`. No es un error, porque esas dos clases están en listas distintas (cada `<ul>` es una lista independiente). Lo que no podría ocurrir es que dos clases del mismo día tuvieran el mismo `id`.
+- **Un dato que se repite no sirve como `key`.** «Desarrollo de Interfaces» aparece el lunes y el jueves, así que el nombre del módulo no serviría como `key` si se mostraran todas las clases de la semana en una sola lista.
+
+## 5.9 PRÁCTICA: Ampliación de la aplicación de notas
+
+Amplía la aplicación de notas de la práctica 4.6 en un proyecto nuevo, `practica-5-9-notas`, con nuevas vistas de los mismos datos. No hay que añadir propiedades a las notas: todo lo nuevo se calcula a partir de las que ya tienen. La aplicación sigue sin ser interactiva.
+
+### Requisitos
+
+- **a.** Nota destacada. Al principio de la página se mostrará destacada la nota pendiente de prioridad alta con la fecha más próxima. Si no hay ninguna, esta sección no aparecerá.
+- **b.** Plazos. En lugar de la etiqueta «Vencida», cada nota pendiente mostrará un texto según los días que faltan: «Vencida hace 10 días», «Vence hoy», «Vence mañana» o «Quedan 5 días». Las notas completadas no mostrarán ningún plazo.
+- **c.** Agenda por meses. Añade una sección con las notas pendientes agrupadas por mes («noviembre de 2026», «diciembre de 2026»...), con los meses en orden cronológico y, junto a cada mes, cuántas notas tiene («1 nota», «3 notas»). Los meses se obtienen de las fechas, no se escriben a mano.
+- **d.** Etiquetas. Muestra todas las etiquetas distintas que aparecen en las notas, cada una con el número de notas que la usan, ordenadas de más a menos usada. Las etiquetas que aparezcan en más de una nota se verán más grandes.
+- **e.** Lista configurable. El componente que muestra la lista de notas recibirá dos props nuevas: una categoría (si no se indica, se muestran todas) y un criterio de orden (por fecha o por prioridad). Úsalo en `App` al menos dos veces con configuraciones distintas. Si una configuración no tiene notas, se mostrará un mensaje.
+- **f.** Progreso por categoría. Sustituye los números del resumen por una barra de progreso para cada categoría, cuya parte rellena corresponda al porcentaje de notas completadas, junto con el porcentaje en texto.
+- **g.** Claves. Junto a cada `key` de la aplicación, explica en un comentario por qué la has elegido.
+
+Para comprobar los casos especiales, cambia temporalmente los datos: marca como completadas todas las notas de prioridad alta, deja una categoría sin notas, quita todas las etiquetas...
+
+### Entrega
+
+Entrega el proyecto `practica-5-9-notas` sin la carpeta `node_modules`.
+
+Sube también el proyecto a tu repositorio personal para mantenerlo guardado.
 
 ---
+
+{% endraw %}{% comment %}{% raw %}
 
 # 6. Estilos y CSS
 
