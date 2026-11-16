@@ -2730,7 +2730,13 @@ Sube también el proyecto a tu repositorio personal para mantenerlo guardado.
 
 En los apartados 3.9 y 3.10 viste, por separado, las herramientas para mostrar contenido según una condición (ternario, `&&`, `??`, `if` antes del `return`) y para mostrar listas (`map`, `filter`, `toSorted`, `reduce`, `key`). En el apartado 4 aprendiste a pasar datos a los componentes mediante props.
 
-En una aplicación real todo eso aparece mezclado en el mismo componente. Este apartado reúne varios ejemplos completos, explicados paso a paso, que combinan las tres cosas. Debajo de cada ejemplo tienes una captura de cómo se ve en el navegador. Las capturas no llevan ningún CSS, solo los estilos en línea del propio código, así que es exactamente lo que verás si copias el ejemplo en un proyecto de Vite vacío.
+En una aplicación real todo eso aparece mezclado en el mismo componente. Este apartado reúne varios ejercicios resueltos que combinan las tres cosas. Cada uno tiene la misma estructura:
+
+1. **Enunciado:** qué tiene que hacer el componente, los datos de partida y cómo probarlo.
+2. **Resultado esperado:** una captura de cómo debe verse en el navegador. Las capturas no llevan ningún CSS, solo los estilos en línea del propio código, así que es exactamente lo que verás en un proyecto de Vite vacío.
+3. **Solución y explicación:** el código con su explicación paso a paso. Se publicará más adelante, cuando hayáis hecho los ejercicios.
+
+Haz cada componente por tu cuenta y compara lo que ves en tu navegador con el resultado esperado.
 
 ## 5.1 Cómo abordar un componente que muestra datos
 
@@ -2784,7 +2790,7 @@ En una lista de textos la diferencia solo se nota en el rendimiento. Pero cuando
 
 Reglas para usar la `key`:
 
-- Va en el elemento exterior que devuelve `map`. Si `map` devuelve un componente, se pone en el componente: `<TareaItem key={t.id} ... />`.
+- Va en el elemento exterior que devuelve `map`. Si `map` devuelve un componente, se pone en el componente: `<ArticuloCompra key={a.id} ... />`.
 - Tiene que ser única entre los hermanos de esa lista, pero puede repetirse en otra lista distinta.
 - Tiene que ser estable: el mismo dato debe tener siempre la misma `key`. Por eso nunca se usa `Math.random()`.
 - No llega al componente como prop. Si el componente necesita el id, hay que pasárselo además en otra prop.
@@ -2799,11 +2805,29 @@ Qué usar como `key`, de mejor a peor:
 | El índice (`key={i}`) | Solo si la lista es fija: no se reordena, no se filtra y no se añaden ni se quitan elementos. |
 | `Math.random()` | Nunca: cambia en cada renderizado y React recrea todos los elementos. |
 
-En cada uno de los ejemplos siguientes se explica qué `key` se ha elegido y por qué.
+En la solución de cada uno de los ejemplos siguientes se explica qué `key` se ha elegido y por qué.
 
 ## 5.3 Ejemplo: valoración con estrellas
 
-Vamos a crear un componente `Rating` que muestre una valoración con estrellas a partir de un número, admitiendo medios puntos (por ejemplo, `3.5`).
+Crea un componente `Rating` que muestre una valoración con estrellas a partir de un número.
+
+- Recibirá dos props: `valor`, con la puntuación, y `max`, con el número total de estrellas. Si no se indica `max`, serán 5.
+- Por cada punto completo se mostrará una estrella llena (★). Si al valor le sobra medio punto, se mostrará una media estrella (◐). El resto de posiciones, hasta llegar a `max`, serán estrellas vacías (☆). Por ejemplo, `3.5` sobre 5 se verá como ★★★◐☆.
+- Cada estrella irá en su propio `<span>`, generado a partir de un array.
+- Un lector de pantalla no debe leer los símbolos uno a uno, sino anunciar «Valoración: 3.5 de 5». Pista: el atributo `aria-label` pone un texto a un elemento y `aria-hidden="true"` hace que el lector lo ignore.
+
+Pruébalo así:
+
+```jsx
+<p>Película: <Rating valor={3.5} /></p>
+<p>Restaurante: <Rating valor={4} max={10} /></p>
+```
+
+Resultado esperado:
+
+![Resultado del componente Rating: tres estrellas y media sobre cinco, y cuatro estrellas sobre diez](./assets/img/ud4-ej-rating.png){: width="460"}
+
+{% endraw %}{% comment %}{% raw %}
 
 ```jsx
 const Rating = ({ valor, max = 5 }) => {
@@ -2822,353 +2846,477 @@ const Rating = ({ valor, max = 5 }) => {
     </span>
   );
 };
-
-// Uso
-<p>Película: <Rating valor={3.5} /></p>
-<p>Restaurante: <Rating valor={4} max={10} /></p>
 ```
-
-Así se ve en el navegador:
-
-![Resultado del componente Rating: tres estrellas y media sobre cinco, y cuatro estrellas sobre diez](./assets/img/ud4-ej-rating.png){: width="460"}
 
 Paso a paso:
 
-- **Props.** `valor` es obligatoria y `max` tiene un valor por defecto de 5 (apartado 4.2.2), así que el mismo componente sirve para valoraciones sobre 5 o sobre 10.
+- **Props.** `max` tiene un valor por defecto de 5 (apartado 4.2.2), así que el mismo componente sirve para valoraciones sobre 5 o sobre 10.
 - **Cálculo antes del `return`.** No hay un array de datos que recorrer, así que lo construimos con un bucle `for`. El `if` decide qué símbolo corresponde a cada posición: con `valor = 3.5`, las posiciones 1, 2 y 3 son estrellas completas, la 4 es media (porque `3.5 >= 3.5`) y la 5 es vacía.
 - **Lista y `key`.** `map` convierte cada símbolo en un `<span>`. Las estrellas no tienen id, y el texto no sirve porque se repite («★» aparece varias veces). Aquí el índice es correcto, porque la lista siempre tiene el mismo tamaño y nunca se reordena.
-- **Accesibilidad.** Un lector de pantalla leería los símbolos uno a uno. Con `aria-label` en el contenedor y `aria-hidden` en cada estrella, anuncia «Valoración: 3.5 de 5» (se trata en la UD5).
+- **Accesibilidad.** Con `aria-label` en el contenedor y `aria-hidden` en cada estrella, el lector de pantalla anuncia «Valoración: 3.5 de 5» (se trata en la UD5).
 
-## 5.4 Ejemplo: lista de tareas
+{% endraw %}{% endcomment %}{% raw %}
 
-Este ejemplo combina una lista de objetos, un mensaje cuando la lista está vacía, un contador calculado y varios detalles condicionales en cada elemento.
+## 5.4 Ejemplo: lista de la compra
+
+Crea un componente `ListaCompra` que muestre una lista de la compra a partir de este array, que recibirá en la prop `articulos`:
+
+```js
+const compra = [
+  { id: 1, nombre: "Leche", cantidad: 2, unidad: "l", comprado: true, imprescindible: true },
+  { id: 2, nombre: "Huevos", cantidad: 12, unidad: "uds.", comprado: false, imprescindible: true },
+  { id: 3, nombre: "Tomates", cantidad: 1, unidad: "kg", comprado: false, imprescindible: false },
+  { id: 4, nombre: "Pan", cantidad: 1, unidad: "barra", comprado: true, imprescindible: false },
+];
+```
+
+Requisitos:
+
+- Cada artículo se mostrará en un componente propio, `ArticuloCompra`, con su nombre y, entre paréntesis, la cantidad y la unidad: «Huevos (12 uds.)».
+- Los artículos ya comprados se verán en gris y con el texto «— en el carro» detrás.
+- Los artículos imprescindibles que todavía no se han comprado mostrarán «¡No olvidar!» en negrita.
+- Los artículos pendientes aparecerán primero y los comprados al final, sin modificar el array original. Pista: al restar dos booleanos, JavaScript los convierte en números (`true` vale 1 y `false`, 0).
+- Encima de la lista se mostrará cuántos productos faltan: «Te falta 1 producto», «Te faltan 2 productos» o, si no falta ninguno, «Ya lo tienes todo».
+- Si la lista está vacía, en lugar de todo lo anterior se mostrará solo «La lista de la compra está vacía».
+
+Pruébalo así:
 
 ```jsx
-const tareas = [
-  { id: 1, texto: "Repasar JSX", hecha: true, urgente: false },
-  { id: 2, texto: "Terminar la práctica", hecha: false, urgente: true },
-  { id: 3, texto: "Leer el apartado 5", hecha: false, urgente: false },
-];
+<ListaCompra articulos={compra} />
+<ListaCompra articulos={[]} />
+```
 
-function TareaItem({ texto, hecha, urgente }) {
+Resultado esperado (arriba con los cuatro artículos y abajo con la lista vacía):
+
+![Resultado de ListaCompra: el contador de productos que faltan, los huevos con el aviso No olvidar, los tomates y, al final y en gris, la leche y el pan en el carro; debajo, el mensaje de lista vacía](./assets/img/ud4-ej-compra.png){: width="460"}
+
+{% endraw %}{% comment %}{% raw %}
+
+```jsx
+function ArticuloCompra({ nombre, cantidad, unidad, comprado, imprescindible }) {
   return (
-    <li style={{ textDecoration: hecha ? "line-through" : "none" }}>
-      {hecha ? "✔" : "○"} {texto}
-      {urgente && !hecha && <strong> (urgente)</strong>}
+    <li style={{ color: comprado ? "gray" : "black" }}>
+      {nombre} ({cantidad} {unidad})
+      {comprado && " — en el carro"}
+      {imprescindible && !comprado && <strong> ¡No olvidar!</strong>}
     </li>
   );
 }
 
-function ListaTareas({ tareas }) {
-  if (tareas.length === 0) {
-    return <p>No tienes tareas. ¡Buen trabajo!</p>;
+function ListaCompra({ articulos }) {
+  if (articulos.length === 0) {
+    return <p>La lista de la compra está vacía.</p>;
   }
 
-  const pendientes = tareas.filter((t) => !t.hecha).length;
+  const faltan = articulos.filter((a) => !a.comprado).length;
+  const ordenados = articulos.toSorted((a, b) => a.comprado - b.comprado);
 
   return (
     <section>
-      <h2>Mis tareas</h2>
+      <h2>Lista de la compra</h2>
       <p>
-        {pendientes === 0
-          ? "Lo tienes todo hecho."
-          : `Te quedan ${pendientes} ${pendientes === 1 ? "tarea" : "tareas"}.`}
+        {faltan === 0
+          ? "Ya lo tienes todo."
+          : `Te ${faltan === 1 ? "falta 1 producto" : `faltan ${faltan} productos`}.`}
       </p>
       <ul>
-        {tareas.map((t) => (
-          <TareaItem key={t.id} texto={t.texto} hecha={t.hecha} urgente={t.urgente} />
+        {ordenados.map((a) => (
+          <ArticuloCompra key={a.id} {...a} />
         ))}
       </ul>
     </section>
   );
 }
-
-// Uso
-<ListaTareas tareas={tareas} />
-<ListaTareas tareas={[]} />
 ```
-
-Así se ve en el navegador (arriba con las tres tareas y abajo con la lista vacía):
-
-![Resultado de ListaTareas: el contador de tareas pendientes, la primera tarea tachada, la segunda marcada como urgente y, debajo, el mensaje de lista vacía](./assets/img/ud4-ej-tareas.png){: width="460"}
 
 Paso a paso:
 
-- **Dos componentes.** `ListaTareas` se ocupa de la lista completa y `TareaItem` de cada tarea. Así cada uno es corto y `TareaItem` se puede reutilizar en otra lista.
-- **Lista vacía con *early return*.** Si no hay tareas, el componente devuelve el mensaje y no sigue. Se usa `if` porque cambia todo lo que se muestra, no solo un detalle.
-- **Contador calculado.** `pendientes` se obtiene con `filter` y `length` antes del `return`. No se guarda en los datos: siempre se calcula a partir de ellos, así nunca puede estar desincronizado.
-- **Ternarios anidados en el texto.** El primero elige entre «Lo tienes todo hecho» y el contador; el segundo, dentro de la *template literal*, elige entre singular y plural.
-- **Detalles de cada tarea.** El ternario elige el símbolo y el estilo tachado; `&&` muestra «(urgente)» solo si la tarea es urgente y no está hecha. Por eso «Terminar la práctica» lo muestra y «Repasar JSX» no.
-- **`key`.** Cada tarea tiene un `id`, así que se usa ese. Va en `<TareaItem>`, que es lo que devuelve `map`, y no en el `<li>` de dentro. `TareaItem` no recibe la `key` como prop; si la necesitara, habría que pasarle también `id={t.id}`.
+- **Dos componentes.** `ListaCompra` se ocupa de la lista completa y `ArticuloCompra` de cada artículo. Así cada uno es corto y fácil de leer.
+- **Lista vacía con *early return*.** Si no hay artículos, el componente devuelve el mensaje y no sigue. Se usa `if` porque cambia todo lo que se muestra, no solo un detalle.
+- **Contador calculado.** `faltan` se obtiene con `filter` y `length` antes del `return`. No se guarda en los datos: siempre se calcula a partir de ellos, así nunca puede estar desincronizado.
+- **Ordenar por un booleano.** En la resta `a.comprado - b.comprado`, `false` vale 0 y `true` vale 1, así que los no comprados quedan delante. Se usa `toSorted` para no modificar el array que llega por props.
+- **Ternarios anidados en el texto.** El primero elige entre «Ya lo tienes todo» y el contador; el segundo, dentro de la *template literal*, elige entre singular y plural. Fíjate en que no solo cambia «producto», también el verbo: «falta» o «faltan».
+- **Detalles de cada artículo.** El ternario de `style` elige el color; los dos `&&` añaden textos solo cuando se cumple su condición. El segundo combina dos booleanos, así que no hay riesgo de que aparezca un `0` (apartado 3.9.2).
+- **`key`.** Cada artículo tiene un `id`, así que se usa ese. Va en `<ArticuloCompra>`, que es lo que devuelve `map`, y no en el `<li>` de dentro. Como el objeto tiene los mismos nombres que las props, se pasa con el spread `{...a}` (apartado 4.2.8).
 
-Como cada tarea es un objeto con los mismos nombres que las props, la línea del `map` se puede acortar con el spread del apartado 4.2.8: `<TareaItem key={t.id} {...t} />`.
+{% endraw %}{% endcomment %}{% raw %}
 
-## 5.5 Ejemplo: tarjeta de perfil con datos opcionales
+## 5.5 Ejemplo: ficha de un libro con datos opcionales
 
-Los datos reales casi nunca están completos: falta la foto, la ciudad está vacía, el usuario no tiene habilidades... Un buen componente muestra algo razonable en todos los casos.
+Crea un componente `FichaLibro` que reciba en la prop `libro` un objeto con los datos de un libro y los muestre. El problema es que los datos casi nunca están completos, y la ficha tiene que verse bien en todos los casos.
+
+El objeto puede tener estas propiedades, y todas, salvo el título, pueden faltar:
+
+| Propiedad | Qué contiene | Qué mostrar si falta |
+| --- | --- | --- |
+| `titulo` | Texto | (siempre está) |
+| `subtitulo` | Texto | Nada |
+| `autores` | Array de textos | «Autor desconocido» |
+| `paginas` | Número | «Número de páginas desconocido» |
+| `sinopsis` | Texto, que puede estar vacío (`""`) | «Sin sinopsis.» |
+| `portada` | URL de una imagen | La imagen `https://placehold.co/60x90?text=?` |
+| `premiado` | Booleano | Nada |
+| `generos` | Array de textos | Nada, ni siquiera una lista vacía |
+
+Además:
+
+- Si hay varios autores, se mostrarán en una sola línea separados por comas: «Ana Ruiz, Pablo Gil».
+- Si el libro está premiado, se mostrará un trofeo (🏆) detrás del título.
+- El subtítulo, si lo hay, irá en cursiva.
+- Los géneros se mostrarán en una lista.
+
+Pruébalo así:
 
 ```jsx
-function Perfil({ usuario }) {
-  const { nombre, foto, ciudad, verificado = false, habilidades = [] } = usuario;
+<FichaLibro
+  libro={{
+    titulo: "Viaje al centro del código",
+    subtitulo: "Una aventura con JavaScript",
+    autores: ["Ana Ruiz", "Pablo Gil"],
+    paginas: 245,
+    sinopsis: "Dos programadores recorren por dentro una aplicación web.",
+    portada: "https://placehold.co/60x90?text=Libro",
+    premiado: true,
+    generos: ["Divulgación", "Informática"],
+  }}
+/>
+<FichaLibro libro={{ titulo: "Cuaderno de bitácora", sinopsis: "" }} />
+```
+
+Resultado esperado (arriba con todos los datos y abajo con los que faltan):
+
+![Resultado de FichaLibro: un libro con portada, trofeo, subtítulo, dos autores, páginas, sinopsis y géneros; debajo, otro libro con la portada por defecto, autor desconocido, páginas desconocidas y sin sinopsis](./assets/img/ud4-ej-libro.png){: width="460"}
+
+{% endraw %}{% comment %}{% raw %}
+
+```jsx
+function FichaLibro({ libro }) {
+  const { titulo, subtitulo, autores = [], paginas, sinopsis, portada, premiado = false, generos = [] } = libro;
 
   return (
-    <article className="perfil">
-      <img src={foto ?? "https://placehold.co/64?text=?"} alt={`Foto de ${nombre}`} width={64} />
+    <article>
+      <img src={portada ?? "https://placehold.co/60x90?text=?"} alt={`Portada de ${titulo}`} width={60} />
       <h3>
-        {nombre}
-        {verificado && <span title="Cuenta verificada"> ✔</span>}
+        {titulo}
+        {premiado && " 🏆"}
       </h3>
-      <p>{ciudad || "Ciudad no indicada"}</p>
-      {habilidades.length > 0 ? (
+      {subtitulo && (
+        <p>
+          <em>{subtitulo}</em>
+        </p>
+      )}
+      <p>{autores.length > 0 ? autores.join(", ") : "Autor desconocido"}</p>
+      <p>{paginas ? `${paginas} páginas` : "Número de páginas desconocido"}</p>
+      <p>{sinopsis || "Sin sinopsis."}</p>
+      {generos.length > 0 && (
         <ul>
-          {habilidades.map((h) => (
-            <li key={h}>{h}</li>
+          {generos.map((g) => (
+            <li key={g}>{g}</li>
           ))}
         </ul>
-      ) : (
-        <p className="vacio">Todavía no ha añadido habilidades.</p>
       )}
     </article>
   );
 }
-
-// Uso
-<Perfil
-  usuario={{
-    nombre: "Ana",
-    foto: "https://placehold.co/64?text=Ana",
-    ciudad: "Jaén",
-    verificado: true,
-    habilidades: ["React", "CSS"],
-  }}
-/>
-<Perfil usuario={{ nombre: "Pablo", ciudad: "" }} />
 ```
-
-Así se ve en el navegador (arriba con todos los datos y abajo con los que faltan):
-
-![Resultado de Perfil: Ana con foto, marca de verificada, ciudad y habilidades; Pablo con la imagen por defecto, ciudad no indicada y sin habilidades](./assets/img/ud4-ej-perfil.png){: width="460"}
 
 Paso a paso:
 
-- **Desestructuración con valores por defecto.** Si el objeto no trae `verificado` o `habilidades`, toman `false` y `[]`. Gracias a eso, más abajo se puede escribir `habilidades.length` sin miedo a que `habilidades` sea `undefined`.
-- **`??` para la foto.** Pablo no tiene foto, así que se usa una imagen por defecto. `??` solo actúa cuando el valor es `null` o `undefined`.
-- **`||` para la ciudad.** Aquí interesa `||` y no `??`: la ciudad de Pablo es un texto vacío `""`, y con `??` se mostraría un párrafo vacío (apartado 3.9.3).
-- **`&&` para un detalle pequeño.** La marca de verificado solo aparece si `verificado` es `true`.
-- **Ternario para elegir entre dos bloques.** Si hay habilidades, una lista; si no, un mensaje.
-- **`key`.** Las habilidades son textos sueltos, sin id. Como una persona no repite la misma habilidad, el propio texto sirve como `key`.
+- **Desestructuración con valores por defecto.** Si el objeto no trae `autores`, `premiado` o `generos`, toman `[]`, `false` y `[]`. Gracias a eso, más abajo se puede escribir `autores.length` sin miedo a que `autores` sea `undefined`.
+- **`??` para la portada.** Si no hay portada, se usa una imagen por defecto. `??` solo actúa cuando el valor es `null` o `undefined`.
+- **`||` para la sinopsis.** Aquí interesa `||` y no `??`: la sinopsis del segundo libro es un texto vacío `""`, y con `??` se mostraría un párrafo vacío (apartado 3.9.3).
+- **`&&` para lo que solo aparece a veces.** El trofeo, el subtítulo y la lista de géneros no tienen alternativa: si no hay dato, no se muestra nada. En los géneros la condición es `generos.length > 0` y no `generos.length`, para que no aparezca un `0`.
+- **Ternarios para lo que tiene alternativa.** Los autores y las páginas muestran un texto u otro. `join(", ")` convierte el array de autores en un texto separado por comas.
+- **`key`.** Los géneros son textos sueltos, sin id. Como un libro no repite el mismo género, el propio texto sirve como `key`.
 
-## 5.6 Ejemplo: tabla de calificaciones
+{% endraw %}{% endcomment %}{% raw %}
 
-Este ejemplo prepara los datos con varias funciones de array antes de mostrarlos: filtra, ordena, calcula una media y traduce cada nota a un texto.
+## 5.6 Ejemplo: clasificación de una liga
+
+Crea un componente `Clasificacion` que muestre en una tabla la clasificación de una liga a partir de este array, que recibirá en la prop `equipos`:
+
+```js
+const equipos = [
+  { id: "LIN", nombre: "Linces", ganados: 4, empatados: 2, perdidos: 2 },
+  { id: "HAL", nombre: "Halcones", ganados: 6, empatados: 1, perdidos: 1 },
+  { id: "TIB", nombre: "Tiburones", ganados: 1, empatados: 2, perdidos: 5 },
+  { id: "OSO", nombre: "Osos", ganados: 3, empatados: 3, perdidos: 2 },
+];
+```
+
+Requisitos:
+
+- Los puntos no vienen en los datos: se calculan con 3 puntos por partido ganado y 1 por empatado. Los partidos jugados (PJ) también se calculan.
+- La tabla tendrá las columnas Pos., Equipo, PJ, G, E, P y Puntos, con los equipos ordenados de más a menos puntos, sin modificar el array original.
+- La posición (1, 2, 3...) se calcula según el orden, no viene en los datos.
+- El primer clasificado se mostrará en negrita y el último, en rojo.
+- El componente tendrá una prop opcional `limite`. Si se indica, solo se mostrarán los primeros equipos hasta ese número.
+- La tabla tendrá un pie con el número de equipos: «4 equipos» si se muestran todos, o «Mostrando 2 de 4 equipos» si hay límite. Ese texto ocupará todo el ancho de la tabla.
+
+Pruébalo así:
 
 ```jsx
-const CALIFICACIONES = [
-  { min: 9, texto: "Sobresaliente" },
-  { min: 7, texto: "Notable" },
-  { min: 6, texto: "Bien" },
-  { min: 5, texto: "Suficiente" },
-  { min: 0, texto: "Insuficiente" },
-];
+<Clasificacion equipos={equipos} />
+<Clasificacion equipos={equipos} limite={2} />
+```
 
-const textoNota = (nota) => CALIFICACIONES.find((c) => nota >= c.min).texto;
+Resultado esperado (arriba la tabla completa y abajo con límite). Sin CSS, las tablas no tienen bordes:
 
-function TablaNotas({ alumnos, soloAprobados = false }) {
-  const filtrados = soloAprobados ? alumnos.filter((a) => a.nota >= 5) : alumnos;
-  const ordenados = filtrados.toSorted((a, b) => b.nota - a.nota);
+![Resultado de Clasificacion: cuatro equipos ordenados por puntos, el primero en negrita y el último en rojo, con el pie 4 equipos; debajo, solo los dos primeros con el pie Mostrando 2 de 4 equipos](./assets/img/ud4-ej-liga.png){: width="460"}
 
-  if (ordenados.length === 0) {
-    return <p>No hay alumnos que mostrar.</p>;
-  }
+{% endraw %}{% comment %}{% raw %}
 
-  const media = ordenados.reduce((suma, a) => suma + a.nota, 0) / ordenados.length;
+```jsx
+const puntos = (e) => e.ganados * 3 + e.empatados;
+
+function Clasificacion({ equipos, limite }) {
+  const ordenados = equipos.toSorted((a, b) => puntos(b) - puntos(a));
+  const visibles = limite ? ordenados.slice(0, limite) : ordenados;
 
   return (
     <table>
       <thead>
         <tr>
-          <th>Alumno</th>
-          <th>Nota</th>
-          <th>Calificación</th>
+          <th>Pos.</th>
+          <th>Equipo</th>
+          <th>PJ</th>
+          <th>G</th>
+          <th>E</th>
+          <th>P</th>
+          <th>Puntos</th>
         </tr>
       </thead>
       <tbody>
-        {ordenados.map((a) => (
-          <tr key={a.id} style={{ color: a.nota < 5 ? "red" : "inherit" }}>
-            <td>{a.nombre}</td>
-            <td>{a.nota.toFixed(1)}</td>
-            <td>{textoNota(a.nota)}</td>
+        {visibles.map((e, i) => (
+          <tr
+            key={e.id}
+            style={{
+              fontWeight: i === 0 ? "bold" : "normal",
+              color: i === ordenados.length - 1 ? "red" : "inherit",
+            }}
+          >
+            <td>{i + 1}</td>
+            <td>{e.nombre}</td>
+            <td>{e.ganados + e.empatados + e.perdidos}</td>
+            <td>{e.ganados}</td>
+            <td>{e.empatados}</td>
+            <td>{e.perdidos}</td>
+            <td>{puntos(e)}</td>
           </tr>
         ))}
       </tbody>
       <tfoot>
         <tr>
-          <td>Media</td>
-          <td colSpan={2}>{media.toFixed(2)}</td>
+          <td colSpan={7}>
+            {visibles.length < equipos.length
+              ? `Mostrando ${visibles.length} de ${equipos.length} equipos`
+              : `${equipos.length} equipos`}
+          </td>
         </tr>
       </tfoot>
     </table>
   );
 }
-
-// Uso
-const alumnos = [
-  { id: 1, nombre: "Pedro", nota: 4.5 },
-  { id: 2, nombre: "Lucía", nota: 9.2 },
-  { id: 3, nombre: "Ana", nota: 6.8 },
-];
-
-<TablaNotas alumnos={alumnos} />
-<TablaNotas alumnos={alumnos} soloAprobados />
 ```
-
-Así se ve en el navegador (arriba todos los alumnos y abajo solo los aprobados). Sin CSS, las tablas no tienen bordes:
-
-![Resultado de TablaNotas: alumnos ordenados de mayor a menor nota con su calificación, Pedro en rojo por estar suspenso y la media al final; debajo, la misma tabla solo con Lucía y Ana](./assets/img/ud4-ej-tabla.png){: width="460"}
 
 Paso a paso:
 
-- **Prop booleana.** `soloAprobados` cambia el comportamiento del componente. Al usarlo basta con escribir `soloAprobados` (apartado 3.5.1), y si no se pone vale `false`.
-- **Preparar los datos por pasos.** Primero se filtra (o no, según la prop) y después se ordena con `toSorted`, que no modifica el array recibido por props (apartado 3.10.2). Guardar cada paso en una variable con nombre hace el código fácil de seguir.
-- **Comprobar el caso vacío después de filtrar.** Si todos suspenden y se piden solo aprobados, la lista queda vacía aunque `alumnos` no lo esté. Además, así se evita dividir entre 0 al calcular la media.
-- **`reduce` para la media.** Suma todas las notas partiendo de 0 y divide entre el número de alumnos mostrados. Por eso la media cambia de una tabla a otra: 6.83 con los tres alumnos y 8.00 solo con los aprobados.
-- **Tabla de correspondencias con rangos.** Como las calificaciones dependen de un rango y no de un valor exacto, se usa un array ordenado y `find`, que devuelve el primer rango que cumple la nota. Es la misma idea que el objeto de correspondencias del apartado 3.9.5.
-- **Estilo condicional en cada fila.** El ternario dentro de `style` pinta en rojo los suspensos.
-- **Atributos en camelCase.** `colSpan` se escribe así en JSX, igual que `className` o `tabIndex` (apartado 3.5).
-- **`key`.** Esta lista se ordena y se filtra, así que el índice no sirve: Pedro está en la posición 2 en la primera tabla y no aparece en la segunda. Se usa el `id` de cada alumno, que no cambia aunque cambie su posición.
+- **Una función auxiliar para un dato calculado.** Los puntos se necesitan para ordenar y para mostrarlos, así que se calculan en una función `puntos` fuera del componente, en lugar de repetir la fórmula.
+- **Preparar los datos por pasos.** Primero se ordena con `toSorted`, que no modifica el array recibido por props (apartado 3.10.2). Después, si hay límite, `slice(0, limite)` se queda con los primeros. `slice` tampoco modifica el array original.
+- **Prop opcional sin valor por defecto.** Si no se pasa `limite`, vale `undefined`, que es *falsy*, y el ternario usa la lista completa.
+- **El índice para mostrar, el id para la `key`.** El segundo parámetro de `map` es la posición del elemento. Aquí se usa para mostrar la posición (`i + 1`) y para decidir el estilo de la fila, pero no como `key`: la lista se ordena y se recorta, así que cada equipo se identifica por su `id`.
+- **El último clasificado.** Se compara con `ordenados.length - 1` y no con `visibles.length - 1`. Así, cuando hay límite, no se pinta en rojo un equipo solo porque sea el último de los que se ven.
+- **`colSpan`.** El texto del pie ocupa las 7 columnas. En JSX se escribe en camelCase, igual que `className` o `tabIndex` (apartado 3.5).
 
-## 5.7 Ejemplo: catálogo de productos
+{% endraw %}{% endcomment %}{% raw %}
 
-Este ejemplo muestra varias condiciones independientes en cada elemento de la lista y reutiliza el mismo componente para mostrar el catálogo completo o solo las ofertas.
+## 5.7 Ejemplo: carta de un restaurante
+
+Crea un componente `Carta` que muestre los platos de un restaurante a partir de este array, que recibirá en la prop `platos`:
+
+```js
+const platos = [
+  { id: "E1", nombre: "Ensalada de la huerta", precio: 8.5, vegetariano: true, picante: 0, disponible: true },
+  { id: "P1", nombre: "Pollo al curry", precio: 12, vegetariano: false, picante: 2, disponible: true },
+  { id: "V1", nombre: "Curry de garbanzos", precio: 10.5, vegetariano: true, picante: 3, disponible: false },
+  { id: "C1", nombre: "Chuletón", precio: 24, vegetariano: false, picante: 0, disponible: true },
+];
+```
+
+Requisitos:
+
+- Cada plato se mostrará en un componente propio, `Plato`, con su nombre y su precio con dos decimales: «Chuletón — 24.00 €».
+- Los platos vegetarianos llevarán una planta (🌱) detrás del nombre.
+- El nivel de picante (de 0 a 3) se mostrará con tantas guindillas (🌶) como indique. Si es 0, no se mostrará ninguna. Pista: los textos tienen el método `repeat`.
+- Los platos no disponibles se verán atenuados y con el texto «(agotado hoy)» en cursiva.
+- El componente tendrá una prop booleana `soloVegetarianos`. Si se activa, solo se mostrarán los platos vegetarianos y el título será «Platos vegetarianos» en lugar de «Carta».
+- Debajo del título se indicará cuántos de los platos mostrados están disponibles: «3 de 4 platos disponibles hoy».
+- Si no hay platos que mostrar, en lugar del contador y la lista aparecerá «No hay platos que mostrar», pero el título se seguirá viendo.
+
+Pruébalo así:
 
 ```jsx
-const productos = [
-  { id: "T-01", nombre: "Teclado", precio: 25, descuento: 20, stock: 12 },
-  { id: "R-07", nombre: "Ratón", precio: 12, stock: 2 },
-  { id: "M-24", nombre: "Monitor", precio: 149, descuento: 10, stock: 0 },
-  { id: "A-03", nombre: "Auriculares", precio: 30, stock: 8 },
-];
+<Carta platos={platos} />
+<Carta platos={platos} soloVegetarianos />
+```
 
-function Producto({ nombre, precio, descuento = 0, stock }) {
-  const agotado = stock === 0;
-  const precioFinal = precio * (1 - descuento / 100);
+Resultado esperado:
 
+![Resultado de Carta: la carta completa con la planta en los platos vegetarianos, guindillas según el picante y el curry de garbanzos atenuado y agotado; debajo, la sección de platos vegetarianos con solo dos platos](./assets/img/ud4-ej-carta.png){: width="460"}
+
+{% endraw %}{% comment %}{% raw %}
+
+```jsx
+function Plato({ nombre, precio, vegetariano, picante, disponible }) {
   return (
-    <li style={{ opacity: agotado ? 0.5 : 1 }}>
-      <strong>{nombre}</strong>{" "}
-      {descuento > 0 ? (
-        <>
-          <s>{precio.toFixed(2)} €</s> {precioFinal.toFixed(2)} € (−{descuento} %)
-        </>
-      ) : (
-        <>{precio.toFixed(2)} €</>
-      )}
-      {agotado && <em> Agotado</em>}
-      {stock > 0 && stock <= 3 && <em> ¡Últimas {stock} unidades!</em>}
+    <li style={{ opacity: disponible ? 1 : 0.5 }}>
+      {nombre}
+      {vegetariano && " 🌱"}
+      {picante > 0 && " " + "🌶".repeat(picante)}
+      {" — "}
+      {precio.toFixed(2)} €
+      {!disponible && <em> (agotado hoy)</em>}
     </li>
   );
 }
 
-function Catalogo({ productos, soloOfertas = false }) {
-  const visibles = soloOfertas ? productos.filter((p) => p.descuento > 0) : productos;
+function Carta({ platos, soloVegetarianos = false }) {
+  const visibles = soloVegetarianos ? platos.filter((p) => p.vegetariano) : platos;
+  const disponibles = visibles.filter((p) => p.disponible).length;
 
   return (
     <section>
-      <h2>{soloOfertas ? "Ofertas" : "Catálogo"}</h2>
+      <h2>{soloVegetarianos ? "Platos vegetarianos" : "Carta"}</h2>
       {visibles.length === 0 ? (
-        <p>No hay productos que mostrar.</p>
+        <p>No hay platos que mostrar.</p>
       ) : (
-        <ul>
-          {visibles.map((p) => (
-            <Producto key={p.id} {...p} />
-          ))}
-        </ul>
+        <>
+          <p>
+            {disponibles} de {visibles.length} platos disponibles hoy
+          </p>
+          <ul>
+            {visibles.map((p) => (
+              <Plato key={p.id} {...p} />
+            ))}
+          </ul>
+        </>
       )}
     </section>
   );
 }
-
-// Uso
-<Catalogo productos={productos} />
-<Catalogo productos={productos} soloOfertas />
 ```
-
-Así se ve en el navegador:
-
-![Resultado de Catalogo: lista de productos con precios tachados en los que tienen descuento, el ratón con aviso de últimas unidades y el monitor atenuado y agotado; debajo, la sección de ofertas solo con el teclado y el monitor](./assets/img/ud4-ej-catalogo.png){: width="460"}
 
 Paso a paso:
 
-- **Datos incompletos.** Algunos productos no tienen `descuento`. En `Producto` toma el valor por defecto 0, y en el `filter` de `Catalogo`, `undefined > 0` es `false`, así que no se cuelan en las ofertas.
-- **Variables con nombre para las condiciones.** `agotado` y `precioFinal` se calculan antes del `return`. El JSX queda más legible con `{agotado && ...}` que con `{stock === 0 && ...}`.
-- **Ternario con fragmentos.** Si hay descuento se muestran dos precios (el original tachado con `<s>` y el final) y, si no, uno solo. Cada rama del ternario devuelve un fragmento (apartado 3.8) para agrupar varias cosas sin añadir etiquetas.
-- **Varias condiciones independientes.** «Agotado» y «¡Últimas unidades!» son dos `&&` separados. La segunda combina dos comparaciones para no mostrarse cuando el stock es 0.
-- **El espacio `{" "}`.** JSX elimina los saltos de línea entre etiquetas, así que sin él el nombre quedaría pegado al precio.
-- **El mismo componente para dos vistas.** La prop `soloOfertas` decide el título y si se filtra la lista. El mensaje de lista vacía se resuelve con un ternario porque el título debe verse siempre.
-- **`key` y spread.** Los productos tienen un código único (`"T-01"`, `"R-07"`...), que es un buen `key` aunque sea un texto. Como el objeto tiene los mismos nombres que las props, se pasa con `{...p}` (apartado 4.2.8); la `key` se escribe aparte porque no forma parte de las props.
+- **Varias condiciones independientes en cada plato.** La planta, las guindillas y «(agotado hoy)» son tres `&&` separados: cada uno depende de un dato distinto y pueden aparecer a la vez.
+- **Repetir un símbolo.** `"🌶".repeat(picante)` devuelve el símbolo repetido tantas veces como indique el número. La condición `picante > 0` evita añadir un espacio sobrante cuando no hay picante.
+- **El separador `{" — "}`.** JSX elimina los saltos de línea entre las líneas de código, así que los espacios que deben verse se escriben dentro de un texto entre llaves.
+- **Prop booleana.** `soloVegetarianos` decide si se filtra y qué título se muestra. Al usarlo basta con escribir `soloVegetarianos` (apartado 3.5.1), y si no se pone vale `false`.
+- **Contador sobre los platos visibles.** `disponibles` se calcula a partir de `visibles` y no de `platos`, para que el contador de la sección vegetariana cuente solo sus platos: «1 de 2».
+- **Ternario con fragmento.** Si hay platos, se muestran dos cosas (el contador y la lista), así que se agrupan en un fragmento (apartado 3.8). Se usa un ternario dentro del JSX y no un *early return* porque el título debe verse en los dos casos.
+- **`key`.** Cada plato tiene un código único (`"E1"`, `"P1"`...), que es un buen `key` aunque sea un texto. Va en `<Plato>`, y el resto de datos se pasan con `{...p}`.
 
-## 5.8 Ejemplo: horario semanal (listas anidadas)
+{% endraw %}{% endcomment %}{% raw %}
 
-Cuando cada elemento de una lista contiene a su vez otra lista, se usa un `map` dentro de otro (apartado 3.10.4). Cada nivel necesita su propia `key`.
+## 5.8 Ejemplo: discografía (listas anidadas)
+
+Crea un componente `Discografia` que muestre los discos de un grupo musical con sus canciones, a partir de este array que recibirá en la prop `discos`:
+
+```js
+const discos = [
+  {
+    id: 101,
+    titulo: "Primer disco",
+    anio: 2022,
+    canciones: [
+      { pista: 1, titulo: "Intro", duracion: 95 },
+      { pista: 2, titulo: "Despertar", duracion: 214 },
+      { pista: 3, titulo: "Ciudad", duracion: 187 },
+    ],
+  },
+  {
+    id: 102,
+    titulo: "En directo",
+    anio: 2024,
+    canciones: [
+      { pista: 1, titulo: "Despertar (en directo)", duracion: 245 },
+      { pista: 2, titulo: "Ciudad (en directo)", duracion: 203 },
+    ],
+  },
+  { id: 103, titulo: "Tercer disco", anio: 2026, canciones: [] },
+];
+```
+
+Requisitos:
+
+- Cada disco se mostrará con un encabezado con su título y su año entre paréntesis: «Primer disco (2022)».
+- Debajo irá la lista numerada de sus canciones, cada una con su título y su duración.
+- Las duraciones están en segundos y se mostrarán en formato minutos:segundos, siempre con dos cifras en los segundos: 95 segundos se mostrarán como «1:35» y 187, como «3:07». Pista: `String(7).padStart(2, "0")` devuelve `"07"`.
+- Después de la lista se mostrará el número de canciones y la duración total del disco: «3 canciones · 8:16 en total».
+- Si un disco todavía no tiene canciones, en lugar de la lista y del total se mostrará «Próximamente».
+
+Pruébalo así:
 
 ```jsx
-const horario = [
-  {
-    dia: "Lunes",
-    clases: [
-      { id: 1, hora: "08:15", modulo: "Desarrollo de Interfaces" },
-      { id: 2, hora: "10:15", modulo: "Acceso a Datos" },
-    ],
-  },
-  { dia: "Martes", clases: [{ id: 1, hora: "08:15", modulo: "Programación Multimedia" }] },
-  { dia: "Miércoles", clases: [] },
-  {
-    dia: "Jueves",
-    clases: [
-      { id: 1, hora: "09:15", modulo: "Desarrollo de Interfaces" },
-      { id: 2, hora: "11:45", modulo: "Empresa e Iniciativa Emprendedora" },
-    ],
-  },
-];
+<Discografia discos={discos} />
+```
 
-function Horario({ dias }) {
+Resultado esperado:
+
+![Resultado de Discografia: dos discos con sus canciones numeradas, la duración de cada una y la duración total, y un tercer disco con el texto Próximamente](./assets/img/ud4-ej-discos.png){: width="460"}
+
+{% endraw %}{% comment %}{% raw %}
+
+```jsx
+const formatoDuracion = (segundos) =>
+  `${Math.floor(segundos / 60)}:${String(segundos % 60).padStart(2, "0")}`;
+
+function Discografia({ discos }) {
   return (
     <div>
-      {dias.map((d) => (
-        <section key={d.dia}>
-          <h3>{d.dia}</h3>
-          {d.clases.length === 0 ? (
-            <p>Sin clase</p>
-          ) : (
-            <ul>
-              {d.clases.map((c) => (
-                <li key={c.id}>
-                  {c.hora} · {c.modulo}
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      ))}
+      {discos.map((d) => {
+        const total = d.canciones.reduce((suma, c) => suma + c.duracion, 0);
+
+        return (
+          <section key={d.id}>
+            <h3>
+              {d.titulo} ({d.anio})
+            </h3>
+            {d.canciones.length === 0 ? (
+              <p>Próximamente</p>
+            ) : (
+              <>
+                <ol>
+                  {d.canciones.map((c) => (
+                    <li key={c.pista}>
+                      {c.titulo} — {formatoDuracion(c.duracion)}
+                    </li>
+                  ))}
+                </ol>
+                <p>
+                  {d.canciones.length} canciones · {formatoDuracion(total)} en total
+                </p>
+              </>
+            )}
+          </section>
+        );
+      })}
     </div>
   );
 }
-
-// Uso
-<Horario dias={horario} />
 ```
-
-Así se ve en el navegador:
-
-![Resultado de Horario: cada día con su lista de clases y el miércoles con el texto Sin clase](./assets/img/ud4-ej-horario.png){: width="460"}
 
 Paso a paso:
 
-- **Dos `map` anidados.** El exterior recorre los días y genera una `<section>` por cada uno; el interior recorre las clases de ese día y genera un `<li>` por clase.
-- **Condición dentro del `map` exterior.** Para cada día, un ternario elige entre la lista de clases y el texto «Sin clase». Así el miércoles aparece en el horario aunque no tenga clases.
-- **`key` en cada nivel.** Los días se identifican por su nombre, que no se repite. Las clases usan su `id`.
-- **Las `key` solo tienen que ser únicas entre hermanos.** Fíjate en que los `id` de las clases empiezan en 1 cada día: el lunes y el martes tienen una clase con `id: 1`. No es un error, porque esas dos clases están en listas distintas (cada `<ul>` es una lista independiente). Lo que no podría ocurrir es que dos clases del mismo día tuvieran el mismo `id`.
-- **Un dato que se repite no sirve como `key`.** «Desarrollo de Interfaces» aparece el lunes y el jueves, así que el nombre del módulo no serviría como `key` si se mostraran todas las clases de la semana en una sola lista.
+- **Dos `map` anidados.** El exterior recorre los discos y genera una `<section>` por cada uno; el interior recorre las canciones de ese disco y genera un `<li>` por canción (apartado 3.10.4).
+- **Un cálculo por cada elemento.** La duración total es distinta para cada disco, así que no se puede calcular antes del `return` del componente: se calcula dentro del `map` exterior. Para poder declarar la variable `total`, la función flecha del `map` usa llaves y un `return` explícito, en lugar de devolver el JSX directamente entre paréntesis.
+- **Función auxiliar de formato.** `formatoDuracion` se usa para cada canción y para el total, así que se define una vez fuera del componente. `Math.floor(segundos / 60)` da los minutos y `segundos % 60`, los segundos que sobran.
+- **`<ol>` en lugar de `<ul>`.** La lista ordenada numera las canciones sola, así que no hace falta mostrar el número de pista.
+- **Condición dentro del `map` exterior.** Para cada disco, un ternario elige entre la lista y «Próximamente».
+- **`key` en cada nivel.** Los discos usan su `id` y las canciones, su número de pista.
+- **Las `key` solo tienen que ser únicas entre hermanos.** Los dos primeros discos tienen una pista 1 y una pista 2. No es un error, porque esas canciones están en listas distintas (cada `<ol>` es una lista independiente). Lo que no podría ocurrir es que un mismo disco tuviera dos canciones con la misma pista.
+
+{% endraw %}{% endcomment %}{% raw %}
 
 ## 5.9 PRÁCTICA: Ampliación de la aplicación de notas
 
