@@ -2812,7 +2812,7 @@ En la solución de cada uno de los ejemplos siguientes se explica qué `key` se 
 Crea un componente `Rating` que muestre una valoración con estrellas a partir de un número.
 
 - Recibirá dos props: `valor`, con la puntuación, y `max`, con el número total de estrellas. Si no se indica `max`, serán 5.
-- Por cada punto completo se mostrará una estrella llena (★). Si al valor le sobra medio punto, se mostrará una media estrella (◐). El resto de posiciones, hasta llegar a `max`, serán estrellas vacías (☆). Por ejemplo, `3.5` sobre 5 se verá como ★★★◐☆.
+- Por cada punto completo se mostrará una estrella llena (★). Si al valor le sobra medio punto, se mostrará una media estrella (⯪). El resto de posiciones, hasta llegar a `max`, serán estrellas vacías (☆). Por ejemplo, `3.5` sobre 5 se verá como ★★★⯪☆.
 - Cada estrella irá en su propio `<span>`, generado a partir de un array.
 - Un lector de pantalla no debe leer los símbolos uno a uno, sino anunciar «Valoración: 3.5 de 5». Pista: el atributo `aria-label` pone un texto a un elemento y `aria-hidden="true"` hace que el lector lo ignore.
 
@@ -2834,7 +2834,7 @@ const Rating = ({ valor, max = 5 }) => {
   const estrellas = [];
   for (let i = 1; i <= max; i++) {
     if (valor >= i) estrellas.push("★");              // estrella completa
-    else if (valor >= i - 0.5) estrellas.push("◐");   // media estrella
+    else if (valor >= i - 0.5) estrellas.push("⯪");   // media estrella
     else estrellas.push("☆");                         // estrella vacía
   }
 
