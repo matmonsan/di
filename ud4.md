@@ -1388,7 +1388,7 @@ const nombre = "Ana";
 
 Dentro de las llaves solo se pueden escribir expresiones. Una expresión es cualquier fragmento de código que produce un valor. Una sentencia es una instrucción que hace algo pero no produce un valor. Si dudas, pregúntate: «¿podría escribir esto a la derecha de `const x = ...`?». Si la respuesta es sí, es una expresión.
 
-| ✓ Expresiones (válidas entre llaves) | ✗ Sentencias (no válidas entre llaves) |
+| Expresiones (válidas entre llaves) | Sentencias (no válidas entre llaves) |
 | --- | --- |
 | `nombre` (una variable) | `if (...) { ... } else { ... }` |
 | `2 + 3`, `precio * 1.21` (operaciones) | `for (...) { ... }`, `while (...) { ... }` |
@@ -1598,7 +1598,7 @@ Tabla de equivalencias más frecuentes:
 
 JSX es más estricto que HTML. El navegador perdona muchos errores de HTML, pero un error de JSX impide que la aplicación funcione. Estas son las reglas y el error que verás si no las cumples:
 
-| # | Regla | ✗ Incorrecto | ✓ Correcto |
+| # | Regla | Incorrecto | Correcto |
 | --- | --- | --- | --- |
 | 1 | **Un único elemento raíz** en cada `return`. | `return <h1>A</h1><p>B</p>;` | `return <><h1>A</h1><p>B</p></>;` |
 | 2 | **Todas las etiquetas se cierran**, también las vacías. | `<img src="a.png">`, `<br>` | `<img src="a.png" />`, `<br />` |
@@ -1636,10 +1636,10 @@ const element = (
 > **¿Por qué los paréntesis?** Si después de `return` hay un salto de línea, JavaScript inserta automáticamente un punto y coma y la función devuelve `undefined`. Los paréntesis le indican que el valor continúa en las líneas siguientes:
 >
 > ```jsx
-> return          // ✗ JavaScript entiende "return;" y devuelve undefined
+> return          // Incorrecto: JavaScript entiende "return;" y devuelve undefined
 >   <h1>Hola</h1>;
 >
-> return (        // ✓ Correcto
+> return (        // Correcto
 >   <h1>Hola</h1>
 > );
 > ```
@@ -2302,7 +2302,7 @@ Las props son inmutables: un componente nunca debe modificar las props que recib
 
 ```jsx
 function Contador({ valor }) {
-  valor = valor + 1; // ✗ MAL: no se modifican las props
+  valor = valor + 1; // MAL: no se modifican las props
   return <p>{valor}</p>;
 }
 ```
@@ -2321,7 +2321,7 @@ Las props pueden ser de cualquier tipo: textos, números, booleanos, arrays, obj
   tipos={["eléctrico"]}                  // array
   stats={{ ataque: 55, defensa: 40 }}    // objeto (llaves de expresión + llaves del objeto)
   onSeleccionar={() => console.log("!")} // función
-  icono={<span>⚡</span>}                // elemento JSX
+  icono={<img src="rayo.png" alt="" />}  // elemento JSX
 />
 ```
 
@@ -2415,7 +2415,7 @@ function Aviso({ icono, titulo, children }) {
   );
 }
 
-<Aviso icono={<span>⚠️</span>} titulo="Atención">
+<Aviso icono={<img src="alerta.png" alt="" width={16} />} titulo="Atención">
   Revisa los datos antes de enviar.
 </Aviso>
 
@@ -2961,7 +2961,7 @@ El objeto puede tener estas propiedades, y todas, salvo el título, pueden falta
 Además:
 
 - Si hay varios autores, se mostrarán en una sola línea separados por comas: «Ana Ruiz, Pablo Gil».
-- Si el libro está premiado, se mostrará un trofeo (🏆) detrás del título.
+- Si el libro está premiado, se mostrará «(premiado)» detrás del título.
 - El subtítulo, si lo hay, irá en cursiva.
 - Los géneros se mostrarán en una lista.
 
@@ -2985,7 +2985,7 @@ Pruébalo así:
 
 Resultado esperado (arriba con todos los datos y abajo con los que faltan):
 
-![Resultado de FichaLibro: un libro con portada, trofeo, subtítulo, dos autores, páginas, sinopsis y géneros; debajo, otro libro con la portada por defecto, autor desconocido, páginas desconocidas y sin sinopsis](./assets/img/ud4-ej-libro.png){: width="460"}
+![Resultado de FichaLibro: un libro con portada, la marca de premiado, subtítulo, dos autores, páginas, sinopsis y géneros; debajo, otro libro con la portada por defecto, autor desconocido, páginas desconocidas y sin sinopsis](./assets/img/ud4-ej-libro.png){: width="460"}
 
 {% endraw %}{% comment %}{% raw %}
 
@@ -2998,7 +2998,7 @@ function FichaLibro({ libro }) {
       <img src={portada ?? "https://placehold.co/60x90?text=?"} alt={`Portada de ${titulo}`} width={60} />
       <h3>
         {titulo}
-        {premiado && " 🏆"}
+        {premiado && " (premiado)"}
       </h3>
       {subtitulo && (
         <p>
@@ -3025,7 +3025,7 @@ Paso a paso:
 - **Desestructuración con valores por defecto.** Si el objeto no trae `autores`, `premiado` o `generos`, toman `[]`, `false` y `[]`. Gracias a eso, más abajo se puede escribir `autores.length` sin miedo a que `autores` sea `undefined`.
 - **`??` para la portada.** Si no hay portada, se usa una imagen por defecto. `??` solo actúa cuando el valor es `null` o `undefined`.
 - **`||` para la sinopsis.** Aquí interesa `||` y no `??`: la sinopsis del segundo libro es un texto vacío `""`, y con `??` se mostraría un párrafo vacío (apartado 3.9.3).
-- **`&&` para lo que solo aparece a veces.** El trofeo, el subtítulo y la lista de géneros no tienen alternativa: si no hay dato, no se muestra nada. En los géneros la condición es `generos.length > 0` y no `generos.length`, para que no aparezca un `0`.
+- **`&&` para lo que solo aparece a veces.** El texto «(premiado)», el subtítulo y la lista de géneros no tienen alternativa: si no hay dato, no se muestra nada. En los géneros la condición es `generos.length > 0` y no `generos.length`, para que no aparezca un `0`.
 - **Ternarios para lo que tiene alternativa.** Los autores y las páginas muestran un texto u otro. `join(", ")` convierte el array de autores en un texto separado por comas.
 - **`key`.** Los géneros son textos sueltos, sin id. Como un libro no repite el mismo género, el propio texto sirve como `key`.
 
@@ -3146,8 +3146,8 @@ const platos = [
 Requisitos:
 
 - Cada plato se mostrará en un componente propio, `Plato`, con su nombre y su precio con dos decimales: «Chuletón — 24.00 €».
-- Los platos vegetarianos llevarán una planta (🌱) detrás del nombre.
-- El nivel de picante (de 0 a 3) se mostrará con tantas guindillas (🌶) como indique. Si es 0, no se mostrará ninguna. Pista: los textos tienen el método `repeat`.
+- Los platos vegetarianos llevarán el texto «(vegetariano)» detrás del nombre.
+- Los platos picantes mostrarán su nivel de picante, de 1 a 3, detrás del nombre: «(picante 2/3)». Los que tienen picante 0 no mostrarán nada.
 - Los platos no disponibles se verán atenuados y con el texto «(agotado hoy)» en cursiva.
 - El componente tendrá una prop booleana `soloVegetarianos`. Si se activa, solo se mostrarán los platos vegetarianos y el título será «Platos vegetarianos» en lugar de «Carta».
 - Debajo del título se indicará cuántos de los platos mostrados están disponibles: «3 de 4 platos disponibles hoy».
@@ -3162,7 +3162,7 @@ Pruébalo así:
 
 Resultado esperado:
 
-![Resultado de Carta: la carta completa con la planta en los platos vegetarianos, guindillas según el picante y el curry de garbanzos atenuado y agotado; debajo, la sección de platos vegetarianos con solo dos platos](./assets/img/ud4-ej-carta.png){: width="460"}
+![Resultado de Carta: la carta completa con los platos vegetarianos y picantes marcados con texto y el curry de garbanzos atenuado y agotado; debajo, la sección de platos vegetarianos con solo dos platos](./assets/img/ud4-ej-carta.png){: width="460"}
 
 {% endraw %}{% comment %}{% raw %}
 
@@ -3171,8 +3171,8 @@ function Plato({ nombre, precio, vegetariano, picante, disponible }) {
   return (
     <li style={{ opacity: disponible ? 1 : 0.5 }}>
       {nombre}
-      {vegetariano && " 🌱"}
-      {picante > 0 && " " + "🌶".repeat(picante)}
+      {vegetariano && " (vegetariano)"}
+      {picante > 0 && ` (picante ${picante}/3)`}
       {" — "}
       {precio.toFixed(2)} €
       {!disponible && <em> (agotado hoy)</em>}
@@ -3208,8 +3208,8 @@ function Carta({ platos, soloVegetarianos = false }) {
 
 Paso a paso:
 
-- **Varias condiciones independientes en cada plato.** La planta, las guindillas y «(agotado hoy)» son tres `&&` separados: cada uno depende de un dato distinto y pueden aparecer a la vez.
-- **Repetir un símbolo.** `"🌶".repeat(picante)` devuelve el símbolo repetido tantas veces como indique el número. La condición `picante > 0` evita añadir un espacio sobrante cuando no hay picante.
+- **Varias condiciones independientes en cada plato.** «(vegetariano)», el picante y «(agotado hoy)» son tres `&&` separados: cada uno depende de un dato distinto y pueden aparecer a la vez.
+- **Un número dentro de un texto.** El nivel de picante se inserta en una *template literal*. La condición `picante > 0` hace que los platos sin picante no muestren «(picante 0/3)».
 - **El separador `{" — "}`.** JSX elimina los saltos de línea entre las líneas de código, así que los espacios que deben verse se escriben dentro de un texto entre llaves.
 - **Prop booleana.** `soloVegetarianos` decide si se filtra y qué título se muestra. Al usarlo basta con escribir `soloVegetarianos` (apartado 3.5.1), y si no se pone vale `false`.
 - **Contador sobre los platos visibles.** `disponibles` se calcula a partir de `visibles` y no de `platos`, para que el contador de la sección vegetariana cuente solo sus platos: «1 de 2».
@@ -4188,8 +4188,8 @@ Por convenio, las funciones que manejan eventos se llaman `handleAlgo` (`handleC
 > **Error muy frecuente: llamar a la función en lugar de pasarla.**
 >
 > ```jsx
-> <button onClick={handleClick}>   // ✓ Se pasa la función; se ejecutará al hacer clic
-> <button onClick={handleClick()}> // ✗ Se ejecuta durante el renderizado, no al hacer clic
+> <button onClick={handleClick}>   // Bien: se pasa la función; se ejecutará al hacer clic
+> <button onClick={handleClick()}> // Mal: se ejecuta durante el renderizado, no al hacer clic
 > ```
 
 ### 7.1.1 Pasar parámetros a los manejadores
@@ -4621,7 +4621,7 @@ Los hooks son funciones que permiten a los componentes funcionales usar el estad
 ```jsx
 function Perfil({ usuario }) {
   if (!usuario) return null;
-  const [abierto, setAbierto] = useState(false); // ✗ Hook después de un return condicional
+  const [abierto, setAbierto] = useState(false); // MAL: hook después de un return condicional
   // ...
 }
 ```
@@ -4715,11 +4715,11 @@ React detecta los cambios comparando la referencia del estado anterior con la de
 ```jsx
 const [usuario, setUsuario] = useState({ nombre: "Ana", edad: 30 });
 
-// ✗ MAL: muta el objeto, React no se entera
+// MAL: muta el objeto, React no se entera
 usuario.edad = 31;
 setUsuario(usuario);
 
-// ✓ BIEN: crea un objeto nuevo copiando el anterior
+// BIEN: crea un objeto nuevo copiando el anterior
 setUsuario({ ...usuario, edad: 31 });
 // o con función actualizadora
 setUsuario((prev) => ({ ...prev, edad: prev.edad + 1 }));
@@ -4727,7 +4727,7 @@ setUsuario((prev) => ({ ...prev, edad: prev.edad + 1 }));
 
 **Arrays.** Operaciones habituales sin mutar:
 
-| Operación | ✗ Muta (evitar) | ✓ Crea un array nuevo |
+| Operación | Muta (evitar) | Crea un array nuevo |
 | --- | --- | --- |
 | Añadir | `push`, `unshift` | `[...arr, nuevo]`, `[nuevo, ...arr]` |
 | Eliminar | `splice`, `pop`, `shift` | `arr.filter(x => x.id !== id)` |
@@ -4985,11 +4985,11 @@ Un error común es usar efectos para cosas que no son efectos:
 - **Calcular datos a partir de props o estado:** hazlo directamente durante el renderizado.
 
   ```jsx
-  // ✗ Innecesario
+  // MAL: innecesario
   const [total, setTotal] = useState(0);
   useEffect(() => { setTotal(items.reduce((s, i) => s + i.precio, 0)); }, [items]);
 
-  // ✓ Se calcula al renderizar
+  // BIEN: se calcula al renderizar
   const total = items.reduce((s, i) => s + i.precio, 0);
   ```
 
