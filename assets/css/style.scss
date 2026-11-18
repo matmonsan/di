@@ -36,3 +36,13 @@
 .main-content h6 {
   color: #1b355a;
 }
+
+/* Desplegables (<details>): el tema pone summary con display: block
+   y eso oculta la flecha. Se recupera con display: list-item. */
+.main-content summary {
+  display: list-item;
+  cursor: pointer;
+  font-weight: bold;
+  color: #1b355a;
+  margin-bottom: 1rem;
+}
