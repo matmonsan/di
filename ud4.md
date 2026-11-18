@@ -17,8 +17,8 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica: aplicación de notas](#46-práctica-aplicación-de-notas)
 5. [Ejemplos de condicionales y listas](#5-ejemplos-de-condicionales-y-listas)
     - [Práctica: ampliación de la aplicación de notas](#59-práctica-ampliación-de-la-aplicación-de-notas)
-{% endraw %}{% comment %}{% raw %}
 6. [Estilos y CSS](#6-estilos-y-css)
+{% endraw %}{% comment %}{% raw %}
     - [Práctica 2](#69-práctica-2-estilos-en-componentes)
 7. [Eventos y comunicación entre componentes](#7-eventos-y-comunicación-entre-componentes)
 8. [Hooks: useState y useEffect](#8-hooks-usestate-y-useeffect)
@@ -3350,8 +3350,6 @@ Sube también el proyecto a tu repositorio personal para mantenerlo guardado.
 
 ---
 
-{% endraw %}{% comment %}{% raw %}
-
 # 6. Estilos y CSS
 
 En React hay varias alternativas para aplicar estilos:
@@ -3501,6 +3499,8 @@ const ComponentB = () => <div className="text">Texto de ComponentB</div>;
 ```
 
 Ambos componentes se verán rojos, porque la regla de `ComponentB.css` se carga después y tiene la misma especificidad. En una aplicación grande estos conflictos son constantes. Las soluciones son: BEM, módulos CSS, CSS-in-JS o preprocesadores como SCSS con anidación.
+
+{% endraw %}{% comment %}{% raw %}
 
 ## 6.3 BEM (Block, Element, Modifier)
 
