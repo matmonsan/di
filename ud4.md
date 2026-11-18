@@ -2734,9 +2734,9 @@ En una aplicación real todo eso aparece mezclado en el mismo componente. Este a
 
 1. **Enunciado:** qué tiene que hacer el componente, los datos de partida y cómo probarlo.
 2. **Resultado esperado:** una captura de cómo debe verse en el navegador. Las capturas no llevan ningún CSS, solo los estilos en línea del propio código, así que es exactamente lo que verás en un proyecto de Vite vacío.
-3. **Solución y explicación:** el código con su explicación paso a paso. Se publicará más adelante, cuando hayáis hecho los ejercicios.
+3. **Solución y explicación:** el código con su explicación paso a paso, oculto en un desplegable. Pulsa «Ver la solución y la explicación» para mostrarlo.
 
-Haz cada componente por tu cuenta y compara lo que ves en tu navegador con el resultado esperado.
+Haz cada componente por tu cuenta y compara lo que ves en tu navegador con el resultado esperado antes de abrir la solución.
 
 ## 5.1 Cómo abordar un componente que muestra datos
 
@@ -2827,7 +2827,9 @@ Resultado esperado:
 
 ![Resultado del componente Rating: tres estrellas y media sobre cinco, y cuatro estrellas sobre diez](./assets/img/ud4-ej-rating.png){: width="460"}
 
-{% endraw %}{% comment %}{% raw %}
+<details markdown="1">
+<summary>Ver la solución y la explicación</summary>
+
 
 ```jsx
 const Rating = ({ valor, max = 5 }) => {
@@ -2855,7 +2857,7 @@ Paso a paso:
 - **Lista y `key`.** `map` convierte cada símbolo en un `<span>`. Las estrellas no tienen id, y el texto no sirve porque se repite («★» aparece varias veces). Aquí el índice es correcto, porque la lista siempre tiene el mismo tamaño y nunca se reordena.
 - **Accesibilidad.** Con `aria-label` en el contenedor y `aria-hidden` en cada estrella, el lector de pantalla anuncia «Valoración: 3.5 de 5» (se trata en la UD5).
 
-{% endraw %}{% endcomment %}{% raw %}
+</details>
 
 ## 5.4 Ejemplo: lista de la compra
 
@@ -2890,7 +2892,9 @@ Resultado esperado (arriba con los cuatro artículos y abajo con la lista vacía
 
 ![Resultado de ListaCompra: el contador de productos que faltan, los huevos con el aviso No olvidar, los tomates y, al final y en gris, la leche y el pan en el carro; debajo, el mensaje de lista vacía](./assets/img/ud4-ej-compra.png){: width="460"}
 
-{% endraw %}{% comment %}{% raw %}
+<details markdown="1">
+<summary>Ver la solución y la explicación</summary>
+
 
 ```jsx
 function ArticuloCompra({ nombre, cantidad, unidad, comprado, imprescindible }) {
@@ -2939,7 +2943,7 @@ Paso a paso:
 - **Detalles de cada artículo.** El ternario de `style` elige el color; los dos `&&` añaden textos solo cuando se cumple su condición. El segundo combina dos booleanos, así que no hay riesgo de que aparezca un `0` (apartado 3.9.2).
 - **`key`.** Cada artículo tiene un `id`, así que se usa ese. Va en `<ArticuloCompra>`, que es lo que devuelve `map`, y no en el `<li>` de dentro. Como el objeto tiene los mismos nombres que las props, se pasa con el spread `{...a}` (apartado 4.2.8).
 
-{% endraw %}{% endcomment %}{% raw %}
+</details>
 
 ## 5.5 Ejemplo: ficha de un libro con datos opcionales
 
@@ -2987,7 +2991,9 @@ Resultado esperado (arriba con todos los datos y abajo con los que faltan):
 
 ![Resultado de FichaLibro: un libro con portada, la marca de premiado, subtítulo, dos autores, páginas, sinopsis y géneros; debajo, otro libro con la portada por defecto, autor desconocido, páginas desconocidas y sin sinopsis](./assets/img/ud4-ej-libro.png){: width="460"}
 
-{% endraw %}{% comment %}{% raw %}
+<details markdown="1">
+<summary>Ver la solución y la explicación</summary>
+
 
 ```jsx
 function FichaLibro({ libro }) {
@@ -3029,7 +3035,7 @@ Paso a paso:
 - **Ternarios para lo que tiene alternativa.** Los autores y las páginas muestran un texto u otro. `join(", ")` convierte el array de autores en un texto separado por comas.
 - **`key`.** Los géneros son textos sueltos, sin id. Como un libro no repite el mismo género, el propio texto sirve como `key`.
 
-{% endraw %}{% endcomment %}{% raw %}
+</details>
 
 ## 5.6 Ejemplo: clasificación de una liga
 
@@ -3064,7 +3070,9 @@ Resultado esperado (arriba la tabla completa y abajo con límite). Sin CSS, las 
 
 ![Resultado de Clasificacion: cuatro equipos ordenados por puntos, el primero en negrita y el último en rojo, con el pie 4 equipos; debajo, solo los dos primeros con el pie Mostrando 2 de 4 equipos](./assets/img/ud4-ej-liga.png){: width="460"}
 
-{% endraw %}{% comment %}{% raw %}
+<details markdown="1">
+<summary>Ver la solución y la explicación</summary>
+
 
 ```jsx
 const puntos = (e) => e.ganados * 3 + e.empatados;
@@ -3128,7 +3136,7 @@ Paso a paso:
 - **El último clasificado.** Se compara con `ordenados.length - 1` y no con `visibles.length - 1`. Así, cuando hay límite, no se pinta en rojo un equipo solo porque sea el último de los que se ven.
 - **`colSpan`.** El texto del pie ocupa las 7 columnas. En JSX se escribe en camelCase, igual que `className` o `tabIndex` (apartado 3.5).
 
-{% endraw %}{% endcomment %}{% raw %}
+</details>
 
 ## 5.7 Ejemplo: carta de un restaurante
 
@@ -3164,7 +3172,9 @@ Resultado esperado:
 
 ![Resultado de Carta: la carta completa con los platos vegetarianos y picantes marcados con texto y el curry de garbanzos atenuado y agotado; debajo, la sección de platos vegetarianos con solo dos platos](./assets/img/ud4-ej-carta.png){: width="460"}
 
-{% endraw %}{% comment %}{% raw %}
+<details markdown="1">
+<summary>Ver la solución y la explicación</summary>
+
 
 ```jsx
 function Plato({ nombre, precio, vegetariano, picante, disponible }) {
@@ -3216,7 +3226,7 @@ Paso a paso:
 - **Ternario con fragmento.** Si hay platos, se muestran dos cosas (el contador y la lista), así que se agrupan en un fragmento (apartado 3.8). Se usa un ternario dentro del JSX y no un *early return* porque el título debe verse en los dos casos.
 - **`key`.** Cada plato tiene un código único (`"E1"`, `"P1"`...), que es un buen `key` aunque sea un texto. Va en `<Plato>`, y el resto de datos se pasan con `{...p}`.
 
-{% endraw %}{% endcomment %}{% raw %}
+</details>
 
 ## 5.8 Ejemplo: discografía (listas anidadas)
 
@@ -3265,7 +3275,9 @@ Resultado esperado:
 
 ![Resultado de Discografia: dos discos con sus canciones numeradas, la duración de cada una y la duración total, y un tercer disco con el texto Próximamente](./assets/img/ud4-ej-discos.png){: width="460"}
 
-{% endraw %}{% comment %}{% raw %}
+<details markdown="1">
+<summary>Ver la solución y la explicación</summary>
+
 
 ```jsx
 const formatoDuracion = (segundos) =>
@@ -3316,7 +3328,7 @@ Paso a paso:
 - **`key` en cada nivel.** Los discos usan su `id` y las canciones, su número de pista.
 - **Las `key` solo tienen que ser únicas entre hermanos.** Los dos primeros discos tienen una pista 1 y una pista 2. No es un error, porque esas canciones están en listas distintas (cada `<ol>` es una lista independiente). Lo que no podría ocurrir es que un mismo disco tuviera dos canciones con la misma pista.
 
-{% endraw %}{% endcomment %}{% raw %}
+</details>
 
 ## 5.9 PRÁCTICA: Ampliación de la aplicación de notas
 
