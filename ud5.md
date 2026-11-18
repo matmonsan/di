@@ -11,6 +11,8 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 > **Objetivos de la unidad**
 >
 > - Diseñar interfaces visuales coherentes y accesibles aplicando principios UX/UI.
+> - Gestionar el estado y los efectos de los componentes con hooks (`useState`, `useEffect`, `useRef`) y crear hooks personalizados.
+> - Crear formularios controlados y no controlados con validación accesible.
 > - Gestionar el estado compartido de la aplicación mediante Context API, de acuerdo con la complejidad de la interfaz.
 > - Implementar enrutamiento con React Router, organizando la navegación entre vistas.
 > - Aplicar patrones de diseño adaptativo y *responsive* para distintos dispositivos.
@@ -18,23 +20,29 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 > - Garantizar la accesibilidad (a11y) de la aplicación mediante atributos ARIA y validación con herramientas automáticas.
 > - Diseñar vistas navegables de una aplicación React, asegurando coherencia visual, adaptación a distintos dispositivos y accesibilidad.
 >
-> **Requisitos previos:** esta unidad parte de los contenidos de la [UD4](ud4.md): componentes, props, estado (`useState`), efectos (`useEffect`), eventos y formularios controlados.
+> **Requisitos previos:** esta unidad parte de los contenidos de la [UD4](ud4.md): componentes, props, estilos, eventos y comunicación entre componentes.
 
 # Índice
 
 1. [Diseño de interfaces: principios UX/UI](#1-diseño-de-interfaces-principios-uxui)
-2. [Gestión del estado global con Context API](#2-gestión-del-estado-global-con-context-api)
-    - [Práctica 1](#27-práctica-1-estado-global-con-context)
-3. [Enrutamiento con React Router](#3-enrutamiento-con-react-router)
-    - [Práctica 2](#311-práctica-2-aplicación-navegable)
-4. [Diseño adaptativo y responsive](#4-diseño-adaptativo-y-responsive)
-5. [Material UI](#5-material-ui)
-    - [Práctica 3](#59-práctica-3-interfaz-con-material-ui)
-6. [Usabilidad y accesibilidad](#6-usabilidad-y-accesibilidad)
-    - [Práctica 4](#69-práctica-4-auditoría-de-accesibilidad)
-7. [Integración con servicios backend mediante API REST](#7-integración-con-servicios-backend-mediante-api-rest)
-    - [Práctica guiada](#78-práctica-guiada-gestor-de-tareas-conectado-a-una-api)
-8. [Proyecto final: aplicación React completa](#8-proyecto-final-aplicación-react-completa)
+2. [Hooks: useState y useEffect](#2-hooks-usestate-y-useeffect)
+    - [Práctica 1](#28-práctica-1-estado-y-eventos)
+    - [Práctica 2](#29-práctica-2-pokédex-con-react)
+3. [Formularios](#3-formularios)
+    - [Práctica 3](#36-práctica-3-formulario-de-registro-validado)
+    - [Práctica 4](#37-práctica-4-taskflow-gestor-de-tareas)
+4. [Gestión del estado global con Context API](#4-gestión-del-estado-global-con-context-api)
+    - [Práctica 5](#47-práctica-5-estado-global-con-context)
+5. [Enrutamiento con React Router](#5-enrutamiento-con-react-router)
+    - [Práctica 6](#511-práctica-6-aplicación-navegable)
+6. [Diseño adaptativo y responsive](#6-diseño-adaptativo-y-responsive)
+7. [Material UI](#7-material-ui)
+    - [Práctica 7](#79-práctica-7-interfaz-con-material-ui)
+8. [Usabilidad y accesibilidad](#8-usabilidad-y-accesibilidad)
+    - [Práctica 8](#89-práctica-8-auditoría-de-accesibilidad)
+9. [Integración con servicios backend mediante API REST](#9-integración-con-servicios-backend-mediante-api-rest)
+    - [Práctica guiada](#98-práctica-guiada-gestor-de-tareas-conectado-a-una-api)
+10. [Proyecto final: aplicación React completa](#10-proyecto-final-aplicación-react-completa)
 
 ---
 
@@ -91,8 +99,8 @@ Jakob Nielsen propuso en 1994 diez principios generales que siguen siendo la ref
   - *Continuidad y cierre:* el ojo sigue líneas y completa formas.
 - **Alineación y rejilla:** alinear los elementos a una rejilla da orden. Usa un **sistema de espaciado** consistente, por ejemplo múltiplos de 8 px (8, 16, 24, 32...).
 - **Tipografía:** como máximo dos familias tipográficas, una escala de tamaños coherente (por ejemplo 14, 16, 20, 24, 32 px), cuerpo de texto de al menos 16 px y longitud de línea entre 45 y 75 caracteres.
-- **Color:** una paleta limitada (primario, secundario, neutros y colores de estado: éxito, aviso, error, información). El color **nunca debe ser la única forma** de transmitir información y debe tener **contraste suficiente** (apartado 6).
-- **Consistencia mediante un sistema de diseño:** un conjunto documentado de tokens (colores, tipografías, espaciados) y componentes reutilizables. Material Design (Google), Fluent (Microsoft) o Human Interface Guidelines (Apple) son sistemas de diseño públicos. En React, el **tema** de Material UI (apartado 5) es la implementación de un sistema de diseño.
+- **Color:** una paleta limitada (primario, secundario, neutros y colores de estado: éxito, aviso, error, información). El color **nunca debe ser la única forma** de transmitir información y debe tener **contraste suficiente** (apartado 8).
+- **Consistencia mediante un sistema de diseño:** un conjunto documentado de tokens (colores, tipografías, espaciados) y componentes reutilizables. Material Design (Google), Fluent (Microsoft) o Human Interface Guidelines (Apple) son sistemas de diseño públicos. En React, el **tema** de Material UI (apartado 7) es la implementación de un sistema de diseño.
 - **Retroalimentación (*feedback*):** cada acción debe tener una respuesta visible: estados `:hover`, `:focus` y `:active`, animaciones breves, mensajes de confirmación.
 - **Patrones conocidos:** no reinventes la rueda. Los usuarios ya conocen el icono de la hamburguesa, la lupa de búsqueda, el carrito, las pestañas o las migas de pan.
 
@@ -112,9 +120,1346 @@ En React estos estados se implementan con renderizado condicional, como vimos en
 
 ---
 
-# 2. Gestión del estado global con Context API
+# 2. Hooks: useState y useEffect
 
-## 2.1 El problema: *prop drilling*
+## 2.1 ¿Qué son los hooks?
+
+Los hooks son funciones que permiten a los componentes funcionales usar el estado y otras características de React. Se introdujeron en React 16.8 y su nombre siempre empieza por `use`. Los principales son:
+
+- **`useState`:** añade estado local a un componente.
+- **`useEffect`:** ejecuta efectos secundarios (peticiones a una API, temporizadores, suscripciones, sincronización con el DOM o `localStorage`).
+- **`useRef`:** guarda una referencia a un elemento del DOM o un valor mutable que no provoca renderizados.
+- **`useContext`:** accede a datos compartidos sin pasar props por todos los niveles (apartado 4).
+- **`useReducer`:** alternativa a `useState` para estados complejos con muchas transiciones.
+- **`useMemo` y `useCallback`:** memorizan valores y funciones para optimizar el rendimiento.
+- **Hooks personalizados:** funciones propias que combinan otros hooks para reutilizar lógica (`useFetch`, `useLocalStorage`...).
+
+### 2.1.1 Reglas de los hooks
+
+1. **Llámalos solo en el nivel superior** del componente: nunca dentro de condiciones, bucles ni funciones anidadas. React identifica cada hook por el orden en que se llama, que debe ser el mismo en cada renderizado.
+2. **Llámalos solo desde componentes de React o desde hooks personalizados**, nunca desde funciones normales de JavaScript.
+
+```jsx
+function Perfil({ usuario }) {
+  if (!usuario) return null;
+  const [abierto, setAbierto] = useState(false); // MAL: hook después de un return condicional
+  // ...
+}
+```
+
+El plugin `eslint-plugin-react-hooks` de la plantilla de Vite detecta estas infracciones.
+
+## 2.2 `useState`: el estado del componente
+
+### 2.2.1 ¿Por qué no basta con una variable?
+
+```jsx
+function Contador() {
+  let contador = 0;
+  return (
+    <button onClick={() => { contador++; console.log(contador); }}>
+      Pulsado {contador} veces
+    </button>
+  );
+}
+```
+
+La consola muestra 1, 2, 3..., pero la pantalla sigue en «0». Por dos motivos:
+
+1. Cambiar una variable local no avisa a React de que tiene que volver a renderizar.
+2. Aunque se volviera a renderizar, la función del componente se ejecuta de nuevo desde el principio y `contador` volvería a valer `0`.
+
+El estado soluciona ambos problemas: React guarda el valor entre renderizados y vuelve a renderizar el componente cuando cambia.
+
+### 2.2.2 Sintaxis
+
+```jsx
+import { useState } from "react";
+
+function Contador() {
+  const [contador, setContador] = useState(0);
+  //     ▲ valor    ▲ función para    ▲ valor inicial
+  //       actual     actualizarlo
+
+  return (
+    <div>
+      <p>Has pulsado {contador} veces</p>
+      <button onClick={() => setContador(contador + 1)}>Sumar</button>
+      <button onClick={() => setContador(contador - 1)}>Restar</button>
+      <button onClick={() => setContador(0)}>Reiniciar</button>
+    </div>
+  );
+}
+```
+
+`useState` devuelve un array con dos elementos que desestructuramos: el valor actual y la función de actualización (por convenio, `setNombre`). Cada llamada a `setContador` programa un nuevo renderizado con el nuevo valor.
+
+El ciclo es siempre el mismo:
+
+![Ciclo de estado en React: renderizado, interacción, actualización del estado y nuevo renderizado](./assets/img/ud4-ciclo-estado.svg)
+
+Cada componente tiene su propio estado: si renderizas dos `<Contador />`, cada uno cuenta por separado.
+
+### 2.2.3 El estado es una «foto» y la función actualizadora
+
+El valor del estado no cambia inmediatamente al llamar a `setContador`: se mantiene igual durante todo el renderizado actual.
+
+```jsx
+function handleClick() {
+  setContador(contador + 1);
+  setContador(contador + 1);
+  setContador(contador + 1);
+  console.log(contador); // Sigue mostrando el valor anterior
+}
+// Resultado: solo suma 1, porque las tres llamadas usan el mismo valor de `contador`
+```
+
+Si el nuevo estado depende del anterior, usa la función actualizadora, que recibe el valor más reciente:
+
+```jsx
+function handleClick() {
+  setContador((c) => c + 1);
+  setContador((c) => c + 1);
+  setContador((c) => c + 1);
+}
+// Resultado: suma 3
+```
+
+Recomendación: cuando calcules el nuevo estado a partir del anterior, usa la forma `setX(prev => ...)`.
+
+### 2.2.4 Estado con objetos y arrays: inmutabilidad
+
+React detecta los cambios comparando la referencia del estado anterior con la del nuevo. Si modificas (mutas) un objeto o un array existente, la referencia es la misma y React no vuelve a renderizar. Siempre hay que crear un objeto o array nuevo, normalmente con el operador spread.
+
+**Objetos:**
+
+```jsx
+const [usuario, setUsuario] = useState({ nombre: "Ana", edad: 30 });
+
+// MAL: muta el objeto, React no se entera
+usuario.edad = 31;
+setUsuario(usuario);
+
+// BIEN: crea un objeto nuevo copiando el anterior
+setUsuario({ ...usuario, edad: 31 });
+// o con función actualizadora
+setUsuario((prev) => ({ ...prev, edad: prev.edad + 1 }));
+```
+
+**Arrays.** Operaciones habituales sin mutar:
+
+| Operación | Muta (evitar) | Crea un array nuevo |
+| --- | --- | --- |
+| Añadir | `push`, `unshift` | `[...arr, nuevo]`, `[nuevo, ...arr]` |
+| Eliminar | `splice`, `pop`, `shift` | `arr.filter(x => x.id !== id)` |
+| Modificar | `arr[i] = x` | `arr.map(x => x.id === id ? { ...x, hecho: true } : x)` |
+| Ordenar | `sort`, `reverse` | `arr.toSorted(...)`, `[...arr].sort(...)` |
+
+```jsx
+import { useState } from "react";
+
+function ListaCompra() {
+  const [productos, setProductos] = useState([
+    { id: 1, nombre: "Leche", comprado: false },
+  ]);
+  const [texto, setTexto] = useState("");
+
+  const añadir = () => {
+    if (texto.trim() === "") return;
+    setProductos((prev) => [...prev, { id: crypto.randomUUID(), nombre: texto.trim(), comprado: false }]);
+    setTexto("");
+  };
+
+  const alternar = (id) => {
+    setProductos((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, comprado: !p.comprado } : p))
+    );
+  };
+
+  const eliminar = (id) => {
+    setProductos((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  return (
+    <section>
+      <input value={texto} onChange={(e) => setTexto(e.target.value)} aria-label="Producto" />
+      <button onClick={añadir}>Añadir</button>
+      <ul>
+        {productos.map((p) => (
+          <li key={p.id}>
+            <label>
+              <input type="checkbox" checked={p.comprado} onChange={() => alternar(p.id)} />
+              <span style={{ textDecoration: p.comprado ? "line-through" : "none" }}>{p.nombre}</span>
+            </label>
+            <button onClick={() => eliminar(p.id)}>Eliminar</button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+```
+
+### 2.2.5 Buenas prácticas con el estado
+
+- **No guardes en el estado lo que puedes calcular.** En el ejemplo anterior, el número de productos comprados se calcula al renderizar: `const comprados = productos.filter(p => p.comprado).length;`. Guardarlo en otro estado obligaría a sincronizar ambos y es una fuente de errores.
+- **Varios estados simples o un objeto.** Usa estados separados para valores independientes (`const [abierto, setAbierto]`, `const [filtro, setFiltro]`) y un objeto cuando los valores cambian juntos (los campos de un formulario).
+- **Inicialización perezosa.** Si el valor inicial es costoso de calcular (leer `localStorage`, por ejemplo), pasa una función: `useState(() => leerDeLocalStorage())`. Así solo se ejecuta en el primer renderizado.
+- **Dónde colocar el estado:** en el componente más bajo del árbol que lo necesite; si lo necesitan varios, en su ancestro común (UD4, apartado 7.5.1).
+
+## 2.3 `useEffect`: efectos secundarios
+
+### 2.3.1 ¿Qué es un efecto?
+
+Un componente debe ser una función pura: dados unos props y un estado, devuelve siempre el mismo JSX, sin modificar nada externo. Sin embargo, las aplicaciones necesitan efectos secundarios: comunicarse con algo que está fuera de React.
+
+- Pedir datos a una API.
+- Crear temporizadores (`setInterval`, `setTimeout`).
+- Suscribirse a eventos del navegador (`resize`, `keydown` en `window`).
+- Leer o escribir en `localStorage`.
+- Cambiar el título del documento o un atributo de `<html>`.
+
+`useEffect` ejecuta código después de que React haya actualizado el DOM.
+
+### 2.3.2 Sintaxis y array de dependencias
+
+```jsx
+useEffect(() => {
+  // Código del efecto
+  return () => {
+    // (Opcional) Función de limpieza
+  };
+}, [dependencias]);
+```
+
+El array de dependencias controla cuándo se vuelve a ejecutar:
+
+| Segundo argumento | Cuándo se ejecuta el efecto |
+| --- | --- |
+| Sin array | Después de cada renderizado (rara vez es lo que se quiere). |
+| `[]` (vacío) | **Solo una vez**, cuando el componente se monta (aparece en pantalla). |
+| `[a, b]` | Al montarse y cada vez que cambie `a` o `b`. |
+
+```jsx
+import { useState, useEffect } from "react";
+
+function TituloContador() {
+  const [contador, setContador] = useState(0);
+
+  useEffect(() => {
+    document.title = `Has pulsado ${contador} veces`;
+  }, [contador]); // Se ejecuta cada vez que cambia `contador`
+
+  return <button onClick={() => setContador((c) => c + 1)}>Pulsado {contador}</button>;
+}
+```
+
+Regla: todo valor del componente (props, estado, funciones) que se use dentro del efecto debe estar en el array de dependencias. ESLint te avisará si falta alguno.
+
+### 2.3.3 Ciclo de vida y función de limpieza
+
+Un componente se monta (aparece), se actualiza (se vuelve a renderizar) y se desmonta (desaparece). Con `useEffect` se controla cada fase:
+
+- El cuerpo del efecto se ejecuta tras el montaje y tras los cambios de sus dependencias.
+- La función de limpieza que devuelve el efecto se ejecuta antes de volver a ejecutar el efecto y al desmontar el componente. Sirve para deshacer lo que hizo el efecto: parar temporizadores, quitar *listeners*, cancelar peticiones.
+
+```jsx
+function Reloj() {
+  const [hora, setHora] = useState(new Date());
+
+  useEffect(() => {
+    const id = setInterval(() => setHora(new Date()), 1000);
+    console.log("Reloj montado: temporizador iniciado");
+
+    return () => {
+      clearInterval(id);
+      console.log("Reloj desmontado: temporizador detenido");
+    };
+  }, []);
+
+  return <p>Son las {hora.toLocaleTimeString("es-ES")}</p>;
+}
+
+function App() {
+  const [visible, setVisible] = useState(true);
+  return (
+    <>
+      <button onClick={() => setVisible((v) => !v)}>{visible ? "Ocultar" : "Mostrar"} reloj</button>
+      {visible && <Reloj />}
+    </>
+  );
+}
+```
+
+Sin `clearInterval`, al ocultar el reloj el temporizador seguiría funcionando en segundo plano (una fuga de memoria).
+
+Ejemplo con un evento de `window`:
+
+```jsx
+function AnchoVentana() {
+  const [ancho, setAncho] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setAncho(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return <p>Ancho de la ventana: {ancho}px</p>;
+}
+```
+
+> **`StrictMode` ejecuta los efectos dos veces en desarrollo.** Si ves en la consola «montado → desmontado → montado» al cargar la página, es normal: React monta, desmonta y vuelve a montar cada componente para comprobar que la función de limpieza funciona correctamente. En producción solo se ejecuta una vez. Si un efecto falla por ejecutarse dos veces, es que le falta la limpieza.
+
+### 2.3.4 Persistir el estado en `localStorage`
+
+Combinando la inicialización perezosa de `useState` y un efecto, el estado sobrevive a la recarga de la página:
+
+```jsx
+function useTema() {
+  const [tema, setTema] = useState(() => localStorage.getItem("tema") ?? "claro");
+
+  useEffect(() => {
+    localStorage.setItem("tema", tema);
+    document.documentElement.dataset.tema = tema; // Aplica las variables CSS de la UD4 (apartado 6.7)
+  }, [tema]);
+
+  return [tema, setTema];
+}
+
+function BotonTema() {
+  const [tema, setTema] = useTema();
+  return (
+    <button onClick={() => setTema((t) => (t === "claro" ? "oscuro" : "claro"))}>
+      Cambiar a tema {tema === "claro" ? "oscuro" : "claro"}
+    </button>
+  );
+}
+```
+
+`useTema` es un hook personalizado: una función cuyo nombre empieza por `use` y que utiliza otros hooks. Permite reutilizar la lógica en cualquier componente.
+
+### 2.3.5 Obtener datos de una API
+
+En la UD2 usamos `fetch` con promesas y `async/await`. En React, las peticiones al cargar un componente se hacen en un efecto. Necesitamos tres estados: datos, cargando y error.
+
+```jsx
+import { useState, useEffect } from "react";
+
+function Cafe({ id }) {
+  const [cafe, setCafe] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let ignorar = false; // Evita usar respuestas obsoletas
+
+    async function cargar() {
+      setCargando(true);
+      setError(null);
+      try {
+        const respuesta = await fetch(`https://api.sampleapis.com/coffee/hot/${id}`);
+        if (!respuesta.ok) throw new Error(`Error HTTP ${respuesta.status}`);
+        const datos = await respuesta.json();
+        if (!ignorar) setCafe(datos);
+      } catch (err) {
+        if (!ignorar) setError(err.message);
+      } finally {
+        if (!ignorar) setCargando(false);
+      }
+    }
+
+    cargar();
+
+    return () => {
+      ignorar = true; // Si cambia `id` o se desmonta, se descarta la respuesta pendiente
+    };
+  }, [id]);
+
+  if (cargando) return <p>Cargando café…</p>;
+  if (error) return <p role="alert">No se ha podido cargar el café: {error}</p>;
+  if (!cafe) return null;
+
+  return (
+    <article>
+      <h2>{cafe.title}</h2>
+      <p>{cafe.description}</p>
+      <img src={cafe.image} alt={cafe.title} width={200} />
+    </article>
+  );
+}
+```
+
+Puntos importantes:
+
+- La función del efecto no puede ser `async` (debe devolver nada o una función de limpieza, no una promesa). Por eso se declara una función `async` dentro y se llama.
+- **`ignorar`** evita una *condición de carrera*: si el usuario cambia rápidamente de `id`, una respuesta lenta anterior podría llegar después de la nueva y sobrescribirla.
+- El efecto depende de `id`: al cambiarlo, se vuelve a pedir.
+- Siempre se gestionan los tres casos: cargando, error y datos.
+
+> Alternativa a `ignorar`: un `AbortController` que cancela la petición en la función de limpieza (`fetch(url, { signal: controller.signal })` y `return () => controller.abort();`). Lo usaremos en el apartado 9.
+
+### 2.3.6 Cuándo NO usar `useEffect`
+
+Un error común es usar efectos para cosas que no son efectos:
+
+- **Calcular datos a partir de props o estado:** hazlo directamente durante el renderizado.
+
+  ```jsx
+  // MAL: innecesario
+  const [total, setTotal] = useState(0);
+  useEffect(() => { setTotal(items.reduce((s, i) => s + i.precio, 0)); }, [items]);
+
+  // BIEN: se calcula al renderizar
+  const total = items.reduce((s, i) => s + i.precio, 0);
+  ```
+
+- **Responder a un evento del usuario** (enviar un formulario, añadir al carrito): hazlo en el manejador del evento, no en un efecto.
+
+Usa `useEffect` solo para sincronizar el componente con sistemas externos.
+
+## 2.4 `useRef`: referencias al DOM
+
+`useRef` crea un objeto `{ current: valor }` que persiste entre renderizados y cuya modificación no provoca un renderizado. Su uso más habitual es acceder directamente a un elemento del DOM, por ejemplo para darle el foco:
+
+```jsx
+import { useRef } from "react";
+
+function Buscador() {
+  const inputRef = useRef(null);
+
+  return (
+    <>
+      <input ref={inputRef} type="search" aria-label="Buscar" />
+      <button onClick={() => inputRef.current.focus()}>Ir al buscador</button>
+    </>
+  );
+}
+```
+
+React asigna el nodo del DOM a `inputRef.current` después de montarlo. Lo volveremos a usar en los formularios no controlados.
+
+## 2.5 Ejemplo completo: tarjeta de usuario aleatorio
+
+Combina estado, efecto, eventos y renderizado condicional usando la API pública [randomuser.me](https://randomuser.me):
+
+```jsx
+import { useState, useEffect } from "react";
+
+export default function UsuarioAleatorio() {
+  const [usuario, setUsuario] = useState(null);
+  const [estado, setEstado] = useState("cargando"); // "cargando" | "ok" | "error"
+  const [recargas, setRecargas] = useState(0);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch("https://randomuser.me/api/?nat=es", { signal: controller.signal })
+      .then((r) => {
+        if (!r.ok) throw new Error(r.status);
+        return r.json();
+      })
+      .then((datos) => {
+        setUsuario(datos.results[0]);
+        setEstado("ok");
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") setEstado("error");
+      });
+
+    return () => controller.abort();
+  }, [recargas]); // Cada vez que se pulsa «Otro» cambia `recargas` y se repite la petición
+
+  const otro = () => {
+    setEstado("cargando");
+    setRecargas((n) => n + 1);
+  };
+
+  return (
+    <section>
+      {estado === "cargando" && <p>Cargando…</p>}
+      {estado === "error" && <p role="alert">Error al cargar el usuario.</p>}
+      {estado === "ok" && usuario && (
+        <article>
+          <img src={usuario.picture.large} alt={`Foto de ${usuario.name.first}`} />
+          <h2>{usuario.name.first} {usuario.name.last}</h2>
+          <p>{usuario.email}</p>
+          <p>{usuario.location.city}</p>
+        </article>
+      )}
+      <button onClick={otro} disabled={estado === "cargando"}>Otro usuario</button>
+    </section>
+  );
+}
+```
+
+## 2.6 Hooks personalizados
+
+Cuando varios componentes repiten la misma lógica con hooks, se extrae a un hook personalizado. Ejemplo genérico para persistir cualquier estado en `localStorage`:
+
+```jsx
+// src/hooks/useLocalStorage.js
+import { useState, useEffect } from "react";
+
+export function useLocalStorage(clave, valorInicial) {
+  const [valor, setValor] = useState(() => {
+    try {
+      const guardado = localStorage.getItem(clave);
+      return guardado !== null ? JSON.parse(guardado) : valorInicial;
+    } catch {
+      return valorInicial; // JSON corrupto o almacenamiento no disponible
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(clave, JSON.stringify(valor));
+    } catch {
+      // Almacenamiento lleno o bloqueado: se ignora
+    }
+  }, [clave, valor]);
+
+  return [valor, setValor];
+}
+```
+
+Se usa exactamente igual que `useState`:
+
+```jsx
+const [tareas, setTareas] = useLocalStorage("tareas", []);
+```
+
+Cada componente que usa un hook personalizado tiene su propio estado: el hook comparte la lógica, no los datos.
+
+## 2.7 Resumen
+
+| Necesito... | Herramienta |
+| --- | --- |
+| Datos que cambian y deben verse en pantalla | `useState` |
+| Valores que se calculan a partir de otros | Una variable normal en el cuerpo del componente |
+| Sincronizarme con algo externo (API, temporizador, `window`, `localStorage`) | `useEffect` (con limpieza si procede) |
+| Acceder a un nodo del DOM o guardar un valor sin renderizar | `useRef` |
+| Reaccionar a una acción del usuario | Manejador de eventos |
+| Reutilizar lógica con hooks | Hook personalizado |
+
+## 2.8 PRÁCTICA 1: Estado y eventos
+
+Crea el proyecto `ud5-practica-1-estado`.
+
+**1. Contador avanzado**
+
+Crea un componente `Contador` con los botones `+1`, `-1`, `+5` y «Reiniciar».
+
+- **a.** Usa la función actualizadora en todos los cambios.
+- **b.** Recibe por props `min` y `max` (por defecto 0 y 20) y desactiva los botones que superarían los límites.
+- **c.** Muestra el número en rojo si es mayor que 15 (con una clase CSS, no con `style`).
+- **d.** Renderiza tres contadores independientes en `App` y comprueba que cada uno tiene su estado.
+
+**2. Selector de tema**
+
+- **a.** Reutiliza las variables CSS de la práctica de estilos de la UD4 y crea un hook `useTema` que guarde el tema en `localStorage` y lo aplique a `<html>` con un efecto.
+- **b.** Añade un botón en el `Header` para alternar el tema. Al recargar, debe mantenerse.
+
+**3. Carrito de la compra**
+
+Crea una tienda con un catálogo fijo de al menos 6 productos (`id`, `nombre`, `precio`, `imagen`).
+
+- **a.** Componentes: `Catalogo`, `ProductoCard`, `Carrito` y `LineaCarrito`. El estado del carrito estará en `App` (elevado) y se comunicará con callbacks (`onAñadir`, `onCambiarCantidad`, `onEliminar`).
+- **b.** Al añadir un producto que ya está en el carrito, se incrementa su cantidad en lugar de duplicarlo.
+- **c.** Cada línea permite aumentar o disminuir la cantidad; si llega a 0, se elimina.
+- **d.** El total y el número de artículos se calculan durante el renderizado (no se guardan en estado).
+- **e.** Si el carrito está vacío, muestra un mensaje.
+- **f.** Persiste el carrito con el hook `useLocalStorage`.
+- **g.** Ningún array ni objeto del estado debe mutarse. Revisa tu código buscando `push`, `splice` o asignaciones directas.
+
+**4. Temporizador**
+
+- **a.** Crea un componente `Temporizador` con «Iniciar», «Pausar» y «Reiniciar» que muestre minutos y segundos.
+- **b.** Usa `useEffect` con su función de limpieza. Comprueba que al ocultar el componente no quedan temporizadores activos (añade un `console.log` en la limpieza).
+
+**Entrega:** sube el proyecto a tu repositorio `React` y explica en comentarios del código las decisiones sobre dónde se ha colocado cada estado.
+
+## 2.9 PRÁCTICA 2: Pokédex con React
+
+En la UD2 construiste una Pokédex con el DOM. Ahora la reconstruirás con componentes, estado y efectos, y comprobarás cuánto código de manipulación del DOM desaparece.
+
+### API
+
+| Recurso | URL |
+| --- | --- |
+| Listado paginado | `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0` |
+| Detalle | `https://pokeapi.co/api/v2/pokemon/{nombre o número}` |
+| Imagen oficial | `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{numero}.png` |
+
+### Tareas
+
+**1. Estructura**
+
+- **a.** Crea el proyecto `ud5-practica-2-pokedex` con los componentes `App`, `Buscador`, `ListaPokemon`, `PokemonCard`, `FichaPokemon`, `Paginacion` y `Mensaje`.
+- **b.** Crea `src/services/pokeapi.js` con una función `obtenerDatos(url)` que haga `fetch`, compruebe `respuesta.ok` y devuelva el JSON (igual que en la UD2).
+
+**2. Listado**
+
+- **a.** `ListaPokemon` carga 20 Pokémon en un `useEffect`, gestionando los estados de carga y error.
+- **b.** Cada `PokemonCard` muestra el número, el nombre y la imagen oficial (extrae el número de la URL de cada resultado).
+- **c.** `Paginacion` tiene los botones «Anterior» y «Siguiente», que cambian un estado `pagina`. El efecto depende de ese estado. Desactiva «Anterior» en la primera página.
+- **d.** Evita las condiciones de carrera con una variable `ignorar` o un `AbortController`.
+
+**3. Ficha de detalle**
+
+- **a.** Al pulsar una tarjeta, se guarda en el estado de `App` el Pokémon seleccionado y se muestra `FichaPokemon` (sin cambiar de página; el enrutamiento llegará en el apartado 5).
+- **b.** `FichaPokemon` pide el detalle en un efecto que depende del nombre seleccionado y muestra: nombre, número, imagen, tipos, altura (en metros), peso (en kilos), habilidades y estadísticas base con una barra por estadística.
+- **c.** Incluye un botón «Volver al listado».
+
+**4. Búsqueda**
+
+- **a.** `Buscador` es un formulario con un campo controlado. Al enviarlo (`preventDefault`), se busca el Pokémon por nombre o número en minúsculas y sin espacios.
+- **b.** Si existe, se abre su ficha; si la API responde `404`, se muestra «No se ha encontrado ese Pokémon».
+
+**5. Favoritos**
+
+- **a.** Cada tarjeta tiene un botón de favorito (★/☆). Al pulsarlo no debe abrirse la ficha (`stopPropagation`).
+- **b.** Los favoritos se guardan con `useLocalStorage` y se puede filtrar el listado para ver solo los favoritos.
+
+**6. Estilos**
+
+- **a.** Usa módulos CSS y las variables del tema. Colorea la tarjeta según el tipo principal del Pokémon.
+- **b.** El listado se mostrará en una rejilla adaptable (1 columna en móvil, 2–4 en pantallas mayores).
+
+**Entrega:** proyecto en tu repositorio `React` y, en el `README.md`, una comparación breve entre la versión de la UD2 y la de React: qué ha resultado más sencillo y qué más complejo.
+
+---
+
+# 3. Formularios
+
+Los formularios son la principal vía de entrada de datos del usuario. En React hay dos formas de gestionarlos: controlados y no controlados.
+
+## 3.1 Formularios controlados
+
+En un formulario controlado, el valor de cada campo está ligado al estado de React. El campo muestra siempre lo que dice el estado (`value`) y cada cambio actualiza el estado (`onChange`). React es la única fuente de verdad.
+
+![Flujo de un formulario controlado: el estado alimenta el input y onChange actualiza el estado](./assets/img/ud4-formulario-controlado.svg)
+
+### 3.1.1 Un campo
+
+```jsx
+import { useState } from "react";
+
+function Nombre() {
+  const [nombre, setNombre] = useState("");
+
+  return (
+    <>
+      <label htmlFor="nombre">Nombre</label>
+      <input id="nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+      <p>Hola, {nombre || "desconocido"}</p>
+    </>
+  );
+}
+```
+
+> Si pones `value` sin `onChange`, el campo queda bloqueado: React siempre lo devuelve al valor del estado. La consola mostrará un aviso. Si lo que quieres es un valor inicial modificable sin controlarlo, usa `defaultValue`.
+
+### 3.1.2 Varios campos con un único estado
+
+Cuando hay varios campos, se agrupan en un objeto y se usa un único manejador que identifica el campo por su atributo `name` gracias a las propiedades calculadas (`[name]: value`):
+
+```jsx
+import { useState } from "react";
+
+function MultiFieldForm() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Datos del formulario:", formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Nombre:
+        <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
+      </label>
+      <label>
+        Apellido:
+        <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
+      </label>
+      <label>
+        Correo electrónico:
+        <input type="email" name="email" value={formData.email} onChange={handleChange} />
+      </label>
+      <button type="submit">Enviar</button>
+    </form>
+  );
+}
+
+export default MultiFieldForm;
+```
+
+- **Estado inicial:** un objeto con una propiedad por campo. El atributo `name` de cada campo debe coincidir con su propiedad.
+- **`handleChange`:** desestructura `name` y `value` de `event.target` y actualiza solo esa propiedad, copiando el resto con spread.
+- **`handleSubmit`:** evita la recarga de la página y procesa los datos.
+
+### 3.1.3 Otros tipos de campo
+
+```jsx
+import { useState } from "react";
+
+const inicial = {
+  ciclo: "DAM",
+  turno: "mañana",
+  comentarios: "",
+  acepta: false,
+  intereses: [],
+};
+
+function FormularioCompleto() {
+  const [datos, setDatos] = useState(inicial);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setDatos((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+  };
+
+  const handleInteres = (e) => {
+    const { value, checked } = e.target;
+    setDatos((prev) => ({
+      ...prev,
+      intereses: checked
+        ? [...prev.intereses, value]
+        : prev.intereses.filter((i) => i !== value),
+    }));
+  };
+
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); console.log(datos); }}>
+      {/* select: se controla con value en el <select>, no con selected en <option> */}
+      <label htmlFor="ciclo">Ciclo</label>
+      <select id="ciclo" name="ciclo" value={datos.ciclo} onChange={handleChange}>
+        <option value="DAM">Desarrollo de Aplicaciones Multiplataforma</option>
+        <option value="DAW">Desarrollo de Aplicaciones Web</option>
+        <option value="ASIR">Administración de Sistemas</option>
+      </select>
+
+      {/* radio: checked compara el valor del estado con el de cada opción */}
+      <fieldset>
+        <legend>Turno</legend>
+        {["mañana", "tarde"].map((t) => (
+          <label key={t}>
+            <input type="radio" name="turno" value={t} checked={datos.turno === t} onChange={handleChange} />
+            {t}
+          </label>
+        ))}
+      </fieldset>
+
+      {/* checkboxes múltiples: un array en el estado */}
+      <fieldset>
+        <legend>Intereses</legend>
+        {["Frontend", "Backend", "Móvil", "Videojuegos"].map((i) => (
+          <label key={i}>
+            <input type="checkbox" value={i} checked={datos.intereses.includes(i)} onChange={handleInteres} />
+            {i}
+          </label>
+        ))}
+      </fieldset>
+
+      {/* textarea: en React usa value, no contenido entre etiquetas */}
+      <label htmlFor="comentarios">Comentarios</label>
+      <textarea id="comentarios" name="comentarios" value={datos.comentarios} onChange={handleChange} />
+
+      {/* checkbox único: se usa checked, no value */}
+      <label>
+        <input type="checkbox" name="acepta" checked={datos.acepta} onChange={handleChange} />
+        Acepto las condiciones
+      </label>
+
+      <button type="submit" disabled={!datos.acepta}>Enviar</button>
+      <button type="button" onClick={() => setDatos(inicial)}>Limpiar</button>
+    </form>
+  );
+}
+```
+
+| Campo | Propiedad controlada | Valor en el evento |
+| --- | --- | --- |
+| `input` de texto, `email`, `number`... | `value` | `e.target.value` (siempre string) |
+| `textarea` | `value` | `e.target.value` |
+| `select` | `value` en el `<select>` | `e.target.value` |
+| `checkbox` | `checked` | `e.target.checked` |
+| `radio` | `checked={estado === valor}` | `e.target.value` |
+
+> **Los campos `number` devuelven texto.** `e.target.value` siempre es un string, también en `type="number"`. Convierte con `Number(valor)` antes de operar, y comprueba que el resultado es válido.
+
+### 3.1.4 Ventajas y desventajas
+
+- **Ventajas:** el estado y el formulario están siempre sincronizados; se pueden validar, transformar o formatear los datos mientras se escriben; los datos están disponibles en todo momento para mostrar vistas previas o activar botones.
+- **Desventajas:** código más extenso en formularios grandes; en formularios muy grandes, actualizar el estado en cada pulsación puede afectar al rendimiento si no se gestiona bien.
+
+## 3.2 Formularios no controlados
+
+En los formularios no controlados, el DOM guarda los valores y React los lee solo cuando los necesita, normalmente al enviar. Se usan referencias (`useRef`) o el objeto `FormData`.
+
+¿Cuándo usarlos?
+
+- Formularios sencillos sin validación en tiempo real.
+- Cuando se prefiere menos código y menos estado.
+- Integración con bibliotecas externas que gestionan el DOM directamente.
+- Campos de tipo `file` (que siempre son no controlados).
+
+### 3.2.1 Con `useRef`
+
+React proporciona el hook `useRef` para crear referencias a elementos del DOM (apartado 2.4). Esas referencias permiten acceder a los valores de los campos sin necesidad de gestionar estado.
+
+**Ejemplo básico:**
+
+```jsx
+import { useRef } from "react";
+
+function UncontrolledForm() {
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const username = usernameRef.current.value;
+    const password = passwordRef.current.value;
+    console.log("Nombre de usuario:", username);
+    console.log("Contraseña:", password);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Nombre de usuario:
+        <input type="text" ref={usernameRef} />
+      </label>
+      <label>
+        Contraseña:
+        <input type="password" ref={passwordRef} />
+      </label>
+      <button type="submit">Enviar</button>
+    </form>
+  );
+}
+
+export default UncontrolledForm;
+```
+
+**Ejemplo más completo:** un formulario de registro que procesa varios campos al enviarse.
+
+```jsx
+import { useRef } from "react";
+
+function CompleteUncontrolledForm() {
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = {
+      firstName: firstNameRef.current.value,
+      lastName: lastNameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+    console.log("Datos del formulario:", formData);
+    // Envío de los datos al servidor
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>Nombre: <input type="text" ref={firstNameRef} defaultValue="" /></label>
+      <label>Apellido: <input type="text" ref={lastNameRef} /></label>
+      <label>Correo electrónico: <input type="email" ref={emailRef} /></label>
+      <label>Contraseña: <input type="password" ref={passwordRef} /></label>
+      <button type="submit">Enviar</button>
+    </form>
+  );
+}
+```
+
+Explicación del código:
+
+- **Referencias:** `useRef` crea una referencia por campo, que se asigna al `input` mediante el atributo `ref`. Después del montaje, `ref.current` contiene el nodo del DOM.
+- **`handleSubmit`:** se ejecuta al enviar el formulario. Evita el comportamiento predeterminado, lee los valores de los campos a través de `ref.current.value` y procesa los datos (por ejemplo, enviándolos al servidor).
+- Para dar un valor inicial a un campo no controlado se usa `defaultValue` (o `defaultChecked` en casillas), no `value`.
+
+**Ventajas de los formularios no controlados:**
+
+- **Menos código:** no es necesario gestionar el estado del formulario.
+- **Simplicidad:** más sencillos para formularios simples que no requieren validación en tiempo real.
+- **Rendimiento:** no se actualiza el estado (ni se vuelve a renderizar) en cada pulsación.
+
+**Desventajas:**
+
+- **Validación y errores:** es más difícil implementar validaciones complejas y mostrar errores en tiempo real.
+- **Sincronización:** menor control sobre la relación entre los valores del formulario y el estado del componente (por ejemplo, para activar un botón según lo escrito).
+- **Depuración:** más difícil, porque los valores no aparecen en el estado del componente (ni en React DevTools).
+
+### 3.2.2 Con `FormData`
+
+Una alternativa más limpia, sin una referencia por campo, es leer todos los campos del formulario con la API nativa `FormData` (los campos necesitan atributo `name`):
+
+```jsx
+function FormularioContacto() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const datos = Object.fromEntries(new FormData(event.currentTarget));
+    console.log(datos); // { nombre: "...", email: "...", mensaje: "..." }
+    event.currentTarget.reset();
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>Nombre <input name="nombre" required /></label>
+      <label>Email <input name="email" type="email" required /></label>
+      <label>Mensaje <textarea name="mensaje" /></label>
+      <button>Enviar</button>
+    </form>
+  );
+}
+```
+
+> React 19 añade la posibilidad de pasar una función a `<form action={fn}>`, que recibe directamente un `FormData`, junto con hooks como `useActionState`. Es útil sobre todo con frameworks que ejecutan acciones en el servidor; en este módulo usaremos `onSubmit`.
+
+### 3.2.3 Comparación
+
+| | Controlado | No controlado |
+| --- | --- | --- |
+| Fuente de verdad | Estado de React | DOM |
+| Lectura del valor | En todo momento | Al enviar (`ref` o `FormData`) |
+| Validación en tiempo real | Sencilla | Difícil |
+| Cantidad de código | Mayor | Menor |
+| Renderizados | Uno por pulsación | Ninguno al escribir |
+| Depuración | Valores visibles en React DevTools | Valores fuera del estado |
+
+**Recomendación:** usa formularios controlados por defecto, especialmente si necesitas validación, campos dependientes o mostrar los datos mientras se escriben.
+
+## 3.3 Validación
+
+La validación comprueba que los datos son correctos antes de procesarlos. Hay varios niveles complementarios:
+
+1. **Validación nativa de HTML:** `required`, `type="email"`, `minLength`, `maxLength`, `min`, `max`, `pattern`. Funciona sin JavaScript, pero sus mensajes son poco personalizables y su aspecto depende del navegador.
+2. **Validación con JavaScript en el cliente:** permite reglas a medida y mensajes claros. Mejora la experiencia de usuario.
+3. **Validación en el servidor:** imprescindible siempre. La validación del cliente se puede saltar fácilmente (desactivando JavaScript o enviando peticiones directamente a la API), así que nunca garantiza la integridad ni la seguridad de los datos.
+
+> Si validas con JavaScript y no quieres que aparezcan las burbujas nativas del navegador, añade `noValidate` al `<form>`; pero mantén atributos como `required` o `type="email"`, que ayudan a la accesibilidad y a los teclados móviles.
+
+### 3.3.1 Validación al enviar
+
+Todos los campos se comprueban cuando el usuario intenta enviar el formulario. Los errores se guardan en un objeto en el estado, con una propiedad por campo:
+
+```jsx
+import { useState } from "react";
+
+const Form = () => {
+  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = "El nombre es obligatorio";
+    if (!formData.email) {
+      newErrors.email = "El correo electrónico es obligatorio";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "El correo electrónico no es válido";
+    }
+    return newErrors;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length === 0) {
+      setSuccessMessage("Formulario enviado con éxito");
+      setErrors({});
+      setFormData({ name: "", email: "" });
+    } else {
+      setSuccessMessage("");
+      setErrors(validationErrors);
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit} noValidate>
+        <div>
+          <label htmlFor="name">Nombre:</label>
+          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} />
+          {errors.name && <p className="error">{errors.name}</p>}
+        </div>
+        <div>
+          <label htmlFor="email">Correo electrónico:</label>
+          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
+          {errors.email && <p className="error">{errors.email}</p>}
+        </div>
+        <button type="submit">Enviar</button>
+      </form>
+      {successMessage && <p className="success">{successMessage}</p>}
+    </div>
+  );
+};
+
+export default Form;
+```
+
+La expresión `/\S+@\S+\.\S+/` comprueba de forma sencilla que hay texto, una arroba, texto, un punto y más texto. Validar un correo con total exactitud es muy complejo; la verificación real consiste en enviar un mensaje de confirmación.
+
+### 3.3.2 Validación en tiempo real
+
+Comprueba cada campo mientras se escribe y ofrece retroalimentación inmediata. Necesita formularios controlados. La clave es separar la lógica en una función que valida un campo y reutilizarla para validar todo el formulario al enviar:
+
+```jsx
+import { useState } from "react";
+
+const validateField = (name, value) => {
+  let error = "";
+  if (name === "name" && !value.trim()) {
+    error = "El nombre es obligatorio";
+  }
+  if (name === "email") {
+    if (!value) {
+      error = "El correo electrónico es obligatorio";
+    } else if (!/\S+@\S+\.\S+/.test(value)) {
+      error = "El correo electrónico no es válido";
+    }
+  }
+  return error;
+};
+
+const Form = () => {
+  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
+  };
+
+  const validateForm = () => {
+    const validationErrors = {};
+    Object.keys(formData).forEach((key) => {
+      const error = validateField(key, formData[key]);
+      if (error) validationErrors[key] = error;
+    });
+    return validationErrors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length === 0) {
+      setSuccessMessage("Formulario enviado con éxito");
+      setErrors({});
+      setFormData({ name: "", email: "" });
+    } else {
+      setSuccessMessage("");
+      setErrors(validationErrors);
+    }
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit} noValidate>
+        <div>
+          <label htmlFor="name">Nombre:</label>
+          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} />
+          {errors.name && <p className="error">{errors.name}</p>}
+        </div>
+        <div>
+          <label htmlFor="email">Correo electrónico:</label>
+          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
+          {errors.email && <p className="error">{errors.email}</p>}
+        </div>
+        <button type="submit">Enviar</button>
+      </form>
+      {successMessage && <p className="success">{successMessage}</p>}
+    </div>
+  );
+};
+
+export default Form;
+```
+
+**Cómo funciona.** El formulario utiliza un único estado `formData` para almacenar los valores de los campos (`name` y `email`). A medida que el usuario escribe, el manejador `handleChange` actualiza `formData` y valida el campo en tiempo real mediante `validateField`, que devuelve un mensaje de error si la validación falla (o una cadena vacía si es correcto). Esos errores se guardan en el estado `errors`. Al enviar, `handleSubmit` evita la recarga de la página, valida todos los campos con `validateForm` (que reutiliza `validateField` para cada clave de `formData`) y actualiza los errores y el mensaje de éxito. Si no hay errores, se muestra el mensaje de éxito y se reinicia el formulario; si los hay, se muestran junto a los campos correspondientes.
+
+Fíjate en que `validateField` está fuera del componente: no usa estado ni props, así que no hace falta recrearla en cada renderizado y es fácil de probar. Observa también que los dos `set` de `handleChange` usan la función actualizadora (`prev => ...`), para no trabajar con una versión antigua del estado.
+
+**Ventajas de la validación en tiempo real:**
+
+- **Mejora la experiencia de usuario:** retroalimentación inmediata que facilita la corrección.
+- **Reducción de errores al enviar:** los usuarios corrigen los fallos a medida que completan los campos.
+- **Claridad:** mensajes de error claros y específicos junto al campo afectado.
+
+**Desventajas:**
+
+- **Complejidad adicional:** requiere más lógica y más estado.
+- **Rendimiento:** en formularios muy grandes y complejos, validar en cada pulsación puede afectar al rendimiento si no se gestiona bien.
+- **Puede resultar molesta** si muestra errores antes de que el usuario haya terminado de escribir (se soluciona en el apartado siguiente).
+
+| | Validación al enviar | Validación en tiempo real |
+| --- | --- | --- |
+| Momento | Al pulsar «Enviar». | Al escribir (`onChange`) o al salir del campo (`onBlur`). |
+| Funciona con | Formularios controlados y no controlados. | Preferiblemente formularios controlados. |
+| Complejidad | Baja. | Media. |
+| Experiencia | El usuario descubre los errores al final. | El usuario corrige sobre la marcha. |
+
+### 3.3.3 Mostrar errores solo tras salir del campo (`touched`)
+
+Mostrar «El correo no es válido» cuando el usuario solo ha escrito la primera letra es frustrante. La solución habitual es guardar qué campos se han visitado (`touched`) y mostrar el error solo en ellos, validando al perder el foco (`onBlur`) y al enviar:
+
+```jsx
+const [touched, setTouched] = useState({});
+
+const handleBlur = (e) => {
+  const { name, value } = e.target;
+  setTouched((prev) => ({ ...prev, [name]: true }));
+  setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const validationErrors = validateForm();
+  // Al enviar, se marcan todos los campos como visitados
+  setTouched(Object.fromEntries(Object.keys(formData).map((k) => [k, true])));
+  setErrors(validationErrors);
+  // ...
+};
+
+// En el JSX
+<input name="email" value={formData.email} onChange={handleChange} onBlur={handleBlur} />
+{touched.email && errors.email && <p className="error">{errors.email}</p>}
+```
+
+### 3.3.4 Mensajes de error accesibles
+
+Para que las personas que usan lectores de pantalla sepan que un campo tiene un error y cuál es, se enlaza el mensaje con el campo (se profundiza en el apartado 8):
+
+```jsx
+<label htmlFor="email">Correo electrónico</label>
+<input
+  id="email"
+  name="email"
+  type="email"
+  value={formData.email}
+  onChange={handleChange}
+  onBlur={handleBlur}
+  aria-invalid={Boolean(errors.email)}
+  aria-describedby={errors.email ? "email-error" : undefined}
+/>
+{errors.email && (
+  <p id="email-error" className="error" role="alert">
+    {errors.email}
+  </p>
+)}
+```
+
+- `aria-invalid` indica que el valor no es válido.
+- `aria-describedby` hace que el lector lea el mensaje de error al enfocar el campo.
+- No te limites al color rojo para indicar el error: añade texto (y, si quieres, un icono).
+- Al enviar con errores, lleva el foco al primer campo inválido.
+
+## 3.4 Ejemplo completo: componente de campo reutilizable
+
+Para no repetir la etiqueta, el campo y el mensaje en cada entrada, se crea un componente `Campo`:
+
+```jsx
+// Campo.jsx
+import styles from "./Campo.module.css";
+
+export default function Campo({ label, name, error, type = "text", ...resto }) {
+  const idError = `${name}-error`;
+  return (
+    <div className={styles.campo}>
+      <label htmlFor={name}>{label}</label>
+      <input
+        id={name}
+        name={name}
+        type={type}
+        className={error ? styles.inputError : undefined}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? idError : undefined}
+        {...resto}
+      />
+      {error && <p id={idError} className={styles.error}>{error}</p>}
+    </div>
+  );
+}
+```
+
+`...resto` recoge el resto de props (`value`, `onChange`, `onBlur`, `required`, `autoComplete`...) y las pasa al `input`. Uso:
+
+```jsx
+<Campo
+  label="Correo electrónico"
+  name="email"
+  type="email"
+  autoComplete="email"
+  value={formData.email}
+  onChange={handleChange}
+  onBlur={handleBlur}
+  error={touched.email && errors.email}
+/>
+```
+
+## 3.5 Gestión del envío
+
+Un envío real a un servidor es asíncrono: hay que indicar que se está enviando, evitar envíos duplicados y gestionar los errores.
+
+```jsx
+const [enviando, setEnviando] = useState(false);
+const [errorEnvio, setErrorEnvio] = useState("");
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const validationErrors = validateForm();
+  setErrors(validationErrors);
+  if (Object.keys(validationErrors).length > 0) return;
+
+  setEnviando(true);
+  setErrorEnvio("");
+  try {
+    const respuesta = await fetch("https://jsonplaceholder.typicode.com/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    if (!respuesta.ok) throw new Error(`Error HTTP ${respuesta.status}`);
+    const creado = await respuesta.json();
+    setSuccessMessage(`Usuario creado con id ${creado.id}`);
+    setFormData(inicial);
+    setTouched({});
+  } catch (err) {
+    setErrorEnvio("No se ha podido enviar el formulario. Inténtalo de nuevo.");
+    console.error(err);
+  } finally {
+    setEnviando(false);
+  }
+};
+
+// En el JSX
+<button type="submit" disabled={enviando}>
+  {enviando ? "Enviando…" : "Enviar"}
+</button>
+{errorEnvio && <p role="alert">{errorEnvio}</p>}
+```
+
+[JSONPlaceholder](https://jsonplaceholder.typicode.com) es una API falsa de pruebas: acepta la petición y responde como si hubiera creado el recurso, pero no lo guarda. En el apartado 9 conectaremos con una API propia.
+
+> **Bibliotecas de formularios.** En proyectos grandes se usan bibliotecas como **React Hook Form** (formularios principalmente no controlados con muy buen rendimiento) junto con bibliotecas para definir las reglas de validación. Conviene dominar antes la técnica manual que se explica en este apartado.
+
+## 3.6 PRÁCTICA 3: Formulario de registro validado
+
+Crea el proyecto `ud5-practica-3-formularios` con un formulario de inscripción a una actividad extraescolar del instituto.
+
+**1. Campos**
+
+| Campo | Tipo | Reglas |
+| --- | --- | --- |
+| Nombre y apellidos | texto | Obligatorio, mínimo 3 caracteres. |
+| Correo electrónico | email | Obligatorio y con formato válido. |
+| Teléfono | tel | Opcional; si se escribe, 9 dígitos que empiecen por 6, 7, 8 o 9. |
+| Fecha de nacimiento | date | Obligatoria; el alumno debe tener entre 12 y 25 años. |
+| Curso | select | Obligatorio (opción inicial «Selecciona un curso» con valor vacío). |
+| Actividad | radio | Obligatoria: robótica, teatro, deporte o videojuegos. |
+| Días disponibles | checkboxes | Al menos uno. |
+| Contraseña | password | Mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número. |
+| Repetir contraseña | password | Debe coincidir con la anterior. |
+| Observaciones | textarea | Opcional, máximo 200 caracteres; muestra un contador «n/200». |
+| Acepto la política de privacidad | checkbox | Obligatorio. |
+
+**2. Requisitos**
+
+- **a.** Formulario controlado con un único objeto de estado y un único manejador `handleChange` para todos los campos (excepto los días, que pueden tener el suyo).
+- **b.** Las reglas de validación estarán en una función `validarCampo(nombre, valor, datos)` fuera del componente (el tercer parámetro permite comparar las contraseñas).
+- **c.** Valida en tiempo real, pero muestra los errores solo de los campos visitados (`touched`) y de todos al enviar.
+- **d.** Usa un componente reutilizable `Campo` para los campos de texto.
+- **e.** Los errores deben ser accesibles: `aria-invalid`, `aria-describedby` y texto (no solo color). Al enviar con errores, el foco debe ir al primer campo inválido (`useRef` o `document.getElementById`).
+- **f.** Añade un indicador de fortaleza de la contraseña (débil, media, fuerte) calculado durante el renderizado.
+- **g.** El botón «Enviar» muestra «Enviando…» y se desactiva durante el envío. Envía los datos (sin las contraseñas) con `POST` a `https://jsonplaceholder.typicode.com/users` y muestra el id devuelto.
+- **h.** Tras el envío correcto, muestra un resumen de los datos inscritos y un botón «Nueva inscripción» que reinicia el formulario.
+- **i.** Guarda un borrador del formulario (sin contraseñas) en `localStorage` mientras se escribe, para no perder los datos al recargar.
+- **j.** Estilos con módulos CSS y las variables del tema. El formulario debe verse bien en un móvil.
+
+**3. Pruebas**
+
+Incluye en el `README.md` una tabla con al menos 10 casos de prueba (datos introducidos, resultado esperado y resultado obtenido), incluidos casos límite: campos con solo espacios, edad exacta de 12 y 25 años, contraseñas que no coinciden, teléfono con letras y envío sin conexión (puedes simularlo en la pestaña *Network* con la opción *Offline*).
+
+---
+
+## 3.7 PRÁCTICA 4: TaskFlow, gestor de tareas
+
+El proyecto se realizará de forma individual y permitirá aplicar lo aprendido en la UD4 y en los apartados 2 y 3. Consiste en desarrollar «TaskFlow», una aplicación de gestión de tareas personales tipo tablero.
+
+### Descripción funcional
+
+La aplicación permitirá:
+
+1. **Crear tareas** mediante un formulario con: título (obligatorio, entre 3 y 60 caracteres), descripción (opcional, máximo 300), prioridad (baja, media, alta), fecha límite (opcional, no anterior a hoy) y categoría (seleccionable de una lista).
+2. **Mostrar las tareas** agrupadas en tres columnas: «Pendiente», «En curso» y «Hecha». Cada tarea se muestra en una tarjeta con su prioridad (con un color y un texto), su categoría y su fecha límite. Si la fecha ha vencido y la tarea no está hecha, la tarjeta se marca como vencida.
+3. **Cambiar el estado** de una tarea con botones «← / →» para moverla entre columnas.
+4. **Editar** una tarea, reutilizando el mismo formulario precargado con sus datos.
+5. **Eliminar** una tarea pidiendo confirmación.
+6. **Filtrar y buscar:** por texto (título o descripción), por prioridad y por categoría. Los filtros se combinan.
+7. **Ordenar** cada columna por fecha límite o por prioridad.
+8. **Estadísticas:** total de tareas, porcentaje completado (con una barra de progreso) y número de tareas vencidas. Todo calculado, no almacenado.
+9. **Persistencia:** las tareas y el tema elegido se guardan en `localStorage`.
+10. **Tema claro y oscuro** con variables CSS.
+11. **Frase motivadora:** al cargar la aplicación, se muestra una cita obtenida de una API pública (por ejemplo, `https://dummyjson.com/quotes/random`), gestionando la carga y los errores. Si falla, se muestra una frase por defecto.
+
+### Requisitos técnicos
+
+- Proyecto creado con Vite, organizado en `components/`, `hooks/`, `services/`, `utils/` y `styles/`.
+- **Mínimo 10 componentes** funcionales con responsabilidades claras y comunicación mediante props y callbacks. Al menos un componente contenedor que use `children` (por ejemplo, `Modal` o `Columna`).
+- **Estado** con `useState`, sin mutaciones, colocado en el lugar adecuado (elevado cuando lo compartan varios componentes). Los datos derivados (filtrados, estadísticas) se calculan durante el renderizado.
+- **Efectos** con `useEffect` correctamente declarados (dependencias completas y limpieza cuando proceda). Al menos dos hooks personalizados (por ejemplo, `useLocalStorage` y `useTema`).
+- **Formulario controlado** con validación en tiempo real, errores accesibles y control de envío.
+- **Listas** con claves estables (`crypto.randomUUID()` al crear cada tarea).
+- **Estilos:** variables CSS para el tema y al menos dos métodos distintos de los vistos (por ejemplo, módulos CSS y SCSS con BEM). La interfaz debe ser usable en móvil (columnas apiladas) y escritorio.
+- **Sin errores ni avisos** en la consola ni en `npm run lint`.
+
+### Organización y sesiones
+
+El proyecto se desarrollará en las sesiones de clase que indique el profesor. Se recomienda seguir este orden: (1) boceto de la interfaz y árbol de componentes; (2) componentes estáticos con datos de ejemplo; (3) estado y eventos; (4) formulario y validación; (5) filtros, ordenación y estadísticas; (6) persistencia, tema y API; (7) estilos y pruebas.
+
+El profesor podrá solicitar una defensa del proyecto en la que el alumno deberá explicar cualquier parte del código y realizar una pequeña modificación en directo.
+
+### Entrega
+
+1. **Código fuente** en el repositorio `React`, carpeta `ud5-practica-4-taskflow`, con commits frecuentes y descriptivos que muestren la evolución del trabajo.
+2. **`README.md`** con: instrucciones para ejecutarlo, el boceto y el árbol de componentes, una tabla con el estado de cada componente y dónde se ubica cada estado, los métodos de estilo usados y una lista de pruebas realizadas.
+3. **Un vídeo demostrativo** de entre 3 y 5 minutos que muestre todas las funcionalidades y explique brevemente la estructura del código. Se entregará mediante un enlace (Drive, YouTube oculto o similar).
+
+Antes de entregar, clona el repositorio en otra carpeta, ejecuta `npm install` y `npm run dev`, y comprueba que funciona.
+
+---
+
+# 4. Gestión del estado global con Context API
+
+## 4.1 El problema: *prop drilling*
 
 En la UD4 vimos que, cuando varios componentes comparten datos, el estado se **eleva** al ancestro común y se pasa hacia abajo por props. Cuando el árbol es profundo, muchos componentes intermedios reciben props que no usan, solo para pasarlas a sus hijos. Es el ***prop drilling*** (perforación de props):
 
@@ -128,7 +1473,7 @@ App  (usuario, tema)
 
 Problemas: código repetitivo, componentes intermedios acoplados a datos que no les importan y refactorizaciones costosas.
 
-## 2.2 ¿Qué es Context API?
+## 4.2 ¿Qué es Context API?
 
 **Context** es un mecanismo de React para que un componente proporcione datos a **todo su subárbol**, sin pasarlos explícitamente por props en cada nivel. Funciona como un «canal» al que cualquier descendiente puede conectarse.
 
@@ -147,7 +1492,7 @@ Se usa en tres pasos:
 2. **Proveer** un valor envolviendo una parte del árbol con el *Provider*.
 3. **Consumir** el valor en cualquier descendiente con el hook `useContext`.
 
-## 2.3 Ejemplo básico: tema claro/oscuro
+## 4.3 Ejemplo básico: tema claro/oscuro
 
 **1. Crear el contexto** (`src/context/TemaContext.js`):
 
@@ -196,7 +1541,7 @@ Cuando cambia el `value` del Provider, **todos los componentes que consumen ese 
 
 > **Sintaxis de React 19.** Desde React 19 se puede usar el propio contexto como proveedor: `<TemaContext value={tema}>...</TemaContext>`. `TemaContext.Provider` sigue funcionando y es la forma que encontrarás en la mayoría de la documentación y del código existente.
 
-## 2.4 Patrón recomendado: Provider propio y hook personalizado
+## 4.4 Patrón recomendado: Provider propio y hook personalizado
 
 En una aplicación real, el contexto suele contener **el estado y las funciones para modificarlo**. Lo más limpio es encapsularlo todo en un archivo con:
 
@@ -272,11 +1617,11 @@ Ventajas: los componentes no saben cómo está implementado el contexto; solo us
 
 > **Vite y Fast Refresh.** El plugin de React de Vite muestra un aviso si un archivo exporta componentes y otras cosas a la vez (aquí, `TemaProvider` y `useTema`). La recarga en caliente sigue funcionando, aunque recargue la página completa. Si quieres evitarlo, separa el contexto, el Provider y el hook en archivos distintos.
 
-## 2.5 Ejemplo completo: autenticación y carrito
+## 4.5 Ejemplo completo: autenticación y carrito
 
 Una aplicación puede tener varios contextos, cada uno con una responsabilidad. Veamos un **contexto de autenticación** (lo usaremos en las rutas privadas) y un **contexto de carrito** gestionado con `useReducer`.
 
-### 2.5.1 Contexto de autenticación
+### 4.5.1 Contexto de autenticación
 
 `src/context/AuthContext.jsx`:
 
@@ -291,7 +1636,7 @@ export function AuthProvider({ children }) {
     return guardado ? JSON.parse(guardado) : null;
   });
 
-  // Login simulado: en una aplicación real se llamaría a la API (apartado 7)
+  // Login simulado: en una aplicación real se llamaría a la API (apartado 9)
   const login = async (email, password) => {
     await new Promise((r) => setTimeout(r, 500)); // Simula la latencia de red
     if (email === "alumno@iesvirgendelcarmen.com" && password === "React2025") {
@@ -324,7 +1669,7 @@ export function useAuth() {
 
 > **Seguridad.** Este login es solo una simulación para practicar la interfaz. La autenticación real **siempre** se comprueba en el servidor, que devuelve un token o una cookie de sesión. Nunca se guardan contraseñas en el código del cliente ni en `localStorage`, y ocultar una ruta en el cliente no protege los datos: la API debe comprobar los permisos en cada petición.
 
-### 2.5.2 `useReducer` para estados complejos
+### 4.5.2 `useReducer` para estados complejos
 
 Cuando el estado tiene muchas operaciones (añadir, eliminar, cambiar cantidad, vaciar...), `useReducer` centraliza toda la lógica en una función pura llamada **reducer**: recibe el estado actual y una **acción** (un objeto que describe qué ha pasado) y devuelve el nuevo estado.
 
@@ -435,7 +1780,7 @@ Los Providers se anidan en `main.jsx`:
 </AuthProvider>
 ```
 
-## 2.6 Cuándo usar Context (y cuándo no)
+## 4.6 Cuándo usar Context (y cuándo no)
 
 **Úsalo** para datos que necesitan **muchos componentes en distintos niveles** y que cambian **con poca frecuencia**:
 
@@ -457,13 +1802,13 @@ Consejos:
 
 > **Alternativas para aplicaciones grandes.** Cuando el estado global es complejo se usan bibliotecas como **Redux Toolkit** o **Zustand**. Context + `useReducer` es suficiente para la mayoría de aplicaciones pequeñas y medianas y es la base conceptual de esas bibliotecas.
 
-## 2.7 PRÁCTICA 1: Estado global con Context
+## 4.7 PRÁCTICA 5: Estado global con Context
 
-Crea el proyecto `ud5-practica-1-context` partiendo del **carrito de la práctica 3 de la UD4**.
+Crea el proyecto `ud5-practica-5-context` partiendo del **carrito de la práctica 1**.
 
 **1. Contexto de tema**
 
-- **a.** Crea `TemaProvider` y el hook `useTema` siguiendo el patrón del apartado 2.4. Sustituye el hook de la UD4.
+- **a.** Crea `TemaProvider` y el hook `useTema` siguiendo el patrón del apartado 4.4. Sustituye el hook de la práctica 1.
 - **b.** El botón de cambio de tema estará en el `Header` y debe usar `aria-pressed`.
 
 **2. Contexto de carrito con `useReducer`**
@@ -484,9 +1829,9 @@ Crea el proyecto `ud5-practica-1-context` partiendo del **carrito de la práctic
 
 ---
 
-# 3. Enrutamiento con React Router
+# 5. Enrutamiento con React Router
 
-## 3.1 ¿Qué es el enrutamiento en una SPA?
+## 5.1 ¿Qué es el enrutamiento en una SPA?
 
 Una SPA solo tiene una página HTML, pero los usuarios esperan que la aplicación se comporte como un sitio con varias páginas:
 
@@ -507,7 +1852,7 @@ URL del navegador          Componentes que se renderizan dentro de #root
 /cualquier-otra       ──►  <Layout> + <NoEncontrada />
 ```
 
-## 3.2 Instalación
+## 5.2 Instalación
 
 ```bash
 npm install react-router
@@ -515,7 +1860,7 @@ npm install react-router
 
 > **Versiones.** En React Router v7 todo se importa desde el paquete `react-router`. En la versión 6 y anteriores se instalaba e importaba `react-router-dom`; ese paquete sigue existiendo como alias, por lo que verás ambas formas en la documentación. React Router v7 tiene tres modos de uso: *declarativo* (el que veremos), *data* y *framework* (heredero de Remix). El modo declarativo es el más sencillo y suficiente para una SPA.
 
-## 3.3 Configuración básica
+## 5.3 Configuración básica
 
 **1.** Envuelve la aplicación con `BrowserRouter` en `main.jsx`:
 
@@ -560,7 +1905,7 @@ export default function App() {
 
 Por convenio, los componentes que representan pantallas completas se guardan en `src/pages/` (o `src/views/`) y los componentes reutilizables en `src/components/`.
 
-## 3.4 Navegación: `Link` y `NavLink`
+## 5.4 Navegación: `Link` y `NavLink`
 
 Para navegar **no se usa `<a href>`**, porque provocaría una petición al servidor y la recarga completa de la página (perdiendo el estado). Se usa el componente **`Link`**, que genera un `<a>` pero intercepta el clic y cambia la URL sin recargar:
 
@@ -594,7 +1939,7 @@ export default function Menu() {
 - `className` puede recibir una **función** que recibe `{ isActive }` y devuelve las clases.
 - La prop **`end`** en el enlace de inicio hace que solo esté activo en `/` exactamente; sin ella, `/` estaría activo en todas las rutas, porque todas empiezan por `/`.
 
-## 3.5 Rutas con parámetros: `useParams`
+## 5.5 Rutas con parámetros: `useParams`
 
 Las rutas pueden tener **segmentos dinámicos**, que empiezan por dos puntos (`:`). Su valor se lee con el hook **`useParams`**:
 
@@ -639,9 +1984,9 @@ En el listado, cada tarjeta enlaza con su detalle:
 ))}
 ```
 
-Si el detalle se obtiene de una API, se hace con `useEffect` dependiente de `id` (UD4, apartado 8.3.5), de modo que al navegar de un producto a otro se vuelve a pedir.
+Si el detalle se obtiene de una API, se hace con `useEffect` dependiente de `id` (apartado 2.3.5), de modo que al navegar de un producto a otro se vuelve a pedir.
 
-## 3.6 Navegación programática: `useNavigate`
+## 5.6 Navegación programática: `useNavigate`
 
 A veces hay que navegar desde código, por ejemplo tras enviar un formulario o cerrar sesión. Para ello se usa **`useNavigate`**:
 
@@ -670,7 +2015,7 @@ Opciones útiles: `navigate("/login", { replace: true })` sustituye la entrada a
 
 La forma declarativa equivalente, para redirigir durante el renderizado, es el componente **`<Navigate to="/ruta" replace />`**.
 
-## 3.7 Parámetros de búsqueda: `useSearchParams`
+## 5.7 Parámetros de búsqueda: `useSearchParams`
 
 Los **parámetros de búsqueda** (*query string*), como `/productos?categoria=teclados&orden=precio`, son ideales para filtros, búsquedas, ordenación y paginación, porque así el estado queda en la URL y se puede compartir. `useSearchParams` funciona como `useState` pero lee y escribe la URL:
 
@@ -715,7 +2060,7 @@ export default function ListaProductos() {
 
 Recuerda que en la UD2 leíamos estos parámetros manualmente con `new URLSearchParams(window.location.search)`.
 
-## 3.8 Rutas anidadas y layouts: `Outlet`
+## 5.8 Rutas anidadas y layouts: `Outlet`
 
 La mayoría de aplicaciones tienen una estructura común (cabecera, menú, pie) que se mantiene mientras cambia el contenido central. Con las **rutas anidadas**, una ruta padre renderiza un **layout** y, en el lugar donde coloca **`<Outlet />`**, se renderiza la ruta hija que coincida con la URL.
 
@@ -769,9 +2114,9 @@ Conceptos clave:
 </Route>
 ```
 
-## 3.9 Rutas privadas (protegidas)
+## 5.9 Rutas privadas (protegidas)
 
-Algunas vistas solo deben ser accesibles para usuarios autenticados. El patrón consiste en un componente que comprueba la autenticación (usando el contexto del apartado 2.5.1) y, si no hay sesión, **redirige al login** recordando a dónde quería ir el usuario:
+Algunas vistas solo deben ser accesibles para usuarios autenticados. El patrón consiste en un componente que comprueba la autenticación (usando el contexto del apartado 4.5.1) y, si no hay sesión, **redirige al login** recordando a dónde quería ir el usuario:
 
 ```jsx
 // components/RutaPrivada.jsx
@@ -860,9 +2205,9 @@ Del mismo modo se pueden crear rutas por **rol** (por ejemplo, `RutaAdmin` que c
 
 > Recuerda: las rutas privadas mejoran la **experiencia de usuario**, pero **no son una medida de seguridad**. Cualquiera puede leer el código JavaScript de la aplicación. La protección real de los datos está en la API.
 
-## 3.10 Otros aspectos del enrutamiento
+## 5.10 Otros aspectos del enrutamiento
 
-### 3.10.1 Título del documento y foco al cambiar de ruta
+### 5.10.1 Título del documento y foco al cambiar de ruta
 
 En una SPA, al navegar **no cambia el título de la pestaña** ni los lectores de pantalla anuncian la nueva página, como ocurriría con una recarga. Para mejorar la accesibilidad:
 
@@ -908,7 +2253,7 @@ export default function Layout() {
 
 > En versiones anteriores a React 19, el título se cambiaba con un efecto: `useEffect(() => { document.title = "Contacto | Mi tienda"; }, []);`.
 
-### 3.10.2 Carga diferida de rutas (*lazy loading*)
+### 5.10.2 Carga diferida de rutas (*lazy loading*)
 
 En aplicaciones grandes, se puede dividir el código para que cada página se descargue solo cuando se visita, reduciendo la carga inicial:
 
@@ -927,7 +2272,7 @@ const Estadisticas = lazy(() => import("./pages/Estadisticas"));
 />
 ```
 
-### 3.10.3 Despliegue de una SPA con rutas
+### 5.10.3 Despliegue de una SPA con rutas
 
 Si se recarga la página en `/productos/3`, el navegador pide ese archivo al servidor, que no existe (solo existe `index.html`). El servidor debe estar configurado para **devolver `index.html` en cualquier ruta**:
 
@@ -936,9 +2281,9 @@ Si se recarga la página en `/productos/3`, el navegador pide ese archivo al ser
 - **Vercel:** se configura con una regla de *rewrite* en `vercel.json`.
 - **GitHub Pages:** no admite esta configuración. Las alternativas son usar `HashRouter` (las URL quedan como `/#/productos/3`) o copiar `index.html` como `404.html` al construir. Además, si la aplicación se publica en una subcarpeta (`usuario.github.io/repo/`), hay que configurar `base: "/repo/"` en `vite.config.js` y `<BrowserRouter basename={import.meta.env.BASE_URL}>`.
 
-## 3.11 PRÁCTICA 2: Aplicación navegable
+## 5.11 PRÁCTICA 6: Aplicación navegable
 
-Convierte la **Pokédex de la práctica 4 de la UD4** en una aplicación navegable. Crea el proyecto `ud5-practica-2-router`.
+Convierte la **Pokédex de la práctica 2** en una aplicación navegable. Crea el proyecto `ud5-practica-6-router`.
 
 **1. Mapa de navegación**
 
@@ -968,9 +2313,9 @@ Convierte la **Pokédex de la práctica 4 de la UD4** en una aplicación navegab
 
 ---
 
-# 4. Diseño adaptativo y responsive
+# 6. Diseño adaptativo y responsive
 
-## 4.1 Conceptos
+## 6.1 Conceptos
 
 - **Diseño *responsive* (adaptable):** una única interfaz que se **reorganiza de forma fluida** según el tamaño de la pantalla, usando rejillas flexibles, unidades relativas y *media queries*.
 - **Diseño adaptativo:** se diseñan varias **versiones fijas** para tamaños concretos y se elige una según el dispositivo.
@@ -983,7 +2328,7 @@ Para que funcione, `index.html` debe tener la etiqueta *viewport* (Vite ya la in
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 ```
 
-## 4.2 *Mobile first*
+## 6.2 *Mobile first*
 
 La estrategia ***mobile first*** consiste en diseñar y escribir el CSS **primero para móvil** y añadir mejoras para pantallas mayores con `min-width`:
 
@@ -1016,9 +2361,9 @@ Ventajas: obliga a priorizar el contenido esencial, el CSS resultante es más se
 
 *Breakpoints* orientativos (los de Material UI): `xs` 0 px, `sm` 600 px, `md` 900 px, `lg` 1200 px, `xl` 1536 px. Lo ideal es colocar los puntos de ruptura **donde el contenido lo necesita**, no según dispositivos concretos.
 
-## 4.3 Técnicas
+## 6.3 Técnicas
 
-### 4.3.1 Rejillas fluidas sin *media queries*
+### 6.3.1 Rejillas fluidas sin *media queries*
 
 CSS Grid permite rejillas que se adaptan solas:
 
@@ -1032,7 +2377,7 @@ CSS Grid permite rejillas que se adaptan solas:
 
 Crea tantas columnas de al menos 220 px como quepan, repartiendo el espacio sobrante.
 
-### 4.3.2 Flexbox para componentes
+### 6.3.2 Flexbox para componentes
 
 ```css
 .cabecera {
@@ -1046,7 +2391,7 @@ Crea tantas columnas de al menos 220 px como quepan, repartiendo el espacio sobr
 
 Regla general: **Grid** para la disposición en dos dimensiones (página, rejillas de tarjetas) y **Flexbox** para alinear elementos en una dimensión (barras, botones, contenido de una tarjeta).
 
-### 4.3.3 Unidades relativas y tipografía fluida
+### 6.3.3 Unidades relativas y tipografía fluida
 
 - `rem` para tamaños de texto y espaciados (relativos al tamaño de fuente raíz, que el usuario puede cambiar en su navegador). Evita fijar el texto en `px`.
 - `%`, `fr`, `vw`, `vh` para anchos y altos. `dvh` (*dynamic viewport height*) tiene en cuenta las barras del navegador móvil.
@@ -1064,7 +2409,7 @@ h1 {
 }
 ```
 
-### 4.3.4 Imágenes adaptables
+### 6.3.4 Imágenes adaptables
 
 ```css
 img {
@@ -1080,7 +2425,7 @@ img {
 
 Para servir imágenes de distinto tamaño según la pantalla se usan los atributos `srcSet` y `sizes` (en JSX en camelCase), y `loading="lazy"` para diferir las que están fuera de la pantalla.
 
-### 4.3.5 *Container queries*
+### 6.3.5 *Container queries*
 
 Las *media queries* dependen del tamaño de la **ventana**; las ***container queries*** dependen del tamaño del **contenedor** del componente. Son ideales en React porque un componente se adapta al espacio que le dan, se coloque donde se coloque:
 
@@ -1101,7 +2446,7 @@ Las *media queries* dependen del tamaño de la **ventana**; las ***container que
 }
 ```
 
-### 4.3.6 Interacción táctil
+### 6.3.6 Interacción táctil
 
 - Objetivos táctiles de **al menos 24 × 24 px** (criterio WCAG 2.2) y, preferiblemente, de 44 × 44 px.
 - No dependas del `:hover`, que no existe en pantallas táctiles: la información importante no puede estar solo en un *tooltip* de *hover*. Se puede detectar con `@media (hover: hover)`.
@@ -1116,7 +2461,7 @@ Las *media queries* dependen del tamaño de la **ventana**; las ***container que
 }
 ```
 
-## 4.4 Responsive en React: cambiar componentes según el tamaño
+## 6.4 Responsive en React: cambiar componentes según el tamaño
 
 Lo habitual es resolver el diseño adaptable **solo con CSS**. Pero a veces hay que renderizar **componentes distintos**: por ejemplo, un menú horizontal en escritorio y un menú desplegable en móvil. Para ello se crea un hook que escucha una *media query*:
 
@@ -1146,7 +2491,7 @@ function Header() {
 }
 ```
 
-### 4.4.1 Ejemplo: menú desplegable accesible para móvil
+### 6.4.1 Ejemplo: menú desplegable accesible para móvil
 
 ```jsx
 import { useState } from "react";
@@ -1188,7 +2533,7 @@ export default function MenuMovil() {
 
 `aria-expanded` informa a los lectores de pantalla de si el menú está abierto, y `aria-controls` indica qué elemento controla el botón. El atributo `hidden` oculta la lista también para las tecnologías de asistencia.
 
-## 4.5 Probar el diseño adaptable
+## 6.5 Probar el diseño adaptable
 
 - **Modo dispositivo** de las herramientas de desarrollo (Ctrl+Mayús+M en Chrome/Edge): simula tamaños, densidad de píxeles y pantallas táctiles.
 - Redimensiona la ventana despacio, desde 320 px hasta pantalla completa, buscando el punto en que algo «se rompe»: ahí necesitas un *breakpoint*.
@@ -1197,9 +2542,9 @@ export default function MenuMovil() {
 
 ---
 
-# 5. Material UI
+# 7. Material UI
 
-## 5.1 Bibliotecas de componentes
+## 7.1 Bibliotecas de componentes
 
 Una **biblioteca de componentes** ofrece un conjunto de componentes ya construidos, probados, accesibles y coherentes entre sí (botones, campos, diálogos, menús, tablas...). Ventajas:
 
@@ -1214,7 +2559,7 @@ Algunas bibliotecas para React: **Material UI (MUI)**, **Chakra UI**, **Ant Desi
 
 **Material UI (MUI)** implementa **Material Design**, el sistema de diseño de Google, y es la biblioteca de componentes más utilizada en React.
 
-## 5.2 Instalación
+## 7.2 Instalación
 
 ```bash
 npm install @mui/material @emotion/react @emotion/styled
@@ -1236,9 +2581,9 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 ```
 
-> **Versiones.** Los ejemplos están escritos para **MUI v7**. Si consultas tutoriales antiguos encontrarás diferencias, sobre todo en el componente `Grid` (ver apartado 5.6). Consulta siempre la documentación oficial en [mui.com](https://mui.com/material-ui/).
+> **Versiones.** Los ejemplos están escritos para **MUI v7**. Si consultas tutoriales antiguos encontrarás diferencias, sobre todo en el componente `Grid` (ver apartado 7.6). Consulta siempre la documentación oficial en [mui.com](https://mui.com/material-ui/).
 
-## 5.3 Primeros componentes
+## 7.3 Primeros componentes
 
 ```jsx
 import Button from "@mui/material/Button";
@@ -1267,10 +2612,10 @@ Cada componente tiene sus **props** documentadas en la API de MUI. Patrones comu
 - `variant`: variante visual (`text`, `contained`, `outlined`; `h1`...`body2` en `Typography`).
 - `color`: color del tema (`primary`, `secondary`, `error`, `warning`, `info`, `success`).
 - `size`: `small`, `medium`, `large`.
-- `sx`: estilos personalizados (apartado 5.5).
+- `sx`: estilos personalizados (apartado 7.5).
 - `component`: cambia el elemento HTML o componente que se renderiza (muy útil con React Router).
 
-### 5.3.1 Componentes más utilizados
+### 7.3.1 Componentes más utilizados
 
 | Categoría | Componentes |
 | --- | --- |
@@ -1281,7 +2626,7 @@ Cada componente tiene sus **props** documentadas en la API de MUI. Patrones comu
 | Navegación | `AppBar`, `Toolbar`, `Drawer`, `Tabs`, `Breadcrumbs`, `Menu`, `Pagination`, `BottomNavigation` |
 | Retroalimentación | `Alert`, `Snackbar`, `Dialog`, `CircularProgress`, `LinearProgress`, `Skeleton` |
 
-## 5.4 Tema: el sistema de diseño de la aplicación
+## 7.4 Tema: el sistema de diseño de la aplicación
 
 El **tema** centraliza los colores, la tipografía, los espaciados, las formas y los *breakpoints*. Se crea con `createTheme` y se aplica con `ThemeProvider`. `CssBaseline` normaliza los estilos del navegador y aplica el color de fondo y de texto del tema al `body`.
 
@@ -1324,7 +2669,7 @@ import { useTema } from "./context/TemaContext";
 import Rutas from "./Rutas";
 
 export default function App() {
-  const { tema } = useTema(); // "claro" | "oscuro" (contexto del apartado 2.4)
+  const { tema } = useTema(); // "claro" | "oscuro" (contexto del apartado 4.4)
   const muiTheme = useMemo(() => crearTema(tema === "oscuro" ? "dark" : "light"), [tema]);
 
   return (
@@ -1336,11 +2681,11 @@ export default function App() {
 }
 ```
 
-`useMemo` evita crear un tema nuevo en cada renderizado: solo se recalcula cuando cambia `tema`. Observa que `ThemeProvider` es, en realidad, un **Provider de Context**: lo que aprendiste en el apartado 2 es exactamente lo que MUI usa internamente.
+`useMemo` evita crear un tema nuevo en cada renderizado: solo se recalcula cuando cambia `tema`. Observa que `ThemeProvider` es, en realidad, un **Provider de Context**: lo que aprendiste en el apartado 4 es exactamente lo que MUI usa internamente.
 
 Material UI también calcula automáticamente el color del texto que va sobre cada color (`contrastText`) para mantener un contraste adecuado.
 
-## 5.5 Personalizar estilos: la prop `sx`
+## 7.5 Personalizar estilos: la prop `sx`
 
 La prop **`sx`** permite aplicar estilos a cualquier componente de MUI con acceso al tema:
 
@@ -1366,7 +2711,7 @@ La prop **`sx`** permite aplicar estilos a cualquier componente de MUI con acces
 - **Valores *responsive*:** un objeto con un valor por *breakpoint* (`{ xs: ..., sm: ..., md: ... }`), siguiendo el enfoque *mobile first*.
 - Para estilos reutilizables se puede usar `styled()` de MUI, con la misma idea que styled-components.
 
-## 5.6 Diseño de páginas: `Container`, `Stack` y `Grid`
+## 7.6 Diseño de páginas: `Container`, `Stack` y `Grid`
 
 ```jsx
 import Container from "@mui/material/Container";
@@ -1406,7 +2751,7 @@ const theme = useTheme();
 const esMovil = useMediaQuery(theme.breakpoints.down("sm"));
 ```
 
-## 5.7 Ejemplo completo: layout con `AppBar`, `Drawer` y React Router
+## 7.7 Ejemplo completo: layout con `AppBar`, `Drawer` y React Router
 
 ```jsx
 // components/LayoutMUI.jsx
@@ -1534,9 +2879,9 @@ Claves de la integración:
 - Los `IconButton` sin texto visible necesitan `aria-label`.
 - `Drawer` gestiona automáticamente el foco, la tecla Escape y el fondo oscurecido.
 
-## 5.8 Ejemplos: tarjetas, formularios y retroalimentación
+## 7.8 Ejemplos: tarjetas, formularios y retroalimentación
 
-### 5.8.1 Tarjeta de producto
+### 7.8.1 Tarjeta de producto
 
 ```jsx
 import Card from "@mui/material/Card";
@@ -1570,7 +2915,7 @@ export default function ProductoCard({ producto, onAñadir }) {
 
 Observa `component="h2"` en `Typography`: `variant` define el **aspecto** y `component` la **etiqueta HTML**. Así se mantiene una jerarquía de encabezados correcta (un `h1` por página y sin saltos de nivel) independientemente del tamaño visual.
 
-### 5.8.2 Formulario con `TextField` y validación
+### 7.8.2 Formulario con `TextField` y validación
 
 `TextField` agrupa etiqueta, campo, texto de ayuda y mensaje de error, y los relaciona automáticamente con los atributos de accesibilidad adecuados:
 
@@ -1658,7 +3003,7 @@ export default function FormularioContacto() {
 }
 ```
 
-### 5.8.3 Diálogo de confirmación
+### 7.8.3 Diálogo de confirmación
 
 ```jsx
 import Dialog from "@mui/material/Dialog";
@@ -1686,7 +3031,7 @@ export default function ConfirmarBorrado({ abierto, nombre, onCancelar, onConfir
 
 `Dialog` atrapa el foco dentro del diálogo mientras está abierto, lo devuelve al elemento anterior al cerrarse y se cierra con Escape. Poner el foco inicial en «Cancelar» (la acción segura) es una buena práctica de **prevención de errores**.
 
-### 5.8.4 Estados de carga con `Skeleton`
+### 7.8.4 Estados de carga con `Skeleton`
 
 ```jsx
 import Skeleton from "@mui/material/Skeleton";
@@ -1704,15 +3049,15 @@ import Skeleton from "@mui/material/Skeleton";
 
 Los esqueletos reducen la sensación de espera y evitan saltos bruscos en el diseño cuando llegan los datos.
 
-## 5.9 PRÁCTICA 3: Interfaz con Material UI
+## 7.9 PRÁCTICA 7: Interfaz con Material UI
 
-Crea el proyecto `ud5-practica-3-mui`: una **tienda online** con Material UI, React Router y los contextos de la práctica 1. Los productos se obtendrán de `https://dummyjson.com/products` (listado con `limit` y `skip`, detalle en `/products/{id}`, categorías en `/products/categories`).
+Crea el proyecto `ud5-practica-7-mui`: una **tienda online** con Material UI, React Router y los contextos de la práctica 5. Los productos se obtendrán de `https://dummyjson.com/products` (listado con `limit` y `skip`, detalle en `/products/{id}`, categorías en `/products/categories`).
 
 **1. Tema y diseño**
 
 - **a.** Define un tema propio con colores primario y secundario, tipografía, radio de borde y tamaño de botones personalizados. Justifica la paleta en el `README.md`.
 - **b.** Implementa el modo claro y oscuro con el contexto de tema y `createTheme`.
-- **c.** Comprueba con una herramienta de contraste que los colores elegidos cumplen el nivel AA (apartado 6).
+- **c.** Comprueba con una herramienta de contraste que los colores elegidos cumplen el nivel AA (apartado 8).
 
 **2. Estructura y navegación**
 
@@ -1733,9 +3078,9 @@ Crea el proyecto `ud5-practica-3-mui`: una **tienda online** con Material UI, Re
 
 ---
 
-# 6. Usabilidad y accesibilidad
+# 8. Usabilidad y accesibilidad
 
-## 6.1 ¿Qué es la accesibilidad web?
+## 8.1 ¿Qué es la accesibilidad web?
 
 La **accesibilidad web (a11y)** consiste en que las aplicaciones puedan ser utilizadas por **todas las personas**, independientemente de sus capacidades. (*a11y* es un numerónimo: la «a», 11 letras y la «y».)
 
@@ -1752,7 +3097,7 @@ La accesibilidad beneficia a todos (los subtítulos se usan en el transporte pú
 - **Real Decreto 1112/2018** sobre accesibilidad de los sitios web y aplicaciones para dispositivos móviles del sector público, que remite a la norma europea **EN 301 549**, basada en las WCAG.
 - **Ley Europea de Accesibilidad** (*European Accessibility Act*, Directiva 2019/882), aplicable desde el **28 de junio de 2025** también a muchos productos y servicios privados: comercio electrónico, banca, transporte, libros electrónicos...
 
-## 6.2 Pautas WCAG 2.2
+## 8.2 Pautas WCAG 2.2
 
 Las **WCAG** (*Web Content Accessibility Guidelines*), del W3C, son el estándar internacional de accesibilidad. La versión **2.2** se publicó en octubre de 2023. Se organizan en **4 principios (POUR)**, 13 pautas y criterios de conformidad comprobables con tres niveles: **A** (mínimo), **AA** (el exigido por la legislación) y **AAA** (máximo).
 
@@ -1763,7 +3108,7 @@ Las **WCAG** (*Web Content Accessibility Guidelines*), del W3C, son el estándar
 | **Comprensible** | La información y el manejo deben entenderse. | Idioma de la página (3.1.1), comportamiento predecible (3.2), identificación de errores (3.3.1), etiquetas o instrucciones (3.3.2), sugerencias ante errores (3.3.3). |
 | **Robusto** | Compatible con tecnologías de asistencia actuales y futuras. | Nombre, función y valor de los componentes (4.1.2), mensajes de estado (4.1.3). |
 
-### 6.2.1 Novedades de WCAG 2.2
+### 8.2.1 Novedades de WCAG 2.2
 
 | Criterio | Nivel | Qué exige |
 | --- | --- | --- |
@@ -1777,7 +3122,7 @@ Las **WCAG** (*Web Content Accessibility Guidelines*), del W3C, son el estándar
 
 Además, en WCAG 2.2 se ha eliminado el criterio 4.1.1 (*Procesamiento*), ya obsoleto.
 
-## 6.3 Primero, HTML semántico
+## 8.3 Primero, HTML semántico
 
 La regla más importante de la accesibilidad en React es **usar el elemento HTML correcto**. Los elementos nativos ya tienen la función, el comportamiento de teclado y la semántica que necesitan los lectores de pantalla.
 
@@ -1800,7 +3145,7 @@ Pautas:
 - **Imágenes:** `alt` descriptivo en las informativas; `alt=""` en las decorativas, para que el lector las ignore.
 - **Fragmentos** en lugar de `div` innecesarios, para no romper la estructura (por ejemplo, dentro de `<ul>` o `<table>`).
 
-## 6.4 ARIA
+## 8.4 ARIA
 
 **WAI-ARIA** (*Accessible Rich Internet Applications*) es un conjunto de atributos que añaden información semántica para las tecnologías de asistencia cuando el HTML no basta, especialmente en componentes dinámicos. ARIA **solo cambia lo que se anuncia**: no añade comportamiento (ni foco, ni teclado).
 
@@ -1823,7 +3168,7 @@ Cada uso de ARIA debe estar **justificado**. Los atributos más habituales:
 | `role="alert"` | Mensaje importante que se anuncia inmediatamente. | Error al enviar un formulario. |
 | `aria-busy` | La región se está actualizando. | Listado mientras carga. |
 
-### 6.4.1 Ejemplos en React
+### 8.4.1 Ejemplos en React
 
 **Botón de solo icono:**
 
@@ -1893,7 +3238,7 @@ function CampoTexto({ label, error, ...props }) {
 }
 ```
 
-## 6.5 Teclado y foco
+## 8.5 Teclado y foco
 
 Muchas personas navegan **solo con teclado** (Tab, Mayús+Tab, Enter, Espacio, flechas, Escape). Requisitos:
 
@@ -1928,10 +3273,10 @@ Muchas personas navegan **solo con teclado** (Tab, Mayús+Tab, Enter, Espacio, f
   }
   ```
 
-- **Gestión del foco en SPA:** al cambiar de ruta, al abrir y cerrar diálogos y tras eliminar un elemento, el foco debe ir a un lugar lógico (apartado 3.10.1). Nunca debe «perderse» en el `body`.
+- **Gestión del foco en SPA:** al cambiar de ruta, al abrir y cerrar diálogos y tras eliminar un elemento, el foco debe ir a un lugar lógico (apartado 5.10.1). Nunca debe «perderse» en el `body`.
 - **Cabeceras fijas:** comprueba que no tapan el elemento con foco (WCAG 2.4.11). `scroll-padding-top` en `html` ayuda.
 
-## 6.6 Contraste, color y contenido
+## 8.6 Contraste, color y contenido
 
 - **Contraste mínimo (AA):** **4,5:1** para texto normal y **3:1** para texto grande (desde 24 px, o 18,5 px en negrita) y para componentes de interfaz y gráficos (bordes de campos, iconos, foco). Herramientas: *WebAIM Contrast Checker*, el selector de color de las herramientas de desarrollo de Chrome (muestra la ratio) o la extensión *Colour Contrast Analyser*.
 - **No uses solo el color** para transmitir información. Un campo con error se marca en rojo **y** con un texto; una tarea vencida, con color **y** una etiqueta «Vencida»; las prioridades, con color **y** texto.
@@ -1940,11 +3285,11 @@ Muchas personas navegan **solo con teclado** (Tab, Mayús+Tab, Enter, Espacio, f
 - **Animaciones:** respeta `prefers-reduced-motion` y evita destellos.
 - **Tiempo:** no cierres los mensajes importantes demasiado rápido; los `Snackbar` con información crítica no deberían desaparecer solos.
 
-## 6.7 Herramientas de validación
+## 8.7 Herramientas de validación
 
 Las herramientas automáticas detectan entre un 30 % y un 50 % de los problemas. **Siempre hay que complementarlas con pruebas manuales.**
 
-### 6.7.1 Automáticas
+### 8.7.1 Automáticas
 
 - **Lighthouse** (integrado en Chrome/Edge, pestaña *Lighthouse* de las herramientas de desarrollo): selecciona la categoría *Accessibility* (y también *Best Practices* y *Performance*), el dispositivo y pulsa *Analyze page load*. Obtienes una puntuación de 0 a 100 y una lista de fallos con el elemento afectado y cómo corregirlo. Ejecútalo en cada ruta de la aplicación y sobre la **versión de producción** (`npm run build` + `npm run preview`), en una ventana de incógnito para que las extensiones no interfieran.
 - **WAVE** (WebAIM, extensión para Chrome y Firefox): muestra sobre la propia página iconos con errores (rojo), alertas (amarillo), elementos estructurales y ARIA. Su vista *Structure* permite revisar encabezados y *landmarks*, y la pestaña *Contrast*, los problemas de contraste. Como trabaja sobre el DOM renderizado, funciona perfectamente con SPA: navega a cada vista y vuelve a ejecutarla.
@@ -1967,7 +3312,7 @@ Las herramientas automáticas detectan entre un 30 % y un 50 % de los problemas.
 
 - Panel **Accessibility** de las herramientas de desarrollo: muestra el **árbol de accesibilidad**, es decir, el nombre, la función y el estado que percibe un lector de pantalla para el elemento seleccionado.
 
-### 6.7.2 Manuales
+### 8.7.2 Manuales
 
 1. **Prueba de teclado:** recorre toda la aplicación sin ratón. ¿Llegas a todo? ¿Se ve siempre el foco? ¿El orden es lógico? ¿Puedes cerrar los diálogos con Escape? ¿Hay alguna trampa de foco?
 2. **Lector de pantalla:** NVDA (Windows, gratuito), VoiceOver (macOS/iOS, Cmd+F5) o TalkBack (Android). Navega por encabezados y *landmarks*, rellena un formulario y comprueba que se anuncian los errores y los mensajes de estado.
@@ -1975,7 +3320,7 @@ Las herramientas automáticas detectan entre un 30 % y un 50 % de los problemas.
 4. **Simulación de deficiencias visuales:** en Chrome, herramientas de desarrollo → *Rendering* → *Emulate vision deficiencies*.
 5. **Revisión de contenidos:** textos alternativos con sentido, encabezados que describan su sección, mensajes de error útiles.
 
-### 6.7.3 Lista de comprobación rápida
+### 8.7.3 Lista de comprobación rápida
 
 - [ ] `lang="es"` en `<html>` y título distinto en cada vista.
 - [ ] Estructura con `header`, `nav`, `main`, `footer` y un `h1` por vista.
@@ -1991,7 +3336,7 @@ Las herramientas automáticas detectan entre un 30 % y un 50 % de los problemas.
 - [ ] Acciones de arrastre con alternativa de un clic.
 - [ ] Lighthouse *Accessibility* ≥ 90 y WAVE sin errores en todas las vistas.
 
-## 6.8 Usabilidad: evaluación con usuarios
+## 8.8 Usabilidad: evaluación con usuarios
 
 La accesibilidad técnica no garantiza una buena experiencia. Para evaluar la **usabilidad**:
 
@@ -1999,9 +3344,9 @@ La accesibilidad técnica no garantiza una buena experiencia. Para evaluar la **
 - **Test con usuarios:** pide a 3–5 personas que realicen tareas concretas («Añade dos productos al carrito y elimina uno») mientras piensan en voz alta. Observa sin ayudar. Mide si completan la tarea, el tiempo y los errores. Con solo 5 usuarios se detectan la mayoría de problemas.
 - **Cuestionario SUS** (*System Usability Scale*): 10 preguntas estándar con una puntuación de 0 a 100; por encima de 68 se considera una usabilidad aceptable.
 
-## 6.9 PRÁCTICA 4: Auditoría de accesibilidad
+## 8.9 PRÁCTICA 8: Auditoría de accesibilidad
 
-Realiza una auditoría de accesibilidad y usabilidad de la **tienda de la práctica 3** y corrige los problemas encontrados.
+Realiza una auditoría de accesibilidad y usabilidad de la **tienda de la práctica 7** y corrige los problemas encontrados.
 
 **1. Auditoría inicial**
 
@@ -2032,9 +3377,9 @@ Elabora una tabla con todos los problemas encontrados:
 
 ---
 
-# 7. Integración con servicios backend mediante API REST
+# 9. Integración con servicios backend mediante API REST
 
-## 7.1 Repaso: API REST y HTTP
+## 9.1 Repaso: API REST y HTTP
 
 Una **API REST** expone **recursos** (tareas, productos, usuarios) a través de URL y permite operar sobre ellos con los **métodos HTTP**. Los datos se intercambian normalmente en **JSON** (UD2, apartado 7).
 
@@ -2062,7 +3407,7 @@ Códigos de estado que la interfaz debe saber interpretar:
 
 > Recuerda de la UD2: **`fetch` solo rechaza la promesa cuando hay un error de red**. Una respuesta `404` o `500` se considera «éxito» para `fetch`; hay que comprobar `respuesta.ok` (verdadero para los códigos 200–299).
 
-## 7.2 Una API para practicar: json-server
+## 9.2 Una API para practicar: json-server
 
 **json-server** crea en segundos una API REST completa a partir de un archivo JSON. Es ideal para desarrollar el frontend antes de que exista el backend real.
 
@@ -2087,11 +3432,11 @@ npx json-server db.json --port 3001
 
 Inmediatamente tienes `GET/POST /tareas` y `GET/PUT/PATCH/DELETE /tareas/:id`, con los cambios guardados en `db.json`. Admite además filtros, ordenación y paginación por parámetros de búsqueda (consulta su documentación). json-server **no valida** los datos: acepta cualquier cosa. Para eso necesitamos una API propia.
 
-## 7.3 Desarrollar una API con ayuda de herramientas de IA
+## 9.3 Desarrollar una API con ayuda de herramientas de IA
 
 Las herramientas de **IA generativa** (ChatGPT, Claude, Gemini, GitHub Copilot...) pueden generar rápidamente el código de una API sencilla. Son útiles para acelerar el trabajo, pero el código generado **puede contener errores, inventar funciones que no existen, omitir validaciones o introducir problemas de seguridad**. El desarrollador es siempre el responsable del código que entrega: **todo código generado por IA debe entenderse, probarse y validarse**.
 
-### 7.3.1 Escribir un buen *prompt*
+### 9.3.1 Escribir un buen *prompt*
 
 Cuanto más preciso sea el encargo, mejor será el resultado. Un buen *prompt* indica tecnología, recursos, contrato (rutas, campos, validaciones, códigos de estado) y restricciones:
 
@@ -2110,7 +3455,7 @@ Genera una API REST con Node.js y Express 5 (módulos ES) para gestionar tareas.
 - Comenta el código en español y añade un archivo .http para probar cada ruta.
 ```
 
-### 7.3.2 Código generado (primera versión)
+### 9.3.2 Código generado (primera versión)
 
 Supongamos que, con un *prompt* menos preciso («hazme una API de tareas en Express»), la IA devuelve este código. **Parece correcto y funciona en una prueba rápida, pero tiene varios problemas.** Léelo con atención antes de seguir:
 
@@ -2156,7 +3501,7 @@ app.delete("/api/tareas/:id", (req, res) => {
 app.listen(3001, () => console.log("API en http://localhost:3001"));
 ```
 
-## 7.4 Validación de la API
+## 9.4 Validación de la API
 
 Validar una API consiste en comprobar **sistemáticamente** que cumple el contrato esperado (rutas, datos, códigos de estado, errores) y que es robusta ante datos incorrectos. Proceso propuesto:
 
@@ -2166,7 +3511,7 @@ Validar una API consiste en comprobar **sistemáticamente** que cumple el contra
 4. **Registrar** los resultados, corregir los fallos y **volver a probar** (pruebas de regresión).
 5. **Revisar la seguridad** básica.
 
-### 7.4.1 Pruebas con un archivo `.http`
+### 9.4.1 Pruebas con un archivo `.http`
 
 Con la extensión **REST Client** de VS Code, un archivo `api.http` permite lanzar cada petición con un clic y ver la respuesta:
 
@@ -2222,7 +3567,7 @@ Equivalente con `curl` en la terminal:
 curl -i -X POST http://localhost:3001/api/tareas -H "Content-Type: application/json" -d "{\"prioridad\":\"media\"}"
 ```
 
-### 7.4.2 Resultados de la validación
+### 9.4.2 Resultados de la validación
 
 Al ejecutar las pruebas sobre el código generado se obtiene:
 
@@ -2244,7 +3589,7 @@ Al ejecutar las pruebas sobre el código generado se obtiene:
 
 Esta tabla demuestra por qué **«funciona en una prueba rápida» no es lo mismo que «es correcto»**.
 
-### 7.4.3 Versión corregida
+### 9.4.3 Versión corregida
 
 ```js
 // server.js — versión revisada y validada
@@ -2393,7 +3738,7 @@ node --watch server.js
 
 (`--watch` reinicia el servidor automáticamente al guardar cambios.)
 
-### 7.4.4 Lista de comprobación para validar una API generada con IA
+### 9.4.4 Lista de comprobación para validar una API generada con IA
 
 - [ ] **Comprendo** cada línea del código y he verificado en la documentación oficial las funciones que no conocía (la IA puede inventar funciones o usar versiones antiguas de una biblioteca).
 - [ ] Todas las rutas del contrato existen y usan el **método HTTP** correcto.
@@ -2408,9 +3753,9 @@ node --watch server.js
 - [ ] Hay un conjunto de **pruebas reproducibles** (archivo `.http`, colección de Postman o tests automáticos) y todas pasan.
 - [ ] He documentado qué se generó con IA, qué *prompt* usé, qué problemas encontré y cómo los corregí.
 
-## 7.5 Consumir la API desde React
+## 9.5 Consumir la API desde React
 
-### 7.5.1 Variables de entorno en Vite
+### 9.5.1 Variables de entorno en Vite
 
 La URL de la API cambia entre desarrollo y producción, así que no se escribe directamente en el código. Vite lee archivos `.env` y expone las variables que empiezan por **`VITE_`** en `import.meta.env`:
 
@@ -2426,7 +3771,7 @@ VITE_API_URL=https://mi-api.ejemplo.com/api
 
 > Las variables `VITE_` se incrustan en el JavaScript que se descarga el navegador: **cualquiera puede leerlas**. Nunca pongas en ellas claves secretas. Reinicia `npm run dev` después de modificar un `.env`.
 
-### 7.5.2 Capa de servicios
+### 9.5.2 Capa de servicios
 
 Las llamadas a la API no se escriben dispersas por los componentes: se centralizan en un **módulo de servicios**. Así, si cambia la API, solo se modifica un archivo, y los componentes quedan más limpios.
 
@@ -2480,7 +3825,7 @@ export const tareasApi = {
 };
 ```
 
-### 7.5.3 Hook personalizado para obtener datos
+### 9.5.3 Hook personalizado para obtener datos
 
 `src/hooks/useFetch.js`:
 
@@ -2524,7 +3869,7 @@ export function useFetch(cargar, dependencias = []) {
 
 > En aplicaciones reales, bibliotecas como **TanStack Query** o **SWR** resuelven esto mismo y añaden caché, reintentos automáticos y sincronización entre componentes. Entender este hook te ayudará a usarlas.
 
-## 7.6 Tratamiento de respuestas y errores en la interfaz
+## 9.6 Tratamiento de respuestas y errores en la interfaz
 
 ```jsx
 import { tareasApi } from "../services/api";
@@ -2568,7 +3913,7 @@ export default function ListaTareas() {
 }
 ```
 
-### 7.6.1 Crear: errores de validación del servidor
+### 9.6.1 Crear: errores de validación del servidor
 
 Si la API responde `400` con `{ errores: { campo: mensaje } }`, esos errores se muestran junto a los campos del formulario, igual que los de la validación del cliente:
 
@@ -2599,7 +3944,7 @@ const handleSubmit = async (e) => {
 
 > Mantén **siempre** la validación en ambos lados: la del cliente da respuesta inmediata al usuario; la del servidor garantiza la integridad de los datos.
 
-### 7.6.2 Actualizar y eliminar: actualización pesimista y optimista
+### 9.6.2 Actualizar y eliminar: actualización pesimista y optimista
 
 - **Pesimista:** se espera la respuesta del servidor y después se actualiza la interfaz. Es más sencilla y segura.
 - **Optimista:** se actualiza la interfaz inmediatamente, como si la operación fuera a salir bien, y se **revierte** si el servidor devuelve un error. La aplicación parece más rápida.
@@ -2633,7 +3978,7 @@ const eliminar = async (id) => {
 };
 ```
 
-### 7.6.3 CORS
+### 9.6.3 CORS
 
 Si el navegador muestra un error como *«blocked by CORS policy»*, la petición ha llegado al servidor, pero este no ha autorizado el **origen** del frontend (protocolo + dominio + puerto, por ejemplo `http://localhost:5173`). **Se soluciona en el servidor** (con el middleware `cors`, como en la API corregida), no en React. Durante el desarrollo, otra opción es configurar un *proxy* en `vite.config.js`, para que el navegador crea que la API está en el mismo origen:
 
@@ -2649,27 +3994,27 @@ export default defineConfig({
 
 Con el *proxy*, `VITE_API_URL` sería simplemente `/api`.
 
-## 7.7 Autenticación con una API (introducción)
+## 9.7 Autenticación con una API (introducción)
 
-En una aplicación real, el login del apartado 2.5.1 enviaría las credenciales a la API (`POST /api/login`), que devolvería un **token** (por ejemplo, un JWT) o establecería una **cookie** de sesión. En cada petición posterior se enviaría el token en la cabecera `Authorization: Bearer <token>`, y si la API respondiera `401`, la aplicación cerraría la sesión y redirigiría al login. La capa de servicios es el lugar adecuado para añadir esa cabecera de forma centralizada.
+En una aplicación real, el login del apartado 4.5.1 enviaría las credenciales a la API (`POST /api/login`), que devolvería un **token** (por ejemplo, un JWT) o establecería una **cookie** de sesión. En cada petición posterior se enviaría el token en la cabecera `Authorization: Bearer <token>`, y si la API respondiera `401`, la aplicación cerraría la sesión y redirigiría al login. La capa de servicios es el lugar adecuado para añadir esa cabecera de forma centralizada.
 
-## 7.8 PRÁCTICA GUIADA: Gestor de tareas conectado a una API
+## 9.8 PRÁCTICA GUIADA: Gestor de tareas conectado a una API
 
-Conecta el proyecto **TaskFlow de la UD4** (o una versión simplificada) con la API de tareas.
+Conecta el proyecto **TaskFlow de la práctica 4** (o una versión simplificada) con la API de tareas.
 
 ### Paso 1. Generar la API con IA
 
 1. Crea una carpeta `api/` junto al proyecto del frontend.
-2. Escribe un *prompt* detallado, siguiendo el modelo del apartado 7.3.1, adaptado a los campos de tus tareas (título, descripción, prioridad, estado «pendiente / en curso / hecha», fecha límite, categoría).
+2. Escribe un *prompt* detallado, siguiendo el modelo del apartado 9.3.1, adaptado a los campos de tus tareas (título, descripción, prioridad, estado «pendiente / en curso / hecha», fecha límite, categoría).
 3. Genera el código con una herramienta de IA y guarda el *prompt* y la respuesta original en `api/IA.md`.
 
 ### Paso 2. Validar la API
 
 1. Lee y comenta el código generado.
 2. Crea `api/pruebas.http` con **al menos 15 casos**: todos los métodos, datos válidos, datos no válidos de cada campo, recursos inexistentes, JSON mal formado y rutas desconocidas.
-3. Ejecuta las pruebas y documenta los resultados en una tabla como la del apartado 7.4.2.
+3. Ejecuta las pruebas y documenta los resultados en una tabla como la del apartado 9.4.2.
 4. Corrige los fallos y vuelve a ejecutar todas las pruebas hasta que pasen.
-5. Revisa la lista de comprobación del apartado 7.4.4.
+5. Revisa la lista de comprobación del apartado 9.4.4.
 
 ### Paso 3. Conectar el frontend
 
@@ -2688,11 +4033,11 @@ Conecta el proyecto **TaskFlow de la UD4** (o una versión simplificada) con la 
 
 ---
 
-# 8. Proyecto final: aplicación React completa
+# 10. Proyecto final: aplicación React completa
 
 El proyecto se realizará **en parejas** y permitirá aplicar todos los contenidos de la unidad. Consiste en diseñar y desarrollar una **aplicación web React completa, navegable, adaptable y accesible, conectada a una API REST propia**.
 
-## 8.1 Temática
+## 10.1 Temática
 
 Cada pareja elegirá una temática y la comunicará al profesor antes de empezar. Algunas propuestas:
 
@@ -2705,7 +4050,7 @@ Cada pareja elegirá una temática y la comunicará al profesor antes de empezar
 
 Se admiten propuestas propias de complejidad equivalente.
 
-## 8.2 Fase 1: diseño (UX/UI)
+## 10.2 Fase 1: diseño (UX/UI)
 
 Antes de programar, la pareja elaborará:
 
@@ -2714,7 +4059,7 @@ Antes de programar, la pareja elaborará:
 3. **Wireframes** de las vistas principales en móvil y escritorio (Figma, Penpot, Excalidraw o papel escaneado).
 4. La **guía de estilo**: paleta (con las ratios de contraste comprobadas), tipografía, espaciados y componentes principales, que se trasladará al tema de Material UI.
 
-## 8.3 Fase 2: requisitos técnicos
+## 10.3 Fase 2: requisitos técnicos
 
 **Arquitectura y estado**
 
@@ -2736,7 +4081,7 @@ Antes de programar, la pareja elaborará:
 
 **API REST**
 
-- **API propia** en Node.js/Express generada con ayuda de IA y **validada** según el apartado 7.4, con al menos dos recursos relacionados (por ejemplo, libros y préstamos) y CRUD completo de uno de ellos.
+- **API propia** en Node.js/Express generada con ayuda de IA y **validada** según el apartado 9.4, con al menos dos recursos relacionados (por ejemplo, libros y préstamos) y CRUD completo de uno de ellos.
 - Capa de servicios con gestión centralizada de errores; URL de la API en variables de entorno.
 - Formularios controlados con validación en el cliente **y** en el servidor, mostrando los errores del servidor junto a los campos.
 
@@ -2748,11 +4093,11 @@ Antes de programar, la pareja elaborará:
 - `eslint-plugin-jsx-a11y` configurado y sin avisos.
 - Prueba con al menos 3 usuarios externos al proyecto, con tareas definidas, y mejoras derivadas de ella.
 
-## 8.4 Organización y sesiones
+## 10.4 Organización y sesiones
 
 El proyecto se desarrollará durante las sesiones que indique el profesor. Se recomienda trabajar con **ramas de Git** e integrar mediante *pull requests* revisados por el compañero. Ambos miembros de la pareja deben participar en todas las capas (diseño, interfaz y API) y deben poder explicar cualquier parte del código: el profesor podrá solicitar una **defensa** individual o conjunta, que puede incluir una pequeña modificación en directo.
 
-## 8.5 Entrega
+## 10.5 Entrega
 
 1. **Repositorio** con el frontend y la API (carpetas `frontend/` y `api/`), con un historial de commits que muestre la participación de ambos miembros.
 2. **`README.md`** con instrucciones de instalación y ejecución de ambas partes.

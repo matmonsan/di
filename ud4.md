@@ -18,16 +18,8 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 5. [Ejemplos de condicionales y listas](#5-ejemplos-de-condicionales-y-listas)
     - [Práctica: ampliación de la aplicación de notas](#59-práctica-ampliación-de-la-aplicación-de-notas)
 6. [Estilos y CSS](#6-estilos-y-css)
-{% endraw %}{% comment %}{% raw %}
-    - [Práctica 2](#69-práctica-2-estilos-en-componentes)
+    - [Práctica: estilos en la aplicación de notas](#69-práctica-estilos-en-la-aplicación-de-notas)
 7. [Eventos y comunicación entre componentes](#7-eventos-y-comunicación-entre-componentes)
-8. [Hooks: useState y useEffect](#8-hooks-usestate-y-useeffect)
-    - [Práctica 3](#88-práctica-3-estado-y-eventos)
-    - [Práctica 4](#89-práctica-4-pokédex-con-react)
-9. [Formularios](#9-formularios)
-    - [Práctica 5](#96-práctica-5-formulario-de-registro-validado)
-10. [Proyecto final: gestor de tareas en React](#10-proyecto-final-gestor-de-tareas-en-react)
-{% endraw %}{% endcomment %}{% raw %}
 
 ---
 
@@ -2298,7 +2290,7 @@ function Greeting({ name = "Invitado", saludo = "Hola" }) {
 
 ### 4.2.3 Las props son de solo lectura
 
-Las props son inmutables: un componente nunca debe modificar las props que recibe. Si necesita datos que cambien con el tiempo, usará estado (apartado 8).
+Las props son inmutables: un componente nunca debe modificar las props que recibe. Si necesita datos que cambien con el tiempo, usará estado (UD5).
 
 ```jsx
 function Contador({ valor }) {
@@ -2782,7 +2774,7 @@ Mira lo que ocurre cuando se añade a Ana al principio de una lista que tenía a
 - **Con el índice como `key`**, las claves dependen de la posición. Ana ocupa la posición 0, que antes era de Pedro, así que React cree que el elemento con `key` 0 ha cambiado de texto. Lo mismo pasa con la `key` 1, y la 2 le parece nueva. Acaba modificando los tres elementos, aunque en realidad solo se ha añadido uno.
 - **Con un id como `key`**, cada clave va unida a su dato. React ve que las claves 7 y 3 siguen ahí, así que deja a Pedro y a Lucía como estaban, y solo crea el elemento de Ana.
 
-En una lista de textos la diferencia solo se nota en el rendimiento. Pero cuando los elementos tienen algo propio, como un campo de texto en el que el usuario ha escrito o una casilla marcada, una `key` mal elegida hace que ese contenido se quede en la posición y acabe en el elemento equivocado. Lo comprobarás cuando trabajemos con el estado en el apartado 8.
+En una lista de textos la diferencia solo se nota en el rendimiento. Pero cuando los elementos tienen algo propio, como un campo de texto en el que el usuario ha escrito o una casilla marcada, una `key` mal elegida hace que ese contenido se quede en la posición y acabe en el elemento equivocado. Lo comprobarás cuando trabajemos con el estado en la UD5.
 
 Reglas para usar la `key`:
 
@@ -3500,17 +3492,19 @@ const ComponentB = () => <div className="text">Texto de ComponentB</div>;
 
 Ambos componentes se verán rojos, porque la regla de `ComponentB.css` se carga después y tiene la misma especificidad. En una aplicación grande estos conflictos son constantes. Las soluciones son: BEM, módulos CSS, CSS-in-JS o preprocesadores como SCSS con anidación.
 
-{% endraw %}{% comment %}{% raw %}
+## 6.3 BEM: nombres de clase que no chocan
 
-## 6.3 BEM (Block, Element, Modifier)
+**BEM** no es una biblioteca: es solo una forma de poner nombre a las clases. La idea es sencilla: si todas las clases de un componente empiezan por el nombre de ese componente, es muy difícil que choquen con las de otro.
 
-**BEM** es una metodología para nombrar clases CSS, desarrollada por Yandex, que facilita crear componentes reutilizables y evita conflictos mediante una convención de nombres:
+Un nombre BEM tiene hasta tres partes (*Block, Element, Modifier*):
 
-- **Block (bloque):** componente independiente y reutilizable (`card`, `nav-bar`, `button`).
-- **Element (elemento):** parte de un bloque que no tiene sentido por sí sola. Se escribe `bloque__elemento` (dos guiones bajos): `card__title`.
-- **Modifier (modificador):** variación de apariencia o estado de un bloque o elemento. Se escribe `bloque--modificador` o `bloque__elemento--modificador` (dos guiones): `card--highlighted`, `nav-bar__item--active`.
+| Parte | Qué es | Cómo se escribe | Ejemplo |
+| --- | --- | --- | --- |
+| Bloque | El componente | `bloque` | `card` |
+| Elemento | Una pieza del componente | `bloque__elemento` (dos guiones bajos) | `card__title` |
+| Modificador | Una variante o un estado | `bloque--modificador` (dos guiones) | `card--highlighted` |
 
-En React lo natural es que cada componente sea un bloque BEM con el mismo nombre.
+En React lo natural es que cada componente sea un bloque con su mismo nombre: el componente `Card` usa clases que empiezan por `card`.
 
 ```html
 <div class="card card--highlighted">
@@ -3520,49 +3514,24 @@ En React lo natural es que cada componente sea un bloque BEM con el mismo nombre
 ```
 
 ```css
-/* Bloque */
-.card {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* Modificador del bloque */
-.card--highlighted {
-  background-color: lightyellow;
-}
-
-/* Elementos */
-.card__title {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.card__content {
-  font-size: 14px;
-}
+.card { border: 1px solid #ccc; padding: 10px; border-radius: 5px; }
+.card--highlighted { background-color: lightyellow; }
+.card__title { font-size: 18px; margin-bottom: 10px; }
+.card__content { font-size: 14px; }
 ```
 
-Observa que un modificador siempre acompaña a la clase base: `class="card card--highlighted"`, nunca `card--highlighted` sola.
+Fíjate en que el modificador nunca va solo: se añade a la clase base (`card card--highlighted`). La clase base pone el estilo común y el modificador solo cambia lo que es distinto.
 
-### 6.3.1 Ejemplo: botón con BEM
+### 6.3.1 Ejemplo: botón con variantes
 
 ```jsx
 import "./Button.css";
 
 const Button = ({ type = "primary", isDisabled = false, children }) => {
-  let className = "button";
-
-  if (type === "primary") {
-    className += " button--primary";
-  } else if (type === "secondary") {
-    className += " button--secondary";
-  }
-
+  let className = `button button--${type}`;
   if (isDisabled) {
     className += " button--disabled";
   }
-
   return (
     <button className={className} disabled={isDisabled}>
       {children}
@@ -3578,207 +3547,100 @@ export default Button;
 .button {
   padding: 10px 20px;
   border: none;
-  cursor: pointer;
   font-size: 16px;
   border-radius: 5px;
+  cursor: pointer;
 }
-
-.button--primary {
-  background-color: #1b5ac2;
-  color: white;
-}
-
-.button--secondary {
-  background-color: #5f6b7a;
-  color: white;
-}
-
-.button--disabled {
-  background-color: lightgray;
-  color: #555;
-  cursor: not-allowed;
-}
+.button--primary { background-color: #1b5ac2; color: white; }
+.button--secondary { background-color: #5f6b7a; color: white; }
+.button--disabled { background-color: lightgray; color: #555; cursor: not-allowed; }
 ```
 
-### 6.3.2 Ejemplo: lista de tareas con BEM
+### 6.3.2 Ejemplo: lista de tareas
 
 ```jsx
 import "./TodoList.css";
 
-const TodoList = ({ todos }) => {
-  return (
-    <ul className="todo-list">
-      {todos.map((todo) => (
-        <li
-          key={todo.id}
-          className={`todo-list__item ${todo.completed ? "todo-list__item--completed" : ""}`}
-        >
-          {todo.text}
-        </li>
-      ))}
-    </ul>
-  );
-};
+const TodoList = ({ todos }) => (
+  <ul className="todo-list">
+    {todos.map((todo) => (
+      <li
+        key={todo.id}
+        className={`todo-list__item ${todo.completed ? "todo-list__item--completed" : ""}`}
+      >
+        {todo.text}
+      </li>
+    ))}
+  </ul>
+);
 
 export default TodoList;
 ```
 
 ```css
-.todo-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.todo-list__item {
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-}
-
-.todo-list__item--completed {
-  text-decoration: line-through;
-  color: gray;
-}
+.todo-list { list-style-type: none; padding: 0; }
+.todo-list__item { padding: 10px; border-bottom: 1px solid #ccc; }
+.todo-list__item--completed { text-decoration: line-through; color: gray; }
 ```
 
-### 6.3.3 Ejemplo: menú de navegación con BEM
-
-```jsx
-import "./NavBar.css";
-
-const NavBar = () => {
-  return (
-    <nav className="nav-bar">
-      <ul className="nav-bar__list">
-        <li className="nav-bar__item nav-bar__item--active">Inicio</li>
-        <li className="nav-bar__item">Acerca de</li>
-        <li className="nav-bar__item">Contacto</li>
-      </ul>
-    </nav>
-  );
-};
-
-export default NavBar;
-```
-
-```css
-.nav-bar {
-  background-color: #333;
-  padding: 10px;
-}
-
-.nav-bar__list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  gap: 15px;
-}
-
-.nav-bar__item {
-  color: white;
-  cursor: pointer;
-}
-
-.nav-bar__item--active {
-  font-weight: bold;
-  border-bottom: 2px solid yellow;
-}
-```
-
-> **Componer clases cómodamente.** Concatenar clases con ternarios se vuelve engorroso. Una función auxiliar resuelve el problema: `const cx = (...clases) => clases.filter(Boolean).join(" ");` y después `className={cx("todo-list__item", todo.completed && "todo-list__item--completed")}`. La biblioteca `clsx` hace exactamente esto.
+> **Truco para juntar clases.** Cuando hay varias clases opcionales, los ternarios se vuelven engorrosos. Esta pequeña función descarta las que valen `false` y une el resto: `const cx = (...clases) => clases.filter(Boolean).join(" ");`. Se usa así: `className={cx("todo-list__item", todo.completed && "todo-list__item--completed")}`. La biblioteca `clsx` hace lo mismo.
 
 ## 6.4 Módulos CSS
 
-Los módulos CSS son archivos CSS cuyas clases tienen, por defecto, alcance local al componente que los importa. Durante la construcción, Vite transforma cada nombre de clase en un identificador único (por ejemplo, `.button` pasa a ser `._button_1a2b3_1`), por lo que es imposible que choquen con las de otro componente. Vite los admite sin configuración.
+BEM evita los conflictos gracias a la disciplina de quien escribe los nombres. Los **módulos CSS** los evitan de forma automática.
 
-1. Crea un archivo con la extensión `.module.css`:
+Un módulo CSS es un archivo CSS normal cuyo nombre termina en `.module.css`. Al importarlo, Vite cambia cada clase por un nombre único (por ejemplo, `.button` pasa a ser `._button_1a2b3_1`). Así, cada componente tiene sus clases «privadas», y da igual que otro componente use el mismo nombre. Vite lo admite sin configurar nada.
 
-   ```css
-   /* Button.module.css */
-   .button {
-     background-color: lightblue;
-     border: none;
-     padding: 10px 20px;
-     font-size: 16px;
-     border-radius: 5px;
-     cursor: pointer;
-   }
+```css
+/* Button.module.css */
+.button {
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.primary { background-color: #1b5ac2; color: white; }
+.secondary { background-color: #5f6b7a; color: white; }
+```
 
-   .primary {
-     background-color: #1b5ac2;
-     color: white;
-   }
+El archivo se importa como un objeto: cada clase es una propiedad de ese objeto, y su valor es el nombre único que ha generado Vite.
 
-   .secondary {
-     background-color: #5f6b7a;
-     color: white;
-   }
-   ```
+```jsx
+import styles from "./Button.module.css";
 
-2. Impórtalo como un objeto cuyas propiedades son los nombres de clase:
+const Button = ({ type = "primary", children }) => (
+  <button className={`${styles.button} ${styles[type]}`}>{children}</button>
+);
 
-   ```jsx
-   import styles from "./Button.module.css";
+export default Button;
+```
 
-   const Button = ({ type, children }) => {
-     let className = styles.button;
-     if (type === "primary") {
-       className += ` ${styles.primary}`;
-     } else if (type === "secondary") {
-       className += ` ${styles.secondary}`;
-     }
-     return <button className={className}>{children}</button>;
-   };
+Como el módulo ya aísla las clases, no hace falta usar nombres largos tipo BEM: basta con `.button` y `.primary`. Si aun así usas guiones (`.button--primary`), no puedes escribir `styles.button--primary`, porque JavaScript lo lee como una resta; tendrás que usar corchetes: `styles["button--primary"]`.
 
-   export default Button;
-   ```
+Ten en cuenta que:
 
-> **Clases con guiones en módulos CSS.** Si combinas módulos CSS con nombres BEM como `.button--primary`, no puedes escribir `styles.button--primary`: JavaScript lo interpreta como una resta (`styles.button - -primary`). Tienes dos opciones: acceder con corchetes, `styles["button--primary"]`, o usar nombres en camelCase (`.buttonPrimary` → `styles.buttonPrimary`). En los módulos CSS es habitual simplificar BEM a `.button` + `.primary`, porque el aislamiento ya lo garantiza el propio módulo.
-
-Consideraciones:
-
-- **Los selectores de etiqueta siguen siendo globales.** Si defines `h1 { ... }` en un módulo, afectará a todos los `h1`. Dentro de un módulo usa siempre clases.
-- Para declarar intencionadamente una clase global dentro de un módulo: `:global(.nombre) { ... }`.
-- Un módulo puede componer clases de otro con `composes: base from "./base.module.css";`.
-- Se pueden usar todas las características modernas de CSS: variables, `:hover`, *media queries*, anidación nativa (o la de un preprocesador como Sass con `.module.scss`)...
-- **Convenciones de nomenclatura:** combinar BEM con módulos CSS mantiene una estructura clara y coherente en los estilos, aunque en módulos se suele simplificar.
-- **Configuración:** Vite (y también create-react-app) admiten módulos CSS sin configurar nada: basta con la extensión `.module.css`. Si configuras Webpack manualmente, tendrás que activarlo en `css-loader`. En Vite se puede pedir que las clases con guiones se exporten también en camelCase:
-
-  ```js
-  // vite.config.js
-  export default defineConfig({
-    plugins: [react()],
-    css: { modules: { localsConvention: "camelCase" } }, // .button--primary → styles.buttonPrimary
-  });
-  ```
+- **Solo las clases son privadas.** Una regla como `h1 { ... }` dentro de un módulo afecta a todos los `h1` de la aplicación. En los módulos, usa siempre clases.
+- Si alguna vez necesitas una clase global dentro de un módulo, se escribe `:global(.nombre) { ... }`.
+- Dentro de un módulo funciona todo el CSS habitual: `:hover`, *media queries*, variables, anidación...
 
 ## 6.5 SCSS (Sass)
 
-**Sass** es un preprocesador que amplía CSS con variables, anidación, *mixins*, funciones y particiones de archivos. Su sintaxis SCSS es un superconjunto de CSS: cualquier CSS válido es SCSS válido. Vite lo compila automáticamente; solo hay que instalar el compilador:
+**Sass** es un preprocesador: escribes en un CSS «ampliado», con variables, anidación y bloques reutilizables, y Vite lo traduce a CSS normal. Todo CSS válido es también SCSS válido, así que puedes empezar a usarlo poco a poco. Solo hay que instalar el compilador:
 
 ```bash
 npm install -D sass
 ```
 
-A partir de ese momento se pueden importar archivos `.scss` y también módulos SCSS (`.module.scss`).
-
-### 6.5.1 Características principales
+A partir de ahí puedes importar archivos `.scss` o módulos `.module.scss`. Este ejemplo reúne lo más útil:
 
 ```scss
-// _variables.scss  (los archivos que empiezan por _ son «parciales»)
+// _variables.scss  (el _ indica que es un archivo «parcial», para importar)
 $color-primario: #1b355a;
 $color-acento: #f2a900;
-$radio: 8px;
-$breakpoint-tablet: 768px;
-
-@mixin tarjeta($padding: 1rem) {
-  padding: $padding;
-  border-radius: $radio;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
 @mixin tablet {
-  @media (min-width: $breakpoint-tablet) {
+  @media (min-width: 768px) {
     @content;
   }
 }
@@ -3789,27 +3651,22 @@ $breakpoint-tablet: 768px;
 @use "../styles/variables" as *;
 
 .card {
-  @include tarjeta(1.5rem);
-  background: white;
+  padding: 1rem;
   border-top: 4px solid $color-primario;
 
-  // Anidación: genera .card .title
-  .title {
+  .title {                 // genera .card .title
     color: $color-primario;
-    margin: 0 0 0.5rem;
   }
 
-  // & hace referencia al selector padre: genera .card:hover
-  &:hover {
+  &:hover {                // & es el selector padre: genera .card:hover
     border-top-color: $color-acento;
   }
 
-  // Modificador: genera .card.destacada
-  &.destacada {
+  &.destacada {            // genera .card.destacada
     background: #fff4d6;
   }
 
-  @include tablet {
+  @include tablet {        // aplica el mixin: media query para tablet
     padding: 2rem;
   }
 }
@@ -3829,12 +3686,12 @@ const Card = ({ titulo, destacada, children }) => (
 | Característica | Sintaxis | Para qué sirve |
 | --- | --- | --- |
 | Variables | `$color: #333;` | Reutilizar valores (colores, tamaños). |
-| Anidación | `.card { .title { } }` | Reflejar la estructura del componente. |
-| Selector padre | `&:hover`, `&--primary` | Pseudoclases y modificadores BEM (`&--primary` genera `.card--primary`). |
-| Mixins | `@mixin` / `@include` | Bloques de estilos reutilizables con parámetros. |
-| Módulos | `@use "archivo";` | Importar variables y mixins de otros archivos. |
+| Anidación | `.card { .title { } }` | Escribir los estilos con la misma forma que el componente. |
+| Selector padre | `&:hover`, `&--primary` | Pseudoclases y modificadores sin repetir el nombre. |
+| Mixins | `@mixin` / `@include` | Bloques de estilos reutilizables. |
+| Importar | `@use "archivo";` | Traer variables y mixins de otro archivo. |
 
-La anidación con `&` encaja muy bien con BEM:
+El `&` combina muy bien con BEM, porque evita repetir el nombre del bloque:
 
 ```scss
 .todo-list {
@@ -3848,82 +3705,15 @@ La anidación con `&` encaja muy bien con BEM:
 }
 ```
 
-> **CSS nativo actual.** Hoy CSS ya incorpora variables (`--color: ...;` y `var(--color)`) y anidación en los navegadores modernos. Sass sigue siendo útil por sus mixins, funciones y organización en parciales, pero muchas de sus ventajas ya existen en CSS.
+> **CSS ya hace parte de esto.** Los navegadores actuales admiten variables (`--color` y `var(--color)`) y anidación en CSS normal. Sass sigue siendo cómodo por sus mixins y por poder repartir los estilos en varios archivos.
 
 ## 6.6 Styled Components (CSS-in-JS)
 
-**Styled Components** es una biblioteca que permite escribir estilos CSS directamente en los componentes de JavaScript. Utiliza una técnica llamada CSS-in-JS, en la que los estilos se definen dentro del archivo JavaScript. Cada estilo crea un componente React con los estilos asociados, lo que facilita vincular los estilos a componentes concretos y ofrece características avanzadas como temas y anidación.
-
-### 6.6.1 Funciones de plantilla (*tagged templates*)
-
-Styled Components utiliza las funciones de plantilla de JavaScript ES6, que estudiamos en la UD2 junto a los *template literals*. Hacemos un breve repaso.
-
-Las funciones de plantilla son una característica avanzada de los *template literals*: permiten procesar una cadena de texto antes de que se construya, proporcionando más control sobre cómo se crean las cadenas. Se escriben poniendo el nombre de una función justo delante de la plantilla, sin paréntesis: ``miFuncion`texto ${valor}` ``. Esa función «tag» recibe dos argumentos principales:
-
-- **`strings`:** un array con las partes estáticas de la cadena.
-- **`...values`:** la lista de valores interpolados (`${...}`).
-
-```js
-function myTag(strings, ...values) {
-  console.log(strings); // ["Mi nombre es ", " y tengo ", " años."]
-  console.log(values);  // ["Alice", 30]
-  return "Resultado procesado";
-}
-
-const name = "Alice";
-const age = 30;
-const result = myTag`Mi nombre es ${name} y tengo ${age} años.`;
-console.log(result); // Resultado procesado
-```
-
-Ejemplo de uso: resaltar los valores interpolados.
-
-```js
-function highlight(strings, ...values) {
-  return strings.reduce(
-    (result, string, i) => `${result}${string}${values[i] !== undefined ? `<strong>${values[i]}</strong>` : ""}`,
-    ""
-  );
-}
-
-highlight`Hello, ${"John"}. You are ${25} years old.`;
-// Hello, <strong>John</strong>. You are <strong>25</strong> years old.
-```
-
-Otro ejemplo: generar una lista HTML a partir de un array interpolado.
-
-```js
-function generateList(strings, ...values) {
-  const items = values[0].map((item) => `<li>${item}</li>`).join("");
-  return strings[0] + items + strings[1];
-}
-
-const items = ["Item 1", "Item 2", "Item 3"];
-const listHtml = generateList`<ul>${items}</ul>`;
-console.log(listHtml); // <ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>
-```
-
-`styled.button` es una de estas funciones tag: recibe el CSS como plantilla (y las funciones interpoladas con `${...}`) y devuelve un componente de React que genera un `<button>` con una clase única que contiene esos estilos.
-
-### 6.6.2 Ventajas de Styled Components
-
-- **Estilos con ámbito (*scoped*):** los estilos están vinculados al componente, lo que evita colisiones de nombres y mantiene el código modular.
-- **Temas:** permiten definir temas que se aplican fácilmente a toda la aplicación.
-- **Dinamismo:** se puede usar JavaScript para calcular los estilos a partir de las props.
-- **Anidación:** admite anidación de estilos y pseudoclases, de forma similar a Sass.
-- **Compatibilidad:** funciona bien con el ecosistema de React y puede convivir con otras bibliotecas.
-
-**Inconvenientes:** añade una dependencia y algo de coste en tiempo de ejecución (los estilos se generan en el navegador), y mezcla CSS y JavaScript en el mismo archivo. Bibliotecas como Material UI (UD5) usan internamente una técnica similar (Emotion).
-
-### 6.6.3 Instalación
+Con **Styled Components** escribes el CSS dentro del propio archivo JavaScript, y cada estilo se convierte en un componente de React. Es decir, en lugar de crear una clase y ponérsela a un `<button>`, creas directamente un componente `Button` que ya viene con su estilo.
 
 ```bash
 npm install styled-components
 ```
-
-### 6.6.4 Ejemplos
-
-**Componente básico** (admite pseudoclases con `&`):
 
 ```jsx
 import styled from "styled-components";
@@ -3932,7 +3722,6 @@ const Button = styled.button`
   background-color: lightblue;
   border: none;
   padding: 10px 20px;
-  font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
 
@@ -3945,7 +3734,22 @@ const Button = styled.button`
 const App = () => <Button>Click me</Button>;
 ```
 
-**Estilos dinámicos según las props.** Las interpolaciones pueden ser funciones que reciben las props:
+La sintaxis ``styled.button`...` `` puede parecer extraña: es una **función de plantilla** (*tagged template*), que vimos en la UD2. Cuando se pone el nombre de una función justo delante de una plantilla, sin paréntesis, esa función recibe por separado los trozos de texto y los valores interpolados:
+
+```js
+function myTag(strings, ...values) {
+  console.log(strings); // ["Mi nombre es ", " y tengo ", " años."]
+  console.log(values);  // ["Alice", 30]
+}
+
+myTag`Mi nombre es ${"Alice"} y tengo ${30} años.`;
+```
+
+`styled.button` es una función de este tipo: recibe el CSS y devuelve un componente que pinta un `<button>` con una clase única que contiene esos estilos.
+
+### 6.6.1 Estilos que dependen de las props
+
+Dentro del CSS se pueden poner funciones que reciben las props del componente. Así el estilo cambia según cómo se use:
 
 ```jsx
 const Button = styled.button`
@@ -3953,12 +3757,6 @@ const Button = styled.button`
   color: ${(props) => (props.$primary ? "white" : "black")};
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
-
-  &:hover {
-    background-color: ${(props) => (props.$primary ? "darkblue" : "blue")};
-    color: white;
-  }
 `;
 
 const App = () => (
@@ -3969,55 +3767,20 @@ const App = () => (
 );
 ```
 
-> **Props transitorias (`$`).** En styled-components v6 se recomienda prefijar con `$` las props que solo sirven para el estilo (`$primary`). Así no se pasan al elemento HTML y se evitan avisos como *«React does not recognize the `primary` prop on a DOM element»*.
+> **¿Por qué `$primary` y no `primary`?** El `$` indica que la prop solo sirve para el estilo. Así styled-components no la pasa al `<button>` del HTML y React no muestra avisos como *«React does not recognize the `primary` prop on a DOM element»*.
 
-**Anidación de estilos:**
+### 6.6.2 Temas
 
-```jsx
-const Card = styled.div`
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-
-  .title {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-
-  .content {
-    font-size: 16px;
-  }
-`;
-
-const App = () => (
-  <Card>
-    <div className="title">Card Title</div>
-    <div className="content">This is some card content.</div>
-  </Card>
-);
-```
-
-**Temas.** `ThemeProvider` hace que un objeto de tema esté disponible en todos los componentes estilizados a través de `props.theme`:
+`ThemeProvider` reparte un objeto de tema a todos los componentes estilizados, que lo leen en `props.theme`. Si cambias el tema, cambian todos a la vez:
 
 ```jsx
 import styled, { ThemeProvider } from "styled-components";
 
-const theme = {
-  primaryColor: "blue",
-  secondaryColor: "lightblue",
-  textColor: "white",
-};
+const theme = { primaryColor: "blue", textColor: "white" };
 
 const Button = styled.button`
   background-color: ${(props) => props.theme.primaryColor};
   color: ${(props) => props.theme.textColor};
-  border: none;
-  padding: 10px 20px;
-
-  &:hover {
-    background-color: ${(props) => props.theme.secondaryColor};
-  }
 `;
 
 const App = () => (
@@ -4027,41 +3790,21 @@ const App = () => (
 );
 ```
 
-En este ejemplo se define un tema y se pasa a la aplicación con `ThemeProvider`. Los componentes estilizados acceden a las propiedades del tema a través de `props.theme`. Si se cambia el objeto `theme`, cambia el aspecto de todos los botones.
+### 6.6.3 Extender estilos
 
-**Integración con JavaScript.** Como los estilos son JavaScript, se puede usar cualquier lógica (operadores, valores por defecto, cálculos) para estilos condicionales y calculados:
-
-```jsx
-import styled from "styled-components";
-
-const Container = styled.div`
-  width: ${(props) => (props.$fullWidth ? "100%" : "auto")};
-  padding: 20px;
-  margin: 0 auto;
-  background-color: ${(props) => props.$bgColor || "white"};
-`;
-
-const App = () => (
-  <Container $fullWidth $bgColor="lightgrey">
-    This is a container.
-  </Container>
-);
-```
-
-El contenedor ocupa toda la anchura si `$fullWidth` es verdadero, y su color de fondo se puede personalizar con `$bgColor` (si no se indica, se usa blanco gracias al operador `||`).
-
-**Extender estilos.** Un componente estilizado puede servir de base para otro con `styled(Componente)`:
+Un componente estilizado puede servir de base para otro con `styled(Componente)`: hereda sus estilos y añade o cambia los que necesite.
 
 ```jsx
 const BotonPeligro = styled(Button)`
   background-color: crimson;
-  color: white;
 `;
 ```
 
-## 6.7 Theming sencillo con variables CSS
+**A favor:** los estilos están ligados al componente (sin conflictos), se calculan con JavaScript y admiten temas y anidación. **En contra:** es una dependencia más, los estilos se generan en el navegador (algo más lento) y mezcla CSS y JavaScript en el mismo archivo. Material UI (UD5) usa internamente una técnica parecida.
 
-Un tema es un conjunto coherente de colores, tipografías y espaciados. La forma más sencilla y eficiente de implementarlo, sin bibliotecas, es con variables CSS (*custom properties*) definidas en `index.css`:
+## 6.7 Temas con variables CSS
+
+Un tema es el conjunto de colores, tipografías y espacios de la aplicación. La forma más sencilla de crearlo, sin bibliotecas, es con **variables CSS** en `index.css`. Las variables se definen una vez y todos los componentes las usan:
 
 ```css
 /* index.css */
@@ -4072,10 +3815,9 @@ Un tema es un conjunto coherente de colores, tipografías y espaciados. La forma
   --color-superficie: #f4f4f6;
   --radio: 8px;
   --espacio: 1rem;
-  --fuente: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Tema oscuro: se activa con un atributo en <html> */
+/* Tema oscuro: solo cambian los valores de las variables */
 [data-tema="oscuro"] {
   --color-fondo: #121212;
   --color-texto: #f1f1f1;
@@ -4086,11 +3828,8 @@ Un tema es un conjunto coherente de colores, tipografías y espaciados. La forma
 body {
   background: var(--color-fondo);
   color: var(--color-texto);
-  font-family: var(--fuente);
 }
 ```
-
-Todos los componentes usan las variables en lugar de colores fijos:
 
 ```css
 /* Card.module.css */
@@ -4101,13 +3840,13 @@ Todos los componentes usan las variables en lugar de colores fijos:
 }
 ```
 
-Para cambiar de tema basta con modificar el atributo del elemento raíz (lo haremos con estado y efectos en el apartado 8):
+La tarjeta no sabe qué tema hay activo: solo pide «el color de superficie». Por eso, para cambiar de tema basta con poner el atributo en el elemento `<html>` (en la UD5 lo haremos con un botón):
 
 ```js
 document.documentElement.dataset.tema = "oscuro";
 ```
 
-Además, se puede respetar la preferencia del sistema operativo con una *media query*:
+También se puede seguir la preferencia del sistema operativo con una *media query*:
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -4128,58 +3867,35 @@ Además, se puede respetar la preferencia del sistema operativo con una *media q
 | Módulos CSS / SCSS | Componente | Con clases | Sí | **Opción recomendada por defecto en este módulo.** |
 | Styled Components | Componente | Sí (props) | Sí | Temas complejos o estilos muy dependientes de props. |
 
-Una combinación habitual y sencilla es: variables CSS globales para el tema en `index.css` + módulos CSS (o SCSS) para cada componente.
+Una combinación sencilla y habitual: variables CSS para el tema en `index.css` y un módulo CSS (o SCSS) para cada componente.
 
-## 6.9 PRÁCTICA 2: Estilos en componentes
+## 6.9 PRÁCTICA: Estilos en la aplicación de notas
 
-Crea el proyecto `practica-2-estilos` partiendo de la práctica 1 (puedes copiarla).
+Da estilo a la aplicación de notas de la práctica 5.9 en un proyecto nuevo, `practica-6-9-estilos`. El diseño es libre: lo importante es usar cada técnica donde tiene sentido.
 
-**1. Tema global**
+### Requisitos
 
-- **a.** Define en `index.css` las variables CSS del tema: al menos colores de fondo, texto, primario, superficie y error, un radio de borde y una escala de espaciado.
-- **b.** Ningún componente debe usar colores fijos: todos usarán `var(--...)`.
-- **c.** Crea un tema oscuro con `[data-tema="oscuro"]` y pruébalo cambiando el atributo desde las herramientas de desarrollo (en la práctica 3 lo controlarás con un botón).
+- **a.** Tema. Define en `index.css` las variables del tema (fondo, texto, primario, superficie, radio y espacio). Ningún componente usará colores fijos, sino `var(--...)`. Añade un tema oscuro con `[data-tema="oscuro"]` y pruébalo cambiando el atributo desde las herramientas de desarrollo.
+- **b.** BEM. Da estilo a la cabecera de la aplicación con un archivo `.css` normal y nombres BEM, incluido al menos un modificador.
+- **c.** Módulos CSS. Usa módulos CSS en la tarjeta de nota y en la lista. Comprueba en el inspector que los nombres de clase han cambiado, y pon una clase `.titulo` en dos módulos distintos para ver que no chocan.
+- **d.** SCSS. Instala `sass` y convierte un componente a `.module.scss` usando variables, anidación, `&` y un mixin que muestre las notas en una columna en el móvil y en una rejilla en pantallas grandes.
+- **e.** Estilos en línea. Usa `style` solo para el ancho de la barra de progreso. Como ampliación opcional, crea un botón con styled-components con dos variantes.
 
-**2. BEM con CSS global**
+### Entrega
 
-- **a.** Aplica BEM con un archivo `.css` normal al componente `Header` y a un nuevo componente `NavBar` con tres enlaces, uno de ellos activo (`nav-bar__item--active`).
+Entrega el proyecto `practica-6-9-estilos` sin la carpeta `node_modules`. Añade al `README.md` una tabla con el método de estilo de cada componente y por qué lo has elegido.
 
-**3. Módulos CSS**
-
-- **a.** Convierte `Card`, `ModuloItem` y `ProfesorCard` a módulos CSS.
-- **b.** Comprueba en el inspector que los nombres de clase se han transformado en identificadores únicos.
-- **c.** Crea dos componentes con una clase `.titulo` en sus respectivos módulos y demuestra que no hay conflicto.
-
-**4. SCSS**
-
-- **a.** Instala `sass`. Crea `src/styles/_variables.scss` con al menos un mapa de *breakpoints* y un mixin.
-- **b.** Convierte `ListaModulos` a un módulo SCSS que use anidación, el selector `&` y el mixin para mostrar las tarjetas en una columna en móvil y en una rejilla de 2 o 3 columnas en pantallas mayores.
-
-**5. Estilos dinámicos**
-
-- **a.** Crea un componente `BarraHoras` que reciba las horas de un módulo y el máximo y muestre una barra de progreso cuyo ancho se calcule con `style={{ width: ... }}`.
-- **b.** Como ampliación opcional, crea un `Boton` con styled-components que tenga las variantes `$variante="primario"` y `$variante="secundario"`.
-
-**6. Entrega**
-
-Sube el proyecto a tu repositorio `React` y añade al `README.md` una tabla indicando qué método de estilo has usado en cada componente y por qué.
+Sube también el proyecto a tu repositorio personal para mantenerlo guardado.
 
 ---
 
 # 7. Eventos y comunicación entre componentes
 
-## 7.1 Manejo de eventos en React
+Hasta ahora nuestros componentes solo mostraban información. Con los **eventos** empiezan a reaccionar a lo que hace el usuario: pulsar un botón, escribir en un campo, pasar el ratón por encima...
 
-El manejo de eventos permite interactuar con el usuario: clics, movimientos del ratón, teclas pulsadas, envío de formularios... React utiliza un sistema de eventos sintéticos: envuelve los eventos nativos del navegador en un objeto `SyntheticEvent` con una interfaz consistente en todos los navegadores.
+## 7.1 Responder a un evento
 
-Diferencias respecto al DOM (UD2):
-
-| DOM (UD2) | React |
-| --- | --- |
-| `boton.addEventListener("click", fn)` | `<button onClick={fn}>` |
-| Atributos en minúsculas (`onclick`) | **camelCase** (`onClick`, `onChange`, `onSubmit`) |
-| `onclick="fn()"` (cadena) | `onClick={fn}` (referencia a la función) |
-| Hay que eliminar los *listeners* manualmente | React los gestiona automáticamente |
+La idea es la misma que en la UD2: «cuando pase *esto*, ejecuta *esta función*». La diferencia es que en React no se usa `addEventListener`, sino que el evento se escribe directamente en el JSX, como si fuera un atributo:
 
 ```jsx
 function MyComponent() {
@@ -4191,30 +3907,29 @@ function MyComponent() {
 }
 ```
 
-Por convenio, las funciones que manejan eventos se llaman `handleAlgo` (`handleClick`, `handleSubmit`) y las props que reciben manejadores se llaman `onAlgo` (`onClick`, `onDelete`).
+Se lee así: «cuando se haga clic (`onClick`) en este botón, ejecuta `handleClick`».
 
-> **Error muy frecuente: llamar a la función en lugar de pasarla.**
+| DOM (UD2) | React |
+| --- | --- |
+| `boton.addEventListener("click", fn)` | `<button onClick={fn}>` |
+| Atributos en minúsculas (`onclick`) | **camelCase** (`onClick`, `onChange`, `onSubmit`) |
+| `onclick="fn()"` (cadena) | `onClick={fn}` (la propia función) |
+| Hay que quitar los *listeners* a mano | React se encarga |
+
+Por convenio, la función que responde a un evento se llama `handleAlgo` (`handleClick`, `handleSubmit`) y la prop que la recibe se llama `onAlgo` (`onClick`, `onDelete`).
+
+> **Error muy frecuente: poner paréntesis.**
 >
 > ```jsx
-> <button onClick={handleClick}>   // Bien: se pasa la función; se ejecutará al hacer clic
-> <button onClick={handleClick()}> // Mal: se ejecuta durante el renderizado, no al hacer clic
+> <button onClick={handleClick}>   // Bien: «llama a esta función cuando hagan clic»
+> <button onClick={handleClick()}> // Mal: la llama YA, al dibujar el botón
 > ```
+>
+> Sin paréntesis le das a React la función para que la use más tarde. Con paréntesis la ejecutas en ese momento, y lo que recibe React es su resultado.
 
-### 7.1.1 Pasar parámetros a los manejadores
+### 7.1.1 Pasar datos al manejador
 
-Si el manejador necesita argumentos, se envuelve en una función flecha:
-
-```jsx
-const App = () => {
-  const handleClick = (param) => {
-    alert(`Pulsado: ${param}`);
-  };
-
-  return <button onClick={() => handleClick("Hola")}>Haz clic aquí</button>;
-};
-```
-
-Es especialmente útil en listas, para saber sobre qué elemento se ha actuado:
+¿Y si la función necesita un dato, como el `id` del producto que hay que eliminar? No podemos escribir `onClick={eliminar(p.id)}`, porque tiene paréntesis y se ejecutaría al momento. La solución es envolver la llamada en una función flecha:
 
 ```jsx
 {productos.map((p) => (
@@ -4224,90 +3939,48 @@ Es especialmente útil en listas, para saber sobre qué elemento se ha actuado:
 ))}
 ```
 
-## 7.2 El objeto evento
+`() => eliminar(p.id)` es una función nueva que todavía no se ejecuta. Cuando se pulse el botón, React la llamará y ella llamará a `eliminar` con el `id` correcto. Cada botón de la lista tiene su propia flecha, así que cada uno «recuerda» su producto.
 
-Cuando se maneja un evento, React pasa automáticamente al manejador, como primer argumento, un objeto evento con información sobre lo ocurrido. Este objeto es una instancia de `SyntheticEvent`: un envoltorio de React sobre el evento nativo del DOM que tiene las mismas propiedades y métodos, pero con una interfaz consistente en todos los navegadores. Si alguna vez necesitas el evento original del navegador, está en `event.nativeEvent`.
+## 7.2 El objeto evento: qué ha pasado
 
-Algunas de sus propiedades y métodos más comunes:
+Cuando ocurre un evento, React llama a tu función y le pasa un objeto con los detalles de lo ocurrido: dónde se ha hecho clic, qué tecla se ha pulsado, qué hay escrito en el campo... Solo tienes que recibirlo como parámetro (normalmente se llama `event` o `e`).
 
-- `type`: tipo de evento (`click`, `change`...).
-- `target`: elemento que originó el evento.
-- `currentTarget`: elemento al que está asociado el manejador.
-- `preventDefault()`: evita el comportamiento predeterminado.
-- `stopPropagation()`: detiene la propagación hacia los elementos padres.
-- `clientX` y `clientY`: coordenadas del ratón en la ventana.
-- `key`: tecla pulsada (eventos de teclado).
-
-```jsx
-function ClickEventExample() {
-  function handleClick(event) {
-    console.log("Tipo:", event.type);                    // 'click'
-    console.log("Target:", event.target);                // El elemento pulsado
-    console.log("Current target:", event.currentTarget); // El que tiene el manejador
-  }
-
-  return <button onClick={handleClick}>Click me</button>;
-}
-```
-
-`target` y `currentTarget` coinciden en este ejemplo, pero no siempre: si el botón contuviera un icono `<span>` y se pulsara sobre él, `target` sería el `span` (donde se hizo clic) y `currentTarget` el `button` (donde está el manejador).
-
-**Evento de cambio: `target.value`.** En los campos de formulario, `event.target.value` contiene el valor actual del campo:
+| Propiedad o método | Qué te dice o hace |
+| --- | --- |
+| `type` | El tipo de evento: `"click"`, `"change"`, `"keydown"`... |
+| `target` | El elemento donde ha ocurrido el evento. |
+| `target.value` | El texto que hay en un campo de formulario. |
+| `key` | La tecla pulsada: `"a"`, `"Enter"`, `"Escape"`, `"ArrowUp"`... |
+| `clientX`, `clientY` | La posición del ratón en la ventana. |
+| `preventDefault()`, `stopPropagation()` | Cambian lo que hace el navegador (apartado 7.4). |
 
 ```jsx
-import { useState } from "react";
-
-function ChangeEventExample() {
-  const [value, setValue] = useState("");
-
+function Campo() {
   function handleChange(event) {
-    console.log("Tipo:", event.type);          // 'change'
-    console.log("Valor:", event.target.value); // El valor actual del input
-    setValue(event.target.value);
+    console.log("Has escrito:", event.target.value);
   }
 
-  return <input type="text" value={value} onChange={handleChange} placeholder="Escribe algo" />;
-}
-```
-
-**Evento de teclado: `key`.** La propiedad `key` indica qué tecla se ha pulsado (`"a"`, `"Enter"`, `"Escape"`, `"ArrowUp"`...):
-
-```jsx
-function KeyEventExample() {
   function handleKeyDown(event) {
-    console.log("Tipo:", event.type); // 'keydown'
-    console.log("Tecla:", event.key); // La tecla pulsada
+    if (event.key === "Enter") {
+      console.log("Has pulsado Enter");
+    }
   }
 
-  return <input type="text" onKeyDown={handleKeyDown} placeholder="Pulsa cualquier tecla" />;
+  return <input onChange={handleChange} onKeyDown={handleKeyDown} placeholder="Escribe algo" />;
 }
 ```
 
-**Evento de ratón: `clientX` y `clientY`.** Indican la posición del cursor en la ventana del navegador cuando se produce el evento:
+> **`target` y `currentTarget`.** Casi siempre son el mismo elemento, pero no siempre. Si un botón contiene un icono y pulsas justo sobre el icono, `target` es el icono (donde has hecho clic) y `currentTarget` es el botón (donde está el `onClick`). Si quieres el elemento que tiene el manejador, usa `currentTarget`.
 
-```jsx
-function MouseEventExample() {
-  function handleMouseMove(event) {
-    console.log("Tipo:", event.type);      // 'mousemove'
-    console.log("Ratón X:", event.clientX); // Posición X del cursor
-    console.log("Ratón Y:", event.clientY); // Posición Y del cursor
-  }
-
-  return (
-    <div onMouseMove={handleMouseMove} style={{ width: 300, height: 300, border: "1px solid black" }}>
-      Mueve el ratón por aquí
-    </div>
-  );
-}
-```
-
-Si además de parámetros propios necesitas el evento, pásalo explícitamente:
+Si además del evento necesitas tus propios datos, combínalo con la función flecha del apartado anterior:
 
 ```jsx
 <button onClick={(e) => handleClick(e, producto.id)}>Comprar</button>
 ```
 
-## 7.3 Tipos de eventos habituales
+> El objeto que recibes no es exactamente el evento del navegador, sino una copia de React (`SyntheticEvent`) que funciona igual en todos los navegadores. Tiene las mismas propiedades, así que en la práctica lo usarás como el de la UD2.
+
+## 7.3 Eventos más habituales
 
 | Categoría | Eventos |
 | --- | --- |
@@ -4315,229 +3988,121 @@ Si además de parámetros propios necesitas el evento, pásalo explícitamente:
 | Puntero (ratón, táctil, lápiz) | `onPointerDown`, `onPointerUp`, `onPointerMove` |
 | Teclado | `onKeyDown`, `onKeyUp` |
 | Foco | `onFocus`, `onBlur` |
-| Formulario | `onChange`, `onInput`, `onSubmit`, `onReset`, `onInvalid` |
+| Formulario | `onChange`, `onSubmit`, `onReset` |
 | Otros | `onScroll`, `onLoad` y `onError` (imágenes), `onCopy`, `onPaste`, `onDragStart`, `onDrop` |
 
-> **`onChange` en React** se dispara con cada tecla que modifica el campo, a diferencia del evento `change` nativo, que solo se lanza al perder el foco. Se comporta como el evento `input` del DOM.
+> **`onChange` en React** se dispara con cada tecla, no solo al salir del campo como el `change` del navegador.
 >
-> El evento `onKeyPress` (que aparece en apuntes antiguos) está obsoleto: usa `onKeyDown`.
+> `onKeyPress`, que aparece en apuntes antiguos, está obsoleto: usa `onKeyDown`.
 
-### 7.3.1 Ejemplo: eventos de ratón
+La mejor forma de entenderlos es verlos en acción. Copia este componente, abre la consola y prueba:
 
 ```jsx
-function MouseEventsExample() {
-  function handleClick() {
-    console.log("¡Botón pulsado!");
-  }
-
-  function handleDoubleClick() {
-    console.log("¡Doble clic en el botón!");
-  }
-
-  function handleMouseEnter() {
-    console.log("El ratón ha entrado");
-  }
-
-  function handleMouseLeave() {
-    console.log("El ratón ha salido");
-  }
-
+function ProbadorEventos() {
   return (
     <div>
-      <button onClick={handleClick} onDoubleClick={handleDoubleClick}>
+      <button
+        onClick={() => console.log("clic")}
+        onDoubleClick={() => console.log("doble clic")}
+      >
         Haz clic o doble clic
       </button>
+
       <div
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        style={{ width: 200, height: 200, backgroundColor: "lightgray", marginTop: 20 }}
+        onMouseEnter={() => console.log("el ratón entra")}
+        onMouseLeave={() => console.log("el ratón sale")}
+        style={{ width: 200, height: 100, background: "lightgray", margin: "20px 0" }}
       >
         Pasa el ratón por aquí
       </div>
-    </div>
-  );
-}
-```
 
-Observa en la consola que un doble clic también genera dos eventos `click` previos. Si un elemento tiene ambas acciones, no deben ser contradictorias.
-
-### 7.3.2 Ejemplo: eventos de teclado
-
-```jsx
-function KeyboardEventsExample() {
-  function handleKeyDown(event) {
-    console.log(`Tecla pulsada: ${event.key}`);
-    if (event.key === "Enter") console.log("Has pulsado Enter");
-    if (event.key === "Escape") event.currentTarget.value = "";
-  }
-
-  function handleKeyUp(event) {
-    console.log(`Tecla liberada: ${event.key}`);
-  }
-
-  return (
-    <input
-      type="text"
-      onKeyDown={handleKeyDown}
-      onKeyUp={handleKeyUp}
-      placeholder="Escribe algo"
-    />
-  );
-}
-```
-
-- `onKeyDown`: al pulsar la tecla (se repite si se mantiene pulsada).
-- `onKeyUp`: al soltarla.
-- Otras propiedades útiles: `event.ctrlKey`, `event.shiftKey`, `event.altKey` y `event.metaKey` para detectar combinaciones (por ejemplo, Ctrl+S).
-
-### 7.3.3 Ejemplo: eventos de formulario y foco
-
-```jsx
-import { useState } from "react";
-
-function FormEventsExample() {
-  const [value, setValue] = useState("");
-
-  function handleChange(event) {
-    setValue(event.target.value);
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log(`Formulario enviado con: ${value}`);
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
       <input
-        type="text"
-        value={value}
-        onChange={handleChange}
-        onFocus={() => console.log("Campo enfocado")}
-        onBlur={() => console.log("Campo sin foco")}
-        placeholder="Escribe algo"
+        onFocus={() => console.log("el campo recibe el foco")}
+        onBlur={() => console.log("el campo pierde el foco")}
+        onKeyDown={(e) => console.log("tecla pulsada:", e.key)}
+        onKeyUp={(e) => console.log("tecla soltada:", e.key)}
+        placeholder="Escribe aquí"
       />
-      <button type="submit">Enviar</button>
-    </form>
-  );
-}
-```
-
-(`useState` se explica en el apartado 8; aquí guarda el texto del campo).
-
-- `onChange`: cada vez que cambia el valor.
-- `onSubmit`: al enviar el formulario (con el botón de tipo `submit` o pulsando Enter en un campo).
-- `onFocus` / `onBlur`: cuando el campo recibe o pierde el foco. `onBlur` se usa mucho para validar un campo cuando el usuario termina de rellenarlo (apartado 9).
-
-## 7.4 Prevención del comportamiento predeterminado y propagación
-
-En el desarrollo web hay situaciones en las que el comportamiento predeterminado del navegador no es deseado. React permite prevenirlo y controlar el recorrido de los eventos con los mismos métodos que el DOM: `event.preventDefault()` y `event.stopPropagation()`.
-
-### 7.4.1 `preventDefault()`
-
-Evita que se produzca el comportamiento predeterminado de un evento. Es especialmente útil en formularios y enlaces, donde ese comportamiento puede interferir con la lógica de la aplicación. En React no sirve devolver `false` desde el manejador: hay que llamar a `preventDefault()` explícitamente.
-
-**Ejemplo con un formulario:**
-
-```jsx
-import { useState } from "react";
-
-function PreventDefaultExample() {
-  const [value, setValue] = useState("");
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log("Formulario enviado con el valor:", value);
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="Escribe algo" />
-      <button type="submit">Enviar</button>
-    </form>
-  );
-}
-```
-
-- `event.preventDefault()` se usa en el manejador de `onSubmit` para evitar que el formulario se envíe de la manera predeterminada, lo que recargaría la página y haría perder el estado de la aplicación.
-- Así se ejecuta la lógica personalizada (en este caso, mostrar el valor en la consola o enviarlo a una API con `fetch`).
-
-**Ejemplo con un enlace:**
-
-```jsx
-function PreventLinkDefaultExample() {
-  function handleClick(event) {
-    event.preventDefault();
-    console.log("Enlace pulsado, pero se ha evitado la navegación");
-  }
-
-  return <a href="https://example.com" onClick={handleClick}>Click me</a>;
-}
-```
-
-- `event.preventDefault()` en el `onClick` del enlace evita que el navegador navegue a la URL indicada. Así funcionan internamente los enlaces de React Router (UD5).
-
-### 7.4.2 `stopPropagation()`
-
-Los eventos se propagan desde el elemento que los origina hacia sus ancestros (*bubbling*). `stopPropagation()` evita que un evento de un hijo dispare los manejadores del padre:
-
-```jsx
-function StopPropagationExample() {
-  function handleParentClick() {
-    console.log("Padre pulsado");
-  }
-
-  function handleChildClick(event) {
-    event.stopPropagation();
-    console.log("Hijo pulsado");
-  }
-
-  return (
-    <div onClick={handleParentClick} style={{ padding: 20, border: "1px solid black" }}>
-      Div padre
-      <div onClick={handleChildClick} style={{ padding: 20, border: "1px solid red", marginTop: 10 }}>
-        Div hijo
-      </div>
     </div>
   );
 }
 ```
 
-Al pulsar el div hijo solo aparece «Hijo pulsado». Un caso real: una tarjeta clicable que abre un detalle y que contiene un botón «Eliminar»; el botón debe detener la propagación para no abrir el detalle.
+Fíjate en algunos detalles:
 
-### 7.4.3 Combinación de `preventDefault()` y `stopPropagation()`
+- Un doble clic genera antes dos `click`. Si un elemento tiene las dos acciones, no deben ser contradictorias.
+- `onKeyDown` se repite si mantienes la tecla pulsada; `onKeyUp` solo salta al soltarla. Para combinaciones como Ctrl+S tienes `e.ctrlKey`, `e.shiftKey` y `e.altKey`.
+- `onBlur` se usa mucho para validar un campo cuando el usuario termina de rellenarlo (UD5).
 
-A veces es necesario usar ambos métodos para conseguir el comportamiento deseado. Son independientes: uno controla la acción del navegador y el otro la propagación del evento.
+## 7.4 Cambiar lo que hace el navegador
 
-```jsx
-function CombinedExample() {
-  function handleClick(event) {
-    event.preventDefault();  // No navega
-    event.stopPropagation(); // No avisa al padre
-    console.log("Enlace pulsado: navegación evitada y propagación detenida");
-  }
+Cuando ocurre un evento, el navegador hace dos cosas por su cuenta:
 
-  return (
-    <div onClick={() => console.log("Padre pulsado")} style={{ padding: 20, border: "1px solid black" }}>
-      Div padre
-      <a href="https://example.com" onClick={handleClick} style={{ display: "block", marginTop: 10 }}>
-        Click me
-      </a>
-    </div>
-  );
-}
-```
-
-Al pulsar el enlace, `preventDefault()` evita la navegación y `stopPropagation()` evita que se dispare el `onClick` del div padre.
+- **Ejecuta la acción por defecto.** Un enlace navega a otra página y un formulario se envía y recarga la página. `preventDefault()` la cancela.
+- **Avisa a los padres.** El evento «sube» como una burbuja desde el elemento pulsado hacia sus padres, abuelos... y todos los que tengan ese evento lo reciben. `stopPropagation()` detiene la subida.
 
 | Método | Qué evita | Ejemplo |
 | --- | --- | --- |
-| `preventDefault()` | La acción por defecto del navegador. | Recargar al enviar un formulario, seguir un enlace, marcar una casilla. |
-| `stopPropagation()` | Que el evento llegue a los elementos padres. | Un botón dentro de una tarjeta clicable. |
+| `preventDefault()` | La acción por defecto del navegador. | Recargar al enviar un formulario o seguir un enlace. |
+| `stopPropagation()` | Que el evento llegue a los padres. | Un botón dentro de una tarjeta clicable. |
+
+### 7.4.1 `preventDefault()`
+
+El caso más habitual es el formulario. Si no lo evitamos, al enviarlo la página se recarga y la aplicación vuelve a empezar desde cero:
+
+```jsx
+function Formulario() {
+  function handleSubmit(event) {
+    event.preventDefault(); // Sin esto, la página se recargaría
+    console.log("Formulario enviado sin recargar");
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input placeholder="Escribe algo" />
+      <button type="submit">Enviar</button>
+    </form>
+  );
+}
+```
+
+Con un enlace pasa lo mismo: `preventDefault()` evita que el navegador cambie de página. Así funcionan por dentro los enlaces de React Router (UD5).
+
+```jsx
+<a href="https://example.com" onClick={(e) => e.preventDefault()}>No me voy a ninguna parte</a>
+```
+
+> En React no sirve devolver `false` desde el manejador, como se hacía en el HTML antiguo: hay que llamar a `preventDefault()`.
+
+### 7.4.2 `stopPropagation()`
+
+Imagina una tarjeta: al hacer clic en ella se abre el detalle, y dentro tiene un botón «Eliminar». Al pulsar el botón, el clic sube hasta la tarjeta y también se abriría el detalle. Para evitarlo, el botón detiene la propagación:
+
+```jsx
+function Tarjeta() {
+  function handleEliminar(event) {
+    event.stopPropagation(); // El clic no llega a la tarjeta
+    console.log("Eliminar");
+  }
+
+  return (
+    <div onClick={() => console.log("Abrir detalle")} style={{ padding: 20, border: "1px solid black" }}>
+      Tarjeta
+      <button onClick={handleEliminar}>Eliminar</button>
+    </div>
+  );
+}
+```
+
+Prueba a borrar la línea del `stopPropagation()`: verás que al pulsar «Eliminar» aparecen los dos mensajes.
+
+Los dos métodos son independientes y se pueden usar juntos. Por ejemplo, un enlace dentro de una tarjeta clicable que no debe navegar ni abrir la tarjeta llamaría a `preventDefault()` y a `stopPropagation()`.
 
 ## 7.5 Comunicación entre componentes mediante callbacks
 
-Las props viajan del padre al hijo. Pero ¿cómo avisa un hijo a su padre de que ha ocurrido algo (por ejemplo, que se ha pulsado «Eliminar» en una tarjeta)? El padre le pasa una función como prop (un *callback*), y el hijo la llama cuando ocurre el evento.
+Las props viajan del padre al hijo, pero un hijo no puede cambiar los datos de su padre. Entonces, ¿cómo le dice la tarjeta a la lista «han pulsado Eliminar en mí»?
+
+La solución es que el padre le pase al hijo una **función como prop** (un *callback*). El hijo no sabe qué hace esa función: solo la llama cuando ocurre el evento, como quien pulsa un timbre. Es el padre quien decide qué pasa al sonar.
 
 ![Las props descienden de App a TareaItem y el callback onEliminar comunica el evento de vuelta al padre](./assets/img/ud4-callbacks.svg)
 
@@ -4550,7 +4115,7 @@ const TareaItem = ({ tarea, onEliminar }) => (
   </li>
 );
 
-// Padre: decide qué hacer
+// Intermedio: solo pasa el callback hacia abajo
 const ListaTareas = ({ tareas, onEliminar }) => (
   <ul>
     {tareas.map((t) => (
@@ -4558,13 +4123,27 @@ const ListaTareas = ({ tareas, onEliminar }) => (
     ))}
   </ul>
 );
+
+// Padre: decide qué hacer cuando le avisan
+const App = () => {
+  const tareas = [
+    { id: 1, texto: "Estudiar React" },
+    { id: 2, texto: "Hacer la práctica" },
+  ];
+
+  const handleEliminar = (id) => {
+    console.log("Hay que eliminar la tarea", id);
+  };
+
+  return <ListaTareas tareas={tareas} onEliminar={handleEliminar} />;
+};
 ```
 
-Los datos bajan por props y los eventos suben por callbacks. Este patrón es la base de toda la interactividad en React y se completa con el estado en el siguiente apartado.
+Por ahora el padre solo muestra un mensaje, porque para borrar de verdad la tarea y que la lista se actualice necesitamos el estado (UD5). Pero el camino ya está hecho: **los datos bajan por props y los avisos suben por callbacks**. Este patrón es la base de toda la interactividad en React.
 
 ### 7.5.1 Elevar el estado (*lifting state up*)
 
-Cuando dos componentes hermanos necesitan compartir datos, esos datos se colocan (se «elevan») en su ancestro común más cercano, que los pasa a ambos por props junto con las funciones para modificarlos.
+¿Y si dos componentes hermanos necesitan el mismo dato? Por ejemplo, un buscador y la lista que filtra. Los hermanos no se hablan directamente, así que el dato se sube («se eleva») a su padre común. El padre lo guarda y se lo da a los dos: al buscador junto con la función para cambiarlo, y a la lista para que filtre.
 
 ```jsx
 import { useState } from "react";
@@ -4591,7 +4170,7 @@ function ListaFiltrada({ elementos, texto }) {
 }
 
 export default function App() {
-  const [texto, setTexto] = useState(""); // Estado elevado al padre común
+  const [texto, setTexto] = useState(""); // El dato vive en el padre común
   const frutas = ["Manzana", "Pera", "Plátano", "Melocotón", "Mango"];
 
   return (
@@ -4603,1346 +4182,9 @@ export default function App() {
 }
 ```
 
-`Buscador` y `ListaFiltrada` no se comunican directamente: lo hacen a través de `App`. Cuando el árbol crece y hay que pasar datos a través de muchos niveles (*prop drilling*), se utiliza el Context API, que veremos en la UD5.
+(`useState` se explica en la UD5: aquí guarda el texto buscado y `setTexto` lo cambia).
 
----
-
-# 8. Hooks: useState y useEffect
-
-## 8.1 ¿Qué son los hooks?
-
-Los hooks son funciones que permiten a los componentes funcionales usar el estado y otras características de React. Se introdujeron en React 16.8 y su nombre siempre empieza por `use`. Los principales son:
-
-- **`useState`:** añade estado local a un componente.
-- **`useEffect`:** ejecuta efectos secundarios (peticiones a una API, temporizadores, suscripciones, sincronización con el DOM o `localStorage`).
-- **`useRef`:** guarda una referencia a un elemento del DOM o un valor mutable que no provoca renderizados.
-- **`useContext`:** accede a datos compartidos sin pasar props por todos los niveles (UD5).
-- **`useReducer`:** alternativa a `useState` para estados complejos con muchas transiciones.
-- **`useMemo` y `useCallback`:** memorizan valores y funciones para optimizar el rendimiento.
-- **Hooks personalizados:** funciones propias que combinan otros hooks para reutilizar lógica (`useFetch`, `useLocalStorage`...).
-
-### 8.1.1 Reglas de los hooks
-
-1. **Llámalos solo en el nivel superior** del componente: nunca dentro de condiciones, bucles ni funciones anidadas. React identifica cada hook por el orden en que se llama, que debe ser el mismo en cada renderizado.
-2. **Llámalos solo desde componentes de React o desde hooks personalizados**, nunca desde funciones normales de JavaScript.
-
-```jsx
-function Perfil({ usuario }) {
-  if (!usuario) return null;
-  const [abierto, setAbierto] = useState(false); // MAL: hook después de un return condicional
-  // ...
-}
-```
-
-El plugin `eslint-plugin-react-hooks` de la plantilla de Vite detecta estas infracciones.
-
-## 8.2 `useState`: el estado del componente
-
-### 8.2.1 ¿Por qué no basta con una variable?
-
-```jsx
-function Contador() {
-  let contador = 0;
-  return (
-    <button onClick={() => { contador++; console.log(contador); }}>
-      Pulsado {contador} veces
-    </button>
-  );
-}
-```
-
-La consola muestra 1, 2, 3..., pero la pantalla sigue en «0». Por dos motivos:
-
-1. Cambiar una variable local no avisa a React de que tiene que volver a renderizar.
-2. Aunque se volviera a renderizar, la función del componente se ejecuta de nuevo desde el principio y `contador` volvería a valer `0`.
-
-El estado soluciona ambos problemas: React guarda el valor entre renderizados y vuelve a renderizar el componente cuando cambia.
-
-### 8.2.2 Sintaxis
-
-```jsx
-import { useState } from "react";
-
-function Contador() {
-  const [contador, setContador] = useState(0);
-  //     ▲ valor    ▲ función para    ▲ valor inicial
-  //       actual     actualizarlo
-
-  return (
-    <div>
-      <p>Has pulsado {contador} veces</p>
-      <button onClick={() => setContador(contador + 1)}>Sumar</button>
-      <button onClick={() => setContador(contador - 1)}>Restar</button>
-      <button onClick={() => setContador(0)}>Reiniciar</button>
-    </div>
-  );
-}
-```
-
-`useState` devuelve un array con dos elementos que desestructuramos: el valor actual y la función de actualización (por convenio, `setNombre`). Cada llamada a `setContador` programa un nuevo renderizado con el nuevo valor.
-
-El ciclo es siempre el mismo:
-
-![Ciclo de estado en React: renderizado, interacción, actualización del estado y nuevo renderizado](./assets/img/ud4-ciclo-estado.svg)
-
-Cada componente tiene su propio estado: si renderizas dos `<Contador />`, cada uno cuenta por separado.
-
-### 8.2.3 El estado es una «foto» y la función actualizadora
-
-El valor del estado no cambia inmediatamente al llamar a `setContador`: se mantiene igual durante todo el renderizado actual.
-
-```jsx
-function handleClick() {
-  setContador(contador + 1);
-  setContador(contador + 1);
-  setContador(contador + 1);
-  console.log(contador); // Sigue mostrando el valor anterior
-}
-// Resultado: solo suma 1, porque las tres llamadas usan el mismo valor de `contador`
-```
-
-Si el nuevo estado depende del anterior, usa la función actualizadora, que recibe el valor más reciente:
-
-```jsx
-function handleClick() {
-  setContador((c) => c + 1);
-  setContador((c) => c + 1);
-  setContador((c) => c + 1);
-}
-// Resultado: suma 3
-```
-
-Recomendación: cuando calcules el nuevo estado a partir del anterior, usa la forma `setX(prev => ...)`.
-
-### 8.2.4 Estado con objetos y arrays: inmutabilidad
-
-React detecta los cambios comparando la referencia del estado anterior con la del nuevo. Si modificas (mutas) un objeto o un array existente, la referencia es la misma y React no vuelve a renderizar. Siempre hay que crear un objeto o array nuevo, normalmente con el operador spread.
-
-**Objetos:**
-
-```jsx
-const [usuario, setUsuario] = useState({ nombre: "Ana", edad: 30 });
-
-// MAL: muta el objeto, React no se entera
-usuario.edad = 31;
-setUsuario(usuario);
-
-// BIEN: crea un objeto nuevo copiando el anterior
-setUsuario({ ...usuario, edad: 31 });
-// o con función actualizadora
-setUsuario((prev) => ({ ...prev, edad: prev.edad + 1 }));
-```
-
-**Arrays.** Operaciones habituales sin mutar:
-
-| Operación | Muta (evitar) | Crea un array nuevo |
-| --- | --- | --- |
-| Añadir | `push`, `unshift` | `[...arr, nuevo]`, `[nuevo, ...arr]` |
-| Eliminar | `splice`, `pop`, `shift` | `arr.filter(x => x.id !== id)` |
-| Modificar | `arr[i] = x` | `arr.map(x => x.id === id ? { ...x, hecho: true } : x)` |
-| Ordenar | `sort`, `reverse` | `arr.toSorted(...)`, `[...arr].sort(...)` |
-
-```jsx
-import { useState } from "react";
-
-function ListaCompra() {
-  const [productos, setProductos] = useState([
-    { id: 1, nombre: "Leche", comprado: false },
-  ]);
-  const [texto, setTexto] = useState("");
-
-  const añadir = () => {
-    if (texto.trim() === "") return;
-    setProductos((prev) => [...prev, { id: crypto.randomUUID(), nombre: texto.trim(), comprado: false }]);
-    setTexto("");
-  };
-
-  const alternar = (id) => {
-    setProductos((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, comprado: !p.comprado } : p))
-    );
-  };
-
-  const eliminar = (id) => {
-    setProductos((prev) => prev.filter((p) => p.id !== id));
-  };
-
-  return (
-    <section>
-      <input value={texto} onChange={(e) => setTexto(e.target.value)} aria-label="Producto" />
-      <button onClick={añadir}>Añadir</button>
-      <ul>
-        {productos.map((p) => (
-          <li key={p.id}>
-            <label>
-              <input type="checkbox" checked={p.comprado} onChange={() => alternar(p.id)} />
-              <span style={{ textDecoration: p.comprado ? "line-through" : "none" }}>{p.nombre}</span>
-            </label>
-            <button onClick={() => eliminar(p.id)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-```
-
-### 8.2.5 Buenas prácticas con el estado
-
-- **No guardes en el estado lo que puedes calcular.** En el ejemplo anterior, el número de productos comprados se calcula al renderizar: `const comprados = productos.filter(p => p.comprado).length;`. Guardarlo en otro estado obligaría a sincronizar ambos y es una fuente de errores.
-- **Varios estados simples o un objeto.** Usa estados separados para valores independientes (`const [abierto, setAbierto]`, `const [filtro, setFiltro]`) y un objeto cuando los valores cambian juntos (los campos de un formulario).
-- **Inicialización perezosa.** Si el valor inicial es costoso de calcular (leer `localStorage`, por ejemplo), pasa una función: `useState(() => leerDeLocalStorage())`. Así solo se ejecuta en el primer renderizado.
-- **Dónde colocar el estado:** en el componente más bajo del árbol que lo necesite; si lo necesitan varios, en su ancestro común (apartado 7.5.1).
-
-## 8.3 `useEffect`: efectos secundarios
-
-### 8.3.1 ¿Qué es un efecto?
-
-Un componente debe ser una función pura: dados unos props y un estado, devuelve siempre el mismo JSX, sin modificar nada externo. Sin embargo, las aplicaciones necesitan efectos secundarios: comunicarse con algo que está fuera de React.
-
-- Pedir datos a una API.
-- Crear temporizadores (`setInterval`, `setTimeout`).
-- Suscribirse a eventos del navegador (`resize`, `keydown` en `window`).
-- Leer o escribir en `localStorage`.
-- Cambiar el título del documento o un atributo de `<html>`.
-
-`useEffect` ejecuta código después de que React haya actualizado el DOM.
-
-### 8.3.2 Sintaxis y array de dependencias
-
-```jsx
-useEffect(() => {
-  // Código del efecto
-  return () => {
-    // (Opcional) Función de limpieza
-  };
-}, [dependencias]);
-```
-
-El array de dependencias controla cuándo se vuelve a ejecutar:
-
-| Segundo argumento | Cuándo se ejecuta el efecto |
-| --- | --- |
-| Sin array | Después de cada renderizado (rara vez es lo que se quiere). |
-| `[]` (vacío) | **Solo una vez**, cuando el componente se monta (aparece en pantalla). |
-| `[a, b]` | Al montarse y cada vez que cambie `a` o `b`. |
-
-```jsx
-import { useState, useEffect } from "react";
-
-function TituloContador() {
-  const [contador, setContador] = useState(0);
-
-  useEffect(() => {
-    document.title = `Has pulsado ${contador} veces`;
-  }, [contador]); // Se ejecuta cada vez que cambia `contador`
-
-  return <button onClick={() => setContador((c) => c + 1)}>Pulsado {contador}</button>;
-}
-```
-
-Regla: todo valor del componente (props, estado, funciones) que se use dentro del efecto debe estar en el array de dependencias. ESLint te avisará si falta alguno.
-
-### 8.3.3 Ciclo de vida y función de limpieza
-
-Un componente se monta (aparece), se actualiza (se vuelve a renderizar) y se desmonta (desaparece). Con `useEffect` se controla cada fase:
-
-- El cuerpo del efecto se ejecuta tras el montaje y tras los cambios de sus dependencias.
-- La función de limpieza que devuelve el efecto se ejecuta antes de volver a ejecutar el efecto y al desmontar el componente. Sirve para deshacer lo que hizo el efecto: parar temporizadores, quitar *listeners*, cancelar peticiones.
-
-```jsx
-function Reloj() {
-  const [hora, setHora] = useState(new Date());
-
-  useEffect(() => {
-    const id = setInterval(() => setHora(new Date()), 1000);
-    console.log("Reloj montado: temporizador iniciado");
-
-    return () => {
-      clearInterval(id);
-      console.log("Reloj desmontado: temporizador detenido");
-    };
-  }, []);
-
-  return <p>Son las {hora.toLocaleTimeString("es-ES")}</p>;
-}
-
-function App() {
-  const [visible, setVisible] = useState(true);
-  return (
-    <>
-      <button onClick={() => setVisible((v) => !v)}>{visible ? "Ocultar" : "Mostrar"} reloj</button>
-      {visible && <Reloj />}
-    </>
-  );
-}
-```
-
-Sin `clearInterval`, al ocultar el reloj el temporizador seguiría funcionando en segundo plano (una fuga de memoria).
-
-Ejemplo con un evento de `window`:
-
-```jsx
-function AnchoVentana() {
-  const [ancho, setAncho] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => setAncho(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return <p>Ancho de la ventana: {ancho}px</p>;
-}
-```
-
-> **`StrictMode` ejecuta los efectos dos veces en desarrollo.** Si ves en la consola «montado → desmontado → montado» al cargar la página, es normal: React monta, desmonta y vuelve a montar cada componente para comprobar que la función de limpieza funciona correctamente. En producción solo se ejecuta una vez. Si un efecto falla por ejecutarse dos veces, es que le falta la limpieza.
-
-### 8.3.4 Persistir el estado en `localStorage`
-
-Combinando la inicialización perezosa de `useState` y un efecto, el estado sobrevive a la recarga de la página:
-
-```jsx
-function useTema() {
-  const [tema, setTema] = useState(() => localStorage.getItem("tema") ?? "claro");
-
-  useEffect(() => {
-    localStorage.setItem("tema", tema);
-    document.documentElement.dataset.tema = tema; // Aplica las variables CSS del apartado 6.7
-  }, [tema]);
-
-  return [tema, setTema];
-}
-
-function BotonTema() {
-  const [tema, setTema] = useTema();
-  return (
-    <button onClick={() => setTema((t) => (t === "claro" ? "oscuro" : "claro"))}>
-      Cambiar a tema {tema === "claro" ? "oscuro" : "claro"}
-    </button>
-  );
-}
-```
-
-`useTema` es un hook personalizado: una función cuyo nombre empieza por `use` y que utiliza otros hooks. Permite reutilizar la lógica en cualquier componente.
-
-### 8.3.5 Obtener datos de una API
-
-En la UD2 usamos `fetch` con promesas y `async/await`. En React, las peticiones al cargar un componente se hacen en un efecto. Necesitamos tres estados: datos, cargando y error.
-
-```jsx
-import { useState, useEffect } from "react";
-
-function Cafe({ id }) {
-  const [cafe, setCafe] = useState(null);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    let ignorar = false; // Evita usar respuestas obsoletas
-
-    async function cargar() {
-      setCargando(true);
-      setError(null);
-      try {
-        const respuesta = await fetch(`https://api.sampleapis.com/coffee/hot/${id}`);
-        if (!respuesta.ok) throw new Error(`Error HTTP ${respuesta.status}`);
-        const datos = await respuesta.json();
-        if (!ignorar) setCafe(datos);
-      } catch (err) {
-        if (!ignorar) setError(err.message);
-      } finally {
-        if (!ignorar) setCargando(false);
-      }
-    }
-
-    cargar();
-
-    return () => {
-      ignorar = true; // Si cambia `id` o se desmonta, se descarta la respuesta pendiente
-    };
-  }, [id]);
-
-  if (cargando) return <p>Cargando café…</p>;
-  if (error) return <p role="alert">No se ha podido cargar el café: {error}</p>;
-  if (!cafe) return null;
-
-  return (
-    <article>
-      <h2>{cafe.title}</h2>
-      <p>{cafe.description}</p>
-      <img src={cafe.image} alt={cafe.title} width={200} />
-    </article>
-  );
-}
-```
-
-Puntos importantes:
-
-- La función del efecto no puede ser `async` (debe devolver nada o una función de limpieza, no una promesa). Por eso se declara una función `async` dentro y se llama.
-- **`ignorar`** evita una *condición de carrera*: si el usuario cambia rápidamente de `id`, una respuesta lenta anterior podría llegar después de la nueva y sobrescribirla.
-- El efecto depende de `id`: al cambiarlo, se vuelve a pedir.
-- Siempre se gestionan los tres casos: cargando, error y datos.
-
-> Alternativa a `ignorar`: un `AbortController` que cancela la petición en la función de limpieza (`fetch(url, { signal: controller.signal })` y `return () => controller.abort();`). Lo usaremos en la UD5.
-
-### 8.3.6 Cuándo NO usar `useEffect`
-
-Un error común es usar efectos para cosas que no son efectos:
-
-- **Calcular datos a partir de props o estado:** hazlo directamente durante el renderizado.
-
-  ```jsx
-  // MAL: innecesario
-  const [total, setTotal] = useState(0);
-  useEffect(() => { setTotal(items.reduce((s, i) => s + i.precio, 0)); }, [items]);
-
-  // BIEN: se calcula al renderizar
-  const total = items.reduce((s, i) => s + i.precio, 0);
-  ```
-
-- **Responder a un evento del usuario** (enviar un formulario, añadir al carrito): hazlo en el manejador del evento, no en un efecto.
-
-Usa `useEffect` solo para sincronizar el componente con sistemas externos.
-
-## 8.4 `useRef`: referencias al DOM
-
-`useRef` crea un objeto `{ current: valor }` que persiste entre renderizados y cuya modificación no provoca un renderizado. Su uso más habitual es acceder directamente a un elemento del DOM, por ejemplo para darle el foco:
-
-```jsx
-import { useRef } from "react";
-
-function Buscador() {
-  const inputRef = useRef(null);
-
-  return (
-    <>
-      <input ref={inputRef} type="search" aria-label="Buscar" />
-      <button onClick={() => inputRef.current.focus()}>Ir al buscador</button>
-    </>
-  );
-}
-```
-
-React asigna el nodo del DOM a `inputRef.current` después de montarlo. Lo volveremos a usar en los formularios no controlados.
-
-## 8.5 Ejemplo completo: tarjeta de usuario aleatorio
-
-Combina estado, efecto, eventos y renderizado condicional usando la API pública [randomuser.me](https://randomuser.me):
-
-```jsx
-import { useState, useEffect } from "react";
-
-export default function UsuarioAleatorio() {
-  const [usuario, setUsuario] = useState(null);
-  const [estado, setEstado] = useState("cargando"); // "cargando" | "ok" | "error"
-  const [recargas, setRecargas] = useState(0);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    fetch("https://randomuser.me/api/?nat=es", { signal: controller.signal })
-      .then((r) => {
-        if (!r.ok) throw new Error(r.status);
-        return r.json();
-      })
-      .then((datos) => {
-        setUsuario(datos.results[0]);
-        setEstado("ok");
-      })
-      .catch((err) => {
-        if (err.name !== "AbortError") setEstado("error");
-      });
-
-    return () => controller.abort();
-  }, [recargas]); // Cada vez que se pulsa «Otro» cambia `recargas` y se repite la petición
-
-  const otro = () => {
-    setEstado("cargando");
-    setRecargas((n) => n + 1);
-  };
-
-  return (
-    <section>
-      {estado === "cargando" && <p>Cargando…</p>}
-      {estado === "error" && <p role="alert">Error al cargar el usuario.</p>}
-      {estado === "ok" && usuario && (
-        <article>
-          <img src={usuario.picture.large} alt={`Foto de ${usuario.name.first}`} />
-          <h2>{usuario.name.first} {usuario.name.last}</h2>
-          <p>{usuario.email}</p>
-          <p>{usuario.location.city}</p>
-        </article>
-      )}
-      <button onClick={otro} disabled={estado === "cargando"}>Otro usuario</button>
-    </section>
-  );
-}
-```
-
-## 8.6 Hooks personalizados
-
-Cuando varios componentes repiten la misma lógica con hooks, se extrae a un hook personalizado. Ejemplo genérico para persistir cualquier estado en `localStorage`:
-
-```jsx
-// src/hooks/useLocalStorage.js
-import { useState, useEffect } from "react";
-
-export function useLocalStorage(clave, valorInicial) {
-  const [valor, setValor] = useState(() => {
-    try {
-      const guardado = localStorage.getItem(clave);
-      return guardado !== null ? JSON.parse(guardado) : valorInicial;
-    } catch {
-      return valorInicial; // JSON corrupto o almacenamiento no disponible
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(clave, JSON.stringify(valor));
-    } catch {
-      // Almacenamiento lleno o bloqueado: se ignora
-    }
-  }, [clave, valor]);
-
-  return [valor, setValor];
-}
-```
-
-Se usa exactamente igual que `useState`:
-
-```jsx
-const [tareas, setTareas] = useLocalStorage("tareas", []);
-```
-
-Cada componente que usa un hook personalizado tiene su propio estado: el hook comparte la lógica, no los datos.
-
-## 8.7 Resumen
-
-| Necesito... | Herramienta |
-| --- | --- |
-| Datos que cambian y deben verse en pantalla | `useState` |
-| Valores que se calculan a partir de otros | Una variable normal en el cuerpo del componente |
-| Sincronizarme con algo externo (API, temporizador, `window`, `localStorage`) | `useEffect` (con limpieza si procede) |
-| Acceder a un nodo del DOM o guardar un valor sin renderizar | `useRef` |
-| Reaccionar a una acción del usuario | Manejador de eventos |
-| Reutilizar lógica con hooks | Hook personalizado |
-
-## 8.8 PRÁCTICA 3: Estado y eventos
-
-Crea el proyecto `practica-3-estado`.
-
-**1. Contador avanzado**
-
-Crea un componente `Contador` con los botones `+1`, `-1`, `+5` y «Reiniciar».
-
-- **a.** Usa la función actualizadora en todos los cambios.
-- **b.** Recibe por props `min` y `max` (por defecto 0 y 20) y desactiva los botones que superarían los límites.
-- **c.** Muestra el número en rojo si es mayor que 15 (con una clase CSS, no con `style`).
-- **d.** Renderiza tres contadores independientes en `App` y comprueba que cada uno tiene su estado.
-
-**2. Selector de tema**
-
-- **a.** Reutiliza las variables CSS de la práctica 2 y crea un hook `useTema` que guarde el tema en `localStorage` y lo aplique a `<html>` con un efecto.
-- **b.** Añade un botón en el `Header` para alternar el tema. Al recargar, debe mantenerse.
-
-**3. Carrito de la compra**
-
-Crea una tienda con un catálogo fijo de al menos 6 productos (`id`, `nombre`, `precio`, `imagen`).
-
-- **a.** Componentes: `Catalogo`, `ProductoCard`, `Carrito` y `LineaCarrito`. El estado del carrito estará en `App` (elevado) y se comunicará con callbacks (`onAñadir`, `onCambiarCantidad`, `onEliminar`).
-- **b.** Al añadir un producto que ya está en el carrito, se incrementa su cantidad en lugar de duplicarlo.
-- **c.** Cada línea permite aumentar o disminuir la cantidad; si llega a 0, se elimina.
-- **d.** El total y el número de artículos se calculan durante el renderizado (no se guardan en estado).
-- **e.** Si el carrito está vacío, muestra un mensaje.
-- **f.** Persiste el carrito con el hook `useLocalStorage`.
-- **g.** Ningún array ni objeto del estado debe mutarse. Revisa tu código buscando `push`, `splice` o asignaciones directas.
-
-**4. Temporizador**
-
-- **a.** Crea un componente `Temporizador` con «Iniciar», «Pausar» y «Reiniciar» que muestre minutos y segundos.
-- **b.** Usa `useEffect` con su función de limpieza. Comprueba que al ocultar el componente no quedan temporizadores activos (añade un `console.log` en la limpieza).
-
-**Entrega:** sube el proyecto a tu repositorio `React` y explica en comentarios del código las decisiones sobre dónde se ha colocado cada estado.
-
-## 8.9 PRÁCTICA 4: Pokédex con React
-
-En la UD2 construiste una Pokédex con el DOM. Ahora la reconstruirás con componentes, estado y efectos, y comprobarás cuánto código de manipulación del DOM desaparece.
-
-### API
-
-| Recurso | URL |
-| --- | --- |
-| Listado paginado | `https://pokeapi.co/api/v2/pokemon?limit=20&offset=0` |
-| Detalle | `https://pokeapi.co/api/v2/pokemon/{nombre o número}` |
-| Imagen oficial | `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{numero}.png` |
-
-### Tareas
-
-**1. Estructura**
-
-- **a.** Crea el proyecto `practica-4-pokedex` con los componentes `App`, `Buscador`, `ListaPokemon`, `PokemonCard`, `FichaPokemon`, `Paginacion` y `Mensaje`.
-- **b.** Crea `src/services/pokeapi.js` con una función `obtenerDatos(url)` que haga `fetch`, compruebe `respuesta.ok` y devuelva el JSON (igual que en la UD2).
-
-**2. Listado**
-
-- **a.** `ListaPokemon` carga 20 Pokémon en un `useEffect`, gestionando los estados de carga y error.
-- **b.** Cada `PokemonCard` muestra el número, el nombre y la imagen oficial (extrae el número de la URL de cada resultado).
-- **c.** `Paginacion` tiene los botones «Anterior» y «Siguiente», que cambian un estado `pagina`. El efecto depende de ese estado. Desactiva «Anterior» en la primera página.
-- **d.** Evita las condiciones de carrera con una variable `ignorar` o un `AbortController`.
-
-**3. Ficha de detalle**
-
-- **a.** Al pulsar una tarjeta, se guarda en el estado de `App` el Pokémon seleccionado y se muestra `FichaPokemon` (sin cambiar de página; el enrutamiento llegará en la UD5).
-- **b.** `FichaPokemon` pide el detalle en un efecto que depende del nombre seleccionado y muestra: nombre, número, imagen, tipos, altura (en metros), peso (en kilos), habilidades y estadísticas base con una barra por estadística.
-- **c.** Incluye un botón «Volver al listado».
-
-**4. Búsqueda**
-
-- **a.** `Buscador` es un formulario con un campo controlado. Al enviarlo (`preventDefault`), se busca el Pokémon por nombre o número en minúsculas y sin espacios.
-- **b.** Si existe, se abre su ficha; si la API responde `404`, se muestra «No se ha encontrado ese Pokémon».
-
-**5. Favoritos**
-
-- **a.** Cada tarjeta tiene un botón de favorito (★/☆). Al pulsarlo no debe abrirse la ficha (`stopPropagation`).
-- **b.** Los favoritos se guardan con `useLocalStorage` y se puede filtrar el listado para ver solo los favoritos.
-
-**6. Estilos**
-
-- **a.** Usa módulos CSS y las variables del tema. Colorea la tarjeta según el tipo principal del Pokémon.
-- **b.** El listado se mostrará en una rejilla adaptable (1 columna en móvil, 2–4 en pantallas mayores).
-
-**Entrega:** proyecto en tu repositorio `React` y, en el `README.md`, una comparación breve entre la versión de la UD2 y la de React: qué ha resultado más sencillo y qué más complejo.
-
----
-
-# 9. Formularios
-
-Los formularios son la principal vía de entrada de datos del usuario. En React hay dos formas de gestionarlos: controlados y no controlados.
-
-## 9.1 Formularios controlados
-
-En un formulario controlado, el valor de cada campo está ligado al estado de React. El campo muestra siempre lo que dice el estado (`value`) y cada cambio actualiza el estado (`onChange`). React es la única fuente de verdad.
-
-![Flujo de un formulario controlado: el estado alimenta el input y onChange actualiza el estado](./assets/img/ud4-formulario-controlado.svg)
-
-### 9.1.1 Un campo
-
-```jsx
-import { useState } from "react";
-
-function Nombre() {
-  const [nombre, setNombre] = useState("");
-
-  return (
-    <>
-      <label htmlFor="nombre">Nombre</label>
-      <input id="nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
-      <p>Hola, {nombre || "desconocido"}</p>
-    </>
-  );
-}
-```
-
-> Si pones `value` sin `onChange`, el campo queda bloqueado: React siempre lo devuelve al valor del estado. La consola mostrará un aviso. Si lo que quieres es un valor inicial modificable sin controlarlo, usa `defaultValue`.
-
-### 9.1.2 Varios campos con un único estado
-
-Cuando hay varios campos, se agrupan en un objeto y se usa un único manejador que identifica el campo por su atributo `name` gracias a las propiedades calculadas (`[name]: value`):
-
-```jsx
-import { useState } from "react";
-
-function MultiFieldForm() {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-  });
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("Datos del formulario:", formData);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Nombre:
-        <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
-      </label>
-      <label>
-        Apellido:
-        <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
-      </label>
-      <label>
-        Correo electrónico:
-        <input type="email" name="email" value={formData.email} onChange={handleChange} />
-      </label>
-      <button type="submit">Enviar</button>
-    </form>
-  );
-}
-
-export default MultiFieldForm;
-```
-
-- **Estado inicial:** un objeto con una propiedad por campo. El atributo `name` de cada campo debe coincidir con su propiedad.
-- **`handleChange`:** desestructura `name` y `value` de `event.target` y actualiza solo esa propiedad, copiando el resto con spread.
-- **`handleSubmit`:** evita la recarga de la página y procesa los datos.
-
-### 9.1.3 Otros tipos de campo
-
-```jsx
-import { useState } from "react";
-
-const inicial = {
-  ciclo: "DAM",
-  turno: "mañana",
-  comentarios: "",
-  acepta: false,
-  intereses: [],
-};
-
-function FormularioCompleto() {
-  const [datos, setDatos] = useState(inicial);
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setDatos((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
-  };
-
-  const handleInteres = (e) => {
-    const { value, checked } = e.target;
-    setDatos((prev) => ({
-      ...prev,
-      intereses: checked
-        ? [...prev.intereses, value]
-        : prev.intereses.filter((i) => i !== value),
-    }));
-  };
-
-  return (
-    <form onSubmit={(e) => { e.preventDefault(); console.log(datos); }}>
-      {/* select: se controla con value en el <select>, no con selected en <option> */}
-      <label htmlFor="ciclo">Ciclo</label>
-      <select id="ciclo" name="ciclo" value={datos.ciclo} onChange={handleChange}>
-        <option value="DAM">Desarrollo de Aplicaciones Multiplataforma</option>
-        <option value="DAW">Desarrollo de Aplicaciones Web</option>
-        <option value="ASIR">Administración de Sistemas</option>
-      </select>
-
-      {/* radio: checked compara el valor del estado con el de cada opción */}
-      <fieldset>
-        <legend>Turno</legend>
-        {["mañana", "tarde"].map((t) => (
-          <label key={t}>
-            <input type="radio" name="turno" value={t} checked={datos.turno === t} onChange={handleChange} />
-            {t}
-          </label>
-        ))}
-      </fieldset>
-
-      {/* checkboxes múltiples: un array en el estado */}
-      <fieldset>
-        <legend>Intereses</legend>
-        {["Frontend", "Backend", "Móvil", "Videojuegos"].map((i) => (
-          <label key={i}>
-            <input type="checkbox" value={i} checked={datos.intereses.includes(i)} onChange={handleInteres} />
-            {i}
-          </label>
-        ))}
-      </fieldset>
-
-      {/* textarea: en React usa value, no contenido entre etiquetas */}
-      <label htmlFor="comentarios">Comentarios</label>
-      <textarea id="comentarios" name="comentarios" value={datos.comentarios} onChange={handleChange} />
-
-      {/* checkbox único: se usa checked, no value */}
-      <label>
-        <input type="checkbox" name="acepta" checked={datos.acepta} onChange={handleChange} />
-        Acepto las condiciones
-      </label>
-
-      <button type="submit" disabled={!datos.acepta}>Enviar</button>
-      <button type="button" onClick={() => setDatos(inicial)}>Limpiar</button>
-    </form>
-  );
-}
-```
-
-| Campo | Propiedad controlada | Valor en el evento |
-| --- | --- | --- |
-| `input` de texto, `email`, `number`... | `value` | `e.target.value` (siempre string) |
-| `textarea` | `value` | `e.target.value` |
-| `select` | `value` en el `<select>` | `e.target.value` |
-| `checkbox` | `checked` | `e.target.checked` |
-| `radio` | `checked={estado === valor}` | `e.target.value` |
-
-> **Los campos `number` devuelven texto.** `e.target.value` siempre es un string, también en `type="number"`. Convierte con `Number(valor)` antes de operar, y comprueba que el resultado es válido.
-
-### 9.1.4 Ventajas y desventajas
-
-- **Ventajas:** el estado y el formulario están siempre sincronizados; se pueden validar, transformar o formatear los datos mientras se escriben; los datos están disponibles en todo momento para mostrar vistas previas o activar botones.
-- **Desventajas:** código más extenso en formularios grandes; en formularios muy grandes, actualizar el estado en cada pulsación puede afectar al rendimiento si no se gestiona bien.
-
-## 9.2 Formularios no controlados
-
-En los formularios no controlados, el DOM guarda los valores y React los lee solo cuando los necesita, normalmente al enviar. Se usan referencias (`useRef`) o el objeto `FormData`.
-
-¿Cuándo usarlos?
-
-- Formularios sencillos sin validación en tiempo real.
-- Cuando se prefiere menos código y menos estado.
-- Integración con bibliotecas externas que gestionan el DOM directamente.
-- Campos de tipo `file` (que siempre son no controlados).
-
-### 9.2.1 Con `useRef`
-
-React proporciona el hook `useRef` para crear referencias a elementos del DOM (apartado 8.4). Esas referencias permiten acceder a los valores de los campos sin necesidad de gestionar estado.
-
-**Ejemplo básico:**
-
-```jsx
-import { useRef } from "react";
-
-function UncontrolledForm() {
-  const usernameRef = useRef(null);
-  const passwordRef = useRef(null);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const username = usernameRef.current.value;
-    const password = passwordRef.current.value;
-    console.log("Nombre de usuario:", username);
-    console.log("Contraseña:", password);
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Nombre de usuario:
-        <input type="text" ref={usernameRef} />
-      </label>
-      <label>
-        Contraseña:
-        <input type="password" ref={passwordRef} />
-      </label>
-      <button type="submit">Enviar</button>
-    </form>
-  );
-}
-
-export default UncontrolledForm;
-```
-
-**Ejemplo más completo:** un formulario de registro que procesa varios campos al enviarse.
-
-```jsx
-import { useRef } from "react";
-
-function CompleteUncontrolledForm() {
-  const firstNameRef = useRef(null);
-  const lastNameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formData = {
-      firstName: firstNameRef.current.value,
-      lastName: lastNameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-    };
-    console.log("Datos del formulario:", formData);
-    // Envío de los datos al servidor
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>Nombre: <input type="text" ref={firstNameRef} defaultValue="" /></label>
-      <label>Apellido: <input type="text" ref={lastNameRef} /></label>
-      <label>Correo electrónico: <input type="email" ref={emailRef} /></label>
-      <label>Contraseña: <input type="password" ref={passwordRef} /></label>
-      <button type="submit">Enviar</button>
-    </form>
-  );
-}
-```
-
-Explicación del código:
-
-- **Referencias:** `useRef` crea una referencia por campo, que se asigna al `input` mediante el atributo `ref`. Después del montaje, `ref.current` contiene el nodo del DOM.
-- **`handleSubmit`:** se ejecuta al enviar el formulario. Evita el comportamiento predeterminado, lee los valores de los campos a través de `ref.current.value` y procesa los datos (por ejemplo, enviándolos al servidor).
-- Para dar un valor inicial a un campo no controlado se usa `defaultValue` (o `defaultChecked` en casillas), no `value`.
-
-**Ventajas de los formularios no controlados:**
-
-- **Menos código:** no es necesario gestionar el estado del formulario.
-- **Simplicidad:** más sencillos para formularios simples que no requieren validación en tiempo real.
-- **Rendimiento:** no se actualiza el estado (ni se vuelve a renderizar) en cada pulsación.
-
-**Desventajas:**
-
-- **Validación y errores:** es más difícil implementar validaciones complejas y mostrar errores en tiempo real.
-- **Sincronización:** menor control sobre la relación entre los valores del formulario y el estado del componente (por ejemplo, para activar un botón según lo escrito).
-- **Depuración:** más difícil, porque los valores no aparecen en el estado del componente (ni en React DevTools).
-
-### 9.2.2 Con `FormData`
-
-Una alternativa más limpia, sin una referencia por campo, es leer todos los campos del formulario con la API nativa `FormData` (los campos necesitan atributo `name`):
-
-```jsx
-function FormularioContacto() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const datos = Object.fromEntries(new FormData(event.currentTarget));
-    console.log(datos); // { nombre: "...", email: "...", mensaje: "..." }
-    event.currentTarget.reset();
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>Nombre <input name="nombre" required /></label>
-      <label>Email <input name="email" type="email" required /></label>
-      <label>Mensaje <textarea name="mensaje" /></label>
-      <button>Enviar</button>
-    </form>
-  );
-}
-```
-
-> React 19 añade la posibilidad de pasar una función a `<form action={fn}>`, que recibe directamente un `FormData`, junto con hooks como `useActionState`. Es útil sobre todo con frameworks que ejecutan acciones en el servidor; en este módulo usaremos `onSubmit`.
-
-### 9.2.3 Comparación
-
-| | Controlado | No controlado |
-| --- | --- | --- |
-| Fuente de verdad | Estado de React | DOM |
-| Lectura del valor | En todo momento | Al enviar (`ref` o `FormData`) |
-| Validación en tiempo real | Sencilla | Difícil |
-| Cantidad de código | Mayor | Menor |
-| Renderizados | Uno por pulsación | Ninguno al escribir |
-| Depuración | Valores visibles en React DevTools | Valores fuera del estado |
-
-**Recomendación:** usa formularios controlados por defecto, especialmente si necesitas validación, campos dependientes o mostrar los datos mientras se escriben.
-
-## 9.3 Validación
-
-La validación comprueba que los datos son correctos antes de procesarlos. Hay varios niveles complementarios:
-
-1. **Validación nativa de HTML:** `required`, `type="email"`, `minLength`, `maxLength`, `min`, `max`, `pattern`. Funciona sin JavaScript, pero sus mensajes son poco personalizables y su aspecto depende del navegador.
-2. **Validación con JavaScript en el cliente:** permite reglas a medida y mensajes claros. Mejora la experiencia de usuario.
-3. **Validación en el servidor:** imprescindible siempre. La validación del cliente se puede saltar fácilmente (desactivando JavaScript o enviando peticiones directamente a la API), así que nunca garantiza la integridad ni la seguridad de los datos.
-
-> Si validas con JavaScript y no quieres que aparezcan las burbujas nativas del navegador, añade `noValidate` al `<form>`; pero mantén atributos como `required` o `type="email"`, que ayudan a la accesibilidad y a los teclados móviles.
-
-### 9.3.1 Validación al enviar
-
-Todos los campos se comprueban cuando el usuario intenta enviar el formulario. Los errores se guardan en un objeto en el estado, con una propiedad por campo:
-
-```jsx
-import { useState } from "react";
-
-const Form = () => {
-  const [formData, setFormData] = useState({ name: "", email: "" });
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
-
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = "El nombre es obligatorio";
-    if (!formData.email) {
-      newErrors.email = "El correo electrónico es obligatorio";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "El correo electrónico no es válido";
-    }
-    return newErrors;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length === 0) {
-      setSuccessMessage("Formulario enviado con éxito");
-      setErrors({});
-      setFormData({ name: "", email: "" });
-    } else {
-      setSuccessMessage("");
-      setErrors(validationErrors);
-    }
-  };
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit} noValidate>
-        <div>
-          <label htmlFor="name">Nombre:</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} />
-          {errors.name && <p className="error">{errors.name}</p>}
-        </div>
-        <div>
-          <label htmlFor="email">Correo electrónico:</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
-          {errors.email && <p className="error">{errors.email}</p>}
-        </div>
-        <button type="submit">Enviar</button>
-      </form>
-      {successMessage && <p className="success">{successMessage}</p>}
-    </div>
-  );
-};
-
-export default Form;
-```
-
-La expresión `/\S+@\S+\.\S+/` comprueba de forma sencilla que hay texto, una arroba, texto, un punto y más texto. Validar un correo con total exactitud es muy complejo; la verificación real consiste en enviar un mensaje de confirmación.
-
-### 9.3.2 Validación en tiempo real
-
-Comprueba cada campo mientras se escribe y ofrece retroalimentación inmediata. Necesita formularios controlados. La clave es separar la lógica en una función que valida un campo y reutilizarla para validar todo el formulario al enviar:
-
-```jsx
-import { useState } from "react";
-
-const validateField = (name, value) => {
-  let error = "";
-  if (name === "name" && !value.trim()) {
-    error = "El nombre es obligatorio";
-  }
-  if (name === "email") {
-    if (!value) {
-      error = "El correo electrónico es obligatorio";
-    } else if (!/\S+@\S+\.\S+/.test(value)) {
-      error = "El correo electrónico no es válido";
-    }
-  }
-  return error;
-};
-
-const Form = () => {
-  const [formData, setFormData] = useState({ name: "", email: "" });
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
-  };
-
-  const validateForm = () => {
-    const validationErrors = {};
-    Object.keys(formData).forEach((key) => {
-      const error = validateField(key, formData[key]);
-      if (error) validationErrors[key] = error;
-    });
-    return validationErrors;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length === 0) {
-      setSuccessMessage("Formulario enviado con éxito");
-      setErrors({});
-      setFormData({ name: "", email: "" });
-    } else {
-      setSuccessMessage("");
-      setErrors(validationErrors);
-    }
-  };
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit} noValidate>
-        <div>
-          <label htmlFor="name">Nombre:</label>
-          <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} />
-          {errors.name && <p className="error">{errors.name}</p>}
-        </div>
-        <div>
-          <label htmlFor="email">Correo electrónico:</label>
-          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
-          {errors.email && <p className="error">{errors.email}</p>}
-        </div>
-        <button type="submit">Enviar</button>
-      </form>
-      {successMessage && <p className="success">{successMessage}</p>}
-    </div>
-  );
-};
-
-export default Form;
-```
-
-**Cómo funciona.** El formulario utiliza un único estado `formData` para almacenar los valores de los campos (`name` y `email`). A medida que el usuario escribe, el manejador `handleChange` actualiza `formData` y valida el campo en tiempo real mediante `validateField`, que devuelve un mensaje de error si la validación falla (o una cadena vacía si es correcto). Esos errores se guardan en el estado `errors`. Al enviar, `handleSubmit` evita la recarga de la página, valida todos los campos con `validateForm` (que reutiliza `validateField` para cada clave de `formData`) y actualiza los errores y el mensaje de éxito. Si no hay errores, se muestra el mensaje de éxito y se reinicia el formulario; si los hay, se muestran junto a los campos correspondientes.
-
-Fíjate en que `validateField` está fuera del componente: no usa estado ni props, así que no hace falta recrearla en cada renderizado y es fácil de probar. Observa también que los dos `set` de `handleChange` usan la función actualizadora (`prev => ...`), para no trabajar con una versión antigua del estado.
-
-**Ventajas de la validación en tiempo real:**
-
-- **Mejora la experiencia de usuario:** retroalimentación inmediata que facilita la corrección.
-- **Reducción de errores al enviar:** los usuarios corrigen los fallos a medida que completan los campos.
-- **Claridad:** mensajes de error claros y específicos junto al campo afectado.
-
-**Desventajas:**
-
-- **Complejidad adicional:** requiere más lógica y más estado.
-- **Rendimiento:** en formularios muy grandes y complejos, validar en cada pulsación puede afectar al rendimiento si no se gestiona bien.
-- **Puede resultar molesta** si muestra errores antes de que el usuario haya terminado de escribir (se soluciona en el apartado siguiente).
-
-| | Validación al enviar | Validación en tiempo real |
-| --- | --- | --- |
-| Momento | Al pulsar «Enviar». | Al escribir (`onChange`) o al salir del campo (`onBlur`). |
-| Funciona con | Formularios controlados y no controlados. | Preferiblemente formularios controlados. |
-| Complejidad | Baja. | Media. |
-| Experiencia | El usuario descubre los errores al final. | El usuario corrige sobre la marcha. |
-
-### 9.3.3 Mostrar errores solo tras salir del campo (`touched`)
-
-Mostrar «El correo no es válido» cuando el usuario solo ha escrito la primera letra es frustrante. La solución habitual es guardar qué campos se han visitado (`touched`) y mostrar el error solo en ellos, validando al perder el foco (`onBlur`) y al enviar:
-
-```jsx
-const [touched, setTouched] = useState({});
-
-const handleBlur = (e) => {
-  const { name, value } = e.target;
-  setTouched((prev) => ({ ...prev, [name]: true }));
-  setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }));
-};
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  const validationErrors = validateForm();
-  // Al enviar, se marcan todos los campos como visitados
-  setTouched(Object.fromEntries(Object.keys(formData).map((k) => [k, true])));
-  setErrors(validationErrors);
-  // ...
-};
-
-// En el JSX
-<input name="email" value={formData.email} onChange={handleChange} onBlur={handleBlur} />
-{touched.email && errors.email && <p className="error">{errors.email}</p>}
-```
-
-### 9.3.4 Mensajes de error accesibles
-
-Para que las personas que usan lectores de pantalla sepan que un campo tiene un error y cuál es, se enlaza el mensaje con el campo (se profundiza en la UD5):
-
-```jsx
-<label htmlFor="email">Correo electrónico</label>
-<input
-  id="email"
-  name="email"
-  type="email"
-  value={formData.email}
-  onChange={handleChange}
-  onBlur={handleBlur}
-  aria-invalid={Boolean(errors.email)}
-  aria-describedby={errors.email ? "email-error" : undefined}
-/>
-{errors.email && (
-  <p id="email-error" className="error" role="alert">
-    {errors.email}
-  </p>
-)}
-```
-
-- `aria-invalid` indica que el valor no es válido.
-- `aria-describedby` hace que el lector lea el mensaje de error al enfocar el campo.
-- No te limites al color rojo para indicar el error: añade texto (y, si quieres, un icono).
-- Al enviar con errores, lleva el foco al primer campo inválido.
-
-## 9.4 Ejemplo completo: componente de campo reutilizable
-
-Para no repetir la etiqueta, el campo y el mensaje en cada entrada, se crea un componente `Campo`:
-
-```jsx
-// Campo.jsx
-import styles from "./Campo.module.css";
-
-export default function Campo({ label, name, error, type = "text", ...resto }) {
-  const idError = `${name}-error`;
-  return (
-    <div className={styles.campo}>
-      <label htmlFor={name}>{label}</label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        className={error ? styles.inputError : undefined}
-        aria-invalid={Boolean(error)}
-        aria-describedby={error ? idError : undefined}
-        {...resto}
-      />
-      {error && <p id={idError} className={styles.error}>{error}</p>}
-    </div>
-  );
-}
-```
-
-`...resto` recoge el resto de props (`value`, `onChange`, `onBlur`, `required`, `autoComplete`...) y las pasa al `input`. Uso:
-
-```jsx
-<Campo
-  label="Correo electrónico"
-  name="email"
-  type="email"
-  autoComplete="email"
-  value={formData.email}
-  onChange={handleChange}
-  onBlur={handleBlur}
-  error={touched.email && errors.email}
-/>
-```
-
-## 9.5 Gestión del envío
-
-Un envío real a un servidor es asíncrono: hay que indicar que se está enviando, evitar envíos duplicados y gestionar los errores.
-
-```jsx
-const [enviando, setEnviando] = useState(false);
-const [errorEnvio, setErrorEnvio] = useState("");
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const validationErrors = validateForm();
-  setErrors(validationErrors);
-  if (Object.keys(validationErrors).length > 0) return;
-
-  setEnviando(true);
-  setErrorEnvio("");
-  try {
-    const respuesta = await fetch("https://jsonplaceholder.typicode.com/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    if (!respuesta.ok) throw new Error(`Error HTTP ${respuesta.status}`);
-    const creado = await respuesta.json();
-    setSuccessMessage(`Usuario creado con id ${creado.id}`);
-    setFormData(inicial);
-    setTouched({});
-  } catch (err) {
-    setErrorEnvio("No se ha podido enviar el formulario. Inténtalo de nuevo.");
-    console.error(err);
-  } finally {
-    setEnviando(false);
-  }
-};
-
-// En el JSX
-<button type="submit" disabled={enviando}>
-  {enviando ? "Enviando…" : "Enviar"}
-</button>
-{errorEnvio && <p role="alert">{errorEnvio}</p>}
-```
-
-[JSONPlaceholder](https://jsonplaceholder.typicode.com) es una API falsa de pruebas: acepta la petición y responde como si hubiera creado el recurso, pero no lo guarda. En la UD5 conectaremos con una API propia.
-
-> **Bibliotecas de formularios.** En proyectos grandes se usan bibliotecas como **React Hook Form** (formularios principalmente no controlados con muy buen rendimiento) junto con bibliotecas para definir las reglas de validación. Conviene dominar antes la técnica manual que se explica en esta unidad.
-
-## 9.6 PRÁCTICA 5: Formulario de registro validado
-
-Crea el proyecto `practica-5-formularios` con un formulario de inscripción a una actividad extraescolar del instituto.
-
-**1. Campos**
-
-| Campo | Tipo | Reglas |
-| --- | --- | --- |
-| Nombre y apellidos | texto | Obligatorio, mínimo 3 caracteres. |
-| Correo electrónico | email | Obligatorio y con formato válido. |
-| Teléfono | tel | Opcional; si se escribe, 9 dígitos que empiecen por 6, 7, 8 o 9. |
-| Fecha de nacimiento | date | Obligatoria; el alumno debe tener entre 12 y 25 años. |
-| Curso | select | Obligatorio (opción inicial «Selecciona un curso» con valor vacío). |
-| Actividad | radio | Obligatoria: robótica, teatro, deporte o videojuegos. |
-| Días disponibles | checkboxes | Al menos uno. |
-| Contraseña | password | Mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número. |
-| Repetir contraseña | password | Debe coincidir con la anterior. |
-| Observaciones | textarea | Opcional, máximo 200 caracteres; muestra un contador «n/200». |
-| Acepto la política de privacidad | checkbox | Obligatorio. |
-
-**2. Requisitos**
-
-- **a.** Formulario controlado con un único objeto de estado y un único manejador `handleChange` para todos los campos (excepto los días, que pueden tener el suyo).
-- **b.** Las reglas de validación estarán en una función `validarCampo(nombre, valor, datos)` fuera del componente (el tercer parámetro permite comparar las contraseñas).
-- **c.** Valida en tiempo real, pero muestra los errores solo de los campos visitados (`touched`) y de todos al enviar.
-- **d.** Usa un componente reutilizable `Campo` para los campos de texto.
-- **e.** Los errores deben ser accesibles: `aria-invalid`, `aria-describedby` y texto (no solo color). Al enviar con errores, el foco debe ir al primer campo inválido (`useRef` o `document.getElementById`).
-- **f.** Añade un indicador de fortaleza de la contraseña (débil, media, fuerte) calculado durante el renderizado.
-- **g.** El botón «Enviar» muestra «Enviando…» y se desactiva durante el envío. Envía los datos (sin las contraseñas) con `POST` a `https://jsonplaceholder.typicode.com/users` y muestra el id devuelto.
-- **h.** Tras el envío correcto, muestra un resumen de los datos inscritos y un botón «Nueva inscripción» que reinicia el formulario.
-- **i.** Guarda un borrador del formulario (sin contraseñas) en `localStorage` mientras se escribe, para no perder los datos al recargar.
-- **j.** Estilos con módulos CSS y las variables del tema. El formulario debe verse bien en un móvil.
-
-**3. Pruebas**
-
-Incluye en el `README.md` una tabla con al menos 10 casos de prueba (datos introducidos, resultado esperado y resultado obtenido), incluidos casos límite: campos con solo espacios, edad exacta de 12 y 25 años, contraseñas que no coinciden, teléfono con letras y envío sin conexión (puedes simularlo en la pestaña *Network* con la opción *Offline*).
-
----
-
-# 10. Proyecto final: gestor de tareas en React
-
-El proyecto se realizará de forma individual y permitirá aplicar todos los contenidos de la unidad. Consiste en desarrollar «TaskFlow», una aplicación de gestión de tareas personales tipo tablero.
-
-## 10.1 Descripción funcional
-
-La aplicación permitirá:
-
-1. **Crear tareas** mediante un formulario con: título (obligatorio, entre 3 y 60 caracteres), descripción (opcional, máximo 300), prioridad (baja, media, alta), fecha límite (opcional, no anterior a hoy) y categoría (seleccionable de una lista).
-2. **Mostrar las tareas** agrupadas en tres columnas: «Pendiente», «En curso» y «Hecha». Cada tarea se muestra en una tarjeta con su prioridad (con un color y un texto), su categoría y su fecha límite. Si la fecha ha vencido y la tarea no está hecha, la tarjeta se marca como vencida.
-3. **Cambiar el estado** de una tarea con botones «← / →» para moverla entre columnas.
-4. **Editar** una tarea, reutilizando el mismo formulario precargado con sus datos.
-5. **Eliminar** una tarea pidiendo confirmación.
-6. **Filtrar y buscar:** por texto (título o descripción), por prioridad y por categoría. Los filtros se combinan.
-7. **Ordenar** cada columna por fecha límite o por prioridad.
-8. **Estadísticas:** total de tareas, porcentaje completado (con una barra de progreso) y número de tareas vencidas. Todo calculado, no almacenado.
-9. **Persistencia:** las tareas y el tema elegido se guardan en `localStorage`.
-10. **Tema claro y oscuro** con variables CSS.
-11. **Frase motivadora:** al cargar la aplicación, se muestra una cita obtenida de una API pública (por ejemplo, `https://dummyjson.com/quotes/random`), gestionando la carga y los errores. Si falla, se muestra una frase por defecto.
-
-## 10.2 Requisitos técnicos
-
-- Proyecto creado con Vite, organizado en `components/`, `hooks/`, `services/`, `utils/` y `styles/`.
-- **Mínimo 10 componentes** funcionales con responsabilidades claras y comunicación mediante props y callbacks. Al menos un componente contenedor que use `children` (por ejemplo, `Modal` o `Columna`).
-- **Estado** con `useState`, sin mutaciones, colocado en el lugar adecuado (elevado cuando lo compartan varios componentes). Los datos derivados (filtrados, estadísticas) se calculan durante el renderizado.
-- **Efectos** con `useEffect` correctamente declarados (dependencias completas y limpieza cuando proceda). Al menos dos hooks personalizados (por ejemplo, `useLocalStorage` y `useTema`).
-- **Formulario controlado** con validación en tiempo real, errores accesibles y control de envío.
-- **Listas** con claves estables (`crypto.randomUUID()` al crear cada tarea).
-- **Estilos:** variables CSS para el tema y al menos dos métodos distintos de los vistos (por ejemplo, módulos CSS y SCSS con BEM). La interfaz debe ser usable en móvil (columnas apiladas) y escritorio.
-- **Sin errores ni avisos** en la consola ni en `npm run lint`.
-
-## 10.3 Organización y sesiones
-
-El proyecto se desarrollará en las sesiones de clase que indique el profesor. Se recomienda seguir este orden: (1) boceto de la interfaz y árbol de componentes; (2) componentes estáticos con datos de ejemplo; (3) estado y eventos; (4) formulario y validación; (5) filtros, ordenación y estadísticas; (6) persistencia, tema y API; (7) estilos y pruebas.
-
-El profesor podrá solicitar una defensa del proyecto en la que el alumno deberá explicar cualquier parte del código y realizar una pequeña modificación en directo.
-
-## 10.4 Entrega
-
-1. **Código fuente** en el repositorio `React`, carpeta `proyecto-taskflow`, con commits frecuentes y descriptivos que muestren la evolución del trabajo.
-2. **`README.md`** con: instrucciones para ejecutarlo, el boceto y el árbol de componentes, una tabla con el estado de cada componente y dónde se ubica cada estado, los métodos de estilo usados y una lista de pruebas realizadas.
-3. **Un vídeo demostrativo** de entre 3 y 5 minutos que muestre todas las funcionalidades y explique brevemente la estructura del código. Se entregará mediante un enlace (Drive, YouTube oculto o similar).
-
-Antes de entregar, clona el repositorio en otra carpeta, ejecuta `npm install` y `npm run dev`, y comprueba que funciona.
-
-{% endraw %}{% endcomment %}{% raw %}
+Al escribir, `Buscador` avisa a `App` con el callback, `App` guarda el nuevo texto y se lo pasa a `ListaFiltrada`, que se vuelve a dibujar filtrada. Cuando hay que pasar datos a través de muchos niveles (*prop drilling*), se usa el Context API, que veremos en la UD5.
 
 ---
 
