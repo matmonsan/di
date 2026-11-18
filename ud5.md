@@ -305,7 +305,52 @@ function ListaCompra() {
 - **No guardes en el estado lo que puedes calcular.** En el ejemplo anterior, el número de productos comprados se calcula al renderizar: `const comprados = productos.filter(p => p.comprado).length;`. Guardarlo en otro estado obligaría a sincronizar ambos y es una fuente de errores.
 - **Varios estados simples o un objeto.** Usa estados separados para valores independientes (`const [abierto, setAbierto]`, `const [filtro, setFiltro]`) y un objeto cuando los valores cambian juntos (los campos de un formulario).
 - **Inicialización perezosa.** Si el valor inicial es costoso de calcular (leer `localStorage`, por ejemplo), pasa una función: `useState(() => leerDeLocalStorage())`. Así solo se ejecuta en el primer renderizado.
-- **Dónde colocar el estado:** en el componente más bajo del árbol que lo necesite; si lo necesitan varios, en su ancestro común (UD4, apartado 7.5.1).
+- **Dónde colocar el estado:** en el componente más bajo del árbol que lo necesite; si lo necesitan varios, en su ancestro común (apartado 2.2.6).
+
+### 2.2.6 Elevar el estado (*lifting state up*)
+
+En la UD4 (apartado 7.5) viste que un hijo avisa a su padre llamando a una función que recibe por props. Ahora que el padre puede guardar datos en el estado, ese aviso sirve para algo más: compartir un dato entre componentes hermanos.
+
+Por ejemplo, un buscador y la lista que filtra. Los hermanos no se hablan directamente, así que el dato se sube («se eleva») a su padre común. El padre lo guarda en su estado y se lo da a los dos: al buscador junto con la función para cambiarlo, y a la lista para que filtre.
+
+```jsx
+import { useState } from "react";
+
+function Buscador({ texto, onCambiarTexto }) {
+  return (
+    <input
+      type="search"
+      value={texto}
+      onChange={(e) => onCambiarTexto(e.target.value)}
+      placeholder="Buscar fruta"
+      aria-label="Buscar fruta"
+    />
+  );
+}
+
+function ListaFiltrada({ elementos, texto }) {
+  const filtrados = elementos.filter((e) => e.toLowerCase().includes(texto.toLowerCase()));
+  return (
+    <ul>
+      {filtrados.map((e) => <li key={e}>{e}</li>)}
+    </ul>
+  );
+}
+
+export default function App() {
+  const [texto, setTexto] = useState(""); // El dato vive en el padre común
+  const frutas = ["Manzana", "Pera", "Plátano", "Melocotón", "Mango"];
+
+  return (
+    <>
+      <Buscador texto={texto} onCambiarTexto={setTexto} />
+      <ListaFiltrada elementos={frutas} texto={texto} />
+    </>
+  );
+}
+```
+
+Al escribir, `Buscador` avisa a `App` con el callback, `App` guarda el nuevo texto en su estado y se lo pasa a `ListaFiltrada`, que se vuelve a dibujar filtrada. Cuando hay que pasar datos a través de muchos niveles (*prop drilling*), se usa el Context API (apartado 4).
 
 ## 2.3 `useEffect`: efectos secundarios
 
@@ -1461,7 +1506,7 @@ Antes de entregar, clona el repositorio en otra carpeta, ejecuta `npm install` y
 
 ## 4.1 El problema: *prop drilling*
 
-En la UD4 vimos que, cuando varios componentes comparten datos, el estado se **eleva** al ancestro común y se pasa hacia abajo por props. Cuando el árbol es profundo, muchos componentes intermedios reciben props que no usan, solo para pasarlas a sus hijos. Es el ***prop drilling*** (perforación de props):
+En el apartado 2.2.6 vimos que, cuando varios componentes comparten datos, el estado se **eleva** al ancestro común y se pasa hacia abajo por props. Cuando el árbol es profundo, muchos componentes intermedios reciben props que no usan, solo para pasarlas a sus hijos. Es el ***prop drilling*** (perforación de props):
 
 ```text
 App  (usuario, tema)

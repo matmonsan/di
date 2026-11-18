@@ -20,6 +20,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 6. [Estilos y CSS](#6-estilos-y-css)
     - [Práctica: estilos en la aplicación de notas](#69-práctica-estilos-en-la-aplicación-de-notas)
 7. [Eventos y comunicación entre componentes](#7-eventos-y-comunicación-entre-componentes)
+    - [Práctica: ejercicios de eventos](#76-práctica-ejercicios-de-eventos)
 
 ---
 
@@ -4100,6 +4101,13 @@ Los dos métodos son independientes y se pueden usar juntos. Por ejemplo, un enl
 
 ## 7.5 Comunicación entre componentes mediante callbacks
 
+>
+> **Vídeo recomendado**
+>
+> [![React - comunicación de hijo a padre mediante props](https://img.youtube.com/vi/A2hRoqV3z84/hqdefault.jpg)](https://www.youtube.com/watch?v=A2hRoqV3z84)
+>
+> [React - comunicación de hijo a padre mediante props (YouTube)](https://www.youtube.com/watch?v=A2hRoqV3z84)
+
 Las props viajan del padre al hijo, pero un hijo no puede cambiar los datos de su padre. Entonces, ¿cómo le dice la tarjeta a la lista «han pulsado Eliminar en mí»?
 
 La solución es que el padre le pase al hijo una **función como prop** (un *callback*). El hijo no sabe qué hace esa función: solo la llama cuando ocurre el evento, como quien pulsa un timbre. Es el padre quien decide qué pasa al sonar.
@@ -4139,52 +4147,27 @@ const App = () => {
 };
 ```
 
-Por ahora el padre solo muestra un mensaje, porque para borrar de verdad la tarea y que la lista se actualice necesitamos el estado (UD5). Pero el camino ya está hecho: **los datos bajan por props y los avisos suben por callbacks**. Este patrón es la base de toda la interactividad en React.
+Por ahora el padre solo muestra un mensaje. Para borrar de verdad la tarea y que la lista se actualice, el padre tendrá que guardar las tareas en el estado, y eso lo completaremos en la UD5. Pero el camino ya está hecho: **los datos bajan por props y los avisos suben por callbacks**. Este patrón es la base de toda la interactividad en React.
 
-### 7.5.1 Elevar el estado (*lifting state up*)
+## 7.6 PRÁCTICA: Ejercicios de eventos
 
-¿Y si dos componentes hermanos necesitan el mismo dato? Por ejemplo, un buscador y la lista que filtra. Los hermanos no se hablan directamente, así que el dato se sube («se eleva») a su padre común. El padre lo guarda y se lo da a los dos: al buscador junto con la función para cambiarlo, y a la lista para que filtre.
+Resuelve cada ejercicio en un componente propio. Puedes ponerlos todos en `App` de un mismo proyecto, `practica-7-6-eventos`.Los componentes responden con `console.log`, `alert` o `confirm`.
 
-```jsx
-import { useState } from "react";
+1. Crea un componente `BotonSaludo` que reciba una prop `idioma` («es», «en» o «fr») y, al pulsarlo, muestre con `alert` un saludo en ese idioma. En `App` pon tres botones, uno por idioma, usando el mismo componente.
 
-function Buscador({ texto, onCambiarTexto }) {
-  return (
-    <input
-      type="search"
-      value={texto}
-      onChange={(e) => onCambiarTexto(e.target.value)}
-      placeholder="Buscar fruta"
-      aria-label="Buscar fruta"
-    />
-  );
-}
+2. Crea un componente `ZonaRaton` con un recuadro que escriba en la consola «Has entrado» y «Has salido» cuando el ratón entra y sale, y las coordenadas `clientX` y `clientY` al hacer clic dentro. Al pulsar con el botón derecho no debe aparecer el menú del navegador, sino un `alert` con el texto «Menú personalizado».
 
-function ListaFiltrada({ elementos, texto }) {
-  const filtrados = elementos.filter((e) => e.toLowerCase().includes(texto.toLowerCase()));
-  return (
-    <ul>
-      {filtrados.map((e) => <li key={e}>{e}</li>)}
-    </ul>
-  );
-}
+3. Crea un componente `CampoComando` con un campo de texto que muestre en la consola cada tecla que se pulsa. Al pulsar Enter, muestra con `alert` lo que hay escrito en el campo. Si se pulsa Ctrl+S, debe evitar que el navegador abra la ventana de guardar y mostrar en la consola «Guardado».
 
-export default function App() {
-  const [texto, setTexto] = useState(""); // El dato vive en el padre común
-  const frutas = ["Manzana", "Pera", "Plátano", "Melocotón", "Mango"];
+4. Crea un componente `EnlaceExterno` que reciba `url` y `texto` y muestre un enlace. Al pulsarlo, pregunta con `confirm` «¿Seguro que quieres salir de la página?». Si el usuario cancela, no se navega. Recuerda que `confirm` devuelve `true` si el usuario pulsa «Aceptar» y `false` si pulsa «Cancelar», así que puedes guardar su respuesta en una variable: `const respuesta = confirm("...");`.
 
-  return (
-    <>
-      <Buscador texto={texto} onCambiarTexto={setTexto} />
-      <ListaFiltrada elementos={frutas} texto={texto} />
-    </>
-  );
-}
-```
+5. Crea un componente `TarjetaPelicula` que reciba `titulo` y `anio`. Al hacer clic en la tarjeta, muestra en la consola «Ver detalle de *título*». Dentro tiene un botón «Favorita» que muestra «*título* añadida a favoritas» y que **no** debe abrir el detalle. En `App` muestra al menos tres tarjetas.
 
-(`useState` se explica en la UD5: aquí guarda el texto buscado y `setTexto` lo cambia).
+6. Crea un componente `Valoracion` que muestre cinco botones con estrellas (★). El componente no decide qué hacer con la nota: recibe un callback `onValorar` y lo llama con el número de la estrella pulsada. En `App`, la función que le pasas muestra con `alert` «Has puntuado con *n* estrellas».
 
-Al escribir, `Buscador` avisa a `App` con el callback, `App` guarda el nuevo texto y se lo pasa a `ListaFiltrada`, que se vuelve a dibujar filtrada. Cuando hay que pasar datos a través de muchos niveles (*prop drilling*), se usa el Context API, que veremos en la UD5.
+7. Crea un componente `PaletaColores` que reciba un array `colores` y un callback `onElegir` y muestre un botón por color, con ese color de fondo. Al pulsar uno, llama a `onElegir` con el color. En `App` úsalo dos veces con paletas distintas y con funciones distintas: una muestra el color en la consola y otra con `alert`.
+
+**Entrega:** sube el proyecto a tu repositorio personal. En las funciones que responden a eventos, usa nombres `handleAlgo`, y en las props que reciben funciones, `onAlgo`.
 
 ---
 
