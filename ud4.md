@@ -19,8 +19,8 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
     - [Práctica: ampliación de la aplicación de notas](#59-práctica-ampliación-de-la-aplicación-de-notas)
 6. [Estilos y CSS](#6-estilos-y-css)
     - [Práctica: estilos en la aplicación de notas](#69-práctica-estilos-en-la-aplicación-de-notas)
-7. [Eventos y comunicación entre componentes](#7-eventos-y-comunicación-entre-componentes)
-    - [Práctica: ejercicios de eventos](#76-práctica-ejercicios-de-eventos)
+7. [Eventos](#7-eventos)
+    - [Práctica: ejercicios de eventos](#75-práctica-ejercicios-de-eventos)
 
 ---
 
@@ -2391,7 +2391,7 @@ function App() {
 
 - Las dos formas son válidas: pasar una función definida antes (`saludar`) o escribir una función flecha directamente en la prop.
 - Por convenio, las props que reciben funciones para avisar de un suceso se llaman `on` + acción: `onPulsar`, `onEliminar`, `onCambiar`.
-- Las props siguen siendo de solo lectura: el hijo no cambia los datos del padre, solo llama a la función que este le ha dado. Esta forma de comunicación del hijo con el padre se estudia a fondo en el apartado 7.
+- Las props siguen siendo de solo lectura: el hijo no cambia los datos del padre, solo llama a la función que este le ha dado. Esta forma de comunicación del hijo con el padre se estudia a fondo en la UD5, junto con el estado.
 
 ### 4.2.7 Elementos JSX como props
 
@@ -3890,7 +3890,7 @@ Sube también el proyecto a tu repositorio personal para mantenerlo guardado.
 
 ---
 
-# 7. Eventos y comunicación entre componentes
+# 7. Eventos
 
 Hasta ahora nuestros componentes solo mostraban información. Con los **eventos** empiezan a reaccionar a lo que hace el usuario: pulsar un botón, escribir en un campo, pasar el ratón por encima...
 
@@ -4099,59 +4099,9 @@ Prueba a borrar la línea del `stopPropagation()`: verás que al pulsar «Elimin
 
 Los dos métodos son independientes y se pueden usar juntos. Por ejemplo, un enlace dentro de una tarjeta clicable que no debe navegar ni abrir la tarjeta llamaría a `preventDefault()` y a `stopPropagation()`.
 
-## 7.5 Comunicación entre componentes mediante callbacks
+## 7.5 PRÁCTICA: Ejercicios de eventos
 
->
-> **Vídeo recomendado**
->
-> [![React - comunicación de hijo a padre mediante props](https://img.youtube.com/vi/A2hRoqV3z84/hqdefault.jpg)](https://www.youtube.com/watch?v=A2hRoqV3z84)
->
-> [React - comunicación de hijo a padre mediante props (YouTube)](https://www.youtube.com/watch?v=A2hRoqV3z84)
-
-Las props viajan del padre al hijo, pero un hijo no puede cambiar los datos de su padre. Entonces, ¿cómo le dice la tarjeta a la lista «han pulsado Eliminar en mí»?
-
-La solución es que el padre le pase al hijo una **función como prop** (un *callback*). El hijo no sabe qué hace esa función: solo la llama cuando ocurre el evento, como quien pulsa un timbre. Es el padre quien decide qué pasa al sonar.
-
-![Las props descienden de App a TareaItem y el callback onEliminar comunica el evento de vuelta al padre](./assets/img/ud4-callbacks.svg)
-
-```jsx
-// Hijo: no sabe CÓMO se elimina; solo avisa
-const TareaItem = ({ tarea, onEliminar }) => (
-  <li>
-    {tarea.texto}
-    <button onClick={() => onEliminar(tarea.id)}>Eliminar</button>
-  </li>
-);
-
-// Intermedio: solo pasa el callback hacia abajo
-const ListaTareas = ({ tareas, onEliminar }) => (
-  <ul>
-    {tareas.map((t) => (
-      <TareaItem key={t.id} tarea={t} onEliminar={onEliminar} />
-    ))}
-  </ul>
-);
-
-// Padre: decide qué hacer cuando le avisan
-const App = () => {
-  const tareas = [
-    { id: 1, texto: "Estudiar React" },
-    { id: 2, texto: "Hacer la práctica" },
-  ];
-
-  const handleEliminar = (id) => {
-    console.log("Hay que eliminar la tarea", id);
-  };
-
-  return <ListaTareas tareas={tareas} onEliminar={handleEliminar} />;
-};
-```
-
-Por ahora el padre solo muestra un mensaje. Para borrar de verdad la tarea y que la lista se actualice, el padre tendrá que guardar las tareas en el estado, y eso lo completaremos en la UD5. Pero el camino ya está hecho: **los datos bajan por props y los avisos suben por callbacks**. Este patrón es la base de toda la interactividad en React.
-
-## 7.6 PRÁCTICA: Ejercicios de eventos
-
-Resuelve cada ejercicio en un componente propio. Puedes ponerlos todos en `App` de un mismo proyecto, `practica-7-6-eventos`.Los componentes responden con `console.log`, `alert` o `confirm`.
+Resuelve cada ejercicio en un componente propio. Puedes ponerlos todos en `App` de un mismo proyecto, `practica-7-5-eventos`. Los componentes responden con `console.log`, `alert` o `confirm`.
 
 1. Crea un componente `BotonSaludo` que reciba una prop `idioma` («es», «en» o «fr») y, al pulsarlo, muestre con `alert` un saludo en ese idioma. En `App` pon tres botones, uno por idioma, usando el mismo componente.
 
@@ -4163,11 +4113,7 @@ Resuelve cada ejercicio en un componente propio. Puedes ponerlos todos en `App` 
 
 5. Crea un componente `TarjetaPelicula` que reciba `titulo` y `anio`. Al hacer clic en la tarjeta, muestra en la consola «Ver detalle de *título*». Dentro tiene un botón «Favorita» que muestra «*título* añadida a favoritas» y que **no** debe abrir el detalle. En `App` muestra al menos tres tarjetas.
 
-6. Crea un componente `Valoracion` que muestre cinco botones con estrellas (★). El componente no decide qué hacer con la nota: recibe un callback `onValorar` y lo llama con el número de la estrella pulsada. En `App`, la función que le pasas muestra con `alert` «Has puntuado con *n* estrellas».
-
-7. Crea un componente `PaletaColores` que reciba un array `colores` y un callback `onElegir` y muestre un botón por color, con ese color de fondo. Al pulsar uno, llama a `onElegir` con el color. En `App` úsalo dos veces con paletas distintas y con funciones distintas: una muestra el color en la consola y otra con `alert`.
-
-**Entrega:** sube el proyecto a tu repositorio personal. En las funciones que responden a eventos, usa nombres `handleAlgo`, y en las props que reciben funciones, `onAlgo`.
+**Entrega:** sube el proyecto a tu repositorio personal. En las funciones que responden a eventos, usa nombres `handleAlgo`.
 
 ---
 

@@ -20,7 +20,7 @@ description: "<strong>Módulo:</strong> Desarrollo de Interfaces <br> <strong>Pr
 > - Garantizar la accesibilidad (a11y) de la aplicación mediante atributos ARIA y validación con herramientas automáticas.
 > - Diseñar vistas navegables de una aplicación React, asegurando coherencia visual, adaptación a distintos dispositivos y accesibilidad.
 >
-> **Requisitos previos:** esta unidad parte de los contenidos de la [UD4](ud4.md): componentes, props, estilos, eventos y comunicación entre componentes.
+> **Requisitos previos:** esta unidad parte de los contenidos de la [UD4](ud4.md): componentes, props, estilos y eventos.
 
 # Índice
 
@@ -305,11 +305,67 @@ function ListaCompra() {
 - **No guardes en el estado lo que puedes calcular.** En el ejemplo anterior, el número de productos comprados se calcula al renderizar: `const comprados = productos.filter(p => p.comprado).length;`. Guardarlo en otro estado obligaría a sincronizar ambos y es una fuente de errores.
 - **Varios estados simples o un objeto.** Usa estados separados para valores independientes (`const [abierto, setAbierto]`, `const [filtro, setFiltro]`) y un objeto cuando los valores cambian juntos (los campos de un formulario).
 - **Inicialización perezosa.** Si el valor inicial es costoso de calcular (leer `localStorage`, por ejemplo), pasa una función: `useState(() => leerDeLocalStorage())`. Así solo se ejecuta en el primer renderizado.
-- **Dónde colocar el estado:** en el componente más bajo del árbol que lo necesite; si lo necesitan varios, en su ancestro común (apartado 2.2.6).
+- **Dónde colocar el estado:** en el componente más bajo del árbol que lo necesite; si lo necesitan varios, en su ancestro común (apartado 2.2.7).
 
-### 2.2.6 Elevar el estado (*lifting state up*)
+### 2.2.6 Comunicación del hijo con el padre mediante callbacks
 
-En la UD4 (apartado 7.5) viste que un hijo avisa a su padre llamando a una función que recibe por props. Ahora que el padre puede guardar datos en el estado, ese aviso sirve para algo más: compartir un dato entre componentes hermanos.
+>
+> **Vídeo recomendado**
+>
+> [![React - comunicación de hijo a padre mediante props](https://img.youtube.com/vi/A2hRoqV3z84/hqdefault.jpg)](https://www.youtube.com/watch?v=A2hRoqV3z84)
+>
+> [React - comunicación de hijo a padre mediante props (YouTube)](https://www.youtube.com/watch?v=A2hRoqV3z84)
+
+Las props viajan del padre al hijo, pero un hijo no puede cambiar los datos de su padre. Entonces, ¿cómo le dice una tarea a la lista «han pulsado Eliminar en mí»?
+
+La solución es que el padre le pase al hijo una función como prop, lo que se llama un *callback* (en la UD4, apartado 4.2.6, viste que las funciones se pueden pasar como props). El hijo no sabe qué hace esa función: solo la llama cuando ocurre el evento, como quien pulsa un timbre. Es el padre quien decide qué pasa al sonar.
+
+![Las props descienden de App a TareaItem y el callback onEliminar comunica el evento de vuelta al padre](./assets/img/ud4-callbacks.svg)
+
+```jsx
+import { useState } from "react";
+
+// Hijo: no sabe CÓMO se elimina; solo avisa
+const TareaItem = ({ tarea, onEliminar }) => (
+  <li>
+    {tarea.texto}
+    <button onClick={() => onEliminar(tarea.id)}>Eliminar</button>
+  </li>
+);
+
+// Intermedio: solo pasa el callback hacia abajo
+const ListaTareas = ({ tareas, onEliminar }) => (
+  <ul>
+    {tareas.map((t) => (
+      <TareaItem key={t.id} tarea={t} onEliminar={onEliminar} />
+    ))}
+  </ul>
+);
+
+// Padre: guarda las tareas en su estado y decide qué hacer cuando le avisan
+export default function App() {
+  const [tareas, setTareas] = useState([
+    { id: 1, texto: "Estudiar React" },
+    { id: 2, texto: "Hacer la práctica" },
+  ]);
+
+  const handleEliminar = (id) => {
+    setTareas(tareas.filter((t) => t.id !== id));
+  };
+
+  return <ListaTareas tareas={tareas} onEliminar={handleEliminar} />;
+}
+```
+
+Al pulsar «Eliminar», `TareaItem` llama a `onEliminar` con el `id` de su tarea. Esa función es en realidad `handleEliminar`, que está en `App`: crea un array nuevo sin esa tarea y lo guarda en el estado. React vuelve a dibujar `App` y la lista aparece sin la tarea eliminada.
+
+Fíjate en que `ListaTareas` no usa el callback: solo lo recibe y se lo pasa a cada `TareaItem`. Y en que el hijo nunca modifica las props: quien cambia los datos es siempre el componente que los guarda en su estado.
+
+La idea clave es: los datos bajan por props y los avisos suben por callbacks. Este patrón es la base de toda la interactividad en React. Por convenio, las props que reciben callbacks se llaman `on` + acción (`onEliminar`, `onCambiar`) y las funciones que los atienden, `handle` + acción (`handleEliminar`).
+
+### 2.2.7 Elevar el estado (*lifting state up*)
+
+En el apartado anterior viste que un hijo avisa a su padre llamando a una función que recibe por props. Ahora que el padre puede guardar datos en el estado, ese aviso sirve para algo más: compartir un dato entre componentes hermanos.
 
 Por ejemplo, un buscador y la lista que filtra. Los hermanos no se hablan directamente, así que el dato se sube («se eleva») a su padre común. El padre lo guarda en su estado y se lo da a los dos: al buscador junto con la función para cambiarlo, y a la lista para que filtre.
 
@@ -1506,7 +1562,7 @@ Antes de entregar, clona el repositorio en otra carpeta, ejecuta `npm install` y
 
 ## 4.1 El problema: *prop drilling*
 
-En el apartado 2.2.6 vimos que, cuando varios componentes comparten datos, el estado se **eleva** al ancestro común y se pasa hacia abajo por props. Cuando el árbol es profundo, muchos componentes intermedios reciben props que no usan, solo para pasarlas a sus hijos. Es el ***prop drilling*** (perforación de props):
+En el apartado 2.2.7 vimos que, cuando varios componentes comparten datos, el estado se **eleva** al ancestro común y se pasa hacia abajo por props. Cuando el árbol es profundo, muchos componentes intermedios reciben props que no usan, solo para pasarlas a sus hijos. Es el ***prop drilling*** (perforación de props):
 
 ```text
 App  (usuario, tema)
