@@ -3872,19 +3872,38 @@ Una combinación sencilla y habitual: variables CSS para el tema en `index.css` 
 
 ## 6.9 PRÁCTICA: Estilos en la aplicación de notas
 
-Da estilo a la aplicación de notas de la práctica 5.9 en un proyecto nuevo, `practica-6-9-estilos`. El diseño es libre: lo importante es usar cada técnica donde tiene sentido.
+Convierte la aplicación de notas de la práctica 5.9 en una página web terminada, con todos sus estilos, en un proyecto nuevo: `practica-6-9-estilos`. Los estilos se harán con módulos CSS (apartado 6.4). El diseño es libre, pero el resultado debe parecer una página real y no una lista de datos sin estilo.
 
 ### Requisitos
 
-- **a.** Tema. Define en `index.css` las variables del tema (fondo, texto, primario, superficie, radio y espacio). Ningún componente usará colores fijos, sino `var(--...)`. Añade un tema oscuro con `[data-tema="oscuro"]` y pruébalo cambiando el atributo desde las herramientas de desarrollo.
-- **b.** BEM. Da estilo a la cabecera de la aplicación con un archivo `.css` normal y nombres BEM, incluido al menos un modificador.
-- **c.** Módulos CSS. Usa módulos CSS en la tarjeta de nota y en la lista. Comprueba en el inspector que los nombres de clase han cambiado, y pon una clase `.titulo` en dos módulos distintos para ver que no chocan.
-- **d.** SCSS. Instala `sass` y convierte un componente a `.module.scss` usando variables, anidación, `&` y un mixin que muestre las notas en una columna en el móvil y en una rejilla en pantallas grandes.
-- **e.** Estilos en línea. Usa `style` solo para el ancho de la barra de progreso. Como ampliación opcional, crea un botón con styled-components con dos variantes.
+**1. Estructura de la página**
+
+- **a.** La página tendrá tres partes, cada una con su etiqueta semántica: una cabecera (`<header>`), un contenido principal (`<main>`) y un pie (`<footer>`).
+- **b.** La cabecera mostrará el título y el subtítulo de la aplicación y un menú con enlaces a cada sección del contenido principal. Pista: un enlace con `href="#pendientes"` lleva al elemento con `id="pendientes"`.
+- **c.** El contenido principal estará dividido en secciones (`<section>`), cada una con su título: el resumen y el progreso, la nota destacada, las notas pendientes y todas las notas.
+- **d.** El pie será mínimo: el año y el nombre de la aplicación, centrados y con un tamaño de letra menor.
+
+**2. Módulos CSS**
+
+- **a.** Cada componente que tenga estilos tendrá su propio archivo `.module.css` en la misma carpeta, con el mismo nombre que el componente (por ejemplo, `Nota.jsx` y `Nota.module.css`).
+- **b.** En los módulos solo se usarán clases, nunca selectores de etiqueta como `h2` o `li`.
+- **c.** Los únicos estilos globales estarán en `index.css`: la tipografía, el color de fondo de la página y las variables CSS con los colores y espaciados del diseño (apartado 6.7). Los módulos usarán esas variables en lugar de escribir los colores directamente.
+
+**3. Tarjetas de las notas**
+
+- **a.** El aspecto de cada nota (completada, prioridad alta, media o baja) se conseguirá combinando clases del módulo, no con el atributo `style`. Pista: si el módulo tiene las clases `.alta`, `.media` y `.baja`, se puede usar `styles[nota.prioridad]`.
+- **b.** Las etiquetas de cada nota y el aviso de «Prioridad alta» tendrán su propio estilo, distinto del texto normal.
+- **c.** El atributo `style` solo se podrá usar para el ancho de la barra de progreso, porque depende de un valor calculado.
+
+**4. Diseño adaptable**
+
+- **a.** En pantallas estrechas las notas se mostrarán en una sola columna y, en pantallas anchas, en varias columnas. Usa una *media query* en el módulo de la lista.
+- **b.** El contenido principal tendrá un ancho máximo y estará centrado.
+- **c.** Comprueba el resultado con la vista de dispositivo móvil de las herramientas de desarrollo del navegador.
 
 ### Entrega
 
-Entrega el proyecto `practica-6-9-estilos` sin la carpeta `node_modules`. Añade al `README.md` una tabla con el método de estilo de cada componente y por qué lo has elegido.
+Entrega el proyecto `practica-6-9-estilos` sin la carpeta `node_modules`, junto con dos capturas de la página: una en pantalla ancha y otra en vista de móvil.
 
 Sube también el proyecto a tu repositorio personal para mantenerlo guardado.
 
