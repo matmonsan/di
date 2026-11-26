@@ -9,7 +9,4 @@ description: "<strong>Profesor:</strong> Matías Montávez Sánchez"
 ## [UD3: Desarrollo de interfaces naturales](ud3.md)
 
 ## [UD4: Programación de componentes en React](ud4.md)
-{% comment %}
 - [Simulacro de examen de la UD4](examen-ud4.md)
-{% endcomment %}
-
